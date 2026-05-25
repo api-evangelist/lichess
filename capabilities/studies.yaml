@@ -1,0 +1,519 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Lichess API — Studies
+  description: 'Lichess API — Studies. 9 operations. Lead operation: Export one study chapter. Self-contained Naftiko capability covering one Lichess business surface.'
+  tags:
+  - Lichess
+  - Studies
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    LICHESS_API_TOKEN: LICHESS_API_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: studies
+    baseUri: https://lichess.org
+    description: Lichess Studies business capability. Self-contained, no shared references.
+    resources:
+    - name: study-studyid-chapterid-pgn
+      path: /api/study/{studyId}/{chapterId}.pgn
+      operations:
+      - name: studychapterpgn
+        method: GET
+        description: 'Export one study chapter'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: studyId
+          in: path
+          type: string
+          required: true
+        - name: chapterId
+          in: path
+          type: string
+          required: true
+        - name: clocks
+          in: query
+          type: string
+          required: false
+        - name: comments
+          in: query
+          type: string
+          required: false
+        - name: variations
+          in: query
+          type: string
+          required: false
+        - name: orientation
+          in: query
+          type: string
+          required: false
+    - name: study-studyid-pgn
+      path: /api/study/{studyId}.pgn
+      operations:
+      - name: studyallchapterspgn
+        method: GET
+        description: 'Export all chapters'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: studyId
+          in: path
+          type: string
+          required: true
+        - name: clocks
+          in: query
+          type: string
+          required: false
+        - name: comments
+          in: query
+          type: string
+          required: false
+        - name: variations
+          in: query
+          type: string
+          required: false
+        - name: orientation
+          in: query
+          type: string
+          required: false
+    - name: study
+      path: /api/study
+      operations:
+      - name: apistudypost
+        method: POST
+        description: 'Create a new Study'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          required: false
+    - name: study-studyid-import-pgn
+      path: /api/study/{studyId}/import-pgn
+      operations:
+      - name: apistudyimportpgn
+        method: POST
+        description: 'Import PGN into a study'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: studyId
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          required: false
+    - name: study-studyid-chapterid-tags
+      path: /api/study/{studyId}/{chapterId}/tags
+      operations:
+      - name: apistudychaptertags
+        method: POST
+        description: 'Update PGN tags of a study chapter'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: studyId
+          in: path
+          type: string
+          required: true
+        - name: chapterId
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          required: false
+    - name: study-studyid-chapterid-moves
+      path: /api/study/{studyId}/{chapterId}/moves
+      operations:
+      - name: apistudychaptermoves
+        method: POST
+        description: 'Update the moves of a study chapter'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: studyId
+          in: path
+          type: string
+          required: true
+        - name: chapterId
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          required: false
+    - name: study-by-username-export-pgn
+      path: /api/study/by/{username}/export.pgn
+      operations:
+      - name: studyexportallpgn
+        method: GET
+        description: 'Export all studies of a user'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: username
+          in: path
+          type: string
+          required: true
+        - name: clocks
+          in: query
+          type: string
+          required: false
+        - name: comments
+          in: query
+          type: string
+          required: false
+        - name: variations
+          in: query
+          type: string
+          required: false
+        - name: orientation
+          in: query
+          type: string
+          required: false
+    - name: study-by-username
+      path: /api/study/by/{username}
+      operations:
+      - name: studylistmetadata
+        method: GET
+        description: 'List studies of a user'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: username
+          in: path
+          type: string
+          required: true
+    - name: study-studyid-chapterid
+      path: /api/study/{studyId}/{chapterId}
+      operations:
+      - name: apistudystudyidchapteriddelete
+        method: DELETE
+        description: 'Delete a study chapter'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: studyId
+          in: path
+          type: string
+          required: true
+        - name: chapterId
+          in: path
+          type: string
+          required: true
+    authentication:
+      type: bearer
+      value: '{{env.LICHESS_API_TOKEN}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: studies-rest
+    port: 8080
+    description: REST adapter for Lichess Studies. One Spectral-compliant resource per consumed operation.
+    resources:
+    - path: /v1/api/study/{studyId}/{chapterId}.pgn
+      name: study-studyid-chapterid-pgn
+      description: REST surface for study-studyid-chapterid-pgn.
+      operations:
+      - method: GET
+        name: studychapterpgn
+        description: 'Export one study chapter'
+        call: studies.studychapterpgn
+        with:
+          studyId: rest.path.studyId
+          chapterId: rest.path.chapterId
+          clocks: rest.query.clocks
+          comments: rest.query.comments
+          variations: rest.query.variations
+          orientation: rest.query.orientation
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/study/{studyId}.pgn
+      name: study-studyid-pgn
+      description: REST surface for study-studyid-pgn.
+      operations:
+      - method: GET
+        name: studyallchapterspgn
+        description: 'Export all chapters'
+        call: studies.studyallchapterspgn
+        with:
+          studyId: rest.path.studyId
+          clocks: rest.query.clocks
+          comments: rest.query.comments
+          variations: rest.query.variations
+          orientation: rest.query.orientation
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/study
+      name: study
+      description: REST surface for study.
+      operations:
+      - method: POST
+        name: apistudypost
+        description: 'Create a new Study'
+        call: studies.apistudypost
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/study/{studyId}/import-pgn
+      name: study-studyid-import-pgn
+      description: REST surface for study-studyid-import-pgn.
+      operations:
+      - method: POST
+        name: apistudyimportpgn
+        description: 'Import PGN into a study'
+        call: studies.apistudyimportpgn
+        with:
+          studyId: rest.path.studyId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/study/{studyId}/{chapterId}/tags
+      name: study-studyid-chapterid-tags
+      description: REST surface for study-studyid-chapterid-tags.
+      operations:
+      - method: POST
+        name: apistudychaptertags
+        description: 'Update PGN tags of a study chapter'
+        call: studies.apistudychaptertags
+        with:
+          studyId: rest.path.studyId
+          chapterId: rest.path.chapterId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/study/{studyId}/{chapterId}/moves
+      name: study-studyid-chapterid-moves
+      description: REST surface for study-studyid-chapterid-moves.
+      operations:
+      - method: POST
+        name: apistudychaptermoves
+        description: 'Update the moves of a study chapter'
+        call: studies.apistudychaptermoves
+        with:
+          studyId: rest.path.studyId
+          chapterId: rest.path.chapterId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/study/by/{username}/export.pgn
+      name: study-by-username-export-pgn
+      description: REST surface for study-by-username-export-pgn.
+      operations:
+      - method: GET
+        name: studyexportallpgn
+        description: 'Export all studies of a user'
+        call: studies.studyexportallpgn
+        with:
+          username: rest.path.username
+          clocks: rest.query.clocks
+          comments: rest.query.comments
+          variations: rest.query.variations
+          orientation: rest.query.orientation
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/study/by/{username}
+      name: study-by-username
+      description: REST surface for study-by-username.
+      operations:
+      - method: GET
+        name: studylistmetadata
+        description: 'List studies of a user'
+        call: studies.studylistmetadata
+        with:
+          username: rest.path.username
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/study/{studyId}/{chapterId}
+      name: study-studyid-chapterid
+      description: REST surface for study-studyid-chapterid.
+      operations:
+      - method: DELETE
+        name: apistudystudyidchapteriddelete
+        description: 'Delete a study chapter'
+        call: studies.apistudystudyidchapteriddelete
+        with:
+          studyId: rest.path.studyId
+          chapterId: rest.path.chapterId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: studies-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Lichess Studies. One tool per consumed operation.
+    tools:
+    - name: lichess-studychapterpgn
+      description: 'Export one study chapter'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: studies.studychapterpgn
+      with:
+        studyId: tools.studyId
+        chapterId: tools.chapterId
+        clocks: tools.clocks
+        comments: tools.comments
+        variations: tools.variations
+        orientation: tools.orientation
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-studyallchapterspgn
+      description: 'Export all chapters'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: studies.studyallchapterspgn
+      with:
+        studyId: tools.studyId
+        clocks: tools.clocks
+        comments: tools.comments
+        variations: tools.variations
+        orientation: tools.orientation
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-apistudypost
+      description: 'Create a new Study'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: studies.apistudypost
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-apistudyimportpgn
+      description: 'Import PGN into a study'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: studies.apistudyimportpgn
+      with:
+        studyId: tools.studyId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-apistudychaptertags
+      description: 'Update PGN tags of a study chapter'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: studies.apistudychaptertags
+      with:
+        studyId: tools.studyId
+        chapterId: tools.chapterId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-apistudychaptermoves
+      description: 'Update the moves of a study chapter'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: studies.apistudychaptermoves
+      with:
+        studyId: tools.studyId
+        chapterId: tools.chapterId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-studyexportallpgn
+      description: 'Export all studies of a user'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: studies.studyexportallpgn
+      with:
+        username: tools.username
+        clocks: tools.clocks
+        comments: tools.comments
+        variations: tools.variations
+        orientation: tools.orientation
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-studylistmetadata
+      description: 'List studies of a user'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: studies.studylistmetadata
+      with:
+        username: tools.username
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-apistudystudyidchapteriddelete
+      description: 'Delete a study chapter'
+      hints:
+        readOnly: false
+        destructive: true
+        idempotent: false
+      call: studies.apistudystudyidchapteriddelete
+      with:
+        studyId: tools.studyId
+        chapterId: tools.chapterId
+      outputParameters:
+      - type: object
+        mapping: $.

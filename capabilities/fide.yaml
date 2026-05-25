@@ -1,0 +1,159 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Lichess API — FIDE
+  description: 'Lichess API — FIDE. 3 operations. Lead operation: Get a FIDE player. Self-contained Naftiko capability covering one Lichess business surface.'
+  tags:
+  - Lichess
+  - FIDE
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    LICHESS_API_TOKEN: LICHESS_API_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: fide
+    baseUri: https://lichess.org
+    description: Lichess FIDE business capability. Self-contained, no shared references.
+    resources:
+    - name: fide-player-playerid
+      path: /api/fide/player/{playerId}
+      operations:
+      - name: fideplayerget
+        method: GET
+        description: 'Get a FIDE player'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: playerId
+          in: path
+          type: string
+          required: true
+    - name: fide-player-playerid-ratings
+      path: /api/fide/player/{playerId}/ratings
+      operations:
+      - name: fideplayerratings
+        method: GET
+        description: 'Get ratings history of a FIDE player'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: playerId
+          in: path
+          type: string
+          required: true
+    - name: fide-player
+      path: /api/fide/player
+      operations:
+      - name: fideplayersearch
+        method: GET
+        description: 'Search FIDE players'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: q
+          in: query
+          type: string
+          required: false
+    authentication:
+      type: bearer
+      value: '{{env.LICHESS_API_TOKEN}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: fide-rest
+    port: 8080
+    description: REST adapter for Lichess FIDE. One Spectral-compliant resource per consumed operation.
+    resources:
+    - path: /v1/api/fide/player/{playerId}
+      name: fide-player-playerid
+      description: REST surface for fide-player-playerid.
+      operations:
+      - method: GET
+        name: fideplayerget
+        description: 'Get a FIDE player'
+        call: fide.fideplayerget
+        with:
+          playerId: rest.path.playerId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/fide/player/{playerId}/ratings
+      name: fide-player-playerid-ratings
+      description: REST surface for fide-player-playerid-ratings.
+      operations:
+      - method: GET
+        name: fideplayerratings
+        description: 'Get ratings history of a FIDE player'
+        call: fide.fideplayerratings
+        with:
+          playerId: rest.path.playerId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/fide/player
+      name: fide-player
+      description: REST surface for fide-player.
+      operations:
+      - method: GET
+        name: fideplayersearch
+        description: 'Search FIDE players'
+        call: fide.fideplayersearch
+        with:
+          q: rest.query.q
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: fide-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Lichess FIDE. One tool per consumed operation.
+    tools:
+    - name: lichess-fideplayerget
+      description: 'Get a FIDE player'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: fide.fideplayerget
+      with:
+        playerId: tools.playerId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-fideplayerratings
+      description: 'Get ratings history of a FIDE player'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: fide.fideplayerratings
+      with:
+        playerId: tools.playerId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-fideplayersearch
+      description: 'Search FIDE players'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: fide.fideplayersearch
+      with:
+        q: tools.q
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,523 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Lichess API — Tournaments (Swiss)
+  description: 'Lichess API — Tournaments (Swiss). 10 operations. Lead operation: Create a new Swiss tournament. Self-contained Naftiko capability covering one Lichess business surface.'
+  tags:
+  - Lichess
+  - Tournaments (Swiss)
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    LICHESS_API_TOKEN: LICHESS_API_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: swiss-tournaments
+    baseUri: https://lichess.org
+    description: Lichess Tournaments (Swiss) business capability. Self-contained, no shared references.
+    resources:
+    - name: swiss-new-teamid
+      path: /api/swiss/new/{teamId}
+      operations:
+      - name: apiswissnew
+        method: POST
+        description: 'Create a new Swiss tournament'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: teamId
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          required: false
+    - name: swiss-id
+      path: /api/swiss/{id}
+      operations:
+      - name: swiss
+        method: GET
+        description: 'Get info about a Swiss tournament'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: swiss-id-edit
+      path: /api/swiss/{id}/edit
+      operations:
+      - name: apiswissupdate
+        method: POST
+        description: 'Update a Swiss tournament'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          required: false
+    - name: swiss-id-schedule-next-round
+      path: /api/swiss/{id}/schedule-next-round
+      operations:
+      - name: apiswissschedulenextround
+        method: POST
+        description: 'Manually schedule the next round'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          required: false
+    - name: swiss-id-join
+      path: /api/swiss/{id}/join
+      operations:
+      - name: apiswissjoin
+        method: POST
+        description: 'Join a Swiss tournament'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          required: false
+    - name: swiss-id-withdraw
+      path: /api/swiss/{id}/withdraw
+      operations:
+      - name: apiswisswithdraw
+        method: POST
+        description: 'Pause or leave a swiss tournament'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+    - name: swiss-id-terminate
+      path: /api/swiss/{id}/terminate
+      operations:
+      - name: apiswissterminate
+        method: POST
+        description: 'Terminate a Swiss tournament'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+    - name: swiss-id-trf
+      path: /swiss/{id}.trf
+      operations:
+      - name: swisstrf
+        method: GET
+        description: 'Export TRF of a Swiss tournament'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+    - name: swiss-id-games
+      path: /api/swiss/{id}/games
+      operations:
+      - name: gamesbyswiss
+        method: GET
+        description: 'Export games of a Swiss tournament'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: player
+          in: query
+          type: string
+          required: false
+        - name: moves
+          in: query
+          type: string
+          required: false
+        - name: pgnInJson
+          in: query
+          type: string
+          required: false
+        - name: tags
+          in: query
+          type: string
+          required: false
+        - name: clocks
+          in: query
+          type: string
+          required: false
+        - name: evals
+          in: query
+          type: string
+          required: false
+        - name: accuracy
+          in: query
+          type: string
+          required: false
+        - name: opening
+          in: query
+          type: string
+          required: false
+        - name: division
+          in: query
+          type: string
+          required: false
+    - name: swiss-id-results
+      path: /api/swiss/{id}/results
+      operations:
+      - name: resultsbyswiss
+        method: GET
+        description: 'Get results of a swiss tournament'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: nb
+          in: query
+          type: string
+          required: false
+    authentication:
+      type: bearer
+      value: '{{env.LICHESS_API_TOKEN}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: swiss-tournaments-rest
+    port: 8080
+    description: REST adapter for Lichess Tournaments (Swiss). One Spectral-compliant resource per consumed operation.
+    resources:
+    - path: /v1/api/swiss/new/{teamId}
+      name: swiss-new-teamid
+      description: REST surface for swiss-new-teamid.
+      operations:
+      - method: POST
+        name: apiswissnew
+        description: 'Create a new Swiss tournament'
+        call: swiss-tournaments.apiswissnew
+        with:
+          teamId: rest.path.teamId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/swiss/{id}
+      name: swiss-id
+      description: REST surface for swiss-id.
+      operations:
+      - method: GET
+        name: swiss
+        description: 'Get info about a Swiss tournament'
+        call: swiss-tournaments.swiss
+        with:
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/swiss/{id}/edit
+      name: swiss-id-edit
+      description: REST surface for swiss-id-edit.
+      operations:
+      - method: POST
+        name: apiswissupdate
+        description: 'Update a Swiss tournament'
+        call: swiss-tournaments.apiswissupdate
+        with:
+          id: rest.path.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/swiss/{id}/schedule-next-round
+      name: swiss-id-schedule-next-round
+      description: REST surface for swiss-id-schedule-next-round.
+      operations:
+      - method: POST
+        name: apiswissschedulenextround
+        description: 'Manually schedule the next round'
+        call: swiss-tournaments.apiswissschedulenextround
+        with:
+          id: rest.path.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/swiss/{id}/join
+      name: swiss-id-join
+      description: REST surface for swiss-id-join.
+      operations:
+      - method: POST
+        name: apiswissjoin
+        description: 'Join a Swiss tournament'
+        call: swiss-tournaments.apiswissjoin
+        with:
+          id: rest.path.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/swiss/{id}/withdraw
+      name: swiss-id-withdraw
+      description: REST surface for swiss-id-withdraw.
+      operations:
+      - method: POST
+        name: apiswisswithdraw
+        description: 'Pause or leave a swiss tournament'
+        call: swiss-tournaments.apiswisswithdraw
+        with:
+          id: rest.path.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/swiss/{id}/terminate
+      name: swiss-id-terminate
+      description: REST surface for swiss-id-terminate.
+      operations:
+      - method: POST
+        name: apiswissterminate
+        description: 'Terminate a Swiss tournament'
+        call: swiss-tournaments.apiswissterminate
+        with:
+          id: rest.path.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/swiss/{id}.trf
+      name: swiss-id-trf
+      description: REST surface for swiss-id-trf.
+      operations:
+      - method: GET
+        name: swisstrf
+        description: 'Export TRF of a Swiss tournament'
+        call: swiss-tournaments.swisstrf
+        with:
+          id: rest.path.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/swiss/{id}/games
+      name: swiss-id-games
+      description: REST surface for swiss-id-games.
+      operations:
+      - method: GET
+        name: gamesbyswiss
+        description: 'Export games of a Swiss tournament'
+        call: swiss-tournaments.gamesbyswiss
+        with:
+          id: rest.path.id
+          player: rest.query.player
+          moves: rest.query.moves
+          pgnInJson: rest.query.pgnInJson
+          tags: rest.query.tags
+          clocks: rest.query.clocks
+          evals: rest.query.evals
+          accuracy: rest.query.accuracy
+          opening: rest.query.opening
+          division: rest.query.division
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/swiss/{id}/results
+      name: swiss-id-results
+      description: REST surface for swiss-id-results.
+      operations:
+      - method: GET
+        name: resultsbyswiss
+        description: 'Get results of a swiss tournament'
+        call: swiss-tournaments.resultsbyswiss
+        with:
+          id: rest.path.id
+          nb: rest.query.nb
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: swiss-tournaments-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Lichess Tournaments (Swiss). One tool per consumed operation.
+    tools:
+    - name: lichess-apiswissnew
+      description: 'Create a new Swiss tournament'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: swiss-tournaments.apiswissnew
+      with:
+        teamId: tools.teamId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-swiss
+      description: 'Get info about a Swiss tournament'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: swiss-tournaments.swiss
+      with:
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-apiswissupdate
+      description: 'Update a Swiss tournament'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: swiss-tournaments.apiswissupdate
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-apiswissschedulenextround
+      description: 'Manually schedule the next round'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: swiss-tournaments.apiswissschedulenextround
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-apiswissjoin
+      description: 'Join a Swiss tournament'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: swiss-tournaments.apiswissjoin
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-apiswisswithdraw
+      description: 'Pause or leave a swiss tournament'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: swiss-tournaments.apiswisswithdraw
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-apiswissterminate
+      description: 'Terminate a Swiss tournament'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: swiss-tournaments.apiswissterminate
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-swisstrf
+      description: 'Export TRF of a Swiss tournament'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: swiss-tournaments.swisstrf
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-gamesbyswiss
+      description: 'Export games of a Swiss tournament'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: swiss-tournaments.gamesbyswiss
+      with:
+        id: tools.id
+        player: tools.player
+        moves: tools.moves
+        pgnInJson: tools.pgnInJson
+        tags: tools.tags
+        clocks: tools.clocks
+        evals: tools.evals
+        accuracy: tools.accuracy
+        opening: tools.opening
+        division: tools.division
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-resultsbyswiss
+      description: 'Get results of a swiss tournament'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: swiss-tournaments.resultsbyswiss
+      with:
+        id: tools.id
+        nb: tools.nb
+      outputParameters:
+      - type: object
+        mapping: $.

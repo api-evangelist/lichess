@@ -1,0 +1,254 @@
+aid: lichess
+url: https://raw.githubusercontent.com/api-evangelist/lichess/refs/heads/main/apis.yml
+apis:
+- aid: lichess:lichess-api
+  name: Lichess API
+  tags:
+  - Chess
+  - Games
+  - Open Source
+  - REST
+  humanURL: https://lichess.org/api
+  baseURL: https://lichess.org
+  properties:
+  - url: https://lichess.org/api
+    type: Documentation
+  - url: openapi/lichess-openapi.yml
+    type: OpenAPI
+  - url: https://github.com/lichess-org/api/blob/master/doc/specs/lichess-api.yaml
+    type: OpenAPI
+  - url: json-schema/lichess-game-schema.json
+    type: JSONSchema
+  - url: json-schema/lichess-user-schema.json
+    type: JSONSchema
+  - url: json-ld/lichess-context.jsonld
+    type: JSONLD
+  - url: rules/lichess-rules.yml
+    type: SpectralRuleset
+  - type: NaftikoCapability
+    url: capabilities/account.yaml
+  - type: NaftikoCapability
+    url: capabilities/users.yaml
+  - type: NaftikoCapability
+    url: capabilities/games.yaml
+  - type: NaftikoCapability
+    url: capabilities/puzzles.yaml
+  - type: NaftikoCapability
+    url: capabilities/teams.yaml
+  - type: NaftikoCapability
+    url: capabilities/board.yaml
+  - type: NaftikoCapability
+    url: capabilities/bot.yaml
+  - type: NaftikoCapability
+    url: capabilities/challenges.yaml
+  - type: NaftikoCapability
+    url: capabilities/arena-tournaments.yaml
+  - type: NaftikoCapability
+    url: capabilities/swiss-tournaments.yaml
+  - type: NaftikoCapability
+    url: capabilities/studies.yaml
+  - type: NaftikoCapability
+    url: capabilities/broadcasts.yaml
+  - type: NaftikoCapability
+    url: capabilities/opening-explorer.yaml
+  - type: NaftikoCapability
+    url: capabilities/tablebase.yaml
+  - type: NaftikoCapability
+    url: capabilities/external-engine.yaml
+  description: The Lichess API is a comprehensive REST and streaming API covering account, users, games, puzzles,
+    teams, challenges, board and bot play, Arena and Swiss tournaments, simuls, studies, broadcasts, messaging,
+    OAuth, FIDE data, opening explorer, tablebase, external engine, and cloud evaluation. The full OpenAPI 3.1
+    specification is published at github.com/lichess-org/api with 185 operations across 23 tags, and many endpoints
+    stream responses as newline-delimited JSON (ND-JSON).
+name: Lichess
+tags:
+- Chess
+- Games
+- Open Source
+- Nonprofit
+- Tournaments
+- Puzzles
+- Bots
+- Streaming
+- ND-JSON
+- OAuth
+kind: contract
+image: https://lichess1.org/assets/logo/lichess-pad12.svg
+access: 3rd-Party
+common:
+- url: https://lichess.org
+  name: Lichess
+  type: Portal
+- url: https://lichess.org/api
+  name: API Reference
+  type: Documentation
+- url: https://lichess.org/api/ui
+  name: API UI
+  type: Sandbox
+- url: https://lichess-org.github.io/api-demo/
+  name: API Demo
+  type: Sandbox
+- url: https://github.com/lichess-org
+  name: Lichess on GitHub
+  type: GitHubOrganization
+- url: https://github.com/lichess-org/api
+  name: Lichess API Documentation Repository
+  type: SourceCode
+- url: https://github.com/lichess-org/lila
+  name: Lila - Lichess Server
+  type: SourceCode
+- url: https://github.com/lichess-org/scalachess
+  name: scalachess Engine Library
+  type: SourceCode
+- url: https://github.com/lichess-org/chessground
+  name: Chessground Board UI
+  type: SourceCode
+- url: https://github.com/lichess-org/pgn-viewer
+  name: PGN Viewer
+  type: SourceCode
+- url: https://github.com/lichess-org/mobile
+  name: Lichess Mobile (Flutter)
+  type: SourceCode
+- url: https://github.com/lichess-org/berserk
+  name: Berserk - Python Client
+  type: SDK
+- url: https://github.com/tors42/chariot
+  name: Chariot - Java Client
+  type: SDK
+- url: https://github.com/devjiwonchoi/equine
+  name: Equine - JavaScript/TypeScript Client
+  type: SDK
+- url: https://github.com/Rabergsel/LichessNET
+  name: LichessNET - C# Client
+  type: SDK
+- url: https://github.com/Dblike/LichessSharp
+  name: LichessSharp - .NET Client
+  type: SDK
+- url: https://github.com/mkomon/uberserk
+  name: uberserk - MicroPython Client
+  type: SDK
+- url: https://pypi.org/project/async-lichess-sdk
+  name: async-lichess-sdk
+  type: SDK
+- url: https://github.com/lichess-bot-devs/lichess-bot
+  name: lichess-bot - Python Bot Reference
+  type: Tool
+- url: https://github.com/lichess-org/fishnet
+  name: Fishnet - Distributed Stockfish Analysis
+  type: Tool
+- url: https://github.com/lichess-org/external-engine
+  name: External Engine
+  type: Tool
+- url: https://github.com/lichess-org/broadcaster
+  name: Broadcaster
+  type: Tool
+- url: https://github.com/lichess-org/pgn-mule
+  name: PGN Mule
+  type: Tool
+- url: https://github.com/lichess-org/api-ui
+  name: API UI Source
+  type: Tool
+- url: https://github.com/lichess-org/api/tree/master/example
+  name: OAuth and API Examples
+  type: CodeExamples
+- url: https://discord.gg/lichess
+  name: Lichess Discord
+  type: Forum
+- url: https://lichess.org/forum
+  name: Lichess Forum
+  type: Forum
+- url: https://database.lichess.org/
+  name: Lichess Database Exports
+  type: BulkDataDownload
+- url: https://lichess.org/account/oauth/token
+  name: Personal Access Token
+  type: Authentication
+- url: https://lichess.org/developers
+  name: Lichess Widgets
+  type: Documentation
+- url: https://lichess.org/account/oauth/app
+  name: OAuth App Registration
+  type: Authentication
+- url: https://lichess.org/page/fair-play
+  name: Fair Play Policy
+  type: TermsOfService
+- url: https://lichess.org/terms-of-service
+  name: Terms of Service
+  type: TermsOfService
+- url: https://lichess.org/privacy
+  type: PrivacyPolicy
+- url: https://lichess.org/source
+  name: Source Code
+  type: SourceCode
+- url: https://lichess.org/patron
+  name: Become a Lichess Patron
+  type: Donate
+- url: https://status.lichess.org/
+  name: Lichess Status
+  type: StatusPage
+- url: https://lichess.org/blog
+  type: Blog
+- url: https://lichess.org/api#section/Introduction/Rate-limiting
+  name: Rate Limiting
+  type: RateLimits
+- url: https://lichess.org/api#tag/OAuth
+  name: OAuth and PKCE
+  type: Authentication
+- url: https://www.gnu.org/licenses/agpl-3.0.txt
+  name: AGPL-3.0
+  type: License
+- url: plans/lichess-plans-pricing.yml
+  type: Plans
+- url: rate-limits/lichess-rate-limits.yml
+  type: RateLimits
+- type: Features
+  data:
+  - Free, ad-free, open-source online chess server operated by a French nonprofit, funded by donations
+  - Full OpenAPI 3.1 specification with 185 operations across 23 tags published at github.com/lichess-org/api
+  - Account, users, relations, and messaging endpoints for managing players and social graph
+  - Games REST and ND-JSON streaming endpoints for current and historical games, including PGN export
+  - TV channels and current best games for live broadcast and embedding
+  - Daily puzzle, puzzle by ID, puzzle activity, and puzzle dashboard endpoints
+  - Teams API for creating, joining, listing, and managing chess teams
+  - Board API for playing real-time games with physical boards and third-party clients using regular accounts
+  - Bot API for programmatic play by accounts upgraded to bot status, with streaming game state
+  - Challenges API for issuing, accepting, declining, and listing challenges including AI and open challenges
+  - Bulk pairings for programmatically creating many games at once
+  - Arena and Swiss tournament APIs including create, update, terminate, join, withdraw, and result export
+  - Simuls endpoint for current and upcoming simultaneous exhibitions
+  - Studies API for exporting and importing study chapters in PGN
+  - Broadcasts API for creating tournaments, rounds, and pushing PGN updates for live event coverage
+  - FIDE endpoints exposing FIDE player and federation data
+  - Opening Explorer with Masters database, Lichess database, and player database lookups
+  - Tablebase endpoint for 7-piece Syzygy endgame results
+  - External Engine API enabling user-hosted engines to power analysis on lichess.org/analysis
+  - Cloud evaluation lookup for previously evaluated positions
+  - OAuth 2.0 Authorization Code Flow with PKCE plus personal access tokens, long-lived (one year typical)
+  - Newline-delimited JSON (ND-JSON) streaming for events, games, and TV feeds
+  - Distributed Stockfish analysis network (fishnet) and open client-side Stockfish WASM builds
+  - Public dataset exports of all rated games, puzzles, and computer evaluations at database.lichess.org
+  - Official community SDKs in Python (berserk), Java (chariot), JavaScript/TypeScript (equine), .NET, and more
+  - AGPL-3.0 licensed server (lila), with MIT scalachess engine library and GPL-3.0 mobile and tooling code
+  sources:
+  - https://lichess.org/api
+  - https://github.com/lichess-org/api
+  - https://github.com/lichess-org
+  - https://lichess.org/about
+  updated: '2026-05-25'
+created: '2026-05-25T00:00:00.000Z'
+modified: '2026-05-25'
+position: Consuming
+description: Lichess is a free, ad-free, open-source online chess server operated by a French nonprofit and powered
+  entirely by volunteers and donations. It serves millions of games per day with live play, tournaments, puzzles,
+  studies, broadcasts, analysis, and a public API. The server (lila), engine library (scalachess), mobile app,
+  board UI (chessground), and distributed Stockfish analysis network (fishnet) are all open source under AGPL-3.0,
+  MIT, and GPL-3.0 licenses. The Lichess API provides 185 documented operations across 23 functional areas
+  including Account, Users, Games, Puzzles, Teams, Board, Bot, Challenges, Arena and Swiss Tournaments, Simuls,
+  Studies, Broadcasts, Messaging, OAuth, FIDE, Opening Explorer, Tablebase, External Engine, and Cloud Analysis,
+  with comprehensive ND-JSON streaming support.
+maintainers:
+- FN: Kin Lane
+  email: info@apievangelist.com
+  X: apievangelist
+  url: https://apievangelist.com
+specificationVersion: '0.16'

@@ -1,0 +1,70 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Lichess API — Simuls
+  description: 'Lichess API — Simuls. 1 operation. Lead operation: Get current simuls. Self-contained Naftiko capability covering one Lichess business surface.'
+  tags:
+  - Lichess
+  - Simuls
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    LICHESS_API_TOKEN: LICHESS_API_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: simuls
+    baseUri: https://lichess.org
+    description: Lichess Simuls business capability. Self-contained, no shared references.
+    resources:
+    - name: simul
+      path: /api/simul
+      operations:
+      - name: apisimul
+        method: GET
+        description: 'Get current simuls'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    authentication:
+      type: bearer
+      value: '{{env.LICHESS_API_TOKEN}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: simuls-rest
+    port: 8080
+    description: REST adapter for Lichess Simuls. One Spectral-compliant resource per consumed operation.
+    resources:
+    - path: /v1/api/simul
+      name: simul
+      description: REST surface for simul.
+      operations:
+      - method: GET
+        name: apisimul
+        description: 'Get current simuls'
+        call: simuls.apisimul
+        with:
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: simuls-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Lichess Simuls. One tool per consumed operation.
+    tools:
+    - name: lichess-apisimul
+      description: 'Get current simuls'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: simuls.apisimul
+      with:
+      outputParameters:
+      - type: object
+        mapping: $.

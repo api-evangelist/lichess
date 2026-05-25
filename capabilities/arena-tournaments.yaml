@@ -1,0 +1,650 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Lichess API — Tournaments (Arena)
+  description: 'Lichess API — Tournaments (Arena). 13 operations. Lead operation: Get current tournaments. Self-contained Naftiko capability covering one Lichess business surface.'
+  tags:
+  - Lichess
+  - Tournaments (Arena)
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    LICHESS_API_TOKEN: LICHESS_API_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: arena-tournaments
+    baseUri: https://lichess.org
+    description: Lichess Tournaments (Arena) business capability. Self-contained, no shared references.
+    resources:
+    - name: tournament
+      path: /api/tournament
+      operations:
+      - name: apitournament
+        method: GET
+        description: 'Get current tournaments'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+      - name: apitournamentpost
+        method: POST
+        description: 'Create a new Arena tournament'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          required: false
+    - name: tournament-id
+      path: /api/tournament/{id}
+      operations:
+      - name: tournament
+        method: GET
+        description: 'Get info about an Arena tournament'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: page
+          in: query
+          type: string
+          required: false
+      - name: apitournamentupdate
+        method: POST
+        description: 'Update an Arena tournament'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          required: false
+    - name: tournament-id-join
+      path: /api/tournament/{id}/join
+      operations:
+      - name: apitournamentjoin
+        method: POST
+        description: 'Join an Arena tournament'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          required: false
+    - name: tournament-id-withdraw
+      path: /api/tournament/{id}/withdraw
+      operations:
+      - name: apitournamentwithdraw
+        method: POST
+        description: 'Pause or leave an Arena tournament'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+    - name: tournament-id-terminate
+      path: /api/tournament/{id}/terminate
+      operations:
+      - name: apitournamentterminate
+        method: POST
+        description: 'Terminate an Arena tournament'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+    - name: tournament-team-battle-id
+      path: /api/tournament/team-battle/{id}
+      operations:
+      - name: apitournamentteambattlepost
+        method: POST
+        description: 'Update a team battle'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          required: false
+    - name: tournament-id-games
+      path: /api/tournament/{id}/games
+      operations:
+      - name: gamesbytournament
+        method: GET
+        description: 'Export games of an Arena tournament'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: player
+          in: query
+          type: string
+          required: false
+        - name: moves
+          in: query
+          type: string
+          required: false
+        - name: pgnInJson
+          in: query
+          type: string
+          required: false
+        - name: tags
+          in: query
+          type: string
+          required: false
+        - name: clocks
+          in: query
+          type: string
+          required: false
+        - name: evals
+          in: query
+          type: string
+          required: false
+        - name: accuracy
+          in: query
+          type: string
+          required: false
+        - name: opening
+          in: query
+          type: string
+          required: false
+        - name: division
+          in: query
+          type: string
+          required: false
+    - name: tournament-id-results
+      path: /api/tournament/{id}/results
+      operations:
+      - name: resultsbytournament
+        method: GET
+        description: 'Get results of an Arena tournament'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+        - name: nb
+          in: query
+          type: string
+          required: false
+        - name: sheet
+          in: query
+          type: string
+          required: false
+    - name: tournament-id-teams
+      path: /api/tournament/{id}/teams
+      operations:
+      - name: teamsbytournament
+        method: GET
+        description: 'Get team standing of a team battle'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+    - name: user-username-tournament-created
+      path: /api/user/{username}/tournament/created
+      operations:
+      - name: apiusernametournamentcreated
+        method: GET
+        description: 'Get tournaments created by a user'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: username
+          in: path
+          type: string
+          required: true
+        - name: nb
+          in: query
+          type: string
+          required: false
+        - name: status
+          in: query
+          type: string
+          required: false
+    - name: user-username-tournament-played
+      path: /api/user/{username}/tournament/played
+      operations:
+      - name: apiusernametournamentplayed
+        method: GET
+        description: 'Get tournaments played by a user'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: username
+          in: path
+          type: string
+          required: true
+        - name: nb
+          in: query
+          type: string
+          required: false
+        - name: performance
+          in: query
+          type: string
+          required: false
+    authentication:
+      type: bearer
+      value: '{{env.LICHESS_API_TOKEN}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: arena-tournaments-rest
+    port: 8080
+    description: REST adapter for Lichess Tournaments (Arena). One Spectral-compliant resource per consumed operation.
+    resources:
+    - path: /v1/api/tournament
+      name: tournament
+      description: REST surface for tournament.
+      operations:
+      - method: GET
+        name: apitournament
+        description: 'Get current tournaments'
+        call: arena-tournaments.apitournament
+        with:
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: apitournamentpost
+        description: 'Create a new Arena tournament'
+        call: arena-tournaments.apitournamentpost
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/tournament/{id}
+      name: tournament-id
+      description: REST surface for tournament-id.
+      operations:
+      - method: GET
+        name: tournament
+        description: 'Get info about an Arena tournament'
+        call: arena-tournaments.tournament
+        with:
+          page: rest.query.page
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: apitournamentupdate
+        description: 'Update an Arena tournament'
+        call: arena-tournaments.apitournamentupdate
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/tournament/{id}/join
+      name: tournament-id-join
+      description: REST surface for tournament-id-join.
+      operations:
+      - method: POST
+        name: apitournamentjoin
+        description: 'Join an Arena tournament'
+        call: arena-tournaments.apitournamentjoin
+        with:
+          id: rest.path.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/tournament/{id}/withdraw
+      name: tournament-id-withdraw
+      description: REST surface for tournament-id-withdraw.
+      operations:
+      - method: POST
+        name: apitournamentwithdraw
+        description: 'Pause or leave an Arena tournament'
+        call: arena-tournaments.apitournamentwithdraw
+        with:
+          id: rest.path.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/tournament/{id}/terminate
+      name: tournament-id-terminate
+      description: REST surface for tournament-id-terminate.
+      operations:
+      - method: POST
+        name: apitournamentterminate
+        description: 'Terminate an Arena tournament'
+        call: arena-tournaments.apitournamentterminate
+        with:
+          id: rest.path.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/tournament/team-battle/{id}
+      name: tournament-team-battle-id
+      description: REST surface for tournament-team-battle-id.
+      operations:
+      - method: POST
+        name: apitournamentteambattlepost
+        description: 'Update a team battle'
+        call: arena-tournaments.apitournamentteambattlepost
+        with:
+          id: rest.path.id
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/tournament/{id}/games
+      name: tournament-id-games
+      description: REST surface for tournament-id-games.
+      operations:
+      - method: GET
+        name: gamesbytournament
+        description: 'Export games of an Arena tournament'
+        call: arena-tournaments.gamesbytournament
+        with:
+          id: rest.path.id
+          player: rest.query.player
+          moves: rest.query.moves
+          pgnInJson: rest.query.pgnInJson
+          tags: rest.query.tags
+          clocks: rest.query.clocks
+          evals: rest.query.evals
+          accuracy: rest.query.accuracy
+          opening: rest.query.opening
+          division: rest.query.division
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/tournament/{id}/results
+      name: tournament-id-results
+      description: REST surface for tournament-id-results.
+      operations:
+      - method: GET
+        name: resultsbytournament
+        description: 'Get results of an Arena tournament'
+        call: arena-tournaments.resultsbytournament
+        with:
+          id: rest.path.id
+          nb: rest.query.nb
+          sheet: rest.query.sheet
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/tournament/{id}/teams
+      name: tournament-id-teams
+      description: REST surface for tournament-id-teams.
+      operations:
+      - method: GET
+        name: teamsbytournament
+        description: 'Get team standing of a team battle'
+        call: arena-tournaments.teamsbytournament
+        with:
+          id: rest.path.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/user/{username}/tournament/created
+      name: user-username-tournament-created
+      description: REST surface for user-username-tournament-created.
+      operations:
+      - method: GET
+        name: apiusernametournamentcreated
+        description: 'Get tournaments created by a user'
+        call: arena-tournaments.apiusernametournamentcreated
+        with:
+          username: rest.path.username
+          nb: rest.query.nb
+          status: rest.query.status
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/user/{username}/tournament/played
+      name: user-username-tournament-played
+      description: REST surface for user-username-tournament-played.
+      operations:
+      - method: GET
+        name: apiusernametournamentplayed
+        description: 'Get tournaments played by a user'
+        call: arena-tournaments.apiusernametournamentplayed
+        with:
+          username: rest.path.username
+          nb: rest.query.nb
+          performance: rest.query.performance
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: arena-tournaments-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Lichess Tournaments (Arena). One tool per consumed operation.
+    tools:
+    - name: lichess-apitournament
+      description: 'Get current tournaments'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: arena-tournaments.apitournament
+      with:
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-apitournamentpost
+      description: 'Create a new Arena tournament'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: arena-tournaments.apitournamentpost
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-tournament
+      description: 'Get info about an Arena tournament'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: arena-tournaments.tournament
+      with:
+        page: tools.page
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-apitournamentupdate
+      description: 'Update an Arena tournament'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: arena-tournaments.apitournamentupdate
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-apitournamentjoin
+      description: 'Join an Arena tournament'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: arena-tournaments.apitournamentjoin
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-apitournamentwithdraw
+      description: 'Pause or leave an Arena tournament'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: arena-tournaments.apitournamentwithdraw
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-apitournamentterminate
+      description: 'Terminate an Arena tournament'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: arena-tournaments.apitournamentterminate
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-apitournamentteambattlepost
+      description: 'Update a team battle'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: arena-tournaments.apitournamentteambattlepost
+      with:
+        id: tools.id
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-gamesbytournament
+      description: 'Export games of an Arena tournament'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: arena-tournaments.gamesbytournament
+      with:
+        id: tools.id
+        player: tools.player
+        moves: tools.moves
+        pgnInJson: tools.pgnInJson
+        tags: tools.tags
+        clocks: tools.clocks
+        evals: tools.evals
+        accuracy: tools.accuracy
+        opening: tools.opening
+        division: tools.division
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-resultsbytournament
+      description: 'Get results of an Arena tournament'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: arena-tournaments.resultsbytournament
+      with:
+        id: tools.id
+        nb: tools.nb
+        sheet: tools.sheet
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-teamsbytournament
+      description: 'Get team standing of a team battle'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: arena-tournaments.teamsbytournament
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-apiusernametournamentcreated
+      description: 'Get tournaments created by a user'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: arena-tournaments.apiusernametournamentcreated
+      with:
+        username: tools.username
+        nb: tools.nb
+        status: tools.status
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-apiusernametournamentplayed
+      description: 'Get tournaments played by a user'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: arena-tournaments.apiusernametournamentplayed
+      with:
+        username: tools.username
+        nb: tools.nb
+        performance: tools.performance
+      outputParameters:
+      - type: object
+        mapping: $.

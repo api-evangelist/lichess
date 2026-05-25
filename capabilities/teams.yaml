@@ -1,0 +1,706 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Lichess API — Teams
+  description: 'Lichess API — Teams. 14 operations. Lead operation: Get team swiss tournaments. Self-contained Naftiko capability covering one Lichess business surface.'
+  tags:
+  - Lichess
+  - Teams
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    LICHESS_API_TOKEN: LICHESS_API_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: teams
+    baseUri: https://lichess.org
+    description: Lichess Teams business capability. Self-contained, no shared references.
+    resources:
+    - name: team-teamid-swiss
+      path: /api/team/{teamId}/swiss
+      operations:
+      - name: apiteamswiss
+        method: GET
+        description: 'Get team swiss tournaments'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: teamId
+          in: path
+          type: string
+          required: true
+        - name: max
+          in: query
+          type: string
+          required: false
+        - name: status
+          in: query
+          type: string
+          required: false
+        - name: createdBy
+          in: query
+          type: string
+          required: false
+        - name: name
+          in: query
+          type: string
+          required: false
+    - name: team-teamid
+      path: /api/team/{teamId}
+      operations:
+      - name: teamshow
+        method: GET
+        description: 'Get a single team'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: teamId
+          in: path
+          type: string
+          required: true
+    - name: team-all
+      path: /api/team/all
+      operations:
+      - name: teamall
+        method: GET
+        description: 'Get popular teams'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: page
+          in: query
+          type: string
+          required: false
+    - name: team-of-username
+      path: /api/team/of/{username}
+      operations:
+      - name: teamofusername
+        method: GET
+        description: 'Teams of a player'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: username
+          in: path
+          type: string
+          required: true
+    - name: team-search
+      path: /api/team/search
+      operations:
+      - name: teamsearch
+        method: GET
+        description: 'Search teams'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: text
+          in: query
+          type: string
+          required: false
+        - name: page
+          in: query
+          type: string
+          required: false
+    - name: team-teamid-users
+      path: /api/team/{teamId}/users
+      operations:
+      - name: teamidusers
+        method: GET
+        description: 'Get members of a team'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: teamId
+          in: path
+          type: string
+          required: true
+        - name: full
+          in: query
+          type: string
+          required: false
+    - name: team-teamid-arena
+      path: /api/team/{teamId}/arena
+      operations:
+      - name: apiteamarena
+        method: GET
+        description: 'Get team Arena tournaments'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: teamId
+          in: path
+          type: string
+          required: true
+        - name: max
+          in: query
+          type: string
+          required: false
+        - name: status
+          in: query
+          type: string
+          required: false
+        - name: createdBy
+          in: query
+          type: string
+          required: false
+        - name: name
+          in: query
+          type: string
+          required: false
+    - name: team-teamid-join
+      path: /team/{teamId}/join
+      operations:
+      - name: teamidjoin
+        method: POST
+        description: 'Join a team'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: teamId
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          required: false
+    - name: team-teamid-quit
+      path: /team/{teamId}/quit
+      operations:
+      - name: teamidquit
+        method: POST
+        description: 'Leave a team'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: teamId
+          in: path
+          type: string
+          required: true
+    - name: team-teamid-requests
+      path: /api/team/{teamId}/requests
+      operations:
+      - name: teamrequests
+        method: GET
+        description: 'Get join requests'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: teamId
+          in: path
+          type: string
+          required: true
+        - name: declined
+          in: query
+          type: string
+          required: false
+    - name: team-teamid-request-userid-accept
+      path: /api/team/{teamId}/request/{userId}/accept
+      operations:
+      - name: teamrequestaccept
+        method: POST
+        description: 'Accept join request'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: teamId
+          in: path
+          type: string
+          required: true
+        - name: userId
+          in: path
+          type: string
+          required: true
+    - name: team-teamid-request-userid-decline
+      path: /api/team/{teamId}/request/{userId}/decline
+      operations:
+      - name: teamrequestdecline
+        method: POST
+        description: 'Decline join request'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: teamId
+          in: path
+          type: string
+          required: true
+        - name: userId
+          in: path
+          type: string
+          required: true
+    - name: team-teamid-kick-userid
+      path: /api/team/{teamId}/kick/{userId}
+      operations:
+      - name: teamidkickuserid
+        method: POST
+        description: 'Kick a user from your team'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: teamId
+          in: path
+          type: string
+          required: true
+        - name: userId
+          in: path
+          type: string
+          required: true
+    - name: team-teamid-pm-all
+      path: /team/{teamId}/pm-all
+      operations:
+      - name: teamidpmall
+        method: POST
+        description: 'Message all members'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: teamId
+          in: path
+          type: string
+          required: true
+        - name: body
+          in: body
+          type: object
+          required: false
+    authentication:
+      type: bearer
+      value: '{{env.LICHESS_API_TOKEN}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: teams-rest
+    port: 8080
+    description: REST adapter for Lichess Teams. One Spectral-compliant resource per consumed operation.
+    resources:
+    - path: /v1/api/team/{teamId}/swiss
+      name: team-teamid-swiss
+      description: REST surface for team-teamid-swiss.
+      operations:
+      - method: GET
+        name: apiteamswiss
+        description: 'Get team swiss tournaments'
+        call: teams.apiteamswiss
+        with:
+          teamId: rest.path.teamId
+          max: rest.query.max
+          status: rest.query.status
+          createdBy: rest.query.createdBy
+          name: rest.query.name
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/team/{teamId}
+      name: team-teamid
+      description: REST surface for team-teamid.
+      operations:
+      - method: GET
+        name: teamshow
+        description: 'Get a single team'
+        call: teams.teamshow
+        with:
+          teamId: rest.path.teamId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/team/all
+      name: team-all
+      description: REST surface for team-all.
+      operations:
+      - method: GET
+        name: teamall
+        description: 'Get popular teams'
+        call: teams.teamall
+        with:
+          page: rest.query.page
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/team/of/{username}
+      name: team-of-username
+      description: REST surface for team-of-username.
+      operations:
+      - method: GET
+        name: teamofusername
+        description: 'Teams of a player'
+        call: teams.teamofusername
+        with:
+          username: rest.path.username
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/team/search
+      name: team-search
+      description: REST surface for team-search.
+      operations:
+      - method: GET
+        name: teamsearch
+        description: 'Search teams'
+        call: teams.teamsearch
+        with:
+          text: rest.query.text
+          page: rest.query.page
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/team/{teamId}/users
+      name: team-teamid-users
+      description: REST surface for team-teamid-users.
+      operations:
+      - method: GET
+        name: teamidusers
+        description: 'Get members of a team'
+        call: teams.teamidusers
+        with:
+          teamId: rest.path.teamId
+          full: rest.query.full
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/team/{teamId}/arena
+      name: team-teamid-arena
+      description: REST surface for team-teamid-arena.
+      operations:
+      - method: GET
+        name: apiteamarena
+        description: 'Get team Arena tournaments'
+        call: teams.apiteamarena
+        with:
+          teamId: rest.path.teamId
+          max: rest.query.max
+          status: rest.query.status
+          createdBy: rest.query.createdBy
+          name: rest.query.name
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/team/{teamId}/join
+      name: team-teamid-join
+      description: REST surface for team-teamid-join.
+      operations:
+      - method: POST
+        name: teamidjoin
+        description: 'Join a team'
+        call: teams.teamidjoin
+        with:
+          teamId: rest.path.teamId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/team/{teamId}/quit
+      name: team-teamid-quit
+      description: REST surface for team-teamid-quit.
+      operations:
+      - method: POST
+        name: teamidquit
+        description: 'Leave a team'
+        call: teams.teamidquit
+        with:
+          teamId: rest.path.teamId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/team/{teamId}/requests
+      name: team-teamid-requests
+      description: REST surface for team-teamid-requests.
+      operations:
+      - method: GET
+        name: teamrequests
+        description: 'Get join requests'
+        call: teams.teamrequests
+        with:
+          teamId: rest.path.teamId
+          declined: rest.query.declined
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/team/{teamId}/request/{userId}/accept
+      name: team-teamid-request-userid-accept
+      description: REST surface for team-teamid-request-userid-accept.
+      operations:
+      - method: POST
+        name: teamrequestaccept
+        description: 'Accept join request'
+        call: teams.teamrequestaccept
+        with:
+          teamId: rest.path.teamId
+          userId: rest.path.userId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/team/{teamId}/request/{userId}/decline
+      name: team-teamid-request-userid-decline
+      description: REST surface for team-teamid-request-userid-decline.
+      operations:
+      - method: POST
+        name: teamrequestdecline
+        description: 'Decline join request'
+        call: teams.teamrequestdecline
+        with:
+          teamId: rest.path.teamId
+          userId: rest.path.userId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/team/{teamId}/kick/{userId}
+      name: team-teamid-kick-userid
+      description: REST surface for team-teamid-kick-userid.
+      operations:
+      - method: POST
+        name: teamidkickuserid
+        description: 'Kick a user from your team'
+        call: teams.teamidkickuserid
+        with:
+          teamId: rest.path.teamId
+          userId: rest.path.userId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/team/{teamId}/pm-all
+      name: team-teamid-pm-all
+      description: REST surface for team-teamid-pm-all.
+      operations:
+      - method: POST
+        name: teamidpmall
+        description: 'Message all members'
+        call: teams.teamidpmall
+        with:
+          teamId: rest.path.teamId
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: teams-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Lichess Teams. One tool per consumed operation.
+    tools:
+    - name: lichess-apiteamswiss
+      description: 'Get team swiss tournaments'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: teams.apiteamswiss
+      with:
+        teamId: tools.teamId
+        max: tools.max
+        status: tools.status
+        createdBy: tools.createdBy
+        name: tools.name
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-teamshow
+      description: 'Get a single team'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: teams.teamshow
+      with:
+        teamId: tools.teamId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-teamall
+      description: 'Get popular teams'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: teams.teamall
+      with:
+        page: tools.page
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-teamofusername
+      description: 'Teams of a player'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: teams.teamofusername
+      with:
+        username: tools.username
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-teamsearch
+      description: 'Search teams'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: teams.teamsearch
+      with:
+        text: tools.text
+        page: tools.page
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-teamidusers
+      description: 'Get members of a team'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: teams.teamidusers
+      with:
+        teamId: tools.teamId
+        full: tools.full
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-apiteamarena
+      description: 'Get team Arena tournaments'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: teams.apiteamarena
+      with:
+        teamId: tools.teamId
+        max: tools.max
+        status: tools.status
+        createdBy: tools.createdBy
+        name: tools.name
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-teamidjoin
+      description: 'Join a team'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: teams.teamidjoin
+      with:
+        teamId: tools.teamId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-teamidquit
+      description: 'Leave a team'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: teams.teamidquit
+      with:
+        teamId: tools.teamId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-teamrequests
+      description: 'Get join requests'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: teams.teamrequests
+      with:
+        teamId: tools.teamId
+        declined: tools.declined
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-teamrequestaccept
+      description: 'Accept join request'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: teams.teamrequestaccept
+      with:
+        teamId: tools.teamId
+        userId: tools.userId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-teamrequestdecline
+      description: 'Decline join request'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: teams.teamrequestdecline
+      with:
+        teamId: tools.teamId
+        userId: tools.userId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-teamidkickuserid
+      description: 'Kick a user from your team'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: teams.teamidkickuserid
+      with:
+        teamId: tools.teamId
+        userId: tools.userId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-teamidpmall
+      description: 'Message all members'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: teams.teamidpmall
+      with:
+        teamId: tools.teamId
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.

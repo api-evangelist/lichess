@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lichess/main/json-schema/lichess-game-schema.json",
+  "title": "Lichess Game",
+  "description": "A single Lichess game as returned by the games API. Captures core metadata, players, clock, opening, and the move record.",
+  "type": "object",
+  "required": ["id", "rated", "variant", "speed", "perf", "createdAt", "status"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Short Lichess game identifier, typically eight characters."
+    },
+    "rated": {
+      "type": "boolean",
+      "description": "True if this is a rated game affecting player ratings."
+    },
+    "variant": {
+      "type": "string",
+      "description": "Chess variant played in this game.",
+      "enum": ["standard", "chess960", "crazyhouse", "antichess", "atomic", "horde", "kingOfTheHill", "racingKings", "threeCheck", "fromPosition"]
+    },
+    "speed": {
+      "type": "string",
+      "description": "Time-control bucket for this game.",
+      "enum": ["ultraBullet", "bullet", "blitz", "rapid", "classical", "correspondence"]
+    },
+    "perf": {
+      "type": "string",
+      "description": "Rating pool (perf) the game belongs to."
+    },
+    "createdAt": {
+      "type": "integer",
+      "description": "Game creation timestamp in milliseconds since the Unix epoch."
+    },
+    "lastMoveAt": {
+      "type": "integer",
+      "description": "Timestamp of the last move played, in milliseconds since the Unix epoch."
+    },
+    "status": {
+      "type": "string",
+      "description": "Final game status.",
+      "enum": ["created", "started", "aborted", "mate", "resign", "stalemate", "timeout", "draw", "outoftime", "cheat", "noStart", "unknownFinish", "variantEnd"]
+    },
+    "source": {
+      "type": "string",
+      "description": "How the game was created (lobby, friend, ai, api, arena, swiss, position, import, etc.)."
+    },
+    "players": {
+      "type": "object",
+      "description": "Players by color.",
+      "properties": {
+        "white": {"$ref": "#/$defs/player"},
+        "black": {"$ref": "#/$defs/player"}
+      }
+    },
+    "initialFen": {
+      "type": "string",
+      "description": "Starting FEN. Present for variants or positional games where the start is not the standard initial position."
+    },
+    "winner": {
+      "type": "string",
+      "description": "Color of the winner if the game has a winner.",
+      "enum": ["white", "black"]
+    },
+    "opening": {
+      "type": "object",
+      "description": "Detected opening for the game.",
+      "properties": {
+        "eco": {"type": "string", "description": "ECO code."},
+        "name": {"type": "string", "description": "Opening name."},
+        "ply": {"type": "integer", "description": "Number of plies that match the named opening."}
+      }
+    },
+    "moves": {
+      "type": "string",
+      "description": "Space-separated list of moves in PGN SAN notation. Only present when requested in the export query."
+    },
+    "pgn": {
+      "type": "string",
+      "description": "Full PGN of the game. Only present when requested in the export query."
+    },
+    "clock": {
+      "type": "object",
+      "description": "Clock configuration.",
+      "properties": {
+        "initial": {"type": "integer", "description": "Initial time in seconds."},
+        "increment": {"type": "integer", "description": "Increment per move in seconds."},
+        "totalTime": {"type": "integer", "description": "Estimated total game time in seconds."}
+      }
+    },
+    "daysPerTurn": {
+      "type": "integer",
+      "description": "Correspondence days per turn (only set for correspondence games)."
+    },
+    "tournament": {
+      "type": "string",
+      "description": "ID of the parent Arena tournament if the game is part of one."
+    },
+    "swiss": {
+      "type": "string",
+      "description": "ID of the parent Swiss tournament if the game is part of one."
+    },
+    "analysis": {
+      "type": "array",
+      "description": "Per-ply Stockfish evaluation when computer analysis has been requested.",
+      "items": {
+        "type": "object",
+        "properties": {
+          "eval": {"type": "integer", "description": "Centipawn evaluation from White's perspective."},
+          "best": {"type": "string", "description": "Best move in UCI notation."},
+          "variation": {"type": "string", "description": "Principal variation in SAN."},
+          "judgment": {
+            "type": "object",
+            "properties": {
+              "name": {"type": "string", "enum": ["Inaccuracy", "Mistake", "Blunder"]},
+              "comment": {"type": "string"}
+            }
+          },
+          "mate": {"type": "integer", "description": "Mate-in-N indicator."}
+        }
+      }
+    }
+  },
+  "$defs": {
+    "player": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "type": "object",
+          "properties": {
+            "id": {"type": "string"},
+            "name": {"type": "string"},
+            "title": {"type": "string"},
+            "patron": {"type": "boolean"}
+          }
+        },
+        "aiLevel": {"type": "integer", "description": "Stockfish level when the player is the AI."},
+        "rating": {"type": "integer"},
+        "ratingDiff": {"type": "integer", "description": "Rating change applied after the game."},
+        "provisional": {"type": "boolean"},
+        "berserk": {"type": "boolean", "description": "True if the player berserked in an Arena game."},
+        "team": {"type": "string", "description": "Team identifier when the game is part of a Team Battle Arena."}
+      }
+    }
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/lichess/main/json-schema/lichess-user-schema.json",
+  "title": "Lichess User",
+  "description": "Public profile data for a Lichess user. Extracted from the Lichess API LightUser, User, and UserExtended response shapes.",
+  "type": "object",
+  "required": ["id", "username"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Lowercased canonical username used as the user identifier."
+    },
+    "username": {
+      "type": "string",
+      "description": "Display username with original case."
+    },
+    "title": {
+      "type": "string",
+      "description": "FIDE title or special title such as GM, IM, FM, BOT.",
+      "enum": ["GM", "WGM", "IM", "WIM", "FM", "WFM", "NM", "CM", "WCM", "WNM", "LM", "BOT"]
+    },
+    "patron": {
+      "type": "boolean",
+      "description": "True when the user is a current Lichess Patron donor."
+    },
+    "online": {
+      "type": "boolean",
+      "description": "True when the user is currently online."
+    },
+    "playing": {
+      "type": "boolean",
+      "description": "True when the user is currently in a game."
+    },
+    "streaming": {
+      "type": "boolean",
+      "description": "True when the user is streaming on a connected streaming platform."
+    },
+    "tosViolation": {
+      "type": "boolean",
+      "description": "True if the user has been marked for a terms of service violation."
+    },
+    "createdAt": {
+      "type": "integer",
+      "description": "Account creation timestamp in milliseconds since the Unix epoch."
+    },
+    "seenAt": {
+      "type": "integer",
+      "description": "Most recent activity timestamp in milliseconds since the Unix epoch."
+    },
+    "playTime": {
+      "type": "object",
+      "properties": {
+        "total": {"type": "integer", "description": "Total play time in seconds."},
+        "tv": {"type": "integer", "description": "Total TV time in seconds."}
+      }
+    },
+    "language": {
+      "type": "string",
+      "description": "User's preferred language as a BCP 47 tag."
+    },
+    "url": {
+      "type": "string",
+      "format": "uri",
+      "description": "Canonical URL to the user's Lichess profile."
+    },
+    "perfs": {
+      "type": "object",
+      "description": "Per-time-control performance statistics keyed by perf name (bullet, blitz, rapid, classical, correspondence, chess960, etc.).",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "games": {"type": "integer"},
+          "rating": {"type": "integer"},
+          "rd": {"type": "integer", "description": "Glicko-2 rating deviation."},
+          "prog": {"type": "integer", "description": "Recent rating progress over the last twelve games."},
+          "prov": {"type": "boolean", "description": "True when the rating is still provisional."}
+        }
+      }
+    },
+    "profile": {
+      "type": "object",
+      "description": "Self-reported profile fields.",
+      "properties": {
+        "bio": {"type": "string"},
+        "flag": {"type": "string", "description": "Country flag code."},
+        "location": {"type": "string"},
+        "links": {"type": "string", "description": "User-provided links, one per line."},
+        "fideRating": {"type": "integer"},
+        "uscfRating": {"type": "integer"},
+        "ecfRating": {"type": "integer"}
+      }
+    },
+    "count": {
+      "type": "object",
+      "description": "Aggregate game counts.",
+      "properties": {
+        "all": {"type": "integer"},
+        "rated": {"type": "integer"},
+        "ai": {"type": "integer"},
+        "draw": {"type": "integer"},
+        "drawH": {"type": "integer"},
+        "loss": {"type": "integer"},
+        "lossH": {"type": "integer"},
+        "win": {"type": "integer"},
+        "winH": {"type": "integer"},
+        "bookmark": {"type": "integer"},
+        "playing": {"type": "integer"},
+        "import": {"type": "integer"},
+        "me": {"type": "integer"}
+      }
+    }
+  }
+}

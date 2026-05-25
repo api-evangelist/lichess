@@ -1,0 +1,84 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Lichess
+providerId: lichess
+created: '2026-05-25'
+modified: '2026-05-25'
+reconciled: true
+tags:
+  - Chess
+  - Rate Limiting
+  - Fair Use
+description: |
+  Lichess applies multiple per-endpoint rate-limiting strategies to keep the public API responsive for everyone.
+  All limits are enforced server-side; the official guidance is to make only one request at a time and to back off
+  on HTTP 429. There is no formal published quota table. Limits are documented inline in the OpenAPI per-endpoint
+  description, with example values surfaced in this file.
+sources:
+  - https://lichess.org/api
+  - https://github.com/lichess-org/api/blob/master/doc/specs/lichess-api.yaml
+  - https://lichess.org/api#section/Introduction/Rate-limiting
+responseCodes:
+  throttled: 429
+  quotaExceeded: 429
+algorithm: per-endpoint-token-bucket
+guidance:
+  - Make only one API request at a time per access token.
+  - On HTTP 429, wait at least 60 seconds before retrying. Some endpoints require longer.
+  - Reduce request frequency before retrying repeatedly.
+  - Use streaming (ND-JSON) endpoints instead of polling where available.
+  - The same OAuth client must not be used to drive multiple parallel accounts.
+limits:
+  - endpoint: Export one game
+    path: /game/export/{gameId}
+    rule: Approximately 300 requests every 10 seconds per IP. Returns 429 when exceeded; back off 60 seconds.
+  - endpoint: Export games by user
+    path: /api/games/user/{username}
+    rule: ND-JSON or PGN stream. One concurrent download per user; long-form throttled by stream pacing.
+  - endpoint: Export games by IDs
+    path: /api/games/export/_ids
+    rule: Up to 300 IDs per request. Server-side stream pacing.
+  - endpoint: Get current games
+    path: /api/account/playing
+    rule: 60 requests per minute per token.
+  - endpoint: Stream incoming events
+    path: /api/stream/event
+    rule: One concurrent stream per token. Reconnect with backoff.
+  - endpoint: Make a board move
+    path: /api/board/game/{gameId}/move/{move}
+    rule: One move per board game; no separate per-second cap but obey the engine clock.
+  - endpoint: Stream bot game state
+    path: /api/bot/game/stream/{gameId}
+    rule: One concurrent stream per game.
+  - endpoint: Create a challenge
+    path: /api/challenge/{username}
+    rule: Subject to per-user open challenge limits and abuse detection.
+  - endpoint: Bulk pairing creation
+    path: /api/bulk-pairing
+    rule: Maximum 500 pairings per bulk. Two bulks per minute.
+  - endpoint: Create Arena tournament
+    path: /api/tournament
+    rule: Two per minute per token; deeper anti-abuse checks for high frequency.
+  - endpoint: Create Swiss tournament
+    path: /api/swiss/new/{teamId}
+    rule: Two per minute per token; team and abuse checks apply.
+  - endpoint: Opening Explorer (Masters/Lichess/Player)
+    path: explorer.lichess.ovh/*
+    rule: Heavy queries throttled by IP. The player database is the most expensive.
+  - endpoint: Tablebase
+    path: tablebase.lichess.ovh/standard
+    rule: One request per second per IP; cached responses do not count.
+  - endpoint: Cloud eval
+    path: /api/cloud-eval
+    rule: Heavy positions or repeated requests for the same FEN may be rate-limited.
+  - endpoint: External Engine
+    path: /api/external-engine
+    rule: Provider-side rate limits depend on the engine host; Lichess enforces token scope and connection caps.
+  - endpoint: Broadcasts push PGN
+    path: /broadcast/round/{broadcastRoundId}/push
+    rule: Recommended pushing cadence is at most once per second per round.
+notes:
+  - "Lichess does not publish a single global RPM number; limits are per-endpoint and adaptive."
+  - "OAuth scopes (e.g., bot:play, board:play, challenge:write) gate which endpoints a token may call but do not relax rate limits."
+  - "Persistent abusive patterns can result in token revocation and IP blocks."

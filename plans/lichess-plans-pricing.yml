@@ -1,0 +1,93 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Lichess
+providerId: lichess
+created: '2026-05-25'
+modified: '2026-05-25'
+reconciled: true
+tags:
+  - Chess
+  - Open Source
+  - Nonprofit
+  - Donation
+description: |
+  Lichess is a free, ad-free, open-source online chess server operated by the French nonprofit Lichess. There is no
+  commercial plan and no metered API pricing. All access to lichess.org and the Lichess API is free of charge.
+  Sustainability is funded by patron donations through the Lichess Patron program, which provides recognition (a
+  visible patron badge) but no functional gating. Both the public dataset exports and the public API are available
+  to anyone at no cost, subject only to rate limits and fair use.
+sources:
+  - https://lichess.org/patron
+  - https://lichess.org/about
+  - https://lichess.org/api
+  - https://github.com/lichess-org/api
+plans:
+  - id: lichess-free
+    name: Free
+    type: free
+    description: |
+      Full, unrestricted access to lichess.org and the Lichess API for play, analysis, puzzles, studies, tournaments,
+      broadcasts, board and bot play, the opening explorer, the tablebase, the external engine, and bulk dataset
+      downloads. No payment ever required and no feature gating.
+    entries:
+      - label: Account
+        name: account
+        type: included
+        metric: account
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '0.00'
+        userMultiplied: false
+      - label: API requests
+        name: api-requests
+        type: included
+        metric: requests
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '0.00'
+        userMultiplied: false
+        description: Rate-limited per endpoint. See rate-limits/lichess-rate-limits.yml.
+    elements:
+      - Unlimited play in real time and correspondence across all variants
+      - Full access to all 185 API operations and ND-JSON streams
+      - All tournaments, studies, broadcasts, puzzles, and analysis features
+      - Bulk dataset downloads from database.lichess.org
+      - Mobile, web, and third-party clients (Board API, Bot API)
+  - id: lichess-patron
+    name: Lichess Patron
+    type: donation
+    description: |
+      Voluntary monthly or lifetime donation supporting Lichess operations. Patron status is purely a recognition
+      tier with a visible badge; it does not unlock any feature or change any rate limit.
+    entries:
+      - label: Patron donation (suggested)
+        name: patron-monthly
+        type: optional
+        metric: donation
+        limit: -1
+        timeFrame: month
+        geo: global
+        unit: 1
+        price: '5.00'
+        userMultiplied: false
+        description: Suggested monthly donation. Any amount accepted.
+      - label: Patron lifetime donation
+        name: patron-lifetime
+        type: optional
+        metric: donation
+        limit: 1
+        timeFrame: lifetime
+        geo: global
+        unit: 1
+        price: '250.00'
+        userMultiplied: false
+        description: One-time donation amount for the Lifetime Patron tier.
+    elements:
+      - Visible patron badge on the user profile
+      - Supports server operations, infrastructure, and development
+      - No functional benefit or rate-limit change versus the Free plan

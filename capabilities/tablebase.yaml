@@ -1,0 +1,165 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Lichess API — Tablebase
+  description: 'Lichess API — Tablebase. 3 operations. Lead operation: Tablebase lookup. Self-contained Naftiko capability covering one Lichess business surface.'
+  tags:
+  - Lichess
+  - Tablebase
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    LICHESS_API_TOKEN: LICHESS_API_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: tablebase
+    baseUri: https://lichess.org
+    description: Lichess Tablebase business capability. Self-contained, no shared references.
+    resources:
+    - name: standard
+      path: /standard
+      operations:
+      - name: tablebasestandard
+        method: GET
+        description: 'Tablebase lookup'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: fen
+          in: query
+          type: string
+          required: false
+        - name: dtc
+          in: query
+          type: string
+          required: false
+    - name: atomic
+      path: /atomic
+      operations:
+      - name: tablebaseatomic
+        method: GET
+        description: 'Tablebase lookup for Atomic chess'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: fen
+          in: query
+          type: string
+          required: false
+    - name: antichess
+      path: /antichess
+      operations:
+      - name: antichessatomic
+        method: GET
+        description: 'Tablebase lookup for Antichess'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: fen
+          in: query
+          type: string
+          required: false
+    authentication:
+      type: bearer
+      value: '{{env.LICHESS_API_TOKEN}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: tablebase-rest
+    port: 8080
+    description: REST adapter for Lichess Tablebase. One Spectral-compliant resource per consumed operation.
+    resources:
+    - path: /v1/standard
+      name: standard
+      description: REST surface for standard.
+      operations:
+      - method: GET
+        name: tablebasestandard
+        description: 'Tablebase lookup'
+        call: tablebase.tablebasestandard
+        with:
+          fen: rest.query.fen
+          dtc: rest.query.dtc
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/atomic
+      name: atomic
+      description: REST surface for atomic.
+      operations:
+      - method: GET
+        name: tablebaseatomic
+        description: 'Tablebase lookup for Atomic chess'
+        call: tablebase.tablebaseatomic
+        with:
+          fen: rest.query.fen
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/antichess
+      name: antichess
+      description: REST surface for antichess.
+      operations:
+      - method: GET
+        name: antichessatomic
+        description: 'Tablebase lookup for Antichess'
+        call: tablebase.antichessatomic
+        with:
+          fen: rest.query.fen
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: tablebase-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Lichess Tablebase. One tool per consumed operation.
+    tools:
+    - name: lichess-tablebasestandard
+      description: 'Tablebase lookup'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: tablebase.tablebasestandard
+      with:
+        fen: tools.fen
+        dtc: tools.dtc
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-tablebaseatomic
+      description: 'Tablebase lookup for Atomic chess'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: tablebase.tablebaseatomic
+      with:
+        fen: tools.fen
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-antichessatomic
+      description: 'Tablebase lookup for Antichess'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: tablebase.antichessatomic
+      with:
+        fen: tools.fen
+      outputParameters:
+      - type: object
+        mapping: $.

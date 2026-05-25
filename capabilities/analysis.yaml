@@ -1,0 +1,89 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Lichess API — Analysis
+  description: 'Lichess API — Analysis. 1 operation. Lead operation: Get cloud evaluation of a position.. Self-contained Naftiko capability covering one Lichess business surface.'
+  tags:
+  - Lichess
+  - Analysis
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    LICHESS_API_TOKEN: LICHESS_API_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: analysis
+    baseUri: https://lichess.org
+    description: Lichess Analysis business capability. Self-contained, no shared references.
+    resources:
+    - name: cloud-eval
+      path: /api/cloud-eval
+      operations:
+      - name: apicloudeval
+        method: GET
+        description: 'Get cloud evaluation of a position.'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: fen
+          in: query
+          type: string
+          required: false
+        - name: multiPv
+          in: query
+          type: string
+          required: false
+        - name: variant
+          in: query
+          type: string
+          required: false
+    authentication:
+      type: bearer
+      value: '{{env.LICHESS_API_TOKEN}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: analysis-rest
+    port: 8080
+    description: REST adapter for Lichess Analysis. One Spectral-compliant resource per consumed operation.
+    resources:
+    - path: /v1/api/cloud-eval
+      name: cloud-eval
+      description: REST surface for cloud-eval.
+      operations:
+      - method: GET
+        name: apicloudeval
+        description: 'Get cloud evaluation of a position.'
+        call: analysis.apicloudeval
+        with:
+          fen: rest.query.fen
+          multiPv: rest.query.multiPv
+          variant: rest.query.variant
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: analysis-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Lichess Analysis. One tool per consumed operation.
+    tools:
+    - name: lichess-apicloudeval
+      description: 'Get cloud evaluation of a position.'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: analysis.apicloudeval
+      with:
+        fen: tools.fen
+        multiPv: tools.multiPv
+        variant: tools.variant
+      outputParameters:
+      - type: object
+        mapping: $.

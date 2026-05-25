@@ -1,0 +1,572 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Lichess API — Board
+  description: 'Lichess API — Board. 13 operations. Lead operation: Stream incoming events. Self-contained Naftiko capability covering one Lichess business surface.'
+  tags:
+  - Lichess
+  - Board
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    LICHESS_API_TOKEN: LICHESS_API_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: board
+    baseUri: https://lichess.org
+    description: Lichess Board business capability. Self-contained, no shared references.
+    resources:
+    - name: stream-event
+      path: /api/stream/event
+      operations:
+      - name: apistreamevent
+        method: GET
+        description: 'Stream incoming events'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: board-seek
+      path: /api/board/seek
+      operations:
+      - name: apiboardseek
+        method: POST
+        description: 'Create a seek'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          required: false
+    - name: board-game-stream-gameid
+      path: /api/board/game/stream/{gameId}
+      operations:
+      - name: boardgamestream
+        method: GET
+        description: 'Stream Board game state'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: gameId
+          in: path
+          type: string
+          required: true
+    - name: board-game-gameid-move-move
+      path: /api/board/game/{gameId}/move/{move}
+      operations:
+      - name: boardgamemove
+        method: POST
+        description: 'Make a Board move'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: gameId
+          in: path
+          type: string
+          required: true
+        - name: move
+          in: path
+          type: string
+          required: true
+        - name: offeringDraw
+          in: query
+          type: string
+          required: false
+    - name: board-game-gameid-chat
+      path: /api/board/game/{gameId}/chat
+      operations:
+      - name: boardgamechatpost
+        method: POST
+        description: 'Write in the chat'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: body
+          in: body
+          type: object
+          required: false
+      - name: boardgamechatget
+        method: GET
+        description: 'Fetch the player chat'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: board-game-gameid-abort
+      path: /api/board/game/{gameId}/abort
+      operations:
+      - name: boardgameabort
+        method: POST
+        description: 'Abort a game'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: gameId
+          in: path
+          type: string
+          required: true
+    - name: board-game-gameid-resign
+      path: /api/board/game/{gameId}/resign
+      operations:
+      - name: boardgameresign
+        method: POST
+        description: 'Resign a game'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: gameId
+          in: path
+          type: string
+          required: true
+    - name: board-game-gameid-draw-accept
+      path: /api/board/game/{gameId}/draw/{accept}
+      operations:
+      - name: boardgamedraw
+        method: POST
+        description: 'Handle draw offers'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: gameId
+          in: path
+          type: string
+          required: true
+        - name: accept
+          in: path
+          type: string
+          required: true
+    - name: board-game-gameid-takeback-accept
+      path: /api/board/game/{gameId}/takeback/{accept}
+      operations:
+      - name: boardgametakeback
+        method: POST
+        description: 'Handle takeback offers'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: gameId
+          in: path
+          type: string
+          required: true
+        - name: accept
+          in: path
+          type: string
+          required: true
+    - name: board-game-gameid-claim-victory
+      path: /api/board/game/{gameId}/claim-victory
+      operations:
+      - name: boardgameclaimvictory
+        method: POST
+        description: 'Claim victory of a game'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: gameId
+          in: path
+          type: string
+          required: true
+    - name: board-game-gameid-claim-draw
+      path: /api/board/game/{gameId}/claim-draw
+      operations:
+      - name: boardgameclaimdraw
+        method: POST
+        description: 'Claim draw of a game'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: gameId
+          in: path
+          type: string
+          required: true
+    - name: board-game-gameid-berserk
+      path: /api/board/game/{gameId}/berserk
+      operations:
+      - name: boardgameberserk
+        method: POST
+        description: 'Berserk a tournament game'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: gameId
+          in: path
+          type: string
+          required: true
+    authentication:
+      type: bearer
+      value: '{{env.LICHESS_API_TOKEN}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: board-rest
+    port: 8080
+    description: REST adapter for Lichess Board. One Spectral-compliant resource per consumed operation.
+    resources:
+    - path: /v1/api/stream/event
+      name: stream-event
+      description: REST surface for stream-event.
+      operations:
+      - method: GET
+        name: apistreamevent
+        description: 'Stream incoming events'
+        call: board.apistreamevent
+        with:
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/board/seek
+      name: board-seek
+      description: REST surface for board-seek.
+      operations:
+      - method: POST
+        name: apiboardseek
+        description: 'Create a seek'
+        call: board.apiboardseek
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/board/game/stream/{gameId}
+      name: board-game-stream-gameid
+      description: REST surface for board-game-stream-gameid.
+      operations:
+      - method: GET
+        name: boardgamestream
+        description: 'Stream Board game state'
+        call: board.boardgamestream
+        with:
+          gameId: rest.path.gameId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/board/game/{gameId}/move/{move}
+      name: board-game-gameid-move-move
+      description: REST surface for board-game-gameid-move-move.
+      operations:
+      - method: POST
+        name: boardgamemove
+        description: 'Make a Board move'
+        call: board.boardgamemove
+        with:
+          gameId: rest.path.gameId
+          move: rest.path.move
+          offeringDraw: rest.query.offeringDraw
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/board/game/{gameId}/chat
+      name: board-game-gameid-chat
+      description: REST surface for board-game-gameid-chat.
+      operations:
+      - method: POST
+        name: boardgamechatpost
+        description: 'Write in the chat'
+        call: board.boardgamechatpost
+        with:
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: GET
+        name: boardgamechatget
+        description: 'Fetch the player chat'
+        call: board.boardgamechatget
+        with:
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/board/game/{gameId}/abort
+      name: board-game-gameid-abort
+      description: REST surface for board-game-gameid-abort.
+      operations:
+      - method: POST
+        name: boardgameabort
+        description: 'Abort a game'
+        call: board.boardgameabort
+        with:
+          gameId: rest.path.gameId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/board/game/{gameId}/resign
+      name: board-game-gameid-resign
+      description: REST surface for board-game-gameid-resign.
+      operations:
+      - method: POST
+        name: boardgameresign
+        description: 'Resign a game'
+        call: board.boardgameresign
+        with:
+          gameId: rest.path.gameId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/board/game/{gameId}/draw/{accept}
+      name: board-game-gameid-draw-accept
+      description: REST surface for board-game-gameid-draw-accept.
+      operations:
+      - method: POST
+        name: boardgamedraw
+        description: 'Handle draw offers'
+        call: board.boardgamedraw
+        with:
+          gameId: rest.path.gameId
+          accept: rest.path.accept
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/board/game/{gameId}/takeback/{accept}
+      name: board-game-gameid-takeback-accept
+      description: REST surface for board-game-gameid-takeback-accept.
+      operations:
+      - method: POST
+        name: boardgametakeback
+        description: 'Handle takeback offers'
+        call: board.boardgametakeback
+        with:
+          gameId: rest.path.gameId
+          accept: rest.path.accept
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/board/game/{gameId}/claim-victory
+      name: board-game-gameid-claim-victory
+      description: REST surface for board-game-gameid-claim-victory.
+      operations:
+      - method: POST
+        name: boardgameclaimvictory
+        description: 'Claim victory of a game'
+        call: board.boardgameclaimvictory
+        with:
+          gameId: rest.path.gameId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/board/game/{gameId}/claim-draw
+      name: board-game-gameid-claim-draw
+      description: REST surface for board-game-gameid-claim-draw.
+      operations:
+      - method: POST
+        name: boardgameclaimdraw
+        description: 'Claim draw of a game'
+        call: board.boardgameclaimdraw
+        with:
+          gameId: rest.path.gameId
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/board/game/{gameId}/berserk
+      name: board-game-gameid-berserk
+      description: REST surface for board-game-gameid-berserk.
+      operations:
+      - method: POST
+        name: boardgameberserk
+        description: 'Berserk a tournament game'
+        call: board.boardgameberserk
+        with:
+          gameId: rest.path.gameId
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: board-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Lichess Board. One tool per consumed operation.
+    tools:
+    - name: lichess-apistreamevent
+      description: 'Stream incoming events'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: board.apistreamevent
+      with:
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-apiboardseek
+      description: 'Create a seek'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: board.apiboardseek
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-boardgamestream
+      description: 'Stream Board game state'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: board.boardgamestream
+      with:
+        gameId: tools.gameId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-boardgamemove
+      description: 'Make a Board move'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: board.boardgamemove
+      with:
+        gameId: tools.gameId
+        move: tools.move
+        offeringDraw: tools.offeringDraw
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-boardgamechatpost
+      description: 'Write in the chat'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: board.boardgamechatpost
+      with:
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-boardgamechatget
+      description: 'Fetch the player chat'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: board.boardgamechatget
+      with:
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-boardgameabort
+      description: 'Abort a game'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: board.boardgameabort
+      with:
+        gameId: tools.gameId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-boardgameresign
+      description: 'Resign a game'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: board.boardgameresign
+      with:
+        gameId: tools.gameId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-boardgamedraw
+      description: 'Handle draw offers'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: board.boardgamedraw
+      with:
+        gameId: tools.gameId
+        accept: tools.accept
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-boardgametakeback
+      description: 'Handle takeback offers'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: board.boardgametakeback
+      with:
+        gameId: tools.gameId
+        accept: tools.accept
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-boardgameclaimvictory
+      description: 'Claim victory of a game'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: board.boardgameclaimvictory
+      with:
+        gameId: tools.gameId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-boardgameclaimdraw
+      description: 'Claim draw of a game'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: board.boardgameclaimdraw
+      with:
+        gameId: tools.gameId
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-boardgameberserk
+      description: 'Berserk a tournament game'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: board.boardgameberserk
+      with:
+        gameId: tools.gameId
+      outputParameters:
+      - type: object
+        mapping: $.

@@ -1,0 +1,141 @@
+rules:
+  # Lichess conventions observed in github.com/lichess-org/api OpenAPI spec
+
+  lichess-base-url:
+    description: Servers must include the canonical lichess.org production URL.
+    severity: error
+    given: $.servers
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          type: array
+          contains:
+            type: object
+            properties:
+              url:
+                const: https://lichess.org
+            required:
+              - url
+
+  lichess-api-path-prefix:
+    description: Lichess API paths are namespaced under /api (with documented exceptions for /game, /tournament, /swiss, /team, /study, /broadcast, /tablebase, /explorer, and /oauth-only paths).
+    severity: warn
+    given: $.paths[*]~
+    then:
+      function: pattern
+      functionOptions:
+        match: "^/(api/|game/|tournament/|swiss/|team/|study/|broadcast/|tablebase/|explorer/|oauth|inbox|tv/|fide/|cloud-eval)"
+
+  lichess-operation-id-required:
+    description: Every operation must declare an operationId so clients can generate stable method names.
+    severity: error
+    given: $.paths[*][get,post,put,delete,patch]
+    then:
+      field: operationId
+      function: truthy
+
+  lichess-operation-id-camel-case:
+    description: operationIds are camelCase in the Lichess spec.
+    severity: warn
+    given: $.paths[*][get,post,put,delete,patch].operationId
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[a-z][a-zA-Z0-9]+$"
+
+  lichess-operation-summary-required:
+    description: Every operation must have a short human-readable summary.
+    severity: error
+    given: $.paths[*][get,post,put,delete,patch]
+    then:
+      field: summary
+      function: truthy
+
+  lichess-operation-tag-required:
+    description: Every operation must be tagged so it shows up under the right group in the reference.
+    severity: error
+    given: $.paths[*][get,post,put,delete,patch]
+    then:
+      field: tags
+      function: schema
+      functionOptions:
+        schema:
+          type: array
+          minItems: 1
+
+  lichess-tag-known:
+    description: Operation tags should be one of the documented Lichess API tag groups.
+    severity: warn
+    given: $.paths[*][get,post,put,delete,patch].tags[*]
+    then:
+      function: enumeration
+      functionOptions:
+        values:
+          - Account
+          - Analysis
+          - Board
+          - Bot
+          - Broadcasts
+          - Bulk pairings
+          - Challenges
+          - External engine
+          - FIDE
+          - Games
+          - Messaging
+          - OAuth
+          - Opening Explorer
+          - Puzzles
+          - Relations
+          - Simuls
+          - Studies
+          - Tablebase
+          - Teams
+          - Tournaments (Arena)
+          - Tournaments (Swiss)
+          - TV
+          - Users
+
+  lichess-streaming-content-type:
+    description: ND-JSON streaming endpoints declare application/x-ndjson responses.
+    severity: warn
+    given: $.paths[*][get,post].responses[200].content
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          type: object
+          patternProperties:
+            "^(application/json|application/x-ndjson|application/x-chess-pgn|text/plain)$":
+              type: object
+
+  lichess-error-response-codes:
+    description: Mutating operations should document 401 and 404 responses where applicable.
+    severity: info
+    given: $.paths[*][post,put,delete].responses
+    then:
+      function: defined
+
+  lichess-no-trailing-slash:
+    description: Lichess paths do not use trailing slashes except at the root.
+    severity: warn
+    given: $.paths[*]~
+    then:
+      function: pattern
+      functionOptions:
+        notMatch: ".+/$"
+
+  lichess-license-agpl:
+    description: The published API spec is AGPL-3.0-or-later licensed.
+    severity: warn
+    given: $.info.license
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          type: object
+          properties:
+            name:
+              pattern: "AGPL"
+          required:
+            - name

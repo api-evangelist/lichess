@@ -1,0 +1,532 @@
+naftiko: 1.0.0-alpha2
+info:
+  label: Lichess API — Puzzles
+  description: 'Lichess API — Puzzles. 11 operations. Lead operation: Get the daily puzzle. Self-contained Naftiko capability covering one Lichess business surface.'
+  tags:
+  - Lichess
+  - Puzzles
+  created: '2026-05-25'
+  modified: '2026-05-25'
+binds:
+- namespace: env
+  keys:
+    LICHESS_API_TOKEN: LICHESS_API_TOKEN
+capability:
+  consumes:
+  - type: http
+    namespace: puzzles
+    baseUri: https://lichess.org
+    description: Lichess Puzzles business capability. Self-contained, no shared references.
+    resources:
+    - name: puzzle-daily
+      path: /api/puzzle/daily
+      operations:
+      - name: apipuzzledaily
+        method: GET
+        description: 'Get the daily puzzle'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: puzzle-id
+      path: /api/puzzle/{id}
+      operations:
+      - name: apipuzzleid
+        method: GET
+        description: 'Get a puzzle by its ID'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+    - name: puzzle-next
+      path: /api/puzzle/next
+      operations:
+      - name: apipuzzlenext
+        method: GET
+        description: 'Get a new puzzle'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: angle
+          in: query
+          type: string
+          required: false
+        - name: difficulty
+          in: query
+          type: string
+          required: false
+        - name: color
+          in: query
+          type: string
+          required: false
+    - name: puzzle-batch-angle
+      path: /api/puzzle/batch/{angle}
+      operations:
+      - name: apipuzzlebatchselect
+        method: GET
+        description: 'Get multiple puzzles at once'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: angle
+          in: path
+          type: string
+          required: true
+        - name: difficulty
+          in: query
+          type: string
+          required: false
+        - name: nb
+          in: query
+          type: string
+          required: false
+        - name: color
+          in: query
+          type: string
+          required: false
+      - name: apipuzzlebatchsolve
+        method: POST
+        description: 'Solve multiple puzzles at once'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: angle
+          in: path
+          type: string
+          required: true
+        - name: nb
+          in: query
+          type: string
+          required: false
+        - name: body
+          in: body
+          type: object
+          required: false
+    - name: puzzle-activity
+      path: /api/puzzle/activity
+      operations:
+      - name: apipuzzleactivity
+        method: GET
+        description: 'Get your puzzle activity'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: max
+          in: query
+          type: string
+          required: false
+        - name: before
+          in: query
+          type: string
+          required: false
+        - name: since
+          in: query
+          type: string
+          required: false
+    - name: puzzle-replay-days-theme
+      path: /api/puzzle/replay/{days}/{theme}
+      operations:
+      - name: apipuzzlereplay
+        method: GET
+        description: 'Get puzzles to replay'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: days
+          in: path
+          type: string
+          required: true
+        - name: theme
+          in: path
+          type: string
+          required: true
+    - name: puzzle-dashboard-days
+      path: /api/puzzle/dashboard/{days}
+      operations:
+      - name: apipuzzledashboard
+        method: GET
+        description: 'Get your puzzle dashboard'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: days
+          in: path
+          type: string
+          required: true
+    - name: storm-dashboard-username
+      path: /api/storm/dashboard/{username}
+      operations:
+      - name: apistormdashboard
+        method: GET
+        description: 'Get the storm dashboard of a player'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: username
+          in: path
+          type: string
+          required: true
+        - name: days
+          in: query
+          type: string
+          required: false
+    - name: racer
+      path: /api/racer
+      operations:
+      - name: racerpost
+        method: POST
+        description: 'Create and join a puzzle race'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+    - name: racer-id
+      path: /api/racer/{id}
+      operations:
+      - name: racerget
+        method: GET
+        description: 'Get puzzle race results'
+        outputRawFormat: json
+        outputParameters:
+        - name: result
+          type: object
+          value: $.
+        inputParameters:
+        - name: id
+          in: path
+          type: string
+          required: true
+    authentication:
+      type: bearer
+      value: '{{env.LICHESS_API_TOKEN}}'
+      placement: header
+  exposes:
+  - type: rest
+    namespace: puzzles-rest
+    port: 8080
+    description: REST adapter for Lichess Puzzles. One Spectral-compliant resource per consumed operation.
+    resources:
+    - path: /v1/api/puzzle/daily
+      name: puzzle-daily
+      description: REST surface for puzzle-daily.
+      operations:
+      - method: GET
+        name: apipuzzledaily
+        description: 'Get the daily puzzle'
+        call: puzzles.apipuzzledaily
+        with:
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/puzzle/{id}
+      name: puzzle-id
+      description: REST surface for puzzle-id.
+      operations:
+      - method: GET
+        name: apipuzzleid
+        description: 'Get a puzzle by its ID'
+        call: puzzles.apipuzzleid
+        with:
+          id: rest.path.id
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/puzzle/next
+      name: puzzle-next
+      description: REST surface for puzzle-next.
+      operations:
+      - method: GET
+        name: apipuzzlenext
+        description: 'Get a new puzzle'
+        call: puzzles.apipuzzlenext
+        with:
+          angle: rest.query.angle
+          difficulty: rest.query.difficulty
+          color: rest.query.color
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/puzzle/batch/{angle}
+      name: puzzle-batch-angle
+      description: REST surface for puzzle-batch-angle.
+      operations:
+      - method: GET
+        name: apipuzzlebatchselect
+        description: 'Get multiple puzzles at once'
+        call: puzzles.apipuzzlebatchselect
+        with:
+          angle: rest.path.angle
+          difficulty: rest.query.difficulty
+          nb: rest.query.nb
+          color: rest.query.color
+        outputParameters:
+        - type: object
+          mapping: $.
+      - method: POST
+        name: apipuzzlebatchsolve
+        description: 'Solve multiple puzzles at once'
+        call: puzzles.apipuzzlebatchsolve
+        with:
+          angle: rest.path.angle
+          nb: rest.query.nb
+          body: rest.body
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/puzzle/activity
+      name: puzzle-activity
+      description: REST surface for puzzle-activity.
+      operations:
+      - method: GET
+        name: apipuzzleactivity
+        description: 'Get your puzzle activity'
+        call: puzzles.apipuzzleactivity
+        with:
+          max: rest.query.max
+          before: rest.query.before
+          since: rest.query.since
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/puzzle/replay/{days}/{theme}
+      name: puzzle-replay-days-theme
+      description: REST surface for puzzle-replay-days-theme.
+      operations:
+      - method: GET
+        name: apipuzzlereplay
+        description: 'Get puzzles to replay'
+        call: puzzles.apipuzzlereplay
+        with:
+          days: rest.path.days
+          theme: rest.path.theme
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/puzzle/dashboard/{days}
+      name: puzzle-dashboard-days
+      description: REST surface for puzzle-dashboard-days.
+      operations:
+      - method: GET
+        name: apipuzzledashboard
+        description: 'Get your puzzle dashboard'
+        call: puzzles.apipuzzledashboard
+        with:
+          days: rest.path.days
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/storm/dashboard/{username}
+      name: storm-dashboard-username
+      description: REST surface for storm-dashboard-username.
+      operations:
+      - method: GET
+        name: apistormdashboard
+        description: 'Get the storm dashboard of a player'
+        call: puzzles.apistormdashboard
+        with:
+          username: rest.path.username
+          days: rest.query.days
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/racer
+      name: racer
+      description: REST surface for racer.
+      operations:
+      - method: POST
+        name: racerpost
+        description: 'Create and join a puzzle race'
+        call: puzzles.racerpost
+        with:
+        outputParameters:
+        - type: object
+          mapping: $.
+    - path: /v1/api/racer/{id}
+      name: racer-id
+      description: REST surface for racer-id.
+      operations:
+      - method: GET
+        name: racerget
+        description: 'Get puzzle race results'
+        call: puzzles.racerget
+        with:
+          id: rest.path.id
+        outputParameters:
+        - type: object
+          mapping: $.
+  - type: mcp
+    namespace: puzzles-mcp
+    port: 9090
+    transport: http
+    description: MCP adapter for Lichess Puzzles. One tool per consumed operation.
+    tools:
+    - name: lichess-apipuzzledaily
+      description: 'Get the daily puzzle'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: puzzles.apipuzzledaily
+      with:
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-apipuzzleid
+      description: 'Get a puzzle by its ID'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: puzzles.apipuzzleid
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-apipuzzlenext
+      description: 'Get a new puzzle'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: puzzles.apipuzzlenext
+      with:
+        angle: tools.angle
+        difficulty: tools.difficulty
+        color: tools.color
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-apipuzzlebatchselect
+      description: 'Get multiple puzzles at once'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: puzzles.apipuzzlebatchselect
+      with:
+        angle: tools.angle
+        difficulty: tools.difficulty
+        nb: tools.nb
+        color: tools.color
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-apipuzzlebatchsolve
+      description: 'Solve multiple puzzles at once'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: puzzles.apipuzzlebatchsolve
+      with:
+        angle: tools.angle
+        nb: tools.nb
+        body: tools.body
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-apipuzzleactivity
+      description: 'Get your puzzle activity'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: puzzles.apipuzzleactivity
+      with:
+        max: tools.max
+        before: tools.before
+        since: tools.since
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-apipuzzlereplay
+      description: 'Get puzzles to replay'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: puzzles.apipuzzlereplay
+      with:
+        days: tools.days
+        theme: tools.theme
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-apipuzzledashboard
+      description: 'Get your puzzle dashboard'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: puzzles.apipuzzledashboard
+      with:
+        days: tools.days
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-apistormdashboard
+      description: 'Get the storm dashboard of a player'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: puzzles.apistormdashboard
+      with:
+        username: tools.username
+        days: tools.days
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-racerpost
+      description: 'Create and join a puzzle race'
+      hints:
+        readOnly: false
+        destructive: false
+        idempotent: false
+      call: puzzles.racerpost
+      with:
+      outputParameters:
+      - type: object
+        mapping: $.
+    - name: lichess-racerget
+      description: 'Get puzzle race results'
+      hints:
+        readOnly: true
+        destructive: false
+        idempotent: false
+      call: puzzles.racerget
+      with:
+        id: tools.id
+      outputParameters:
+      - type: object
+        mapping: $.
