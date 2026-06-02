@@ -1,0 +1,1422 @@
+asyncapi: '2.6.0'
+id: 'urn:lichess:streaming-api'
+info:
+  title: Lichess Streaming API
+  version: '1.0.0'
+  description: |
+    AsyncAPI description of Lichess's streaming surface. Lichess does NOT expose its
+    public real-time API over WebSocket; instead, streams are delivered over plain
+    HTTPS using chunked transfer encoding, with one Newline-Delimited JSON (ND-JSON)
+    object per line (`Content-Type: application/x-ndjson`). Some streams use
+    `application/x-chess-pgn`. An empty line is sent every ~7 seconds on long-lived
+    streams for keep-alive purposes.
+
+    This AsyncAPI document models those long-lived HTTP streams as one-way "receive"
+    channels because AsyncAPI 2.6 is the most accurate place to describe the
+    message-by-message contract. The transport is honestly noted as HTTP+NDJSON via
+    the `http` server binding (`type: response`) on each operation — not WebSocket.
+
+    Endpoint coverage:
+      - /api/stream/event                                  (Board + Bot incoming events)
+      - /api/board/game/stream/{gameId}                    (Board game state)
+      - /api/bot/game/stream/{gameId}                      (Bot game state)
+      - /api/stream/games-by-users                         (Games between users)
+      - /api/stream/games/{streamId}                       (Games by IDs)
+      - /api/stream/game/{id}                              (Moves of any ongoing game)
+      - /api/games/user/{username}                         (User games export, ND-JSON)
+      - /api/tv/feed                                       (Current TV game feed)
+      - /api/tv/{channel}/feed                             (TV channel game feed)
+      - /api/stream/broadcast/round/{broadcastRoundId}.pgn (Broadcast round PGN stream)
+      - /api/broadcast/my-rounds                           (Your broadcast rounds)
+
+    Source of truth: https://lichess.org/api and
+    https://github.com/lichess-org/api/blob/master/doc/specs/lichess-api.yaml
+  termsOfService: https://lichess.org/terms-of-service
+  contact:
+    name: Lichess
+    url: https://lichess.org/api
+  license:
+    name: AGPL-3.0
+    url: https://www.gnu.org/licenses/agpl-3.0.txt
+  x-transport-notes:
+    transport: HTTPS chunked transfer
+    contentTypes:
+      - application/x-ndjson
+      - application/x-chess-pgn
+    keepAlive: An empty line is sent every 7 seconds on long-lived streams.
+    notWebSocket: true
+defaultContentType: application/x-ndjson
+servers:
+  production:
+    url: lichess.org
+    protocol: https
+    protocolVersion: '1.1'
+    description: |
+      Lichess production HTTPS endpoint. All streams are served as HTTP/1.1 (or HTTP/2)
+      chunked responses. There is no WebSocket transport on the public API.
+    bindings:
+      http:
+        bindingVersion: '0.3.0'
+    security:
+      - OAuth2: []
+      - {}
+channels:
+  /api/stream/event:
+    description: |
+      Stream events reaching a Lichess user in real time (Board + Bot APIs).
+      An empty line is sent every 7 seconds for keep-alive purposes. When the stream
+      opens, all current challenges and games are sent. Only one global event stream
+      can be active at a time per access token.
+    bindings:
+      http:
+        bindingVersion: '0.3.0'
+    subscribe:
+      operationId: streamIncomingEvents
+      summary: Stream incoming Board/Bot events (ND-JSON)
+      tags:
+        - name: Board
+        - name: Bot
+      bindings:
+        http:
+          type: response
+          method: GET
+          bindingVersion: '0.3.0'
+      message:
+        oneOf:
+          - $ref: '#/components/messages/GameStartEvent'
+          - $ref: '#/components/messages/GameFinishEvent'
+          - $ref: '#/components/messages/ChallengeEvent'
+          - $ref: '#/components/messages/ChallengeCanceledEvent'
+          - $ref: '#/components/messages/ChallengeDeclinedEvent'
+  /api/board/game/stream/{gameId}:
+    description: |
+      Stream the state of a game being played with the Board API. The first line is
+      always of type `gameFull`. The server closes the stream when the game ends.
+    parameters:
+      gameId:
+        description: The Lichess game ID.
+        schema:
+          type: string
+          example: 5IrD6Gzz
+    bindings:
+      http:
+        bindingVersion: '0.3.0'
+    subscribe:
+      operationId: streamBoardGameState
+      summary: Stream Board game state (ND-JSON)
+      tags:
+        - name: Board
+      bindings:
+        http:
+          type: response
+          method: GET
+          bindingVersion: '0.3.0'
+      message:
+        oneOf:
+          - $ref: '#/components/messages/GameFullEvent'
+          - $ref: '#/components/messages/GameStateEvent'
+          - $ref: '#/components/messages/ChatLineEvent'
+          - $ref: '#/components/messages/OpponentGoneEvent'
+  /api/bot/game/stream/{gameId}:
+    description: |
+      Stream the state of a game being played with the Bot API. The first line is
+      always of type `gameFull`. The server closes the stream when the game ends.
+    parameters:
+      gameId:
+        description: The Lichess game ID.
+        schema:
+          type: string
+          example: 5IrD6Gzz
+    bindings:
+      http:
+        bindingVersion: '0.3.0'
+    subscribe:
+      operationId: streamBotGameState
+      summary: Stream Bot game state (ND-JSON)
+      tags:
+        - name: Bot
+      bindings:
+        http:
+          type: response
+          method: GET
+          bindingVersion: '0.3.0'
+      message:
+        oneOf:
+          - $ref: '#/components/messages/GameFullEvent'
+          - $ref: '#/components/messages/GameStateEvent'
+          - $ref: '#/components/messages/ChatLineEvent'
+          - $ref: '#/components/messages/OpponentGoneEvent'
+  /api/stream/games-by-users:
+    description: |
+      Stream the games played between a list of users in real time. Only games where
+      both players are part of the list are included. Emits an event each time a game
+      is started or finished. Use the `withCurrentGames` query parameter to also
+      receive currently ongoing games at the start of the stream. Up to 300 users.
+    bindings:
+      http:
+        bindingVersion: '0.3.0'
+    subscribe:
+      operationId: streamGamesByUsers
+      summary: Stream games of users (ND-JSON)
+      tags:
+        - name: Games
+      bindings:
+        http:
+          type: response
+          method: POST
+          bindingVersion: '0.3.0'
+      message:
+        $ref: '#/components/messages/GameStreamGameMessage'
+  /api/stream/games/{streamId}:
+    description: |
+      Create a stream of games from an arbitrary `streamId` and a list of game IDs.
+      The stream first emits the games that already exist, then emits an event each
+      time a listed game is started or finished. While the stream is open, new game
+      IDs can be added via `POST /api/stream/games/{streamId}/add`.
+    parameters:
+      streamId:
+        description: Arbitrary stream ID chosen by the caller, later usable to add IDs.
+        schema:
+          type: string
+          example: myAppName-someRandomId
+    bindings:
+      http:
+        bindingVersion: '0.3.0'
+    subscribe:
+      operationId: streamGamesByIds
+      summary: Stream games by IDs (ND-JSON)
+      tags:
+        - name: Games
+      bindings:
+        http:
+          type: response
+          method: POST
+          bindingVersion: '0.3.0'
+      message:
+        $ref: '#/components/messages/GameStreamGameMessage'
+  /api/stream/game/{id}:
+    description: |
+      Stream positions and moves of any ongoing game. A description of the game is
+      sent as the first message; a message is then sent each time a move is played;
+      finally, a description of the game is sent when it finishes and the stream is
+      closed. Ongoing games are delayed by 3 moves to discourage cheating. No more
+      than 8 concurrent streams per IP.
+    parameters:
+      id:
+        description: The Lichess game ID.
+        schema:
+          type: string
+          example: LuGQwhBb
+    bindings:
+      http:
+        bindingVersion: '0.3.0'
+    subscribe:
+      operationId: streamGameMoves
+      summary: Stream moves of any ongoing game (ND-JSON)
+      tags:
+        - name: Games
+      bindings:
+        http:
+          type: response
+          method: GET
+          bindingVersion: '0.3.0'
+      message:
+        oneOf:
+          - $ref: '#/components/messages/MoveStreamGameDescription'
+          - $ref: '#/components/messages/MoveStreamMove'
+  /api/games/user/{username}:
+    description: |
+      Export all games of any user. The stream is sorted by reverse chronological
+      order. Throttled to 20 games/sec for anonymous requests, 30/sec for OAuth, and
+      60/sec when downloading your own games. Returns ND-JSON when the request
+      Accept header is `application/x-ndjson`, or PGN when `application/x-chess-pgn`.
+    parameters:
+      username:
+        description: The Lichess username whose games to export.
+        schema:
+          type: string
+          example: thibault
+    bindings:
+      http:
+        bindingVersion: '0.3.0'
+    subscribe:
+      operationId: streamUserGames
+      summary: Export user games (ND-JSON or PGN)
+      tags:
+        - name: Games
+      bindings:
+        http:
+          type: response
+          method: GET
+          bindingVersion: '0.3.0'
+      message:
+        oneOf:
+          - $ref: '#/components/messages/UserGameJson'
+          - $ref: '#/components/messages/UserGamePgn'
+  /api/tv/feed:
+    description: |
+      Stream positions and moves of the current Lichess TV game. The first message
+      is a `featured` summary; subsequent messages are `fen` updates with last move
+      and clocks. A new `featured` message is sent whenever the featured game changes.
+    bindings:
+      http:
+        bindingVersion: '0.3.0'
+    subscribe:
+      operationId: streamCurrentTvGame
+      summary: Stream the current TV game (ND-JSON)
+      tags:
+        - name: TV
+      bindings:
+        http:
+          type: response
+          method: GET
+          bindingVersion: '0.3.0'
+      message:
+        oneOf:
+          - $ref: '#/components/messages/TvFeedFeatured'
+          - $ref: '#/components/messages/TvFeedFen'
+  /api/tv/{channel}/feed:
+    description: |
+      Stream positions and moves of a specific TV channel's current game (e.g. rapid,
+      blitz, bullet, classical, ultraBullet, bot, computer, etc.). Same message
+      shapes as `/api/tv/feed`.
+    parameters:
+      channel:
+        description: The name of the TV channel in camelCase.
+        schema:
+          type: string
+          example: rapid
+    bindings:
+      http:
+        bindingVersion: '0.3.0'
+    subscribe:
+      operationId: streamTvChannelFeed
+      summary: Stream the current TV game of a TV channel (ND-JSON)
+      tags:
+        - name: TV
+      bindings:
+        http:
+          type: response
+          method: GET
+          bindingVersion: '0.3.0'
+      message:
+        oneOf:
+          - $ref: '#/components/messages/TvFeedFeatured'
+          - $ref: '#/components/messages/TvFeedFen'
+  /api/stream/broadcast/round/{broadcastRoundId}.pgn:
+    description: |
+      Stream an ongoing broadcast round as PGN. First sends all games of the round
+      in PGN; then sends the full PGN of any game with a new move, and PGNs when new
+      games are added to the round. Content-Type is `application/x-chess-pgn`, not
+      ND-JSON.
+    parameters:
+      broadcastRoundId:
+        description: The 8-character broadcast round ID.
+        schema:
+          type: string
+          minLength: 8
+          maxLength: 8
+    bindings:
+      http:
+        bindingVersion: '0.3.0'
+    subscribe:
+      operationId: streamBroadcastRoundPgn
+      summary: Stream an ongoing broadcast round as PGN
+      tags:
+        - name: Broadcasts
+      bindings:
+        http:
+          type: response
+          method: GET
+          bindingVersion: '0.3.0'
+      message:
+        $ref: '#/components/messages/BroadcastRoundPgnChunk'
+  /api/broadcast/my-rounds:
+    description: |
+      Stream all broadcast rounds the authenticated user is a member of (created,
+      invited, or non-writing). Ordered by rank (roughly chronological, weighted by
+      popularity). ND-JSON, one round per line.
+    bindings:
+      http:
+        bindingVersion: '0.3.0'
+    subscribe:
+      operationId: streamMyBroadcastRounds
+      summary: Stream your broadcast rounds (ND-JSON)
+      tags:
+        - name: Broadcasts
+      bindings:
+        http:
+          type: response
+          method: GET
+          bindingVersion: '0.3.0'
+      message:
+        $ref: '#/components/messages/BroadcastMyRoundMessage'
+components:
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: |
+        Lichess OAuth 2.0 Authorization Code with PKCE, plus long-lived personal
+        access tokens. Different stream endpoints require different scopes.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://lichess.org/oauth
+          tokenUrl: https://lichess.org/api/token
+          refreshUrl: https://lichess.org/api/token
+          scopes:
+            board:play: Play with the Board API
+            bot:play: Play with the Bot API
+            challenge:read: Read incoming challenges
+            study:read: Read private studies and broadcasts
+  messages:
+    GameStartEvent:
+      name: gameStart
+      title: gameStart
+      summary: Start of a game (sent on the incoming events stream).
+      contentType: application/x-ndjson
+      payload:
+        $ref: '#/components/schemas/GameStartEvent'
+    GameFinishEvent:
+      name: gameFinish
+      title: gameFinish
+      summary: Completion of a game (sent on the incoming events stream).
+      contentType: application/x-ndjson
+      payload:
+        $ref: '#/components/schemas/GameFinishEvent'
+    ChallengeEvent:
+      name: challenge
+      title: challenge
+      summary: A player sends you a challenge, or you challenge someone.
+      contentType: application/x-ndjson
+      payload:
+        $ref: '#/components/schemas/ChallengeEvent'
+    ChallengeCanceledEvent:
+      name: challengeCanceled
+      title: challengeCanceled
+      summary: A player cancels their challenge to you.
+      contentType: application/x-ndjson
+      payload:
+        $ref: '#/components/schemas/ChallengeCanceledEvent'
+    ChallengeDeclinedEvent:
+      name: challengeDeclined
+      title: challengeDeclined
+      summary: The opponent declines your challenge.
+      contentType: application/x-ndjson
+      payload:
+        $ref: '#/components/schemas/ChallengeDeclinedEvent'
+    GameFullEvent:
+      name: gameFull
+      title: gameFull
+      summary: |
+        Full game data. All values are immutable, except for the embedded `state` field.
+        Always sent as the first line of a Board or Bot game stream.
+      contentType: application/x-ndjson
+      payload:
+        $ref: '#/components/schemas/GameFullEvent'
+    GameStateEvent:
+      name: gameState
+      title: gameState
+      summary: |
+        Current state of the game. Sent when a move is played, a draw is offered or
+        agreed, a takeback is proposed, or the game ends. Immutable values not included.
+      contentType: application/x-ndjson
+      payload:
+        $ref: '#/components/schemas/GameStateEvent'
+    ChatLineEvent:
+      name: chatLine
+      title: chatLine
+      summary: Chat message sent by a user (or the bot itself) in the player or spectator room.
+      contentType: application/x-ndjson
+      payload:
+        $ref: '#/components/schemas/ChatLineEvent'
+    OpponentGoneEvent:
+      name: opponentGone
+      title: opponentGone
+      summary: |
+        Whether the opponent has left the game, and how long before you can claim a
+        win or draw.
+      contentType: application/x-ndjson
+      payload:
+        $ref: '#/components/schemas/OpponentGoneEvent'
+    GameStreamGameMessage:
+      name: gameStreamGame
+      title: Game stream entry
+      summary: |
+        A game record emitted on `/api/stream/games-by-users` and
+        `/api/stream/games/{streamId}`. Emitted when a game starts or finishes (and
+        for already-running games at stream open when requested).
+      contentType: application/x-ndjson
+      payload:
+        $ref: '#/components/schemas/GameStreamGame'
+    MoveStreamGameDescription:
+      name: streamGameDescription
+      title: Stream game description
+      summary: |
+        Game description emitted as the first and last message of
+        `/api/stream/game/{id}`.
+      contentType: application/x-ndjson
+      payload:
+        $ref: '#/components/schemas/MoveStreamGameDescription'
+    MoveStreamMove:
+      name: streamGameMove
+      title: Stream game move
+      summary: |
+        Position update emitted on `/api/stream/game/{id}` for each move played
+        (delayed by 3 moves for cheating prevention).
+      contentType: application/x-ndjson
+      payload:
+        $ref: '#/components/schemas/MoveStreamMove'
+    UserGameJson:
+      name: userGameJson
+      title: User game (JSON)
+      summary: A single game export entry from `/api/games/user/{username}` (ND-JSON).
+      contentType: application/x-ndjson
+      payload:
+        $ref: '#/components/schemas/UserGameJson'
+    UserGamePgn:
+      name: userGamePgn
+      title: User game (PGN)
+      summary: A single PGN export entry from `/api/games/user/{username}` (PGN).
+      contentType: application/x-chess-pgn
+      payload:
+        type: string
+        description: PGN representation of one game.
+    TvFeedFeatured:
+      name: featured
+      title: TV featured
+      summary: |
+        Summary of the currently featured TV game. Sent as the first message and
+        whenever the featured game changes.
+      contentType: application/x-ndjson
+      payload:
+        $ref: '#/components/schemas/TvFeedFeatured'
+    TvFeedFen:
+      name: fen
+      title: TV fen
+      summary: |
+        Position update for the currently featured TV game (X-FEN, last move, clocks).
+      contentType: application/x-ndjson
+      payload:
+        $ref: '#/components/schemas/TvFeedFen'
+    BroadcastRoundPgnChunk:
+      name: broadcastRoundPgn
+      title: Broadcast round PGN
+      summary: |
+        A PGN payload from `/api/stream/broadcast/round/{broadcastRoundId}.pgn`.
+        Either the full set of round games on stream open, or the full PGN of a
+        single game when an update or new game arrives.
+      contentType: application/x-chess-pgn
+      payload:
+        type: string
+        description: PGN text for one or more broadcast games.
+    BroadcastMyRoundMessage:
+      name: broadcastMyRound
+      title: Broadcast round (my-rounds)
+      summary: |
+        A broadcast round the authenticated user is a member of, with embedded
+        tournament metadata and a `study.writeable` flag.
+      contentType: application/x-ndjson
+      payload:
+        $ref: '#/components/schemas/BroadcastMyRound'
+  schemas:
+    GameColor:
+      type: string
+      enum:
+        - white
+        - black
+    VariantKey:
+      type: string
+      enum:
+        - standard
+        - chess960
+        - crazyhouse
+        - antichess
+        - atomic
+        - horde
+        - kingOfTheHill
+        - racingKings
+        - threeCheck
+        - fromPosition
+    Variant:
+      type: object
+      properties:
+        key:
+          $ref: '#/components/schemas/VariantKey'
+        name:
+          type: string
+        short:
+          type: string
+      required:
+        - key
+        - name
+    Speed:
+      type: string
+      enum:
+        - ultraBullet
+        - bullet
+        - blitz
+        - rapid
+        - classical
+        - correspondence
+    GameStatusName:
+      type: string
+      enum:
+        - created
+        - started
+        - aborted
+        - mate
+        - resign
+        - stalemate
+        - timeout
+        - draw
+        - outoftime
+        - cheat
+        - noStart
+        - unknownFinish
+        - variantEnd
+    GameStatus:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          $ref: '#/components/schemas/GameStatusName'
+      required:
+        - id
+        - name
+    GameSource:
+      type: string
+      enum:
+        - lobby
+        - friend
+        - ai
+        - api
+        - tournament
+        - position
+        - import
+        - importlive
+        - simul
+        - relay
+        - pool
+        - arena
+        - swiss
+    Title:
+      type: string
+      enum:
+        - GM
+        - WGM
+        - IM
+        - WIM
+        - FM
+        - WFM
+        - NM
+        - CM
+        - WCM
+        - WNM
+        - LM
+        - BOT
+    LightUser:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        title:
+          $ref: '#/components/schemas/Title'
+        patron:
+          type: boolean
+        flair:
+          type: string
+      required:
+        - id
+        - name
+    GameCompat:
+      type: object
+      description: Whether this game is compatible with the Board and/or Bot APIs.
+      properties:
+        bot:
+          type: boolean
+        board:
+          type: boolean
+    GameEventOpponent:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        rating:
+          type: integer
+        ai:
+          type: integer
+          description: AI level, when the opponent is the Lichess AI.
+    GameEventInfo:
+      type: object
+      description: |
+        Game payload included with `gameStart` and `gameFinish` events on
+        `/api/stream/event`.
+      properties:
+        fullId:
+          type: string
+        gameId:
+          type: string
+        fen:
+          type: string
+        color:
+          $ref: '#/components/schemas/GameColor'
+        lastMove:
+          type: string
+        source:
+          $ref: '#/components/schemas/GameSource'
+        status:
+          $ref: '#/components/schemas/GameStatus'
+        variant:
+          $ref: '#/components/schemas/Variant'
+        speed:
+          $ref: '#/components/schemas/Speed'
+        perf:
+          type: string
+        rating:
+          type: integer
+        rated:
+          type: boolean
+        hasMoved:
+          type: boolean
+        opponent:
+          $ref: '#/components/schemas/GameEventOpponent'
+        isMyTurn:
+          type: boolean
+        secondsLeft:
+          type: integer
+        winner:
+          $ref: '#/components/schemas/GameColor'
+        ratingDiff:
+          type: integer
+        compat:
+          $ref: '#/components/schemas/GameCompat'
+        id:
+          type: string
+        tournamentId:
+          type: string
+      required:
+        - fullId
+        - gameId
+    GameStartEvent:
+      type: object
+      properties:
+        type:
+          type: string
+          const: gameStart
+        game:
+          $ref: '#/components/schemas/GameEventInfo'
+      required:
+        - type
+        - game
+    GameFinishEvent:
+      type: object
+      properties:
+        type:
+          type: string
+          const: gameFinish
+        game:
+          $ref: '#/components/schemas/GameEventInfo'
+      required:
+        - type
+        - game
+    ChallengeStatus:
+      type: string
+      enum:
+        - created
+        - offline
+        - canceled
+        - declined
+        - accepted
+    ChallengeColor:
+      type: string
+      enum:
+        - white
+        - black
+        - random
+    ChallengeUser:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        rating:
+          type: integer
+        title:
+          $ref: '#/components/schemas/Title'
+        flair:
+          type: string
+        patron:
+          type: boolean
+        provisional:
+          type: boolean
+        online:
+          type: boolean
+        lag:
+          type: integer
+      required:
+        - id
+        - name
+    TimeControl:
+      oneOf:
+        - type: object
+          title: Real-time
+          properties:
+            type:
+              type: string
+              const: clock
+            limit:
+              type: integer
+            increment:
+              type: integer
+            show:
+              type: string
+              example: 5+2
+          additionalProperties: false
+        - type: object
+          title: Correspondence
+          properties:
+            type:
+              type: string
+              const: correspondence
+            daysPerTurn:
+              type: integer
+          additionalProperties: false
+        - type: object
+          title: Unlimited
+          properties:
+            type:
+              type: string
+              const: unlimited
+          additionalProperties: false
+    ChallengeJson:
+      type: object
+      properties:
+        id:
+          type: string
+        url:
+          type: string
+          format: uri
+        status:
+          $ref: '#/components/schemas/ChallengeStatus'
+        challenger:
+          $ref: '#/components/schemas/ChallengeUser'
+        destUser:
+          oneOf:
+            - $ref: '#/components/schemas/ChallengeUser'
+            - type: 'null'
+        variant:
+          $ref: '#/components/schemas/Variant'
+        rated:
+          type: boolean
+        speed:
+          $ref: '#/components/schemas/Speed'
+        timeControl:
+          $ref: '#/components/schemas/TimeControl'
+        color:
+          $ref: '#/components/schemas/ChallengeColor'
+        finalColor:
+          $ref: '#/components/schemas/GameColor'
+        perf:
+          type: object
+          properties:
+            icon:
+              type: string
+            name:
+              type: string
+          required:
+            - icon
+            - name
+        direction:
+          type: string
+          enum:
+            - in
+            - out
+        initialFen:
+          type: string
+        rematchOf:
+          type: string
+      required:
+        - id
+        - url
+        - status
+        - challenger
+        - destUser
+        - variant
+        - rated
+        - speed
+        - timeControl
+        - color
+        - perf
+    ChallengeDeclinedJson:
+      allOf:
+        - $ref: '#/components/schemas/ChallengeJson'
+        - type: object
+          properties:
+            declineReason:
+              type: string
+              description: Human readable, possibly translated decline reason.
+            declineReasonKey:
+              type: string
+              description: Untranslated, machine-readable decline reason.
+              enum:
+                - generic
+                - later
+                - toofast
+                - tooslow
+                - timecontrol
+                - rated
+                - casual
+                - standard
+                - variant
+                - nobot
+                - onlybot
+          required:
+            - declineReason
+            - declineReasonKey
+    ChallengeEvent:
+      type: object
+      properties:
+        type:
+          type: string
+          const: challenge
+        challenge:
+          $ref: '#/components/schemas/ChallengeJson'
+        compat:
+          $ref: '#/components/schemas/GameCompat'
+      required:
+        - type
+        - challenge
+    ChallengeCanceledEvent:
+      type: object
+      properties:
+        type:
+          type: string
+          const: challengeCanceled
+        challenge:
+          $ref: '#/components/schemas/ChallengeJson'
+      required:
+        - type
+        - challenge
+    ChallengeDeclinedEvent:
+      type: object
+      properties:
+        type:
+          type: string
+          const: challengeDeclined
+        challenge:
+          $ref: '#/components/schemas/ChallengeDeclinedJson'
+      required:
+        - type
+        - challenge
+    GameEventPlayer:
+      type: object
+      properties:
+        aiLevel:
+          type: integer
+        id:
+          type: string
+        name:
+          type: string
+        title:
+          oneOf:
+            - $ref: '#/components/schemas/Title'
+            - type: 'null'
+        rating:
+          type: integer
+        provisional:
+          type: boolean
+      required:
+        - id
+        - name
+    GameStateEvent:
+      type: object
+      properties:
+        type:
+          type: string
+          const: gameState
+        moves:
+          type: string
+          description: |
+            Current moves in UCI format (King-to-rook for Chess960-compatible
+            castling notation).
+        wtime:
+          type: integer
+          description: White's remaining clock in milliseconds.
+        btime:
+          type: integer
+          description: Black's remaining clock in milliseconds.
+        winc:
+          type: integer
+          description: White Fisher increment in milliseconds.
+        binc:
+          type: integer
+          description: Black Fisher increment in milliseconds.
+        status:
+          $ref: '#/components/schemas/GameStatusName'
+        winner:
+          $ref: '#/components/schemas/GameColor'
+        wdraw:
+          type: boolean
+          description: true if white is offering draw, else omitted.
+        bdraw:
+          type: boolean
+          description: true if black is offering draw, else omitted.
+        wtakeback:
+          type: boolean
+          description: true if white is proposing takeback, else omitted.
+        btakeback:
+          type: boolean
+          description: true if black is proposing takeback, else omitted.
+        expiration:
+          type: object
+          description: A game may be aborted if a player doesn't make their first move in time.
+          properties:
+            idleMillis:
+              type: integer
+            millisToMove:
+              type: integer
+          required:
+            - idleMillis
+            - millisToMove
+      required:
+        - type
+        - moves
+        - wtime
+        - btime
+        - winc
+        - binc
+        - status
+    GameFullEvent:
+      type: object
+      properties:
+        type:
+          type: string
+          const: gameFull
+        id:
+          type: string
+        variant:
+          $ref: '#/components/schemas/Variant'
+        clock:
+          type: object
+          properties:
+            initial:
+              type: integer
+              format: int64
+            increment:
+              type: integer
+              format: int64
+        speed:
+          $ref: '#/components/schemas/Speed'
+        perf:
+          type: object
+          properties:
+            name:
+              type: string
+        rated:
+          type: boolean
+        createdAt:
+          type: integer
+          format: int64
+        white:
+          $ref: '#/components/schemas/GameEventPlayer'
+        black:
+          $ref: '#/components/schemas/GameEventPlayer'
+        initialFen:
+          type: string
+          default: startpos
+        state:
+          $ref: '#/components/schemas/GameStateEvent'
+        daysPerTurn:
+          type: integer
+        tournamentId:
+          type: string
+      required:
+        - type
+        - id
+        - variant
+        - speed
+        - perf
+        - rated
+        - createdAt
+        - white
+        - black
+        - initialFen
+        - state
+    ChatLineEvent:
+      type: object
+      properties:
+        type:
+          type: string
+          const: chatLine
+        room:
+          type: string
+          enum:
+            - player
+            - spectator
+        username:
+          type: string
+        text:
+          type: string
+      required:
+        - type
+        - room
+        - username
+        - text
+    OpponentGoneEvent:
+      type: object
+      properties:
+        type:
+          type: string
+          const: opponentGone
+        gone:
+          type: boolean
+        claimWinInSeconds:
+          type: integer
+      required:
+        - type
+        - gone
+    GameStreamPlayer:
+      type: object
+      properties:
+        userId:
+          type: string
+        rating:
+          type: integer
+        aiLevel:
+          type: integer
+    GameStreamGame:
+      type: object
+      description: |
+        Game entry emitted on `/api/stream/games-by-users` and
+        `/api/stream/games/{streamId}`.
+      properties:
+        id:
+          type: string
+        rated:
+          type: boolean
+        variant:
+          oneOf:
+            - $ref: '#/components/schemas/VariantKey'
+            - type: string
+        speed:
+          $ref: '#/components/schemas/Speed'
+        perf:
+          type: string
+        createdAt:
+          type: integer
+          format: int64
+        status:
+          type: integer
+          description: Numeric Lichess game status ID.
+        statusName:
+          $ref: '#/components/schemas/GameStatusName'
+        clock:
+          type: object
+          properties:
+            initial:
+              type: integer
+            increment:
+              type: integer
+            totalTime:
+              type: integer
+        players:
+          type: object
+          properties:
+            white:
+              $ref: '#/components/schemas/GameStreamPlayer'
+            black:
+              $ref: '#/components/schemas/GameStreamPlayer'
+        winner:
+          $ref: '#/components/schemas/GameColor'
+      required:
+        - id
+    MoveStreamPlayer:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/LightUser'
+        rating:
+          type: integer
+    MoveStreamGameDescription:
+      type: object
+      description: |
+        First and last entry of `/api/stream/game/{id}`. Describes the game, then a
+        final description is sent when the game finishes.
+      properties:
+        id:
+          type: string
+        variant:
+          $ref: '#/components/schemas/Variant'
+        speed:
+          $ref: '#/components/schemas/Speed'
+        perf:
+          type: string
+        rated:
+          type: boolean
+        initialFen:
+          type: string
+        fen:
+          type: string
+        player:
+          $ref: '#/components/schemas/GameColor'
+        turns:
+          type: integer
+        startedAtTurn:
+          type: integer
+        source:
+          $ref: '#/components/schemas/GameSource'
+        status:
+          $ref: '#/components/schemas/GameStatus'
+        createdAt:
+          type: integer
+          format: int64
+        lastMove:
+          type: string
+        players:
+          type: object
+          properties:
+            white:
+              $ref: '#/components/schemas/MoveStreamPlayer'
+            black:
+              $ref: '#/components/schemas/MoveStreamPlayer'
+      required:
+        - id
+    MoveStreamMove:
+      type: object
+      description: Move/position update emitted on `/api/stream/game/{id}`.
+      properties:
+        fen:
+          type: string
+          description: Current X-FEN of the position.
+        lm:
+          type: string
+          description: Last move in UCI format (King-to-rook for Chess960 castling).
+        wc:
+          type: integer
+          description: White's clock in seconds.
+        bc:
+          type: integer
+          description: Black's clock in seconds.
+      required:
+        - fen
+        - wc
+        - bc
+    UserGameJson:
+      type: object
+      description: |
+        A single game record exported via `/api/games/user/{username}` with
+        `Accept: application/x-ndjson`. Mirrors the GameJson schema from the Lichess
+        OpenAPI document; only commonly-present fields are listed here.
+      properties:
+        id:
+          type: string
+        rated:
+          type: boolean
+        variant:
+          $ref: '#/components/schemas/VariantKey'
+        speed:
+          $ref: '#/components/schemas/Speed'
+        perf:
+          type: string
+        createdAt:
+          type: integer
+          format: int64
+        lastMoveAt:
+          type: integer
+          format: int64
+        status:
+          $ref: '#/components/schemas/GameStatusName'
+        players:
+          type: object
+          properties:
+            white:
+              type: object
+              properties:
+                user:
+                  $ref: '#/components/schemas/LightUser'
+                rating:
+                  type: integer
+                ratingDiff:
+                  type: integer
+            black:
+              type: object
+              properties:
+                user:
+                  $ref: '#/components/schemas/LightUser'
+                rating:
+                  type: integer
+                ratingDiff:
+                  type: integer
+        winner:
+          $ref: '#/components/schemas/GameColor'
+        moves:
+          type: string
+        pgn:
+          type: string
+        clock:
+          type: object
+          properties:
+            initial:
+              type: integer
+            increment:
+              type: integer
+            totalTime:
+              type: integer
+        clocks:
+          type: array
+          items:
+            type: integer
+        opening:
+          type: object
+          properties:
+            eco:
+              type: string
+            name:
+              type: string
+            ply:
+              type: integer
+      required:
+        - id
+        - createdAt
+        - status
+    TvPlayer:
+      type: object
+      properties:
+        color:
+          $ref: '#/components/schemas/GameColor'
+        user:
+          $ref: '#/components/schemas/LightUser'
+        rating:
+          type: integer
+        seconds:
+          type: integer
+          description: The player's remaining time in seconds.
+      required:
+        - color
+        - rating
+        - seconds
+        - user
+    TvFeedFeatured:
+      type: object
+      title: featured
+      properties:
+        t:
+          type: string
+          const: featured
+          description: |
+            Type marker. Sent as the first message of the TV feed and when the
+            featured game changes.
+        d:
+          type: object
+          properties:
+            id:
+              type: string
+              description: The game ID.
+            orientation:
+              $ref: '#/components/schemas/GameColor'
+            players:
+              type: array
+              items:
+                $ref: '#/components/schemas/TvPlayer'
+              minItems: 2
+              maxItems: 2
+            fen:
+              type: string
+              description: X-FEN of the current position.
+          required:
+            - id
+            - orientation
+            - players
+            - fen
+      required:
+        - t
+        - d
+    TvFeedFen:
+      type: object
+      title: fen
+      properties:
+        t:
+          type: string
+          const: fen
+          description: Type marker. Sent for every subsequent move on the TV feed.
+        d:
+          type: object
+          properties:
+            fen:
+              type: string
+              description: X-FEN of the current position.
+            lm:
+              type: string
+              description: Last move in UCI format (King-to-rook for Chess960 castling).
+            wc:
+              type: integer
+              description: White's clock in seconds.
+            bc:
+              type: integer
+              description: Black's clock in seconds.
+          required:
+            - fen
+            - lm
+            - wc
+            - bc
+      required:
+        - t
+        - d
+    BroadcastMyRound:
+      type: object
+      description: |
+        Broadcast round entry emitted on `/api/broadcast/my-rounds`. Includes the
+        embedded tournament and a `study.writeable` flag indicating whether the
+        caller can write to the underlying study.
+      properties:
+        round:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            slug:
+              type: string
+            createdAt:
+              type: integer
+              format: int64
+            startsAt:
+              type: integer
+              format: int64
+            finishedAt:
+              type: integer
+              format: int64
+            ongoing:
+              type: boolean
+            url:
+              type: string
+              format: uri
+        tour:
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            slug:
+              type: string
+            description:
+              type: string
+            url:
+              type: string
+              format: uri
+            createdAt:
+              type: integer
+              format: int64
+        study:
+          type: object
+          properties:
+            writeable:
+              type: boolean

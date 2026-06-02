@@ -17,6 +17,8 @@ apis:
     type: OpenAPI
   - url: https://github.com/lichess-org/api/blob/master/doc/specs/lichess-api.yaml
     type: OpenAPI
+  - url: asyncapi/lichess-asyncapi.yml
+    type: AsyncAPI
   - url: json-schema/lichess-game-schema.json
     type: JSONSchema
   - url: json-schema/lichess-user-schema.json
