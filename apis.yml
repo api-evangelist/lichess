@@ -84,52 +84,52 @@ common:
     type: SourceCode
   - url: https://github.com/lichess-org/berserk
     name: Berserk - Python Client
-    type: SDK
+    type: SDKs
   - url: https://github.com/tors42/chariot
     name: Chariot - Java Client
-    type: SDK
+    type: SDKs
   - url: https://github.com/devjiwonchoi/equine
     name: Equine - JavaScript/TypeScript Client
-    type: SDK
+    type: SDKs
   - url: https://github.com/Rabergsel/LichessNET
     name: LichessNET - C# Client
-    type: SDK
+    type: SDKs
   - url: https://github.com/Dblike/LichessSharp
     name: LichessSharp - .NET Client
-    type: SDK
+    type: SDKs
   - url: https://github.com/mkomon/uberserk
     name: uberserk - MicroPython Client
-    type: SDK
+    type: SDKs
   - url: https://pypi.org/project/async-lichess-sdk
     name: async-lichess-sdk
-    type: SDK
+    type: SDKs
   - url: https://github.com/lichess-bot-devs/lichess-bot
     name: lichess-bot - Python Bot Reference
-    type: Tool
+    type: Tools
   - url: https://github.com/lichess-org/fishnet
     name: Fishnet - Distributed Stockfish Analysis
-    type: Tool
+    type: Tools
   - url: https://github.com/lichess-org/external-engine
     name: External Engine
-    type: Tool
+    type: Tools
   - url: https://github.com/lichess-org/broadcaster
     name: Broadcaster
-    type: Tool
+    type: Tools
   - url: https://github.com/lichess-org/pgn-mule
     name: PGN Mule
-    type: Tool
+    type: Tools
   - url: https://github.com/lichess-org/api-ui
     name: API UI Source
-    type: Tool
+    type: Tools
   - url: https://github.com/lichess-org/api/tree/master/example
     name: OAuth and API Examples
     type: CodeExamples
   - url: https://discord.gg/lichess
     name: Lichess Discord
-    type: Forum
+    type: Forums
   - url: https://lichess.org/forum
     name: Lichess Forum
-    type: Forum
+    type: Forums
   - url: https://database.lichess.org/
     name: Lichess Database Exports
     type: BulkDataDownload
