@@ -1,0 +1,150 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/lichess-openapi.yml
+schemes:
+- name: OAuth2
+  source: openapi/lichess-openapi.yml
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://lichess.org/oauth
+    tokenUrl: https://lichess.org/api/token
+  description: Read [the introduction for how to make authenticated requests](#description/authentication).
+scopes:
+- scope: board:play
+  description: Play with the Board API
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/lichess-openapi.yml
+- scope: bot:play
+  description: Play with the Bot API. Only for [Bot accounts](#tag/bot/POST/api/bot/account/upgrade)
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/lichess-openapi.yml
+- scope: challenge:bulk
+  description: Create, delete, query bulk pairings
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/lichess-openapi.yml
+- scope: challenge:read
+  description: Read incoming challenges
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/lichess-openapi.yml
+- scope: challenge:write
+  description: Create, accept, decline challenges
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/lichess-openapi.yml
+- scope: email:read
+  description: Read your email address
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/lichess-openapi.yml
+- scope: engine:read
+  description: Read your external engines
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/lichess-openapi.yml
+- scope: engine:write
+  description: Create, update, delete your external engines
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/lichess-openapi.yml
+- scope: follow:read
+  description: Read followed players
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/lichess-openapi.yml
+- scope: follow:write
+  description: Follow and unfollow other players
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/lichess-openapi.yml
+- scope: msg:write
+  description: Send private messages to other players
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/lichess-openapi.yml
+- scope: preference:read
+  description: Read your preferences
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/lichess-openapi.yml
+- scope: preference:write
+  description: Write your preferences
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/lichess-openapi.yml
+- scope: puzzle:read
+  description: Read puzzle activity
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/lichess-openapi.yml
+- scope: puzzle:write
+  description: Write puzzle activity
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/lichess-openapi.yml
+- scope: racer:write
+  description: Create and join puzzle races
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/lichess-openapi.yml
+- scope: study:read
+  description: Read private studies and broadcasts
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/lichess-openapi.yml
+- scope: study:write
+  description: Create, update, delete studies and broadcasts
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/lichess-openapi.yml
+- scope: team:lead
+  description: Manage teams (kick members, send PMs)
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/lichess-openapi.yml
+- scope: team:read
+  description: Read private team information
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/lichess-openapi.yml
+- scope: team:write
+  description: Join, leave teams
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/lichess-openapi.yml
+- scope: tournament:write
+  description: Create tournaments
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/lichess-openapi.yml
+- scope: web:mod
+  description: Use moderator tools (within the bounds of your permissions)
+  flows:
+  - authorizationCode
+  sources:
+  - openapi/lichess-openapi.yml

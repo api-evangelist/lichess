@@ -49,6 +49,8 @@ kind: contract
 image: https://lichess1.org/assets/logo/lichess-pad12.svg
 access: 3rd-Party
 common:
+  - type: OAuthScopes
+    url: scopes/lichess-scopes.yml
   - url: https://lichess.org
     name: Lichess
     type: Portal
