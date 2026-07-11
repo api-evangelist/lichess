@@ -49,6 +49,12 @@ kind: contract
 image: https://lichess1.org/assets/logo/lichess-pad12.svg
 access: 3rd-Party
 common:
+  - type: VulnerabilityDisclosure
+    url: security/lichess-vulnerability-disclosure.yml
+  - type: DomainSecurity
+    url: security/lichess-domain-security.yml
+  - type: Authentication
+    url: authentication/lichess-authentication.yml
   - type: OAuthScopes
     url: scopes/lichess-scopes.yml
   - url: https://lichess.org
