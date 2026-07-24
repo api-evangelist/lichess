@@ -1,0 +1,2510 @@
+openapi: 3.1.0
+info:
+  version: 2.0.144
+  title: Lichess.org API reference Account Games API
+  contact:
+    name: Lichess.org API
+    url: https://lichess.org/api
+    email: contact@lichess.org
+  x-logo:
+    url: https://lichess1.org/assets/logo/lichess-pad12.svg
+  license:
+    name: AGPL-3.0-or-later
+    url: https://www.gnu.org/licenses/agpl-3.0.txt
+  description: '# Introduction
+
+    Welcome to the reference for the Lichess API! Lichess is free/libre,
+
+    open-source chess server powered by volunteers and donations.
+
+    - Get help in the [Lichess Discord channel](https://discord.gg/lichess)
+
+    - API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)
+
+    - API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)
+
+    - [Contribute to this documentation on Github](https://github.com/lichess-org/api)
+
+    - Check out [Lichess widgets to embed in your website](https://lichess.org/developers)
+
+    - [Download all Lichess rated games](https://database.lichess.org/)
+
+    - [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)
+
+    - [Download all evaluated positions](https://database.lichess.org/#evals)
+
+
+    ## Endpoint
+
+    All requests go to `https://lichess.org` (unless otherwise specified).
+
+
+    ## Clients
+
+    - [Python general API](https://github.com/lichess-org/berserk)
+
+    - [MicroPython general API](https://github.com/mkomon/uberserk)
+
+    - [Python general API - async](https://pypi.org/project/async-lichess-sdk)
+
+    - [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)
+
+    - [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)
+
+    - [Java general API](https://github.com/tors42/chariot)
+
+    - [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)
+
+    - [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)
+
+    - [.NET general API](https://github.com/Dblike/LichessSharp)
+
+
+    ## Rate limiting
+
+    All requests are rate limited using various strategies,
+
+    to ensure the API remains responsive for everyone.
+
+    Only make one request at a time.
+
+    If you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),
+
+    you have exceded one of the rate limits.
+
+    In most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.
+
+    Reduce your request frequency before retrying.
+
+
+    ## Streaming with ND-JSON
+
+    Some API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.
+
+
+    Here''s a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.
+
+
+    ## Authentication
+
+    ### Which authentication method is right for me?
+
+    [Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)
+
+
+    ### Personal Access Token
+
+    Personal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.
+
+    - [Generate a personal access token](https://lichess.org/account/oauth/token)
+
+    - `curl https://lichess.org/api/account -H "Authorization: Bearer {token}"`
+
+    - [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)
+
+
+    ### Token Security
+
+    - Keep your tokens secret. Do not share them in public repositories or public forums.
+
+    - Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens'' scope). You remain responsible for all activities on your account.
+
+    - Do not hardcode tokens in your application''s code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.
+
+    - If you suspect a token has been compromised, revoke it immediately.
+
+
+    To see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).
+
+
+    ### Authorization Code Flow with PKCE
+
+    The authorization code flow with PKCE allows your users to **login with Lichess**.
+
+    Lichess supports unregistered and public clients (no client authentication, choose any unique client id).
+
+    The only accepted code challenge method is `S256`.
+
+    Access tokens are long-lived (expect one year), unless they are revoked.
+
+    Refresh tokens are not supported.
+
+
+    See the [documentation for the OAuth endpoints](#tag/OAuth) or
+
+    the [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.
+
+
+    - [Demo app](https://lichess-org.github.io/api-demo/)
+
+    - [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)
+
+    - [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)
+
+    - [Java example](https://github.com/tors42/lichess-oauth-pkce-app)
+
+    - [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)
+
+
+    #### Real life examples
+
+    - [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))
+
+    - [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))
+
+    - [English Chess Federation](https://ecf.octoknight.com/)
+
+    - [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)
+
+
+    ### Token format
+
+    Access tokens and authorization codes match `^[A-Za-z0-9_]+$`.
+
+    The length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.
+
+    By convention tokens have a recognizable prefix, but do not rely on this.
+
+    '
+servers:
+- url: https://lichess.org
+- url: https://lichess.dev
+- url: http://localhost:{port}
+  variables:
+    port:
+      default: '8080'
+- url: http://l.org
+tags:
+- name: Games
+  description: 'Access games played on Lichess.
+
+    <https://lichess.org/games>
+
+    '
+paths:
+  /game/export/{gameId}:
+    get:
+      operationId: gamePgn
+      summary: Export one game
+      description: 'Download one game in either PGN or JSON format.
+
+        Ongoing games are delayed by 3 moves, as to prevent cheat bots from using this API.
+
+        '
+      tags:
+      - Games
+      security: []
+      parameters:
+      - $ref: '#/components/parameters/AcceptPgnOrJson'
+      - in: path
+        name: gameId
+        description: The game ID
+        required: true
+        schema:
+          type: string
+          minLength: 8
+          maxLength: 8
+      - in: query
+        name: moves
+        description: Include the PGN moves.
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: pgnInJson
+        description: Include the full PGN within the JSON response, in a `pgn` field.
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: tags
+        description: Include the PGN tags.
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: clocks
+        description: 'Include clock status when available.
+
+          Either as PGN comments: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`
+
+          Or in a `clocks` JSON field, as centisecond integers, depending on the response type.
+
+          '
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: evals
+        description: 'Include analysis evaluations and comments, when available.
+
+          Either as PGN comments: `12. Bxf6 { [%eval 0.23] } a3 { [%eval -1.09] }`
+
+          Or in an `analysis` JSON field, depending on the response type.
+
+          '
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: accuracy
+        description: 'Include [accuracy percent](https://lichess.org/page/accuracy) of each player, when available. Only available in JSON.
+
+          '
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: opening
+        description: 'Include the opening name.
+
+          Example: `[Opening "King''s Gambit Accepted, King''s Knight Gambit"]`
+
+          '
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: division
+        description: 'Plies which mark the beginning of the middlegame and endgame.
+
+          Only available in JSON
+
+          '
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: literate
+        description: 'Insert textual annotations in the PGN about the opening, analysis variations, mistakes, and game termination.
+
+          Example: `5... g4? { (-0.98 → 0.60) Mistake. Best move was h6. } (5... h6 6. d4 Ne7 7. g3 d5 8. exd5 fxg3 9. hxg3 c6 10. dxc6)`
+
+          '
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: withBookmarked
+        description: 'Add a `bookmarked: true` JSON field when the logged in user has bookmarked the game.
+
+          The response type must be set to `application/x-ndjson` by the request `Accept` header.
+
+          '
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: The game representation.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/GamePgn'
+                - $ref: '#/components/schemas/GameJson'
+              examples:
+                application/x-chess-pgn:
+                  $ref: '#/components/examples/games-exportOneGame.pgn'
+                application/json:
+                  $ref: '#/components/examples/games-exportOneGame.json'
+  /game/{gameId}/chat:
+    parameters:
+    - in: path
+      name: gameId
+      schema:
+        type: string
+        example: 5IrD6Gzz
+      required: true
+    get:
+      operationId: gameChatGet
+      summary: Fetch the spectator game chat
+      description: 'Get the messages posted in the public spectator chat of a game.
+
+
+        Games also have a private players chat, which only the 2 players can see.
+
+        '
+      tags:
+      - Games
+      security: []
+      responses:
+        '200':
+          description: The messages posted in the chat.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/x-ndjson:
+              schema:
+                $ref: '#/components/schemas/SpectatorGameChat'
+  /api/user/{username}/current-game:
+    get:
+      operationId: apiUserCurrentGame
+      summary: Export ongoing game of a user
+      description: 'Download the ongoing game, or the last game played, of a user.
+
+        Available in either PGN or JSON format.
+
+        Ongoing games are delayed by 3 moves, as to prevent cheat bots from using this API.
+
+        '
+      tags:
+      - Games
+      security: []
+      parameters:
+      - $ref: '#/components/parameters/AcceptPgnOrJson'
+      - in: path
+        name: username
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: moves
+        description: Include the PGN moves.
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: pgnInJson
+        description: Include the full PGN within the JSON response, in a `pgn` field.
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: tags
+        description: Include the PGN tags.
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: clocks
+        description: 'Include clock status when available.
+
+          Either as PGN comments: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`
+
+          Or in a `clocks` JSON field, as centisecond integers, depending on the response type.
+
+          '
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: evals
+        description: 'Include analysis evaluations and comments, when available.
+
+          Either as PGN comments: `12. Bxf6 { [%eval 0.23] } a3 { [%eval -1.09] }`
+
+          Or in an `analysis` JSON field, depending on the response type.
+
+          '
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: accuracy
+        description: 'Include [accuracy percent](https://lichess.org/page/accuracy) of each player, when available. Only available in JSON.
+
+          '
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: opening
+        description: 'Include the opening name.
+
+          Example: `[Opening "King''s Gambit Accepted, King''s Knight Gambit"]`
+
+          '
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: division
+        description: 'Plies which mark the beginning of the middlegame and endgame.
+
+          Only available in JSON
+
+          '
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: literate
+        description: 'Insert textual annotations in the PGN about the opening, analysis variations, mistakes, and game termination.
+
+          Example: `5... g4? { (-0.98 → 0.60) Mistake. Best move was h6. } (5... h6 6. d4 Ne7 7. g3 d5 8. exd5 fxg3 9. hxg3 c6 10. dxc6)`
+
+          '
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: 'The ongoing (or last) game of a user.
+
+            This may be in either PGN or JSON format, depending on the `Accept` header of your request.
+
+            '
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/GamePgn'
+                - $ref: '#/components/schemas/GameJson'
+              examples:
+                application/x-chess-pgn:
+                  $ref: '#/components/examples/games-apiUserCurrentGamePgn.pgn'
+                application/json:
+                  $ref: '#/components/examples/games-apiUserCurrentGameJson.json'
+  /api/games/user/{username}:
+    get:
+      operationId: apiGamesUser
+      summary: Export games of a user
+      description: "Download all games of any user in PGN or [ndjson](#description/streaming-with-nd-json) format.\nGames are sorted by reverse chronological order (most recent first).\nWe recommend streaming the response, for it can be very long.\n<https://lichess.org/@/german11> for instance has more than 500,000 games.\nThe game stream is throttled, depending on who is making the request:\n  - Anonymous request: 20 games per second\n  - [OAuth2 authenticated](#description/authentication) request: 30 games per second\n  - Authenticated, downloading your own games: 60 games per second\n"
+      tags:
+      - Games
+      security:
+      - OAuth2: []
+      parameters:
+      - $ref: '#/components/parameters/AcceptPgnOrNdjson'
+      - in: path
+        name: username
+        description: The user name.
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: since
+        description: Download games played since this timestamp. Defaults to account creation date.
+        schema:
+          type: integer
+          minimum: 1356998400070
+      - in: query
+        name: until
+        description: Download games played until this timestamp. Defaults to now.
+        schema:
+          type: integer
+          minimum: 1356998400070
+      - in: query
+        name: max
+        description: How many games to download. Leave empty to download all games.
+        schema:
+          type: integer
+          minimum: 1
+      - in: query
+        name: vs
+        description: '[Filter] Only games played against this opponent'
+        schema:
+          type: string
+      - in: query
+        name: rated
+        description: '[Filter] Only rated (`true`) or casual (`false`) games'
+        schema:
+          type: boolean
+      - in: query
+        name: perfType
+        description: '[Filter] Only games in these speeds or variants.
+
+          Multiple perf types can be specified, separated by a comma.
+
+          Example: blitz,rapid,classical
+
+          '
+        schema:
+          $ref: '#/components/schemas/PerfType'
+      - in: query
+        name: color
+        description: '[Filter] Only games played as this color.'
+        schema:
+          type: string
+          enum:
+          - white
+          - black
+      - in: query
+        name: analysed
+        description: '[Filter] Only games with or without a computer analysis available'
+        schema:
+          type: boolean
+      - in: query
+        name: moves
+        description: Include the PGN moves.
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: pgnInJson
+        description: Include the full PGN within the JSON response, in a `pgn` field. The response type must be set to `application/x-ndjson` by the request `Accept` header.
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: tags
+        description: Include the PGN tags.
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: clocks
+        description: 'Include clock status when available.
+
+          Either as PGN comments: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`
+
+          Or in a `clocks` JSON field, as centisecond integers, depending on the response type.
+
+          '
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: evals
+        description: 'Include analysis evaluations and comments, when available.
+
+          Either as PGN comments: `12. Bxf6 { [%eval 0.23] } a3 { [%eval -1.09] }`
+
+          Or in an `analysis` JSON field, depending on the response type.
+
+          '
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: accuracy
+        description: 'Include [accuracy percent](https://lichess.org/page/accuracy) of each player, when available. Only available in JSON.
+
+          '
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: opening
+        description: 'Include the opening name.
+
+          Example: `[Opening "King''s Gambit Accepted, King''s Knight Gambit"]`
+
+          '
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: division
+        description: 'Plies which mark the beginning of the middlegame and endgame.
+
+          Only available in JSON
+
+          '
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: ongoing
+        description: Ongoing games are delayed by a few seconds ranging from 3 to 60 depending on the time control, as to prevent cheat bots from using this API.
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: finished
+        description: Include finished games. Set to `false` to only get ongoing games.
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: literate
+        description: 'Insert textual annotations in the PGN about the opening, analysis variations, mistakes, and game termination.
+
+          Example: `5... g4? { (-0.98 → 0.60) Mistake. Best move was h6. } (5... h6 6. d4 Ne7 7. g3 d5 8. exd5 fxg3 9. hxg3 c6 10. dxc6)`
+
+          '
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: lastFen
+        description: 'Include the X-FEN notation of the last position of the game.
+
+          The response type must be set to `application/x-ndjson` by the request `Accept` header.
+
+          '
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: withBookmarked
+        description: 'Add a `bookmarked: true` JSON field when the logged in user has bookmarked the game.
+
+          The response type must be set to `application/x-ndjson` by the request `Accept` header.
+
+          '
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: sort
+        description: Sort order of the games.
+        schema:
+          type: string
+          default: dateDesc
+          enum:
+          - dateAsc
+          - dateDesc
+      responses:
+        '200':
+          description: The games of the user.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/x-ndjson:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/GamePgn'
+                - $ref: '#/components/schemas/GameJson'
+              examples:
+                application/x-chess-pgn:
+                  $ref: '#/components/examples/games-apiGamesUserPgn.pgn'
+                application/x-ndjson:
+                  $ref: '#/components/examples/games-apiGamesUserJson.json'
+  /api/games/export/_ids:
+    post:
+      operationId: gamesExportIds
+      summary: Export games by IDs
+      description: 'Download games by IDs in PGN or [ndjson](#description/streaming-with-nd-json) format, depending on the request `Accept` header.
+
+        Games are sorted by reverse chronological order (most recent first)
+
+        The method is `POST` so a longer list of IDs can be sent in the request body.
+
+        300 IDs can be submitted.
+
+        Ongoing games are delayed by 3 moves, as to prevent cheat bots from using this API.
+
+        '
+      tags:
+      - Games
+      security: []
+      requestBody:
+        description: Game IDs separated by commas. Up to 300.
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+            example: TJxUmbWK,4OtIh2oh,ILwozzRZ
+      parameters:
+      - $ref: '#/components/parameters/AcceptPgnOrNdjson'
+      - in: query
+        name: moves
+        description: Include the PGN moves.
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: pgnInJson
+        description: Include the full PGN within the JSON response, in a `pgn` field.
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: tags
+        description: Include the PGN tags.
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: clocks
+        description: 'Include clock status when available.
+
+          Either as PGN comments: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`
+
+          Or in a `clocks` JSON field, as centisecond integers, depending on the response type.
+
+          '
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: evals
+        description: 'Include analysis evaluations and comments, when available.
+
+          Either as PGN comments: `12. Bxf6 { [%eval 0.23] } a3 { [%eval -1.09] }`
+
+          Or in an `analysis` JSON field, depending on the response type.
+
+          '
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: accuracy
+        description: 'Include [accuracy percent](https://lichess.org/page/accuracy) of each player, when available. Only available in JSON.
+
+          '
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: opening
+        description: 'Include the opening name.
+
+          Example: `[Opening "King''s Gambit Accepted, King''s Knight Gambit"]`
+
+          '
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: division
+        description: 'Plies which mark the beginning of the middlegame and endgame.
+
+          Only available in JSON
+
+          '
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: literate
+        description: 'Insert textual annotations in the PGN about the opening, analysis variations, mistakes, and game termination.
+
+          Example: `5... g4? { (-0.98 → 0.60) Mistake. Best move was h6. } (5... h6 6. d4 Ne7 7. g3 d5 8. exd5 fxg3 9. hxg3 c6 10. dxc6)`
+
+          '
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: The representation of the games.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/GamePgn'
+                - $ref: '#/components/schemas/GameJson'
+              examples:
+                application/x-chess-pgn:
+                  $ref: '#/components/examples/games-gamesExportIds.pgn'
+                application/json:
+                  $ref: '#/components/examples/games-gamesExportIds.json'
+  /api/stream/games-by-users:
+    post:
+      operationId: gamesByUsers
+      summary: Stream games of users
+      description: 'Stream the games played between a list of users, in real time.
+
+        Only games where **both players** are part of the list are included.
+
+        The stream emits an event each time a game is started or finished.
+
+        To also get all current ongoing games at the beginning of the stream, use the `withCurrentGames` flag.
+
+        Games are streamed as [ndjson](#description/streaming-with-nd-json).
+
+        Maximum number of users: 300.
+
+        The method is `POST` so a longer list of IDs can be sent in the request body.
+
+        '
+      tags:
+      - Games
+      security: []
+      requestBody:
+        description: 'Up to 300 user IDs separated by commas.
+
+          Example: `thibault,maia1,maia5`
+
+          '
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+      parameters:
+      - in: query
+        name: withCurrentGames
+        description: Include the already started games at the beginning of the stream.
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: The stream of the games played between the users.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/x-ndjson:
+              schema:
+                $ref: '#/components/schemas/GameStream'
+  /api/stream/games/{streamId}:
+    post:
+      operationId: gamesByIds
+      summary: Stream games by IDs
+      description: 'Creates a stream of games from an arbitrary streamId, and a list of game IDs.
+
+        The stream first outputs the games that already exists, then emits an event each time a game is started or finished.
+
+        Games are streamed as [ndjson](#description/streaming-with-nd-json).
+
+        Maximum number of games: 500 for anonymous requests, or 1000 for [OAuth2 authenticated](#description/authentication) requests.
+
+        While the stream is open, it is possible to [add new game IDs to watch](#tag/games/POST/api/stream/games/{streamId}/add).
+
+        '
+      tags:
+      - Games
+      security: []
+      parameters:
+      - in: path
+        name: streamId
+        schema:
+          type: string
+          description: Arbitrary stream ID that you can later use to add game IDs to the stream.
+          example: myAppName-someRandomId
+        required: true
+      requestBody:
+        description: 'Up to 500 or 1000 game IDs separated by commas.
+
+          Example: `gameId01,gameId02,gameId03`
+
+          '
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: The stream of the games matching the requested IDs.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/x-ndjson:
+              schema:
+                $ref: '#/components/schemas/GameStream'
+  /api/stream/games/{streamId}/add:
+    post:
+      operationId: gamesByIdsAdd
+      summary: Add game IDs to stream
+      description: 'Add new game IDs for [an existing stream](#tag/games/POST/api/stream/games/{streamId}) to watch.
+
+        The stream will immediately outputs the games that already exists, then emit an event each time a game is started or finished.
+
+        '
+      tags:
+      - Games
+      security: []
+      parameters:
+      - in: path
+        name: streamId
+        schema:
+          type: string
+          description: The stream ID you used to [create the stream](#tag/games/POST/api/stream/games/{streamId}).
+          example: myAppName-someRandomId
+        required: true
+      requestBody:
+        description: 'Up to 500 or 1000 game IDs separated by commas.
+
+          Example: `gameId04,gameId05,gameId06`
+
+          '
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: The game IDs have been added to the stream.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+  /api/account/playing:
+    get:
+      operationId: apiAccountPlaying
+      summary: Get my ongoing games
+      description: 'Get the ongoing games of the current user.
+
+        Real-time and correspondence games are included.
+
+        The most urgent games are listed first.
+
+        '
+      tags:
+      - Games
+      security:
+      - OAuth2: []
+      parameters:
+      - in: query
+        name: nb
+        description: Max number of games to fetch
+        schema:
+          type: integer
+          default: 9
+          minimum: 1
+          maximum: 50
+      responses:
+        '200':
+          description: The ongoing games of the logged in user.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - nowPlaying
+                properties:
+                  nowPlaying:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                      - gameId
+                      - fullId
+                      - color
+                      - fen
+                      - hasMoved
+                      - isMyTurn
+                      - lastMove
+                      - opponent
+                      - perf
+                      - rated
+                      - secondsLeft
+                      - source
+                      - speed
+                      - variant
+                      properties:
+                        fullId:
+                          type: string
+                        gameId:
+                          type: string
+                        fen:
+                          type: string
+                        color:
+                          $ref: '#/components/schemas/GameColor'
+                        lastMove:
+                          type: string
+                        source:
+                          $ref: '#/components/schemas/GameSource'
+                        status:
+                          $ref: '#/components/schemas/GameStatusName'
+                        variant:
+                          $ref: '#/components/schemas/Variant'
+                        speed:
+                          $ref: '#/components/schemas/Speed'
+                        perf:
+                          $ref: '#/components/schemas/PerfType'
+                        rated:
+                          type: boolean
+                        hasMoved:
+                          type: boolean
+                        opponent:
+                          required:
+                          - id
+                          - username
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                            username:
+                              type: string
+                            rating:
+                              type: integer
+                            ratingDiff:
+                              type: integer
+                            ai:
+                              type: integer
+                        isMyTurn:
+                          type: boolean
+                        secondsLeft:
+                          type: integer
+                        tournamentId:
+                          type: string
+                        swissId:
+                          type: string
+                        winner:
+                          $ref: '#/components/schemas/GameColor'
+                        ratingDiff:
+                          type: integer
+                example:
+                  nowPlaying:
+                  - gameId: rCRw1AuO
+                    fullId: rCRw1AuOvonq
+                    color: black
+                    fen: r1bqkbnr/pppp2pp/2n1pp2/8/8/3PP3/PPPB1PPP/RN1QKBNR w KQkq - 2 4
+                    hasMoved: true
+                    isMyTurn: false
+                    lastMove: b8c6
+                    opponent:
+                      id: philippe
+                      rating: 1790
+                      username: Philippe
+                    perf: correspondence
+                    rated: false
+                    secondsLeft: 1209600
+                    source: friend
+                    speed: correspondence
+                    variant:
+                      key: standard
+                      name: Standard
+  /api/stream/game/{id}:
+    get:
+      operationId: streamGame
+      summary: Stream moves of a game
+      description: 'Stream positions and moves of any ongoing game, in [ndjson](#description/streaming-with-nd-json).
+
+        A description of the game is sent as a first message.
+
+        Then a message is sent each time a move is played.
+
+        Finally, a description of the game is sent when it finishes, and the stream is closed.
+
+        Ongoing games are delayed by 3 moves, as to prevent cheat bots from using this API.
+
+        No more than 8 game streams can be opened at the same time from the same IP address.
+
+        '
+      tags:
+      - Games
+      security: []
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          example: LuGQwhBb
+        required: true
+      responses:
+        '200':
+          description: The stream of the game moves.
+          content:
+            application/x-ndjson:
+              schema:
+                $ref: '#/components/schemas/MoveStream'
+        '429':
+          description: Too many streams opened at the same time from this IP.
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: string
+                    example: Please only run 8 request(s) at a time
+  /api/import:
+    post:
+      operationId: gameImport
+      summary: Import one game
+      description: 'Import a game from PGN. See <https://lichess.org/paste>.
+
+        Rate limiting: 200 games per hour for OAuth requests, 100 games per hour for anonymous requests.
+
+        To broadcast ongoing games, consider [pushing to a broadcast instead](#tag/broadcasts/POST/api/broadcast/round/{broadcastRoundId}/push).
+
+        To analyse a position or a line, just construct an analysis board URL (most standard tags supported if URL-encoded):
+
+        [https://lichess.org/analysis/pgn/e4_e5_Nf3_Nc6_Bc4_Bc5_Bxf7+](https://lichess.org/analysis/pgn/e4_e5_Nf3_Nc6_Bc4_Bc5_Bxf7+)
+
+        '
+      tags:
+      - Games
+      security:
+      - OAuth2: []
+      requestBody:
+        description: A single game to import
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                pgn:
+                  type: string
+                  description: The PGN. It can contain only one game. Most standard tags are supported.
+      responses:
+        '200':
+          description: The game was successfully imported.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: The game ID
+                    example: R6iLjwz5
+                  url:
+                    type: string
+                    format: uri
+                    description: The game URL
+                example:
+                  id: R6iLjwz5
+                  url: https://lichess.org/R6iLjwz5
+  /api/games/export/imports:
+    get:
+      operationId: apiImportedGamesUser
+      summary: Export your imported games
+      description: Download all games imported by you. Games are exported in PGN format.
+      tags:
+      - Games
+      security:
+      - OAuth2: []
+      responses:
+        '200':
+          description: Imported games in PGN format
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/x-chess-pgn:
+              schema:
+                $ref: '#/components/schemas/GamePgn'
+  /api/games/export/bookmarks:
+    get:
+      operationId: apiExportBookmarks
+      summary: Export your bookmarked games
+      description: 'Download all games bookmarked by you, in PGN or [ndjson](#description/streaming-with-nd-json) format.
+
+        Games are sorted by reverse chronological order (most recent first).
+
+        We recommend streaming the response, for it can be very long.
+
+        '
+      tags:
+      - Games
+      security:
+      - OAuth2: []
+      parameters:
+      - $ref: '#/components/parameters/AcceptPgnOrNdjson'
+      - in: query
+        name: since
+        description: Download games bookmarked since this timestamp. Defaults to account creation date.
+        schema:
+          type: integer
+          minimum: 1356998400070
+      - in: query
+        name: until
+        description: Download games bookmarked until this timestamp. Defaults to now.
+        schema:
+          type: integer
+          minimum: 1356998400070
+      - in: query
+        name: max
+        description: How many bookmarked games to download. Leave empty to download all bookmarked games.
+        schema:
+          type: integer
+          minimum: 1
+      - in: query
+        name: moves
+        description: Include the PGN moves.
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: pgnInJson
+        description: Include the full PGN within the JSON response, in a `pgn` field. The response type must be set to `application/x-ndjson` by the request `Accept` header.
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: tags
+        description: Include the PGN tags.
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: clocks
+        description: 'Include clock status when available.
+
+          Either as PGN comments: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`
+
+          Or in a `clocks` JSON field, as centisecond integers, depending on the response type.
+
+          '
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: evals
+        description: 'Include analysis evaluations and comments, when available.
+
+          Either as PGN comments: `12. Bxf6 { [%eval 0.23] } a3 { [%eval -1.09] }`
+
+          Or in an `analysis` JSON field, depending on the response type.
+
+          '
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: accuracy
+        description: 'Include [accuracy percent](https://lichess.org/page/accuracy) of each player, when available. Only available in JSON.
+
+          '
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: opening
+        description: 'Include the opening name.
+
+          Example: `[Opening "King''s Gambit Accepted, King''s Knight Gambit"]`
+
+          '
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: division
+        description: 'Plies which mark the beginning of the middlegame and endgame.
+
+          Only available in JSON
+
+          '
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: literate
+        description: 'Insert textual annotations in the PGN about the opening, analysis variations, mistakes, and game termination.
+
+          Example: `5... g4? { (-0.98 → 0.60) Mistake. Best move was h6. } (5... h6 6. d4 Ne7 7. g3 d5 8. exd5 fxg3 9. hxg3 c6 10. dxc6)`
+
+          '
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: lastFen
+        description: 'Include the X-FEN notation of the last position of the game.
+
+          The response type must be set to `application/x-ndjson` by the request `Accept` header.
+
+          '
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: sort
+        description: Sort order of the bookmarks.
+        schema:
+          type: string
+          default: dateDesc
+          enum:
+          - dateAsc
+          - dateDesc
+      responses:
+        '200':
+          description: The bookmarked games of the user.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/GamePgn'
+                - $ref: '#/components/schemas/GameJson'
+components:
+  schemas:
+    GameJson:
+      type: object
+      properties:
+        id:
+          type: string
+        rated:
+          type: boolean
+        variant:
+          $ref: '#/components/schemas/VariantKey'
+        speed:
+          $ref: '#/components/schemas/Speed'
+        perf:
+          type: string
+        createdAt:
+          type: integer
+          format: int64
+        lastMoveAt:
+          type: integer
+          format: int64
+        status:
+          $ref: '#/components/schemas/GameStatusName'
+        source:
+          type: string
+        players:
+          $ref: '#/components/schemas/GamePlayers'
+        initialFen:
+          type: string
+        winner:
+          $ref: '#/components/schemas/GameColor'
+        opening:
+          $ref: '#/components/schemas/GameOpening'
+        moves:
+          type: string
+        pgn:
+          type: string
+        daysPerTurn:
+          type: integer
+        analysis:
+          type: array
+          items:
+            $ref: '#/components/schemas/GameMoveAnalysis'
+        tournament:
+          type: string
+        swiss:
+          type: string
+        clock:
+          type: object
+          properties:
+            initial:
+              type: integer
+            increment:
+              type: integer
+            totalTime:
+              type: integer
+          required:
+          - initial
+          - increment
+          - totalTime
+        clocks:
+          type: array
+          items:
+            type: integer
+        division:
+          type: object
+          properties:
+            middle:
+              type: integer
+              description: Ply at which the middlegame begins
+            end:
+              type: integer
+              description: Ply at which the endgame begins
+          required: []
+      required:
+      - id
+      - rated
+      - variant
+      - speed
+      - perf
+      - createdAt
+      - lastMoveAt
+      - status
+      - players
+    PatronColor:
+      type: integer
+      description: 'Players can choose a color for their Patron wings.
+
+        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
+
+
+        The presence of this field indicates the player is an active Patron.
+
+        '
+      minimum: 1
+      maximum: 10
+    Variant:
+      type: object
+      properties:
+        key:
+          $ref: '#/components/schemas/VariantKey'
+        name:
+          type: string
+        short:
+          type: string
+      required:
+      - key
+      - name
+    MoveStreamEntry:
+      oneOf:
+      - type: object
+        properties:
+          id:
+            type: string
+          variant:
+            $ref: '#/components/schemas/Variant'
+          speed:
+            $ref: '#/components/schemas/Speed'
+          perf:
+            $ref: '#/components/schemas/PerfType'
+          rated:
+            type: boolean
+          initialFen:
+            type: string
+          fen:
+            type: string
+          player:
+            $ref: '#/components/schemas/GameColor'
+          turns:
+            type: integer
+          startedAtTurn:
+            type: integer
+          source:
+            $ref: '#/components/schemas/GameSource'
+          status:
+            $ref: '#/components/schemas/GameStatus'
+          createdAt:
+            type: integer
+          lastMove:
+            type: string
+          players:
+            $ref: '#/components/schemas/GamePlayers'
+        required:
+        - id
+      - type: object
+        properties:
+          fen:
+            type: string
+          lm:
+            type: string
+          wc:
+            type: integer
+          bc:
+            type: integer
+        required:
+        - fen
+        - wc
+        - bc
+    Patron:
+      type: boolean
+      deprecated: true
+      description: 'Use patronColor value instead to determine if player is a patron.
+
+        '
+    GameStream:
+      type: array
+      items:
+        $ref: '#/components/schemas/GameStreamGame'
+      example:
+      - id: A5fcMO3k
+        rated: true
+        variant: standard
+        speed: bullet
+        perf: bullet
+        createdAt: 1525789431889
+        status: 20
+        statusName: started
+        clock:
+          initial: 60
+          increment: 0
+          totalTime: 60
+        players:
+          white:
+            userId: kastorcito
+            rating: 2617
+          black:
+            userId: er_or
+            rating: 2288
+      - id: A5fcMO3k
+        rated: true
+        variant: standard
+        speed: bullet
+        perf: bullet
+        createdAt: 1525789431889
+        status: 31
+        statusName: resign
+        clock:
+          initial: 60
+          increment: 0
+          totalTime: 60
+        players:
+          white:
+            userId: kastorcito
+            rating: 2617
+          black:
+            userId: er_or
+            rating: 2288
+        winner: white
+    VariantKey:
+      type: string
+      enum:
+      - standard
+      - chess960
+      - crazyhouse
+      - antichess
+      - atomic
+      - horde
+      - kingOfTheHill
+      - racingKings
+      - threeCheck
+      - fromPosition
+      example: standard
+      default: standard
+    GameColor:
+      type: string
+      enum:
+      - white
+      - black
+    GamePgn:
+      type: string
+      example: '[Event "Rated Blitz game"]
+
+        [Site "https://lichess.org/fY44h4OY"]
+
+        [Date "2018.03.29"]
+
+        [Round "-"]
+
+        [White "pveldman"]
+
+        [Black "thibault"]
+
+        [Result "1-0"]
+
+        [UTCDate "2018.03.29"]
+
+        [UTCTime "01:38:15"]
+
+        [WhiteElo "1610"]
+
+        [BlackElo "1601"]
+
+        [WhiteRatingDiff "+10"]
+
+        [BlackRatingDiff "-10"]
+
+        [Variant "Standard"]
+
+        [TimeControl "180+0"]
+
+        [ECO "C62"]
+
+        [Opening "Ruy Lopez: Steinitz Defense"]
+
+        [Termination "Normal"]
+
+
+        1. e4 { [%clk 0:03:00] } e5 { [%clk 0:03:00] } 2. Nf3 { [%clk 0:02:59] } Nc6 { [%clk 0:02:58] } 3. Bb5 { [%clk 0:02:57] } d6 { [%clk 0:02:55] } 4. h3 { [%clk 0:02:54] } Nf6 { [%clk 0:02:52] } 5. Bxc6+ { [%clk 0:02:52] } bxc6 { [%clk 0:02:49] } 6. d3 { [%clk 0:02:51] } Be7 { [%clk 0:02:46] } 7. O-O { [%clk 0:02:47] } O-O { [%clk 0:02:45] } 8. b3 { [%clk 0:02:45] } d5 { [%clk 0:02:45] } 9. exd5 { [%clk 0:02:33] } cxd5 { [%clk 0:02:40] } 10. Nxe5 { [%clk 0:02:31] } Qd6 { [%clk 0:02:38] } 1-0
+
+        '
+    GameMoveAnalysis:
+      type: object
+      properties:
+        eval:
+          type: integer
+          description: Evaluation in centipawns
+        mate:
+          type: integer
+          description: Number of moves until forced mate
+        best:
+          type: string
+          example: c2c3
+          description: Best move in UCI notation (only if played move was inaccurate)
+        variation:
+          type: string
+          example: c3 Nc6 d4 Qb6 Be2 Nge7 Na3 cxd4 cxd4 Nf5
+          description: Best variation in SAN notation (only if played move was inaccurate)
+        judgment:
+          type: object
+          description: Judgment annotation (only if played move was inaccurate)
+          properties:
+            name:
+              type: string
+              enum:
+              - Inaccuracy
+              - Mistake
+              - Blunder
+            comment:
+              type: string
+              example: Blunder. Nxg6 was best.
+    Ok:
+      properties:
+        ok:
+          type: boolean
+      required:
+      - ok
+    PerfType:
+      type: string
+      enum:
+      - ultraBullet
+      - bullet
+      - blitz
+      - rapid
+      - classical
+      - correspondence
+      - chess960
+      - crazyhouse
+      - antichess
+      - atomic
+      - horde
+      - kingOfTheHill
+      - racingKings
+      - threeCheck
+    GameOpening:
+      type: object
+      properties:
+        eco:
+          type: string
+        name:
+          type: string
+        ply:
+          type: integer
+      required:
+      - eco
+      - name
+      - ply
+    SpectatorGameChat:
+      type: array
+      items:
+        type: object
+        properties:
+          text:
+            type: string
+          user:
+            type: string
+        required:
+        - text
+        - user
+      example:
+      - text: e4 here we go
+        user: Toby
+      - text: Woof!
+        user: AnnoyingDog
+    GamePlayers:
+      type: object
+      properties:
+        white:
+          $ref: '#/components/schemas/GamePlayerUser'
+        black:
+          $ref: '#/components/schemas/GamePlayerUser'
+      required:
+      - white
+      - black
+    GameStatusId:
+      type: integer
+      enum:
+      - 10
+      - 20
+      - 25
+      - 30
+      - 31
+      - 32
+      - 33
+      - 34
+      - 35
+      - 36
+      - 37
+      - 38
+      - 39
+      - 60
+    Flair:
+      type: string
+      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
+    GameStatusName:
+      type: string
+      enum:
+      - created
+      - started
+      - aborted
+      - mate
+      - resign
+      - stalemate
+      - timeout
+      - draw
+      - outoftime
+      - cheat
+      - noStart
+      - unknownFinish
+      - insufficientMaterialClaim
+      - variantEnd
+    Speed:
+      type: string
+      enum:
+      - ultraBullet
+      - bullet
+      - blitz
+      - rapid
+      - classical
+      - correspondence
+    GameSource:
+      type: string
+      enum:
+      - lobby
+      - friend
+      - ai
+      - api
+      - tournament
+      - position
+      - import
+      - importlive
+      - simul
+      - relay
+      - pool
+      - arena
+      - swiss
+    LightUser:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        flair:
+          $ref: '#/components/schemas/Flair'
+        title:
+          $ref: '#/components/schemas/Title'
+        patron:
+          $ref: '#/components/schemas/Patron'
+        patronColor:
+          $ref: '#/components/schemas/PatronColor'
+      required:
+      - id
+      - name
+    GameStreamGame:
+      type: object
+      properties:
+        id:
+          type: string
+        rated:
+          type: boolean
+        variant:
+          $ref: '#/components/schemas/VariantKey'
+        speed:
+          $ref: '#/components/schemas/Speed'
+        perf:
+          $ref: '#/components/schemas/PerfType'
+        createdAt:
+          type: integer
+        status:
+          $ref: '#/components/schemas/GameStatusId'
+        statusName:
+          $ref: '#/components/schemas/GameStatusName'
+        clock:
+          type: object
+          properties:
+            initial:
+              type: integer
+            increment:
+              type: integer
+            totalTime:
+              type: integer
+        players:
+          type: object
+          properties:
+            white:
+              type: object
+              properties:
+                userId:
+                  type: string
+                rating:
+                  type: integer
+            black:
+              type: object
+              properties:
+                userId:
+                  type: string
+                rating:
+                  type: integer
+        winner:
+          $ref: '#/components/schemas/GameColor'
+      required:
+      - id
+      example:
+        id: A5fcMO3k
+        rated: true
+        variant: standard
+        speed: bullet
+        perf: bullet
+        createdAt: 1525789431889
+        status: 20
+        statusName: started
+        clock:
+          initial: 60
+          increment: 0
+          totalTime: 60
+        players:
+          white:
+            userId: kastorcito
+            rating: 2617
+          black:
+            userId: er_or
+            rating: 2288
+    GamePlayerUser:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/LightUser'
+        rating:
+          type: integer
+        ratingDiff:
+          type: integer
+        name:
+          type: string
+        provisional:
+          type: boolean
+        aiLevel:
+          type: integer
+        analysis:
+          type: object
+          properties:
+            inaccuracy:
+              type: integer
+            mistake:
+              type: integer
+            blunder:
+              type: integer
+            acpl:
+              type: integer
+            accuracy:
+              type: integer
+          required:
+          - inaccuracy
+          - mistake
+          - blunder
+          - acpl
+        team:
+          type: string
+      required:
+      - user
+      - rating
+    Title:
+      type: string
+      enum:
+      - GM
+      - WGM
+      - IM
+      - WIM
+      - FM
+      - WFM
+      - NM
+      - CM
+      - WCM
+      - WNM
+      - LM
+      - BOT
+      description: only appears if the user is a titled player or a bot user
+    MoveStream:
+      type: array
+      items:
+        $ref: '#/components/schemas/MoveStreamEntry'
+      example:
+      - id: LuGQwhBb
+        variant:
+          key: standard
+          name: Standard
+          short: Std
+        speed: blitz
+        perf: blitz
+        rated: true
+        initialFen: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+        fen: rnbqkb1r/1p1ppppp/p6n/2p4Q/8/1P2P3/P1PP1PPP/RNB1KBNR w KQkq - 0 4
+        player: white
+        turns: 6
+        startedAtTurn: 0
+        source: pool
+        status:
+          id: 20
+          name: started
+        createdAt: 1620029815106
+        lastMove: c7c5
+        players:
+          white:
+            user:
+              name: ARM-777777
+              title: GM
+              id: arm-777777
+            rating: 3120
+          black:
+            user:
+              name: Flash_Marafon
+              id: flash_marafon
+            rating: 3015
+      - fen: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w
+        wc: 180
+        bc: 180
+      - fen: rnbqkbnr/pppppppp/8/8/8/4P3/PPPP1PPP/RNBQKBNR b
+        lm: e2e3
+        wc: 180
+        bc: 180
+      - fen: rnbqkb1r/pppppppp/7n/8/8/4P3/PPPP1PPP/RNBQKBNR w
+        lm: g8h6
+        wc: 180
+        bc: 180
+      - fen: rnbqkb1r/pppppppp/7n/8/8/1P2P3/P1PP1PPP/RNBQKBNR b
+        lm: b2b3
+        wc: 177
+        bc: 180
+      - fen: rnbqkb1r/1ppppppp/p6n/8/8/1P2P3/P1PP1PPP/RNBQKBNR w
+        lm: a7a6
+        wc: 177
+        bc: 177
+    GameStatus:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/GameStatusId'
+        name:
+          $ref: '#/components/schemas/GameStatusName'
+      required:
+      - id
+      - name
+  parameters:
+    AcceptPgnOrNdjson:
+      in: header
+      name: Accept
+      description: 'Specify the desired response format.
+
+        Use `application/x-chess-pgn` to get the games in PGN format.
+
+        Use `application/x-ndjson` to get the games in ndjson format. [Read about ndjson here](#description/streaming-with-nd-json) and how you can parse it in Javascript.
+
+        '
+      schema:
+        type: string
+        enum:
+        - application/x-chess-pgn
+        - application/x-ndjson
+        default: application/x-chess-pgn
+    AcceptPgnOrJson:
+      in: header
+      name: Accept
+      description: 'Specify the desired response format.
+
+        Use `application/x-chess-pgn` to get the games in PGN format.
+
+        Use `application/json` to get the games in JSON format.
+
+        '
+      schema:
+        type: string
+        enum:
+        - application/x-chess-pgn
+        - application/json
+        default: application/x-chess-pgn
+  examples:
+    games-exportOneGame.json:
+      value:
+        id: q7ZvsdUF
+        rated: true
+        variant: standard
+        speed: blitz
+        perf: blitz
+        createdAt: 1514505150384
+        lastMoveAt: 1514505592843
+        status: draw
+        source: arena
+        players:
+          white:
+            user:
+              name: Lance5500
+              title: LM
+              patron: true
+              patronColor: 10
+              id: lance5500
+            rating: 2389
+            ratingDiff: 4
+            analysis:
+              inaccuracy: 5
+              mistake: 2
+              blunder: 1
+              acpl: 26
+              accuracy: 90
+          black:
+            user:
+              name: TryingHard87
+              id: tryinghard87
+            rating: 2498
+            ratingDiff: -4
+            analysis:
+              inaccuracy: 3
+              mistake: 3
+              blunder: 1
+              acpl: 26
+              accuracy: 90
+        opening:
+          eco: D31
+          name: 'Semi-Slav Defense: Marshall Gambit'
+          ply: 7
+        moves: d4 d5 c4 c6 Nc3 e6 e4 Nd7 exd5 cxd5 cxd5 exd5 Nxd5 Nb6 Bb5+ Bd7 Qe2+ Ne7 Nxb6 Qxb6 Bxd7+ Kxd7 Nf3 Qa6 Ne5+ Ke8 Qf3 f6 Nd3 Qc6 Qe2 Kf7 O-O Kg8 Bd2 Re8 Rac1 Nf5 Be3 Qe6 Rfe1 g6 b3 Bd6 Qd2 Kf7 Bf4 Qd7 Bxd6 Nxd6 Nc5 Rxe1+ Rxe1 Qc6 f3 Re8 Rxe8 Nxe8 Kf2 Nc7 Qb4 b6 Qc4+ Nd5 Nd3 Qe6 Nb4 Ne7 Qxe6+ Kxe6 Ke3 Kd6 g3 h6 Kd3 h5 Nc2 Kd5 a3 Nc6 Ne3+ Kd6 h4 Nd8 g4 Ne6 Ke4 Ng7 Nc4+ Ke6 d5+ Kd7 a4 g5 gxh5 Nxh5 hxg5 fxg5 Kf5 Nf4 Ne3 Nh3 Kg4 Ng1 Nc4 Kc7 Nd2 Kd6 Kxg5 Kxd5 f4 Nh3+ Kg4 Nf2+ Kf3 Nd3 Ke3 Nc5 Kf3 Ke6 Ke3 Kf5 Kd4 Ne6+ Kc4
+        analysis:
+        - eval: 8
+        - eval: 7
+        - eval: 10
+        - eval: 14
+        - eval: 2
+        - eval: 9
+        - eval: 5
+        - eval: 85
+          best: d5e4
+          variation: dxe4 Nxe4 Bb4+ Nc3 c5 a3 Bxc3+ bxc3 Nc6 Nf3
+          judgment:
+            name: Inaccuracy
+            comment: Inaccuracy. dxe4 was best.
+        - eval: 96
+        - eval: 98
+        - eval: 88
+        - eval: 87
+        - eval: 81
+        - eval: 88
+        - eval: 82
+        - eval: 90
+        - eval: 79
+        - eval: 160
+          best: f8e7
+          variation: Be7 Nxb6 axb6 Nf3 Nf6 O-O O-O Bd2 Bd6 Bc4 Re8 Qd3 Be6 Bxe6
+          judgment:
+            name: Inaccuracy
+            comment: Inaccuracy. Be7 was best.
+        - eval: 146
+        - eval: 151
+        - eval: 149
+        - eval: 160
+        - eval: 151
+        - eval: 150
+        - eval: 164
+        - eval: 190
+        - eval: 44
+          best: e5d3
+          variation: Nd3 Rd8
+          judgment:
+            name: Mistake
+            comment: Mistake. Nd3 was best.
+        - eval: 61
+        - eval: 59
+        - eval: 54
+        - eval: -34
+          best: e1e2
+          variation: Ke2 Rd8 Rd1 Qxf3+ Kxf3 Nf5 Be3 Nh4+ Kg3 g5 f4 gxf4+ Bxf4 Nf5+
+          judgment:
+            name: Inaccuracy
+            comment: Inaccuracy. Ke2 was best.
+        - eval: 158
+          best: c6g2
+          variation: Qxg2 Rf1 Qd5 Be3 Rc8 Nf4 Qf5 Rc1 Rxc1+ Bxc1 g5 Ne6 Kf7 Nd8+
+          judgment:
+            name: Blunder
+            comment: Blunder. Qxg2 was best.
+        - eval: 142
+        - eval: 183
+        - eval: 177
+        - eval: 340
+          best: e7d5
+          variation: Nd5 Rac1 Qe8 Qf3 Rd8 Nf4 Qf7 Nxd5 Qxd5 Qxd5+ Rxd5 Rc7 Rxd4 Bc3
+          judgment:
+            name: Mistake
+            comment: Mistake. Nd5 was best.
+        - eval: 169
+          best: f1e1
+          variation: Rfe1 Rc8 Rac1 Qd7 Nf4 Rxc1 Rxc1 h5 Qd3 a5 Qb3+ Kh7 Rc5 Nf5
+          judgment:
+            name: Mistake
+            comment: Mistake. Rfe1 was best.
+        - eval: 200
+        - eval: 120
+          best: e2h5
+          variation: Qh5 Qd7 Rc7 Qxc7 Qxe8 Qc6 Qd8 h6 Bb4 Qe4 Ne1 Kf7 Nf3 Qc6
+          judgment:
+            name: Inaccuracy
+            comment: Inaccuracy. Qh5 was best.
+        - eval: 167
+        - eval: 147
+        - eval: 200
+          best: e6d7
+          variation: Qd7 Nf4
+        - eval: 92
+          best: c1c7
+          variation: Rc7 Qxa2
+          judgment:
+            name: Inaccuracy
+            comment: Inaccuracy. Rc7 was best.
+        - eval: 102
+        - eval: 95
+        - eval: 95
+        - eval: 61
+        - eval: 79
+        - eval: 72
+        - eval: 201
+          best: d7d6
+          variation: Qxd6 d5 Rxe1+ Rxe1 Re8 Rxe8 Kxe8 Nf4 Qe5 g3 Nd4 Qc3 Kd7 Qb4
+          judgment:
+            name: Mistake
+            comment: Mistake. Qxd6 was best.
+        - eval: 190
+        - eval: 183
+        - eval: 106
+          best: d2e1
+          variation: Qxe1 Qe7 Qxe7+ Kxe7 Nxb7 Rc8 Re1+ Kd7 Nc5+ Kc6 g3 Re8 Rc1 Kd5
+          judgment:
+            name: Inaccuracy
+            comment: Inaccuracy. Qxe1 was best.
+        - eval: 108
+        - eval: 93
+        - eval: 101
+        - eval: 101
+        - eval: 107
+        - eval: 100
+        - eval: 105
+        - eval: 103
+        - eval: 118
+        - eval: 117
+        - eval: 116
+        - eval: 83
+        - eval: 95
+        - eval: 90
+        - eval: 94
+        - eval: 94
+        - eval: 93
+        - eval: 88
+        - eval: 102
+        - eval: 79
+        - eval: 120
+        - eval: 114
+        - eval: 124
+        - eval: 108
+        - eval: 133
+        - eval: 100
+        - eval: 156
+          best: d5d6
+          variation: Kd6 Kc4
+        - eval: 198
+        - eval: 179
+        - eval: 167
+        - eval: 227
+          best: c6a5
+          variation: Na5 b4
+        - eval: 225
+        - eval: 209
+        - eval: 207
+        - eval: 192
+        - eval: 173
+        - eval: 243
+          best: d6c6
+          variation: Kc6 a4 a6 Ne3 Kd6 d5 Kd7 Kd4 Ne8 gxh5 gxh5 Nf5 Nd6 Ng3
+          judgment:
+            name: Inaccuracy
+            comment: Inaccuracy. Kc6 was best.
+        - eval: 219
+        - eval: 234
+        - eval: 201
+        - eval: 342
+          best: d7e7
+          variation: Ke7 Kf4 Ne8 g5 Kf7 gxf6 Kxf6 Nd2 Ng7 Ne4+ Ke7 Kg5 Nf5 d6+
+          judgment:
+            name: Mistake
+            comment: Mistake. Ke7 was best.
+        - eval: 318
+        - eval: 342
+        - eval: 307
+        - eval: 323
+        - eval: 270
+        - eval: 313
+        - eval: 279
+        - eval: 303
+        - eval: 286
+        - eval: 277
+        - eval: 215
+        - eval: 213
+        - eval: 8
+          best: b3b4
+          variation: b4 Kc8 Nd6+ Kd7 Ne4 a6 Nc3 Kd6 Kg3 Ke5 b5 axb5 axb5 Kd6
+          judgment:
+            name: Blunder
+            comment: Blunder. b4 was best.
+        - eval: 8
+        - eval: 8
+        - eval: 8
+        - eval: 21
+        - eval: 54
+        - eval: 42
+        - eval: 57
+        - eval: 25
+        - eval: 63
+        - eval: 8
+          best: f3g4
+          variation: Kg4 Nf2+ Kf5 Kd4 Nf3+ Kc3 Ke6 Kxb3 f5 Ne4 Ke5 Nf2 Kf4 Nd3+
+          judgment:
+            name: Inaccuracy
+            comment: Inaccuracy. Kg4 was best.
+        - eval: 8
+        - eval: 8
+        - eval: 8
+        - eval: 8
+        - eval: 8
+        - eval: 8
+        - eval: 8
+        - eval: 8
+        tournament: winter17
+        clock:
+          initial: 300
+          increment: 3
+          totalTime: 420
+        division:
+          middle: 22
+          end: 53
+    games-exportOneGame.pgn:
+      value: '[Event "2017 Winter Marathon"]
+
+        [Site "https://lichess.org/q7ZvsdUF"]
+
+        [Date "2017.12.28"]
+
+        [Round "-"]
+
+        [White "Lance5500"]
+
+        [Black "TryingHard87"]
+
+        [Result "1/2-1/2"]
+
+        [GameId "q7ZvsdUF"]
+
+        [UTCDate "2017.12.28"]
+
+        [UTCTime "23:52:30"]
+
+        [WhiteElo "2389"]
+
+        [BlackElo "2498"]
+
+        [WhiteRatingDiff "+4"]
+
+        [BlackRatingDiff "-4"]
+
+        [WhiteTitle "LM"]
+
+        [WhiteBerserk "true"]
+
+        [Variant "Standard"]
+
+        [TimeControl "300+3"]
+
+        [ECO "D31"]
+
+        [Opening "Semi-Slav Defense: Marshall Gambit"]
+
+        [Termination "Normal"]
+
+        [Annotator "lichess.org"]
+
+
+        1. d4 { [%eval 0.08] } 1... d5 { [%eval 0.07] } 2. c4 { [%eval 0.1] } 2... c6 { [%eval 0.14] } 3. Nc3 { [%eval 0.02] } 3... e6 { [%eval 0.09] } 4. e4 { [%eval 0.05] } { D31 Semi-Slav Defense: Marshall Gambit } 4... Nd7?! { (0.05 → 0.85) Inaccuracy. dxe4 was best. } { [%eval 0.85] } (4... dxe4 5. Nxe4 Bb4+ 6. Nc3 c5 7. a3 Bxc3+ 8. bxc3 Nc6 9. Nf3) 5. exd5 { [%eval 0.96] } 5... cxd5 { [%eval 0.98] } 6. cxd5 { [%eval 0.88] } 6... exd5 { [%eval 0.87] } 7. Nxd5 { [%eval 0.81] } 7... Nb6 { [%eval 0.88] } 8. Bb5+ { [%eval 0.82] } 8... Bd7 { [%eval 0.9] } 9. Qe2+ { [%eval 0.79] } 9... Ne7?! { (0.79 → 1.60) Inaccuracy. Be7 was best. } { [%eval 1.6] } (9... Be7 10. Nxb6 axb6 11. Nf3 Nf6 12. O-O O-O 13. Bd2 Bd6 14. Bc4 Re8 15. Qd3 Be6 16. Bxe6) 10. Nxb6 { [%eval 1.46] } 10... Qxb6 { [%eval 1.51] } 11. Bxd7+ { [%eval 1.49] } 11... Kxd7 { [%eval 1.6] } 12. Nf3 { [%eval 1.51] } 12... Qa6 { [%eval 1.5] } 13. Ne5+ { [%eval 1.64] } 13... Ke8 { [%eval 1.9] } 14. Qf3? { (1.90 → 0.44) Mistake. Nd3 was best. } { [%eval 0.44] } (14. Nd3 Rd8) 14... f6 { [%eval 0.61] } 15. Nd3 { [%eval 0.59] } 15... Qc6 { [%eval 0.54] } 16. Qe2?! { (0.54 → -0.34) Inaccuracy. Ke2 was best. } { [%eval -0.34] } (16. Ke2 Rd8 17. Rd1 Qxf3+ 18. Kxf3 Nf5 19. Be3 Nh4+ 20. Kg3 g5 21. f4 gxf4+ 22. Bxf4 Nf5+) 16... Kf7?? { (-0.34 → 1.58) Blunder. Qxg2 was best. } { [%eval 1.58] } (16... Qxg2 17. Rf1 Qd5 18. Be3 Rc8 19. Nf4 Qf5 20. Rc1 Rxc1+ 21. Bxc1 g5 22. Ne6 Kf7 23. Nd8+) 17. O-O { [%eval 1.42] } 17... Kg8 { [%eval 1.83] } 18. Bd2 { [%eval 1.77] } 18... Re8? { (1.77 → 3.40) Mistake. Nd5 was best. } { [%eval 3.4] } (18... Nd5 19. Rac1 Qe8 20. Qf3 Rd8 21. Nf4 Qf7 22. Nxd5 Qxd5 23. Qxd5+ Rxd5 24. Rc7 Rxd4 25. Bc3) 19. Rac1? { (3.40 → 1.69) Mistake. Rfe1 was best. } { [%eval 1.69] } (19. Rfe1 Rc8 20. Rac1 Qd7 21. Nf4 Rxc1 22. Rxc1 h5 23. Qd3 a5 24. Qb3+ Kh7 25. Rc5 Nf5) 19... Nf5 { [%eval 2.0] } 20. Be3?! { (2.00 → 1.20) Inaccuracy. Qh5 was best. } { [%eval 1.2] } (20. Qh5 Qd7 21. Rc7 Qxc7 22. Qxe8 Qc6 23. Qd8 h6 24. Bb4 Qe4 25. Ne1 Kf7 26. Nf3 Qc6) 20... Qe6 { [%eval 1.67] } 21. Rfe1 { [%eval 1.47] } 21... g6 { [%eval 2.0] } 22. b3?! { (2.00 → 0.92) Inaccuracy. Rc7 was best. } { [%eval 0.92] } (22. Rc7 Qxa2) 22... Bd6 { [%eval 1.02] } 23. Qd2 { [%eval 0.95] } 23... Kf7 { [%eval 0.95] } 24. Bf4 { [%eval 0.61] } 24... Qd7 { [%eval 0.79] } 25. Bxd6 { [%eval 0.72] } 25... Nxd6? { (0.72 → 2.01) Mistake. Qxd6 was best. } { [%eval 2.01] } (25... Qxd6 26. d5 Rxe1+ 27. Rxe1 Re8 28. Rxe8 Kxe8 29. Nf4 Qe5 30. g3 Nd4 31. Qc3 Kd7 32. Qb4) 26. Nc5 { [%eval 1.9] } 26... Rxe1+ { [%eval 1.83] } 27. Rxe1?! { (1.83 → 1.06) Inaccuracy. Qxe1 was best. } { [%eval 1.06] } (27. Qxe1 Qe7 28. Qxe7+ Kxe7 29. Nxb7 Rc8 30. Re1+ Kd7 31. Nc5+ Kc6 32. g3 Re8 33. Rc1 Kd5) 27... Qc6 { [%eval 1.08] } 28. f3 { [%eval 0.93] } 28... Re8 { [%eval 1.01] } 29. Rxe8 { [%eval 1.01] } 29... Nxe8 { [%eval 1.07] } 30. Kf2 { [%eval 1.0] } 30... Nc7 { [%eval 1.05] } 31. Qb4 { [%eval 1.03] } 31... b6 { [%eval 1.18] } 32. Qc4+ { [%eval 1.17] } 32... Nd5 { [%eval 1.16] } 33. Nd3 { [%eval 0.83] } 33... Qe6 { [%eval 0.95] } 34. Nb4 { [%eval 0.9] } 34... Ne7 { [%eval 0.94] } 35. Qxe6+ { [%eval 0.94] } 35... Kxe6 { [%eval 0.93] } 36. Ke3 { [%eval 0.88] } 36... Kd6 { [%eval 1.02] } 37. g3 { [%eval 0.79] } 37... h6 { [%eval 1.2] } 38. Kd3 { [%eval 1.14] } 38... h5 { [%eval 1.24] } 39. Nc2 { [%eval 1.08] } 39... Kd5 { [%eval 1.33] } 40. a3 { [%eval 1.0] } 40... Nc6 { [%eval 1.56] } 41. Ne3+ { [%eval 1.98] } 41... Kd6 { [%eval 1.79] } 42. h4 { [%eval 1.67] } 42... Nd8 { [%eval 2.27] } 43. g4 { [%eval 2.25] } 43... Ne6 { [%eval 2.09] } 44. Ke4 { [%eval 2.07] } 44... Ng7 { [%eval 1.92] } 45. Nc4+ { [%eval 1.73] } 45... Ke6?! { (1.73 → 2.43) Inaccuracy. Kc6 was best. } { [%eval 2.43] } (45... Kc6 46. a4 a6 47. Ne3 Kd6 48. d5 Kd7 49. Kd4 Ne8 50. gxh5 gxh5 51. Nf5 Nd6 52. Ng3) 46. d5+ { [%eval 2.19] } 46... Kd7 { [%eval 2.34] } 47. a4 { [%eval 2.01] } 47... g5? { (2.01 → 3.42) Mistake. Ke7 was best. } { [%eval 3.42] } (47... Ke7 48. Kf4 Ne8 49. g5 Kf7 50. gxf6 Kxf6 51. Nd2 Ng7 52. Ne4+ Ke7 53. Kg5 Nf5 54. d6+) 48. gxh5 { [%eval 3.18] } 48... Nxh5 { [%eval 3.42] } 49. hxg5 { [%eval 3.07] } 49... fxg5 { [%eval 3.23] } 50. Kf5 { [%eval 2.7] } 50... Nf4 { [%eval 3.13] } 51. Ne3 { [%eval 2.79] } 51... Nh3 { [%eval 3.03] } 52. Kg4 { [%eval 2.86] } 52... Ng1 { [%eval 2.77] } 53. Nc4 { [%eval 2.15] } 53... Kc7 { [%eval 2.13] } 54. Nd2?? { (2.13 → 0.08) Blunder. b4 was best. } { [%eval 0.08] } (54. b4 Kc8 55. Nd6+ Kd7 56. Ne4 a6 57. Nc3 Kd6 58. Kg3 Ke5 59. b5 axb5 60. axb5 Kd6) 54... Kd6 { [%eval 0.08] } 55. Kxg5 { [%eval 0.08] } 55... Kxd5 { [%eval 0.08] } 56. f4 { [%eval 0.21] } 56... Nh3+ { [%eval 0.54] } 57. Kg4 { [%eval 0.42] } 57... Nf2+ { [%eval 0.57] } 58. Kf3 { [%eval 0.25] } 58... Nd3 { [%eval 0.63] } 59. Ke3?! { (0.63 → 0.08) Inaccuracy. Kg4 was best. } { [%eval 0.08] } (59. Kg4 Nf2+ 60. Kf5 Kd4 61. Nf3+ Kc3 62. Ke6 Kxb3 63. f5 Ne4 64. Ke5 Nf2 65. Kf4 Nd3+) 59... Nc5 { [%eval 0.08] } 60. Kf3 { [%eval 0.08] } 60... Ke6 { [%eval 0.08] } 61. Ke3 { [%eval 0.08] } 61... Kf5 { [%eval 0.08] } 62. Kd4 { [%eval 0.08] } 62... Ne6+ { [%eval 0.08] } 63. Kc4 { [%eval 0.08] } { The game is a draw. } 1/2-1/2
+
+        '
+    games-gamesExportIds.pgn:
+      value: '[Event "Daily Rapid Arena"]
+
+        [Site "https://lichess.org/TJxUmbWK"]
+
+        [Date "2017.08.30"]
+
+        [Round "-"]
+
+        [White "arex"]
+
+        [Black "JERC-12Jesus"]
+
+        [Result "1-0"]
+
+        [GameId "TJxUmbWK"]
+
+        [UTCDate "2017.08.30"]
+
+        [UTCTime "20:40:27"]
+
+        [WhiteElo "1627"]
+
+        [BlackElo "1740"]
+
+        [WhiteRatingDiff "+15"]
+
+        [BlackRatingDiff "-15"]
+
+        [Variant "Standard"]
+
+        [TimeControl "600+0"]
+
+        [ECO "B07"]
+
+        [Opening "Pirc Defense"]
+
+        [Termination "Normal"]
+
+        [Annotator "lichess.org"]
+
+
+        1. e4 d6 2. d4 Nf6 3. Nc3 g6 { B07 Pirc Defense } 4. Bd3 Bg7 5. Be3 O-O 6. Qd2 Ng4 7. O-O-O Nxe3 8. Qxe3 Nd7 9. f4 Nf6 10. h3 c6 11. g4 Qb6 12. Nf3 c5 13. dxc5 Qxc5 14. Qxc5 dxc5 15. e5 Nd7 16. Nd5 e6 17. Ne7+ Kh8 18. Bb5 a6 19. Bxd7 Bxd7 20. Rxd7 Rfe8 21. Rxb7 { Black resigns. } 1-0
+
+        '
+    games-apiUserCurrentGameJson.json:
+      value:
+        id: wVI5NKlo
+        rated: false
+        variant: standard
+        speed: blitz
+        perf: blitz
+        createdAt: 1778780828563
+        lastMoveAt: 1778780828563
+        status: outoftime
+        source: simul
+        players:
+          white:
+            user:
+              name: thomas7777777
+              flair: nature.rabbit
+              id: thomas7777777
+            rating: 1036
+          black:
+            user:
+              name: Lance5500
+              title: LM
+              patron: true
+              patronColor: 10
+              id: lance5500
+            rating: 2569
+        winner: black
+        moves: ''
+        clock:
+          initial: 300
+          increment: 0
+          totalTime: 300
+        division: {}
+    games-apiUserCurrentGamePgn.pgn:
+      value: "[Event \"Coach LM Lance5500 simul\"]\n[Site \"https://lichess.org/wVI5NKlo\"]\n[Date \"2026.05.14\"]\n[Round \"-\"]\n[White \"thomas7777777\"]\n[Black \"Lance5500\"]\n[Result \"0-1\"]\n[GameId \"wVI5NKlo\"]\n[UTCDate \"2026.05.14\"]\n[UTCTime \"17:47:08\"]\n[WhiteElo \"1036\"]\n[BlackElo \"2569\"]\n[BlackTitle \"LM\"]\n[Variant \"Standard\"]\n[TimeControl \"300+0\"]\n[ECO \"?\"]\n[Opening \"?\"]\n[Termination \"Time forfeit\"]\n[Annotator \"lichess.org\"]\n\n 0-1\n"
+    games-apiGamesUserJson.json:
+      value:
+        id: wVI5NKlo
+        rated: false
+        variant: standard
+        speed: blitz
+        perf: blitz
+        createdAt: 1778780828563
+        lastMoveAt: 1778780828563
+        status: outoftime
+        source: simul
+        players:
+          white:
+            user:
+              name: thomas7777777
+              flair: nature.rabbit
+              id: thomas7777777
+            rating: 1036
+          black:
+            user:
+              name: Lance5500
+              title: LM
+              patron: true
+              patronColor: 10
+              id: lance5500
+            rating: 2569
+        winner: black
+        moves: ''
+        clock:
+          initial: 300
+          increment: 0
+          totalTime: 300
+        division: {}
+    games-apiGamesUserPgn.pgn:
+      value: "[Event \"Coach LM Lance5500 simul\"]\n[Site \"https://lichess.org/wVI5NKlo\"]\n[Date \"2026.05.14\"]\n[Round \"-\"]\n[White \"thomas7777777\"]\n[Black \"Lance5500\"]\n[Result \"0-1\"]\n[GameId \"wVI5NKlo\"]\n[UTCDate \"2026.05.14\"]\n[UTCTime \"17:47:08\"]\n[WhiteElo \"1036\"]\n[BlackElo \"2569\"]\n[BlackTitle \"LM\"]\n[Variant \"Standard\"]\n[TimeControl \"300+0\"]\n[ECO \"?\"]\n[Termination \"Time forfeit\"]\n\n 0-1\n"
+    games-gamesExportIds.json:
+      value:
+        id: TJxUmbWK
+        rated: true
+        variant: standard
+        speed: rapid
+        perf: rapid
+        createdAt: 1504125627542
+        lastMoveAt: 1504126012148
+        status: resign
+        source: arena
+        players:
+          white:
+            user:
+              name: arex
+              patron: true
+              patronColor: 10
+              id: arex
+            rating: 1627
+            ratingDiff: 15
+          black:
+            user:
+              name: JERC-12Jesus
+              id: jerc-12jesus
+            rating: 1740
+            ratingDiff: -15
+        winner: white
+        opening:
+          eco: B07
+          name: Pirc Defense
+          ply: 6
+        moves: e4 d6 d4 Nf6 Nc3 g6 Bd3 Bg7 Be3 O-O Qd2 Ng4 O-O-O Nxe3 Qxe3 Nd7 f4 Nf6 h3 c6 g4 Qb6 Nf3 c5 dxc5 Qxc5 Qxc5 dxc5 e5 Nd7 Nd5 e6 Ne7+ Kh8 Bb5 a6 Bxd7 Bxd7 Rxd7 Rfe8 Rxb7
+        tournament: Xg7M4och
+        clock:
+          initial: 600
+          increment: 0
+          totalTime: 600
+        division:
+          middle: 22
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: 'Read [the introduction for how to make authenticated requests](#description/authentication).
+
+        '
+      flows:
+        authorizationCode:
+          authorizationUrl: https://lichess.org/oauth
+          tokenUrl: https://lichess.org/api/token
+          scopes:
+            preference:read: Read your preferences
+            preference:write: Write your preferences
+            email:read: Read your email address
+            engine:read: Read your external engines
+            engine:write: Create, update, delete your external engines
+            challenge:read: Read incoming challenges
+            challenge:write: Create, accept, decline challenges
+            challenge:bulk: Create, delete, query bulk pairings
+            study:read: Read private studies and broadcasts
+            study:write: Create, update, delete studies and broadcasts
+            tournament:write: Create tournaments
+            racer:write: Create and join puzzle races
+            puzzle:read: Read puzzle activity
+            puzzle:write: Write puzzle activity
+            team:read: Read private team information
+            team:write: Join, leave teams
+            team:lead: Manage teams (kick members, send PMs)
+            follow:read: Read followed players
+            follow:write: Follow and unfollow other players
+            msg:write: Send private messages to other players
+            board:play: Play with the Board API
+            bot:play: Play with the Bot API. Only for [Bot accounts](#tag/bot/POST/api/bot/account/upgrade)
+            web:mod: Use moderator tools (within the bounds of your permissions)

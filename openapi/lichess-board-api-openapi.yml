@@ -1,0 +1,1862 @@
+openapi: 3.1.0
+info:
+  version: 2.0.144
+  title: Lichess.org API reference Account Board API
+  contact:
+    name: Lichess.org API
+    url: https://lichess.org/api
+    email: contact@lichess.org
+  x-logo:
+    url: https://lichess1.org/assets/logo/lichess-pad12.svg
+  license:
+    name: AGPL-3.0-or-later
+    url: https://www.gnu.org/licenses/agpl-3.0.txt
+  description: '# Introduction
+
+    Welcome to the reference for the Lichess API! Lichess is free/libre,
+
+    open-source chess server powered by volunteers and donations.
+
+    - Get help in the [Lichess Discord channel](https://discord.gg/lichess)
+
+    - API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)
+
+    - API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)
+
+    - [Contribute to this documentation on Github](https://github.com/lichess-org/api)
+
+    - Check out [Lichess widgets to embed in your website](https://lichess.org/developers)
+
+    - [Download all Lichess rated games](https://database.lichess.org/)
+
+    - [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)
+
+    - [Download all evaluated positions](https://database.lichess.org/#evals)
+
+
+    ## Endpoint
+
+    All requests go to `https://lichess.org` (unless otherwise specified).
+
+
+    ## Clients
+
+    - [Python general API](https://github.com/lichess-org/berserk)
+
+    - [MicroPython general API](https://github.com/mkomon/uberserk)
+
+    - [Python general API - async](https://pypi.org/project/async-lichess-sdk)
+
+    - [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)
+
+    - [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)
+
+    - [Java general API](https://github.com/tors42/chariot)
+
+    - [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)
+
+    - [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)
+
+    - [.NET general API](https://github.com/Dblike/LichessSharp)
+
+
+    ## Rate limiting
+
+    All requests are rate limited using various strategies,
+
+    to ensure the API remains responsive for everyone.
+
+    Only make one request at a time.
+
+    If you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),
+
+    you have exceded one of the rate limits.
+
+    In most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.
+
+    Reduce your request frequency before retrying.
+
+
+    ## Streaming with ND-JSON
+
+    Some API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.
+
+
+    Here''s a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.
+
+
+    ## Authentication
+
+    ### Which authentication method is right for me?
+
+    [Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)
+
+
+    ### Personal Access Token
+
+    Personal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.
+
+    - [Generate a personal access token](https://lichess.org/account/oauth/token)
+
+    - `curl https://lichess.org/api/account -H "Authorization: Bearer {token}"`
+
+    - [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)
+
+
+    ### Token Security
+
+    - Keep your tokens secret. Do not share them in public repositories or public forums.
+
+    - Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens'' scope). You remain responsible for all activities on your account.
+
+    - Do not hardcode tokens in your application''s code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.
+
+    - If you suspect a token has been compromised, revoke it immediately.
+
+
+    To see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).
+
+
+    ### Authorization Code Flow with PKCE
+
+    The authorization code flow with PKCE allows your users to **login with Lichess**.
+
+    Lichess supports unregistered and public clients (no client authentication, choose any unique client id).
+
+    The only accepted code challenge method is `S256`.
+
+    Access tokens are long-lived (expect one year), unless they are revoked.
+
+    Refresh tokens are not supported.
+
+
+    See the [documentation for the OAuth endpoints](#tag/OAuth) or
+
+    the [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.
+
+
+    - [Demo app](https://lichess-org.github.io/api-demo/)
+
+    - [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)
+
+    - [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)
+
+    - [Java example](https://github.com/tors42/lichess-oauth-pkce-app)
+
+    - [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)
+
+
+    #### Real life examples
+
+    - [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))
+
+    - [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))
+
+    - [English Chess Federation](https://ecf.octoknight.com/)
+
+    - [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)
+
+
+    ### Token format
+
+    Access tokens and authorization codes match `^[A-Za-z0-9_]+$`.
+
+    The length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.
+
+    By convention tokens have a recognizable prefix, but do not rely on this.
+
+    '
+servers:
+- url: https://lichess.org
+- url: https://lichess.dev
+- url: http://localhost:{port}
+  variables:
+    port:
+      default: '8080'
+- url: http://l.org
+tags:
+- name: Board
+  description: "Play on Lichess with physical boards and third-party clients.\nWorks with normal Lichess accounts. Engine play or assistance is [forbidden](https://lichess.org/page/fair-play).\n\n### Features\n- [Stream incoming chess moves](#tag/board/GET/api/board/game/stream/{gameId})\n- [Play chess moves](#tag/board/POST/api/board/game/{gameId}/move/{move})\n- [Read](#tag/board/GET/api/board/game/stream/{gameId}) and [write](#tag/board/POST/api/board/game/{gameId}/chat) in the player and spectator chats\n- [Receive](#tag/board/GET/api/stream/event), [create](#tag/challenges/POST/api/challenge/{username}) and [accept](#tag/challenges/POST/api/challenge/{challengeId}/accept) (or [decline](#tag/challenges/POST/api/challenge/{challengeId}/decline)) challenges\n- [Abort](#tag/board/POST/api/board/game/{gameId}/abort) and [resign](#tag/board/POST/api/board/game/{gameId}/resign) games\n- Compatible with normal Lichess accounts\n\n### Restrictions\n- Engine assistance, or any kind of outside help, is [forbidden](https://lichess.org/page/fair-play)\n- Time controls: [Rapid, Classical and Correspondence](https://lichess.org/faq#time-controls) only.\n  For direct challenges, games vs AI, and bulk pairing, Blitz is also possible.\n\n### Links\n- [Announcement](https://lichess.org/blog/XlRW5REAAB8AUJJ-/welcome-lichess-boards)\n- [Implementation example](https://github.com/lichess-org/api-demo) and [live demo](https://lichess-org.github.io/api-demo/)\n- [Certabo support](https://github.com/haklein/certabo-lichess)\n- [Lichs (play from command-line)](https://github.com/Cqsi/lichs)\n- [Lichess discord bot](https://top.gg/bot/707287095911120968)\n- [cli-chess](https://github.com/trevorbayless/cli-chess/)\n- [Blunderly 3D board](https://github.com/maurimo/blunderly)\n- Yours? Please make [an issue or pull request](https://github.com/lichess-org/api).\n"
+paths:
+  /api/stream/event:
+    get:
+      operationId: apiStreamEvent
+      summary: Stream incoming events
+      description: 'Stream the events reaching a lichess user in real time as [ndjson](#description/streaming-with-nd-json).
+
+
+        An empty line is sent every 7 seconds for keep alive purposes.
+
+
+        Each non-empty line is a JSON object containing a `type` field. Possible values are:
+
+        - `gameStart` Start of a game
+
+        - `gameFinish` Completion of a game
+
+        - `challenge` A player sends you a challenge or you challenge someone
+
+        - `challengeCanceled` A player cancels their challenge to you
+
+        - `challengeDeclined` The opponent declines your challenge
+
+
+        When the stream opens, all current challenges and games are sent.
+
+
+        Only one global event stream can be active at a time. When the stream opens, the previous one with the same access token is closed.
+
+        '
+      tags:
+      - Board
+      security:
+      - OAuth2:
+        - challenge:read
+        - bot:play
+        - board:play
+      responses:
+        '200':
+          description: The stream of events reaching the logged in user.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/x-ndjson:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/GameStartEvent'
+                - $ref: '#/components/schemas/GameFinishEvent'
+                - $ref: '#/components/schemas/ChallengeEvent'
+                - $ref: '#/components/schemas/ChallengeCanceledEvent'
+                - $ref: '#/components/schemas/ChallengeDeclinedEvent'
+              examples:
+                GameStartEvent:
+                  $ref: '#/components/examples/stream-gameStart.json'
+                GameStartEvent (vs AI):
+                  $ref: '#/components/examples/stream-gameStart-ai.json'
+                GameFinishEvent:
+                  $ref: '#/components/examples/stream-gameFinish.json'
+                GameFinishEvent (vs AI):
+                  $ref: '#/components/examples/stream-gameFinish-ai.json'
+                ChallengeEvent:
+                  $ref: '#/components/examples/stream-challenge.json'
+                ChallengeDeclinedEvent:
+                  $ref: '#/components/examples/stream-challengeDeclined.json'
+                ChallengeCanceledEvent:
+                  $ref: '#/components/examples/stream-challengeCanceled.json'
+  /api/board/seek:
+    post:
+      operationId: apiBoardSeek
+      summary: Create a seek
+      description: 'Create a public seek, to start a game with a random player.
+
+
+        ### Real-time seek
+
+
+        Specify the `time` and `increment` clock values.
+
+        The response is streamed but doesn''t contain any information.
+
+
+        **Keep the connection open to keep the seek active**.
+
+
+        If the client closes the connection, the seek is canceled. This way, if the client terminates, the user won''t be paired in a game they wouldn''t play.
+
+        When the seek is accepted, or expires, the server closes the connection.
+
+
+        **Make sure to also have an [Event stream](#tag/board/GET/api/board/game/stream/{gameId}) open**, to be notified when a game starts.
+
+        We recommend opening the [Event stream](#tag/board/GET/api/board/game/stream/{gameId}) first, then the seek stream. This way,
+
+        you won''t miss the game event if the seek is accepted immediately.
+
+
+        ### Correspondence seek
+
+
+        Specify the `days` per turn value.
+
+        The response is not streamed, it immediately completes with the seek ID. The seek remains active on the server until it is joined by someone.
+
+        '
+      tags:
+      - Board
+      security:
+      - OAuth2:
+        - board:play
+      requestBody:
+        description: Parameters of the seek
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              allOf:
+              - type: object
+                properties:
+                  rated:
+                    type: boolean
+                    description: Whether the game is rated and impacts players ratings.
+                    example: true
+                    default: false
+                  variant:
+                    $ref: '#/components/schemas/VariantKey'
+                  ratingRange:
+                    type: string
+                    description: 'The rating range of potential opponents. Better left empty.
+
+                      Example: 1500-1800
+
+                      '
+              - oneOf:
+                - type: object
+                  title: real-time
+                  required:
+                  - time
+                  - increment
+                  properties:
+                    time:
+                      type: number
+                      description: Clock initial time in minutes. Required for real-time seeks.
+                      example: 15
+                      minimum: 0
+                      maximum: 180
+                    increment:
+                      type: integer
+                      description: Clock increment in seconds. Required for real-time seeks.
+                      example: 15
+                      minimum: 0
+                      maximum: 180
+                    color:
+                      description: The color to play. Better left empty to automatically get 50% white.
+                      $ref: '#/components/schemas/ChallengeColor'
+                - type: object
+                  title: correspondence
+                  required:
+                  - days
+                  properties:
+                    days:
+                      type: integer
+                      description: Days per turn. Required for correspondence seeks.
+                      enum:
+                      - 1
+                      - 2
+                      - 3
+                      - 5
+                      - 7
+                      - 10
+                      - 14
+      responses:
+        '200':
+          description: The seek was successfully created.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Only happens when doing a correspondence seek.
+                required:
+                - id
+                properties:
+                  id:
+                    type: string
+                example:
+                  id: gwkzmEBY
+            application/x-ndjson:
+              schema:
+                description: 'Only happens when doing a real-time seek.
+
+
+                  A periodic empty line until the seek is accepted by another player,
+
+                  at which point the connection closes and no data is sent.
+
+                  '
+                type: string
+                const: ''
+                example: ''
+        '400':
+          description: The creation of the seek failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/board/game/stream/{gameId}:
+    get:
+      operationId: boardGameStream
+      summary: Stream Board game state
+      description: "Stream the state of a game being played with the Board API, as [ndjson](#description/streaming-with-nd-json).\n\nUse this endpoint to get updates about the game in real-time, with a single request.\n\nEach line is a JSON object containing a `type` field. Possible values are:\n  - `gameFull` Full game data. All values are immutable, except for the `state` field.\n  - `gameState` Current state of the game. Immutable values not included. Sent when a move is played, a draw is offered, or when the game ends.\n  - `chatLine` Chat message sent by a user in the `room` \"player\" or \"spectator\".\n  - `opponentGone` Whether the opponent has left the game, and how long before you can claim a win or draw.\n\nThe first line is always of type `gameFull`.\n\nThe server closes the stream when the game ends, or if the game has already ended.\n"
+      tags:
+      - Board
+      security:
+      - OAuth2:
+        - board:play
+      parameters:
+      - in: path
+        name: gameId
+        schema:
+          type: string
+          example: 5IrD6Gzz
+        required: true
+      responses:
+        '200':
+          description: The stream of the game.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/x-ndjson:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/GameFullEvent'
+                - $ref: '#/components/schemas/GameStateEvent'
+                - $ref: '#/components/schemas/ChatLineEvent'
+                - $ref: '#/components/schemas/OpponentGoneEvent'
+        '404':
+          description: The game was not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+  /api/board/game/{gameId}/move/{move}:
+    post:
+      operationId: boardGameMove
+      summary: Make a Board move
+      description: 'Make a move in a game being played with the Board API.
+
+        The move can also contain a draw offer/agreement.
+
+        '
+      tags:
+      - Board
+      security:
+      - OAuth2:
+        - board:play
+      parameters:
+      - in: path
+        name: gameId
+        schema:
+          type: string
+          example: 5IrD6Gzz
+        required: true
+      - in: path
+        name: move
+        required: true
+        description: The move to play, in UCI format
+        schema:
+          type: string
+          example: e2e4
+      - in: query
+        name: offeringDraw
+        description: Whether to offer (or agree to) a draw
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: The move was successfully made.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+        '400':
+          description: The move failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/board/game/{gameId}/chat:
+    parameters:
+    - in: path
+      name: gameId
+      schema:
+        type: string
+        example: 5IrD6Gzz
+      required: true
+    post:
+      operationId: boardGameChatPost
+      summary: Write in the chat
+      description: 'Post a message to the player or spectator chat, in a game being played with the Board API.
+
+        '
+      tags:
+      - Board
+      security:
+      - OAuth2:
+        - board:play
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                room:
+                  type: string
+                  enum:
+                  - player
+                  - spectator
+                text:
+                  type: string
+                  example: Thank you for the game!
+              required:
+              - room
+              - text
+      responses:
+        '200':
+          description: The message was successfully posted in the chat.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+        '400':
+          description: The posting of the message in the chat failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      operationId: boardGameChatGet
+      summary: Fetch the player chat
+      description: 'Get the messages posted in the private game chat, i.e. the chat between the 2 players of the game.
+
+
+        Games can also have a public spectator chat.
+
+        '
+      tags:
+      - Board
+      security:
+      - OAuth2:
+        - board:play
+      responses:
+        '200':
+          description: The messages posted in the chat.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/x-ndjson:
+              schema:
+                $ref: '#/components/schemas/PlayerGameChat'
+  /api/board/game/{gameId}/abort:
+    post:
+      operationId: boardGameAbort
+      summary: Abort a game
+      description: 'Abort a game being played with the Board API.
+
+        '
+      tags:
+      - Board
+      security:
+      - OAuth2:
+        - board:play
+      parameters:
+      - in: path
+        name: gameId
+        schema:
+          type: string
+          example: 5IrD6Gzz
+        required: true
+      responses:
+        '200':
+          description: The game successfully aborted.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+        '400':
+          description: The abortion of the game failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/board/game/{gameId}/resign:
+    post:
+      operationId: boardGameResign
+      summary: Resign a game
+      description: 'Resign a game being played with the Board API.
+
+        '
+      tags:
+      - Board
+      security:
+      - OAuth2:
+        - board:play
+      parameters:
+      - in: path
+        name: gameId
+        schema:
+          type: string
+          example: 5IrD6Gzz
+        required: true
+      responses:
+        '200':
+          description: The game was successfully resigned.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+        '400':
+          description: The resigning from the game failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/board/game/{gameId}/draw/{accept}:
+    post:
+      operationId: boardGameDraw
+      summary: Handle draw offers
+      description: 'Create/accept/decline draw offers.
+
+        - `yes`: Offer a draw, or accept the opponent''s draw offer.
+
+        - `no`: Decline a draw offer from the opponent.
+
+        '
+      tags:
+      - Board
+      security:
+      - OAuth2:
+        - board:play
+      parameters:
+      - in: path
+        name: gameId
+        schema:
+          type: string
+          example: 5IrD6Gzz
+        required: true
+      - in: path
+        name: accept
+        schema:
+          anyOf:
+          - type: boolean
+          - type: string
+            const: 'yes'
+          example: 'yes'
+        required: true
+      responses:
+        '200':
+          description: The draw offer was successfully sent.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+        '400':
+          description: The draw offering failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/board/game/{gameId}/takeback/{accept}:
+    post:
+      operationId: boardGameTakeback
+      summary: Handle takeback offers
+      description: 'Create/accept/decline takebacks.
+
+        - `yes`: Propose a takeback, or accept the opponent''s takeback offer.
+
+        - `no`: Decline a takeback offer from the opponent.
+
+        '
+      tags:
+      - Board
+      security:
+      - OAuth2:
+        - board:play
+      parameters:
+      - in: path
+        name: gameId
+        schema:
+          type: string
+          example: 5IrD6Gzz
+        required: true
+      - in: path
+        name: accept
+        schema:
+          anyOf:
+          - type: boolean
+          - type: string
+            const: 'yes'
+          example: 'yes'
+        required: true
+      responses:
+        '200':
+          description: The takeback offer was successfully sent.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+        '400':
+          description: The takeback offering failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/board/game/{gameId}/claim-victory:
+    post:
+      operationId: boardGameClaimVictory
+      summary: Claim victory of a game
+      description: 'Claim victory when the opponent has left the game for a while.
+
+        '
+      tags:
+      - Board
+      security:
+      - OAuth2:
+        - board:play
+      parameters:
+      - in: path
+        name: gameId
+        schema:
+          type: string
+          example: 5IrD6Gzz
+        required: true
+      responses:
+        '200':
+          description: The victory was successfully claimed.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+        '400':
+          description: The victory claim has failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/board/game/{gameId}/claim-draw:
+    post:
+      operationId: boardGameClaimDraw
+      summary: Claim draw of a game
+      description: 'Claim draw when the opponent has left the game for a while.
+
+        '
+      tags:
+      - Board
+      security:
+      - OAuth2:
+        - board:play
+      parameters:
+      - in: path
+        name: gameId
+        schema:
+          type: string
+          example: 5IrD6Gzz
+        required: true
+      responses:
+        '200':
+          description: The draw was successfully claimed.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+        '400':
+          description: The draw claim has failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/board/game/{gameId}/berserk:
+    post:
+      operationId: boardGameBerserk
+      summary: Berserk a tournament game
+      description: 'Go berserk on an arena tournament game. Halves the clock time, grants an extra point upon winning.
+
+        Only available in arena tournaments that allow berserk, and before each player has made a move.
+
+        '
+      tags:
+      - Board
+      security:
+      - OAuth2:
+        - board:play
+      parameters:
+      - in: path
+        name: gameId
+        schema:
+          type: string
+          example: 5IrD6Gzz
+        required: true
+      responses:
+        '200':
+          description: The player successfully went berserk.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+        '400':
+          description: The berserk has failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    PatronColor:
+      type: integer
+      description: 'Players can choose a color for their Patron wings.
+
+        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
+
+
+        The presence of this field indicates the player is an active Patron.
+
+        '
+      minimum: 1
+      maximum: 10
+    ChallengeColor:
+      type: string
+      enum:
+      - white
+      - black
+      - random
+    ChatLineEvent:
+      type: object
+      properties:
+        type:
+          type: string
+          const: chatLine
+        room:
+          type: string
+          enum:
+          - player
+          - spectator
+        username:
+          type: string
+        text:
+          type: string
+      required:
+      - type
+      - room
+      - username
+      - text
+      example:
+        type: chatLine
+        username: thibault
+        text: Good luck, have fun
+        room: player
+    GameFullEvent:
+      type: object
+      properties:
+        type:
+          type: string
+          const: gameFull
+        id:
+          type: string
+        variant:
+          $ref: '#/components/schemas/Variant'
+        clock:
+          type: object
+          properties:
+            initial:
+              type: integer
+              format: int64
+              description: Initial time in milliseconds
+            increment:
+              type: integer
+              format: int64
+              description: Increment time in milliseconds
+        speed:
+          $ref: '#/components/schemas/Speed'
+        perf:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Translated perf name (e.g. "Classical" or "Blitz")
+        rated:
+          type: boolean
+        createdAt:
+          type: integer
+          format: int64
+        white:
+          $ref: '#/components/schemas/GameEventPlayer'
+        black:
+          $ref: '#/components/schemas/GameEventPlayer'
+        initialFen:
+          type: string
+          default: startpos
+        state:
+          $ref: '#/components/schemas/GameStateEvent'
+        daysPerTurn:
+          type: integer
+          description: If the game is correspondence
+        tournamentId:
+          type: string
+      required:
+      - type
+      - id
+      - variant
+      - speed
+      - perf
+      - rated
+      - createdAt
+      - white
+      - black
+      - initialFen
+      - state
+      example:
+        id: BEOucQJo
+        variant:
+          key: standard
+          name: Standard
+          short: Std
+        speed: rapid
+        perf:
+          name: Rapid
+        rated: false
+        createdAt: 1745112707998
+        white:
+          id: bobby
+          name: Bobby
+          title: null
+          rating: 1751
+        black:
+          id: mary
+          name: Mary
+          title: null
+          rating: 1021
+        initialFen: startpos
+        clock:
+          initial: 900000
+          increment: 0
+        type: gameFull
+        state:
+          type: gameState
+          moves: d2d3
+          wtime: 900000
+          btime: 900000
+          winc: 0
+          binc: 0
+          status: started
+    Variant:
+      type: object
+      properties:
+        key:
+          $ref: '#/components/schemas/VariantKey'
+        name:
+          type: string
+        short:
+          type: string
+      required:
+      - key
+      - name
+    GameStateEvent:
+      type: object
+      properties:
+        type:
+          type: string
+          const: gameState
+        moves:
+          type: string
+          description: 'Current moves in UCI format (King to rook for Chess690-compatible castling
+
+            notation)
+
+            '
+        wtime:
+          type: integer
+          description: Integer of milliseconds White has left on the clock
+        btime:
+          type: integer
+          description: Integer of milliseconds Black has left on the clock
+        winc:
+          type: integer
+          description: Integer of White Fisher increment.
+        binc:
+          type: integer
+          description: Integer of Black Fisher increment.
+        status:
+          $ref: '#/components/schemas/GameStatusName'
+        winner:
+          $ref: '#/components/schemas/GameColor'
+          description: Color of the winner, if any
+        wdraw:
+          type: boolean
+          description: true if white is offering draw, else omitted
+        bdraw:
+          type: boolean
+          description: true if black is offering draw, else omitted
+        wtakeback:
+          type: boolean
+          description: true if white is proposing takeback, else omitted
+        btakeback:
+          type: boolean
+          description: true if black is proposing takeback, else omitted
+        expiration:
+          type: object
+          description: A game may be aborted if a player doesn't make their first move in time
+          properties:
+            idleMillis:
+              type: integer
+              description: Milliseconds since the last move was played, or since the game started
+            millisToMove:
+              type: integer
+              description: Time each player has to make their first move, before the game is aborted
+          required:
+          - idleMillis
+          - millisToMove
+      required:
+      - type
+      - moves
+      - wtime
+      - btime
+      - winc
+      - binc
+      - status
+      example:
+        type: gameState
+        moves: e2e4 c7c5 f2f4 d7d6 g1f3 b8c6 f1c4 g8f6 d2d3 g7g6 e1g1 f8g7 b1c3
+        wtime: 7598040
+        btime: 8395220
+        winc: 10000
+        binc: 10000
+        wdraw: false
+        bdraw: false
+        wtakeback: false
+        btakeback: false
+        status: started
+    ChallengeCanceledEvent:
+      type: object
+      properties:
+        type:
+          type: string
+          const: challengeCanceled
+        challenge:
+          $ref: '#/components/schemas/ChallengeJson'
+      required:
+      - type
+      - challenge
+    Patron:
+      type: boolean
+      deprecated: true
+      description: 'Use patronColor value instead to determine if player is a patron.
+
+        '
+    VariantKey:
+      type: string
+      enum:
+      - standard
+      - chess960
+      - crazyhouse
+      - antichess
+      - atomic
+      - horde
+      - kingOfTheHill
+      - racingKings
+      - threeCheck
+      - fromPosition
+      example: standard
+      default: standard
+    ChallengeUser:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        rating:
+          type: integer
+        title:
+          $ref: '#/components/schemas/Title'
+        flair:
+          $ref: '#/components/schemas/Flair'
+        patron:
+          $ref: '#/components/schemas/Patron'
+        patronColor:
+          $ref: '#/components/schemas/PatronColor'
+        provisional:
+          type: boolean
+        online:
+          type: boolean
+        lag:
+          type: integer
+      required:
+      - id
+      - name
+    GameColor:
+      type: string
+      enum:
+      - white
+      - black
+    NotFound:
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      example:
+        error: Not found.
+    GameEventInfo:
+      type: object
+      properties:
+        fullId:
+          type: string
+        gameId:
+          type: string
+        fen:
+          type: string
+        color:
+          $ref: '#/components/schemas/GameColor'
+        lastMove:
+          type: string
+        source:
+          $ref: '#/components/schemas/GameSource'
+        status:
+          $ref: '#/components/schemas/GameStatus'
+        variant:
+          $ref: '#/components/schemas/Variant'
+        speed:
+          $ref: '#/components/schemas/Speed'
+        perf:
+          type: string
+        rating:
+          type: integer
+        rated:
+          type: boolean
+        hasMoved:
+          type: boolean
+        opponent:
+          $ref: '#/components/schemas/GameEventOpponent'
+        isMyTurn:
+          type: boolean
+        secondsLeft:
+          type: integer
+        winner:
+          $ref: '#/components/schemas/GameColor'
+        ratingDiff:
+          type: integer
+        compat:
+          $ref: '#/components/schemas/GameCompat'
+        id:
+          type: string
+        tournamentId:
+          type: string
+      required:
+      - fullId
+      - gameId
+    PlayerGameChat:
+      type: array
+      items:
+        type: object
+        properties:
+          text:
+            type: string
+          user:
+            type: string
+        required:
+        - text
+        - user
+      example:
+      - text: Takeback sent
+        user: lichess
+      - text: Takeback accepted
+        user: lichess
+      - text: Good game, well played
+        user: thibault
+    ChallengeDeclinedEvent:
+      type: object
+      properties:
+        type:
+          type: string
+          const: challengeDeclined
+        challenge:
+          $ref: '#/components/schemas/ChallengeDeclinedJson'
+      required:
+      - type
+      - challenge
+    Ok:
+      properties:
+        ok:
+          type: boolean
+      required:
+      - ok
+    GameStartEvent:
+      type: object
+      properties:
+        type:
+          type: string
+          const: gameStart
+        game:
+          $ref: '#/components/schemas/GameEventInfo'
+      required:
+      - type
+      - game
+    GameCompat:
+      type: object
+      properties:
+        bot:
+          type: boolean
+          description: Compatible with Bot API
+        board:
+          type: boolean
+          description: Compatible with Board API
+    ChallengeDeclinedJson:
+      allOf:
+      - $ref: '#/components/schemas/ChallengeJson'
+      - type: object
+        properties:
+          declineReason:
+            type: string
+            description: Human readable, possibly translated reason why the challenge was declined.
+          declineReasonKey:
+            type: string
+            description: Untranslated, computer-matchable reason why the challenge was declined.
+            enum:
+            - generic
+            - later
+            - toofast
+            - tooslow
+            - timecontrol
+            - rated
+            - casual
+            - standard
+            - variant
+            - nobot
+            - onlybot
+        required:
+        - declineReason
+        - declineReasonKey
+    GameStatusId:
+      type: integer
+      enum:
+      - 10
+      - 20
+      - 25
+      - 30
+      - 31
+      - 32
+      - 33
+      - 34
+      - 35
+      - 36
+      - 37
+      - 38
+      - 39
+      - 60
+    Flair:
+      type: string
+      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The cause of the error.
+      required:
+      - error
+      example:
+        error: This request is invalid because [...]
+    ChallengeStatus:
+      type: string
+      enum:
+      - created
+      - offline
+      - canceled
+      - declined
+      - accepted
+    Speed:
+      type: string
+      enum:
+      - ultraBullet
+      - bullet
+      - blitz
+      - rapid
+      - classical
+      - correspondence
+    GameStatusName:
+      type: string
+      enum:
+      - created
+      - started
+      - aborted
+      - mate
+      - resign
+      - stalemate
+      - timeout
+      - draw
+      - outoftime
+      - cheat
+      - noStart
+      - unknownFinish
+      - insufficientMaterialClaim
+      - variantEnd
+    GameEventPlayer:
+      type: object
+      properties:
+        aiLevel:
+          type: integer
+        id:
+          type: string
+        name:
+          type: string
+        title:
+          oneOf:
+          - $ref: '#/components/schemas/Title'
+          - type: 'null'
+        rating:
+          type: integer
+        provisional:
+          type: boolean
+      required:
+      - id
+      - name
+    ChallengeJson:
+      type: object
+      properties:
+        id:
+          type: string
+        url:
+          type: string
+          format: uri
+        status:
+          $ref: '#/components/schemas/ChallengeStatus'
+        challenger:
+          $ref: '#/components/schemas/ChallengeUser'
+        destUser:
+          oneOf:
+          - $ref: '#/components/schemas/ChallengeUser'
+          - type: 'null'
+        variant:
+          $ref: '#/components/schemas/Variant'
+        rated:
+          type: boolean
+        speed:
+          $ref: '#/components/schemas/Speed'
+        timeControl:
+          $ref: '#/components/schemas/TimeControl'
+        color:
+          $ref: '#/components/schemas/ChallengeColor'
+        finalColor:
+          $ref: '#/components/schemas/GameColor'
+        perf:
+          type: object
+          properties:
+            icon:
+              type: string
+            name:
+              type: string
+          required:
+          - icon
+          - name
+        direction:
+          type: string
+          enum:
+          - in
+          - out
+        initialFen:
+          type: string
+        rematchOf:
+          type: string
+      required:
+      - id
+      - url
+      - status
+      - challenger
+      - destUser
+      - variant
+      - rated
+      - speed
+      - timeControl
+      - color
+      - perf
+      example:
+        id: H9fIRZUk
+        url: https://lichess.org/H9fIRZUk
+        status: created
+        challenger:
+          id: bot1
+          name: Bot1
+          rating: 1500
+          title: BOT
+          provisional: true
+          online: true
+          lag: 4
+        destUser:
+          id: bobby
+          name: Bobby
+          rating: 1635
+          title: GM
+          provisional: true
+          online: true
+          lag: 4
+        variant:
+          key: standard
+          name: Standard
+          short: Std
+        rated: true
+        speed: rapid
+        timeControl:
+          type: clock
+          limit: 600
+          increment: 0
+          show: 10+0
+        color: random
+        finalColor: black
+        perf:
+          icon: 
+          name: Rapid
+        direction: out
+    OpponentGoneEvent:
+      type: object
+      properties:
+        type:
+          type: string
+          const: opponentGone
+        gone:
+          type: boolean
+        claimWinInSeconds:
+          type: integer
+      required:
+      - type
+      - gone
+      example:
+        type: opponentGone
+        gone: true
+        claimWinInSeconds: 8
+    GameSource:
+      type: string
+      enum:
+      - lobby
+      - friend
+      - ai
+      - api
+      - tournament
+      - position
+      - import
+      - importlive
+      - simul
+      - relay
+      - pool
+      - arena
+      - swiss
+    GameFinishEvent:
+      type: object
+      properties:
+        type:
+          type: string
+          const: gameFinish
+        game:
+          $ref: '#/components/schemas/GameEventInfo'
+      required:
+      - type
+      - game
+    TimeControl:
+      oneOf:
+      - type: object
+        title: Real-time
+        properties:
+          type:
+            type: string
+            const: clock
+          limit:
+            type: integer
+          increment:
+            type: integer
+          show:
+            example: 5+2
+            type: string
+        additionalProperties: false
+      - type: object
+        title: Correspondence
+        properties:
+          type:
+            type: string
+            const: correspondence
+          daysPerTurn:
+            type: integer
+        additionalProperties: false
+      - type: object
+        title: Unlimited
+        properties:
+          type:
+            type: string
+            const: unlimited
+        additionalProperties: false
+    Title:
+      type: string
+      enum:
+      - GM
+      - WGM
+      - IM
+      - WIM
+      - FM
+      - WFM
+      - NM
+      - CM
+      - WCM
+      - WNM
+      - LM
+      - BOT
+      description: only appears if the user is a titled player or a bot user
+    GameStatus:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/GameStatusId'
+        name:
+          $ref: '#/components/schemas/GameStatusName'
+      required:
+      - id
+      - name
+    GameEventOpponent:
+      oneOf:
+      - type: object
+        title: Player
+        properties:
+          id:
+            type: string
+          username:
+            type: string
+          rating:
+            type: integer
+          ratingDiff:
+            type: integer
+        required:
+        - id
+        - username
+        - rating
+      - type: object
+        title: AI Opponent
+        properties:
+          id:
+            type: 'null'
+          username:
+            type: string
+          ai:
+            type: integer
+            description: AI level, from 1 to 8, where 1 is the weakest and 8 is the strongest.
+        required:
+        - id
+        - username
+        - ai
+    ChallengeEvent:
+      type: object
+      properties:
+        type:
+          type: string
+          const: challenge
+        challenge:
+          $ref: '#/components/schemas/ChallengeJson'
+        compat:
+          $ref: '#/components/schemas/GameCompat'
+      required:
+      - type
+      - challenge
+  examples:
+    stream-gameFinish-ai.json:
+      value:
+        type: gameFinish
+        game:
+          fullId: Vyp0MJIgjhQr
+          gameId: Vyp0MJIg
+          fen: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+          color: black
+          lastMove: ''
+          source: ai
+          status:
+            id: 25
+            name: aborted
+          variant:
+            key: standard
+            name: Standard
+          speed: correspondence
+          perf: correspondence
+          rated: false
+          hasMoved: false
+          opponent:
+            id: null
+            username: Stockfish level 1
+            ai: 1
+          isMyTurn: false
+          rating: 2245
+          compat:
+            bot: false
+            board: true
+          id: Vyp0MJIg
+    stream-challenge.json:
+      value:
+        type: challenge
+        challenge:
+          id: sxqxgMtR
+          url: https://lichess.org/sxqxgMtR
+          status: created
+          challenger:
+            name: Adriana
+            flair: activity.1st-place-medal
+            id: adriana
+            rating: 599
+          destUser:
+            name: Gabriela
+            flair: objects.yen-banknote
+            id: gabriela
+            rating: 1569
+            online: true
+          variant:
+            key: standard
+            name: Standard
+            short: Std
+          rated: false
+          speed: correspondence
+          timeControl:
+            type: unlimited
+          color: random
+          finalColor: white
+          perf:
+            icon: 
+            name: Correspondence
+        compat:
+          bot: false
+          board: true
+    stream-challengeCanceled.json:
+      value:
+        type: challengeCanceled
+        challenge:
+          id: Ocf0maqB
+          url: https://lichess.org/Ocf0maqB
+          status: canceled
+          challenger:
+            name: Elena
+            title: WNM
+            flair: people.man-vampire
+            patron: true
+            patronColor: 1
+            id: elena
+            rating: 2240
+          destUser:
+            name: Diego
+            id: diego
+            rating: 2056
+            provisional: true
+            online: true
+          variant:
+            key: standard
+            name: Standard
+            short: Std
+          rated: false
+          speed: correspondence
+          timeControl:
+            type: unlimited
+          color: random
+          finalColor: white
+          perf:
+            icon: 
+            name: Correspondence
+    stream-challengeDeclined.json:
+      value:
+        type: challengeDeclined
+        challenge:
+          id: sxqxgMtR
+          url: https://lichess.org/sxqxgMtR
+          status: declined
+          challenger:
+            name: Adriana
+            flair: activity.1st-place-medal
+            id: adriana
+            rating: 599
+          destUser:
+            name: Gabriela
+            flair: objects.yen-banknote
+            id: gabriela
+            rating: 1569
+            online: true
+          variant:
+            key: standard
+            name: Standard
+            short: Std
+          rated: false
+          speed: correspondence
+          timeControl:
+            type: unlimited
+          color: random
+          finalColor: white
+          perf:
+            icon: 
+            name: Correspondence
+          declineReason: I'm not accepting challenges at the moment.
+          declineReasonKey: generic
+    stream-gameStart-ai.json:
+      value:
+        type: gameStart
+        game:
+          fullId: Vyp0MJIgjhQr
+          gameId: Vyp0MJIg
+          fen: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+          color: black
+          lastMove: ''
+          source: ai
+          status:
+            id: 20
+            name: started
+          variant:
+            key: standard
+            name: Standard
+          speed: correspondence
+          perf: correspondence
+          rated: false
+          hasMoved: false
+          opponent:
+            id: null
+            username: Stockfish level 1
+            ai: 1
+          isMyTurn: false
+          rating: 2245
+          compat:
+            bot: false
+            board: true
+          id: Vyp0MJIg
+    stream-gameStart.json:
+      value:
+        type: gameStart
+        game:
+          fullId: xAVd6eJykuzM
+          gameId: xAVd6eJy
+          fen: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+          color: white
+          lastMove: ''
+          source: friend
+          status:
+            id: 20
+            name: started
+          variant:
+            key: standard
+            name: Standard
+          speed: blitz
+          perf: blitz
+          rated: true
+          hasMoved: false
+          opponent:
+            id: aaron
+            username: Aaron
+            rating: 797
+          isMyTurn: true
+          secondsLeft: 300
+          rating: 692
+          compat:
+            bot: false
+            board: true
+          id: xAVd6eJy
+    stream-gameFinish.json:
+      value:
+        type: gameFinish
+        game:
+          fullId: xAVd6eJykuzM
+          gameId: xAVd6eJy
+          fen: rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2
+          color: white
+          lastMove: e7e5
+          source: friend
+          status:
+            id: 31
+            name: resign
+          variant:
+            key: standard
+            name: Standard
+          speed: blitz
+          perf: blitz
+          rated: true
+          hasMoved: true
+          opponent:
+            id: aaron
+            username: Aaron
+            rating: 797
+            ratingDiff: 6
+          isMyTurn: false
+          secondsLeft: 300
+          winner: black
+          rating: 692
+          ratingDiff: -9
+          compat:
+            bot: false
+            board: true
+          id: xAVd6eJy
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: 'Read [the introduction for how to make authenticated requests](#description/authentication).
+
+        '
+      flows:
+        authorizationCode:
+          authorizationUrl: https://lichess.org/oauth
+          tokenUrl: https://lichess.org/api/token
+          scopes:
+            preference:read: Read your preferences
+            preference:write: Write your preferences
+            email:read: Read your email address
+            engine:read: Read your external engines
+            engine:write: Create, update, delete your external engines
+            challenge:read: Read incoming challenges
+            challenge:write: Create, accept, decline challenges
+            challenge:bulk: Create, delete, query bulk pairings
+            study:read: Read private studies and broadcasts
+            study:write: Create, update, delete studies and broadcasts
+            tournament:write: Create tournaments
+            racer:write: Create and join puzzle races
+            puzzle:read: Read puzzle activity
+            puzzle:write: Write puzzle activity
+            team:read: Read private team information
+            team:write: Join, leave teams
+            team:lead: Manage teams (kick members, send PMs)
+            follow:read: Read followed players
+            follow:write: Follow and unfollow other players
+            msg:write: Send private messages to other players
+            board:play: Play with the Board API
+            bot:play: Play with the Bot API. Only for [Bot accounts](#tag/bot/POST/api/bot/account/upgrade)
+            web:mod: Use moderator tools (within the bounds of your permissions)

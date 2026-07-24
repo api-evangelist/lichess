@@ -1,0 +1,1002 @@
+openapi: 3.1.0
+info:
+  version: 2.0.144
+  title: Lichess.org API reference Account Studies API
+  contact:
+    name: Lichess.org API
+    url: https://lichess.org/api
+    email: contact@lichess.org
+  x-logo:
+    url: https://lichess1.org/assets/logo/lichess-pad12.svg
+  license:
+    name: AGPL-3.0-or-later
+    url: https://www.gnu.org/licenses/agpl-3.0.txt
+  description: '# Introduction
+
+    Welcome to the reference for the Lichess API! Lichess is free/libre,
+
+    open-source chess server powered by volunteers and donations.
+
+    - Get help in the [Lichess Discord channel](https://discord.gg/lichess)
+
+    - API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)
+
+    - API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)
+
+    - [Contribute to this documentation on Github](https://github.com/lichess-org/api)
+
+    - Check out [Lichess widgets to embed in your website](https://lichess.org/developers)
+
+    - [Download all Lichess rated games](https://database.lichess.org/)
+
+    - [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)
+
+    - [Download all evaluated positions](https://database.lichess.org/#evals)
+
+
+    ## Endpoint
+
+    All requests go to `https://lichess.org` (unless otherwise specified).
+
+
+    ## Clients
+
+    - [Python general API](https://github.com/lichess-org/berserk)
+
+    - [MicroPython general API](https://github.com/mkomon/uberserk)
+
+    - [Python general API - async](https://pypi.org/project/async-lichess-sdk)
+
+    - [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)
+
+    - [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)
+
+    - [Java general API](https://github.com/tors42/chariot)
+
+    - [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)
+
+    - [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)
+
+    - [.NET general API](https://github.com/Dblike/LichessSharp)
+
+
+    ## Rate limiting
+
+    All requests are rate limited using various strategies,
+
+    to ensure the API remains responsive for everyone.
+
+    Only make one request at a time.
+
+    If you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),
+
+    you have exceded one of the rate limits.
+
+    In most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.
+
+    Reduce your request frequency before retrying.
+
+
+    ## Streaming with ND-JSON
+
+    Some API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.
+
+
+    Here''s a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.
+
+
+    ## Authentication
+
+    ### Which authentication method is right for me?
+
+    [Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)
+
+
+    ### Personal Access Token
+
+    Personal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.
+
+    - [Generate a personal access token](https://lichess.org/account/oauth/token)
+
+    - `curl https://lichess.org/api/account -H "Authorization: Bearer {token}"`
+
+    - [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)
+
+
+    ### Token Security
+
+    - Keep your tokens secret. Do not share them in public repositories or public forums.
+
+    - Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens'' scope). You remain responsible for all activities on your account.
+
+    - Do not hardcode tokens in your application''s code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.
+
+    - If you suspect a token has been compromised, revoke it immediately.
+
+
+    To see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).
+
+
+    ### Authorization Code Flow with PKCE
+
+    The authorization code flow with PKCE allows your users to **login with Lichess**.
+
+    Lichess supports unregistered and public clients (no client authentication, choose any unique client id).
+
+    The only accepted code challenge method is `S256`.
+
+    Access tokens are long-lived (expect one year), unless they are revoked.
+
+    Refresh tokens are not supported.
+
+
+    See the [documentation for the OAuth endpoints](#tag/OAuth) or
+
+    the [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.
+
+
+    - [Demo app](https://lichess-org.github.io/api-demo/)
+
+    - [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)
+
+    - [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)
+
+    - [Java example](https://github.com/tors42/lichess-oauth-pkce-app)
+
+    - [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)
+
+
+    #### Real life examples
+
+    - [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))
+
+    - [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))
+
+    - [English Chess Federation](https://ecf.octoknight.com/)
+
+    - [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)
+
+
+    ### Token format
+
+    Access tokens and authorization codes match `^[A-Za-z0-9_]+$`.
+
+    The length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.
+
+    By convention tokens have a recognizable prefix, but do not rely on this.
+
+    '
+servers:
+- url: https://lichess.org
+- url: https://lichess.dev
+- url: http://localhost:{port}
+  variables:
+    port:
+      default: '8080'
+- url: http://l.org
+tags:
+- name: Studies
+  description: 'Access Lichess studies.
+
+    <https://lichess.org/study>
+
+    '
+paths:
+  /api/study/{studyId}/{chapterId}.pgn:
+    get:
+      operationId: studyChapterPgn
+      summary: Export one study chapter
+      description: 'Download one study chapter in PGN format.
+
+        If authenticated, then all public, unlisted, and private study chapters are read.
+
+        If not, only public (non-unlisted) study chapters are read.
+
+        '
+      tags:
+      - Studies
+      security:
+      - OAuth2:
+        - study:read
+      parameters:
+      - in: path
+        name: studyId
+        description: The study ID
+        required: true
+        schema:
+          type: string
+          minLength: 8
+          maxLength: 8
+      - in: path
+        name: chapterId
+        description: The chapter ID
+        required: true
+        schema:
+          type: string
+          minLength: 8
+          maxLength: 8
+      - in: query
+        name: clocks
+        description: 'Include clock comments in the PGN moves, when available.
+
+          Example: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`
+
+          '
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: comments
+        description: 'Include analysis and annotator comments in the PGN moves, when available.
+
+          Example: `12. Bxf6 { [%eval 0.23] } a3 { White is in a pickle. }`
+
+          '
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: variations
+        description: 'Include non-mainline moves, when available.
+
+          Example: `4. d4 Bb4+ (4... Nc6 5. Nf3 Bb4+ 6. Bd2 (6. Nbd2 O-O 7. O-O) 6... Bd6) 5. Nd2`
+
+          '
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: orientation
+        description: 'Add a `Orientation` PGN tag with the chapter predefined orientation.
+
+          Example: `[Orientation "white"]`
+
+          '
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: The chapter of the study.
+          content:
+            application/x-chess-pgn:
+              schema:
+                $ref: '#/components/schemas/StudyPgn'
+  /api/study/{studyId}.pgn:
+    get:
+      operationId: studyAllChaptersPgn
+      summary: Export all chapters
+      description: 'Download all chapters of a study in PGN format.
+
+        If authenticated, then all public, unlisted, and private study chapters are read.
+
+        If not, only public (non-unlisted) study chapters are read.
+
+        '
+      tags:
+      - Studies
+      security:
+      - OAuth2:
+        - study:read
+      parameters:
+      - in: path
+        name: studyId
+        description: The study ID
+        required: true
+        schema:
+          type: string
+          minLength: 8
+          maxLength: 8
+      - in: query
+        name: clocks
+        description: 'Include clock comments in the PGN moves, when available.
+
+          Example: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`
+
+          '
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: comments
+        description: 'Include analysis and annotator comments in the PGN moves, when available.
+
+          Example: `12. Bxf6 { [%eval 0.23] } a3 { White is in a pickle. }`
+
+          '
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: variations
+        description: 'Include non-mainline moves, when available.
+
+          Example: `4. d4 Bb4+ (4... Nc6 5. Nf3 Bb4+ 6. Bd2 (6. Nbd2 O-O 7. O-O) 6... Bd6) 5. Nd2`
+
+          '
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: orientation
+        description: 'Add a `Orientation` PGN tag with the chapter predefined orientation.
+
+          Example: `[Orientation "white"]`
+
+          '
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: The PGN representation of the study.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+            Last-Modified:
+              schema:
+                type: string
+                example: Tue, 25 Apr 2023 13:23:09 GMT
+          content:
+            application/x-chess-pgn:
+              schema:
+                $ref: '#/components/schemas/StudyPgn'
+    head:
+      operationId: studyAllChaptersHead
+      summary: Study metadata
+      description: 'Only get the study headers, including `Last-Modified`.
+
+        '
+      tags:
+      - Studies
+      security: []
+      parameters:
+      - in: path
+        name: studyId
+        description: The study ID
+        required: true
+        schema:
+          type: string
+          minLength: 8
+          maxLength: 8
+      responses:
+        '204':
+          description: The study headers.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+            Last-Modified:
+              schema:
+                type: string
+                example: Tue, 25 Apr 2023 13:23:09 GMT
+  /api/study:
+    post:
+      operationId: apiStudyPost
+      summary: Create a new Study
+      description: 'Create a [study](https://lichess.org/study), and a new empty chapter within it.
+
+        You can make up to 30 new studies per day.
+
+        '
+      tags:
+      - Studies
+      security:
+      - OAuth2:
+        - study:write
+      requestBody:
+        description: Parameters of the study
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The study name.
+                  minLength: 2
+                  maxLength: 100
+                visibility:
+                  type: string
+                  enum:
+                  - public
+                  - unlisted
+                  - private
+                  default: unlisted
+                  description: 'Who can view the study.
+
+                    * `public`: Default. Anyone can view the study, it appears on public listings
+
+                    * `unlisted`: Only people with the link can view the study, it doesn''t appear on public listings
+
+                    * `private`: Only the study members can view the study
+
+                    '
+                computer:
+                  $ref: '#/components/schemas/StudyUserSelection'
+                explorer:
+                  $ref: '#/components/schemas/StudyUserSelection'
+                cloneable:
+                  $ref: '#/components/schemas/StudyUserSelection'
+                shareable:
+                  $ref: '#/components/schemas/StudyUserSelection'
+                chat:
+                  $ref: '#/components/schemas/StudyUserSelection'
+                sticky:
+                  type: string
+                  enum:
+                  - 'true'
+                  - 'false'
+                  default: 'true'
+                  description: Keep everyone on the same chapter and position
+              required:
+              - name
+              - visibility
+              - computer
+              - explorer
+              - cloneable
+              - shareable
+              - chat
+      responses:
+        '200':
+          description: The Study has been successfully created.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+              examples:
+                default:
+                  value:
+                    id: 9kze56XR
+        '400':
+          description: The creation of the Study failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/study/{studyId}/import-pgn:
+    post:
+      operationId: apiStudyImportPGN
+      summary: Import PGN into a study
+      description: 'Imports arbitrary PGN into an existing [study](https://lichess.org/study). Creates a new chapter in the study.
+
+        If the PGN contains multiple games (separated by 2 or more newlines)
+
+        then multiple chapters will be created within the study.
+
+        Note that a study can contain at most 64 chapters.
+
+        '
+      tags:
+      - Studies
+      security:
+      - OAuth2:
+        - study:write
+      parameters:
+      - in: path
+        name: studyId
+        description: ID of the study
+        schema:
+          type: string
+        required: true
+      requestBody:
+        description: Parameters of the import
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                pgn:
+                  type: string
+                  description: 'PGN to import. Can contain multiple games separated by 2 or more newlines.
+
+                    '
+                name:
+                  type: string
+                  description: 'Name of the new chapter.
+
+                    If not specified, or if multiple chapters are created, the names will be inferred from the PGN tags.
+
+                    '
+                  minLength: 1
+                  maxLength: 100
+                orientation:
+                  type: string
+                  description: Default board orientation.
+                  enum:
+                  - white
+                  - black
+                  default: white
+                variant:
+                  $ref: '#/components/schemas/VariantKey'
+                mode:
+                  type: string
+                  description: 'Analysis mode.
+
+                    If not specified, Normal analysis.
+
+                    * practice - Practise with Computer
+
+                    * conceal - Hide next moves
+
+                    * gamebook - Interactive lesson
+
+                    '
+                  enum:
+                  - practice
+                  - conceal
+                  - gamebook
+              required:
+              - pgn
+      responses:
+        '200':
+          description: The chapters that were created.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StudyImportPgnChapters'
+        '400':
+          description: The creation of the chapter(s) failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/study/{studyId}/{chapterId}/tags:
+    post:
+      operationId: apiStudyChapterTags
+      summary: Update PGN tags of a study chapter
+      description: 'Add, update and delete the PGN tags of a study.
+
+        By providing a list of PGN tags in the usual PGN format, you can:
+
+        - Add new tags if the chapter doesn''t have them yet
+
+        - Update existing chapter tags
+
+        - Delete existing chapter tags, by providing a tag with an empty value.
+
+
+        The chapter keeps the tags that you don''t provide.
+
+        '
+      tags:
+      - Studies
+      security:
+      - OAuth2:
+        - study:write
+      parameters:
+      - in: path
+        name: studyId
+        description: The study ID
+        required: true
+        schema:
+          type: string
+          minLength: 8
+          maxLength: 8
+      - in: path
+        name: chapterId
+        description: The chapter ID
+        required: true
+        schema:
+          type: string
+          minLength: 8
+          maxLength: 8
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                pgn:
+                  type: string
+                  description: 'PGN text containing the tags. Only the tags are used. Moves are just ignored.
+
+                    '
+              required:
+              - pgn
+      responses:
+        '204':
+          description: Tags updated successfully, if the chapter exists and you are authorized the update the study.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+        '400':
+          description: The request body was invalid, such as missing or malformed PGN tag data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/study/{studyId}/{chapterId}/moves:
+    post:
+      operationId: apiStudyChapterMoves
+      summary: Update the moves of a study chapter
+      description: 'Replaces the moves tree of a study chapter.
+
+        No tags will be modified.
+
+        '
+      tags:
+      - Studies
+      security:
+      - OAuth2:
+        - study:write
+      parameters:
+      - in: path
+        name: studyId
+        description: The study ID
+        required: true
+        schema:
+          type: string
+          minLength: 8
+          maxLength: 8
+      - in: path
+        name: chapterId
+        description: The chapter ID
+        required: true
+        schema:
+          type: string
+          minLength: 8
+          maxLength: 8
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                pgn:
+                  type: string
+                  description: 'PGN text containing the moves that will replace the chapter''s existing moves.
+
+                    Any provided tags are ignored.
+
+                    '
+              required:
+              - pgn
+      responses:
+        '204':
+          description: Moves updated, as the chapter exists and you are allowed to edit it.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+        '400':
+          description: Bad request - might be the provided study/chapter doesn't exist, or you aren't allowed to edit it, or the PGN is invalid.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/study/by/{username}/export.pgn:
+    get:
+      operationId: studyExportAllPgn
+      summary: Export all studies of a user
+      description: 'Download all chapters of all studies of a user in PGN format.
+
+        If authenticated, then all public, unlisted, and private studies are included.
+
+        If not, only public (non-unlisted) studies are included.
+
+        '
+      tags:
+      - Studies
+      security:
+      - OAuth2:
+        - study:read
+      parameters:
+      - in: path
+        name: username
+        description: The user whose studies we export
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: clocks
+        description: 'Include clock comments in the PGN moves, when available.
+
+          Example: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`
+
+          '
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: comments
+        description: 'Include analysis and annotator comments in the PGN moves, when available.
+
+          Example: `12. Bxf6 { [%eval 0.23] } a3 { White is in a pickle. }`
+
+          '
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: variations
+        description: 'Include non-mainline moves, when available.
+
+          Example: `4. d4 Bb4+ (4... Nc6 5. Nf3 Bb4+ 6. Bd2 (6. Nbd2 O-O 7. O-O) 6... Bd6) 5. Nd2`
+
+          '
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: orientation
+        description: 'Add a `Orientation` PGN tag with the chapter predefined orientation.
+
+          Example: `[Orientation "white"]`
+
+          '
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: The studies of the user.
+          content:
+            application/x-chess-pgn:
+              schema:
+                $ref: '#/components/schemas/StudyPgn'
+  /api/study/by/{username}:
+    get:
+      operationId: studyListMetadata
+      summary: List studies of a user
+      description: 'Get metadata (name and dates) of all studies of a user.
+
+        If authenticated, then all public, unlisted, and private studies are included.
+
+        If not, only public (non-unlisted) studies are included.
+
+        Studies are streamed as [ndjson](#description/streaming-with-nd-json).
+
+        '
+      tags:
+      - Studies
+      security:
+      - OAuth2:
+        - study:read
+      parameters:
+      - in: path
+        name: username
+        description: The user whose studies we list
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The list of studies.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/x-ndjson:
+              schema:
+                $ref: '#/components/schemas/StudyMetadata'
+  /api/study/{studyId}/{chapterId}:
+    delete:
+      operationId: apiStudyStudyIdChapterIdDelete
+      summary: Delete a study chapter
+      tags:
+      - Studies
+      security:
+      - OAuth2:
+        - study:write
+      parameters:
+      - in: path
+        name: studyId
+        description: The study ID
+        required: true
+        schema:
+          type: string
+          minLength: 8
+          maxLength: 8
+      - in: path
+        name: chapterId
+        description: The chapter ID
+        required: true
+        schema:
+          type: string
+          minLength: 8
+          maxLength: 8
+      description: 'Delete a chapter of a study you own. This is definitive.
+
+        A study must have at least one chapter; so if you delete the last chapter,
+
+        an empty one will be automatically created to replace it.
+
+        '
+      responses:
+        '204':
+          description: Chapter successfully deleted
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+components:
+  schemas:
+    StudyImportPgnChapters:
+      type: object
+      properties:
+        chapters:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: The chapter ID
+              name:
+                type: string
+                description: The chapter name
+              players:
+                type: array
+                minItems: 2
+                maxItems: 2
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type:
+                      - string
+                      - 'null'
+                      description: The player name
+                    rating:
+                      type: integer
+                      description: The player rating
+              status:
+                type: string
+                description: The chapter status
+      example:
+        chapters:
+        - id: iBjmYBya
+          name: test 2
+          players:
+          - name: Carlsen, Magnus
+            rating: 2837
+          - name: Chadaev, Nikolay
+            rating: 2580
+          status: 1-0
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The cause of the error.
+      required:
+      - error
+      example:
+        error: This request is invalid because [...]
+    StudyPgn:
+      type: string
+      example: '[Event "All about the Sicilian Defense: Dragon Variation"]
+
+        [Site "https://lichess.org/study/8c8bmUfy/qwnXMwVC"]
+
+        [Result "*"]
+
+        [UTCDate "2017.06.25"]
+
+        [UTCTime "10:12:04"]
+
+        [Variant "Standard"]
+
+        [ECO "B76"]
+
+        [Opening "Sicilian Defense: Dragon Variation, Yugoslav Attack, Panov Variation"]
+
+        [Annotator "https://lichess.org/@/Francesco_Super"]
+
+
+        { This chapter will go over the Dragon Variation, a very common variation used by Black and it is the most aggressive variation in the Sicilian defense. }
+
+        1. e4 c5 2. Nf3 { Simple developing move to control the d4 square } { [%csl Gd4,Gc5][%cal Gf3d4,Gc5d4] } 2... d6 { [%cal Gd6e5] } (2... e6 3. d4 cxd4 4. Nxd4 Nf6 5. e5 (5. Nc3 { [%cal Ge4e5] }) 5... Qa5+) 3. d4 { Whites want the exchange of pawns } { [%cal Gc5d4] } 3... cxd4 { [%cal Gf3d4] } 4. Nxd4 { Whites are now ahead in development but blacks still have the two central pawns whereas whites only one. } { [%csl Ge7,Gd6,Ge4] } 4... Nf6 { Blacks are now developing their knight and threatening the e4 pawn } { [%csl Ge4][%cal Gf6e4] } 5. Nc3 { The e4 pawn is now protected by the c3 knight } { [%csl Ge4,Bc3][%cal Rf6e4,Bc3e4] } 5... g6 { This is the DRAGON VARIATION. g6 allows the dark-squared bishop to develop and move to g7, controlling the long dark-squared diagonal } { [%csl Gd4] } 6. Be3 { [%cal Gd1d2,Gf2f3,Ge1c1,Gg2g4,Gh2h4,Gg4g5] } (6. Be2 Bg7 7. O-O Nc6 8. Be3 { [%cal Ge3d4] } (8. f3 Nxe4 { [%cal Gg7d4,Gc6d4] } 9. Nxc6 Qb6+ { [%cal Gb6c6,Gb6g1] } 10. Kh1 Nxc3 { [%cal Gc3d1,Gc3e2] } 11. bxc3 bxc6 { [%cal Gc8a6] }) 8... O-O 9. Nb3 a6 { [%cal Gb7b5,Gb5b4,Ge2c4] }) 6... Bg7 (6... Ng4 { [%cal Gg4e3] } 7. Bb5+ { [%cal Gb5e8,Gb8d7,Gc8d7,Gd1g4] } 7... Nc6 8. Nxc6 bxc6 9. Bxc6+ { [%cal Gc6a8] }) 7. f3 { The key opening moves for White, who attempt to castle queenside , whereas f3 strengthens the pawn structure, connecting e4 to the h2 and g2, while White also plan pushing to g4 and possibly h4. } { [%csl Bf3,Be3][%cal Rg2g4,Rh2h4,Rg4g5] } 7... O-O (7... h5 { Is operating against g4. }) 8. Qd2 { [%csl Gh6,Gg7][%cal Ge1c1,Ga1d1,Re3h6,Rd2h6] } 8... Nc6 { [%csl Gc6,Gh6][%cal Gb8c6,Ge1c1,Ga7a6,Ge3h6] } 9. g4 (9. Bh6 { [%cal Ge3d4] } 9... Bxh6 10. Qxh6 Nxd4) 9... Be6 10. Nxe6 fxe6 { [%cal Gf8f1] } 11. O-O-O Ne5 12. Be2 { [%csl Gf3][%cal Re5f3,Bd1h1,Bg1d1] } 12... Qc7 { [%csl Gc4][%cal Ge5c4,Gc4e3,Gc4d2,Bf8c8,Yc7c3] } 13. h4 Nc4 *
+
+        '
+    StudyMetadata:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The study ID
+        name:
+          type: string
+          description: The study name
+        createdAt:
+          type: integer
+          format: int64
+          description: The study creation date
+        updatedAt:
+          type: integer
+          format: int64
+          description: The study last update date
+      required:
+      - id
+      - name
+      - createdAt
+      - updatedAt
+      example:
+        id: WTvnkWAL
+        name: Guess the move
+        createdAt: 1463756350225
+        updatedAt: 1469965025205
+    VariantKey:
+      type: string
+      enum:
+      - standard
+      - chess960
+      - crazyhouse
+      - antichess
+      - atomic
+      - horde
+      - kingOfTheHill
+      - racingKings
+      - threeCheck
+      - fromPosition
+      example: standard
+      default: standard
+    StudyUserSelection:
+      type: string
+      enum:
+      - nobody
+      - owner
+      - contributor
+      - member
+      - everyone
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: 'Read [the introduction for how to make authenticated requests](#description/authentication).
+
+        '
+      flows:
+        authorizationCode:
+          authorizationUrl: https://lichess.org/oauth
+          tokenUrl: https://lichess.org/api/token
+          scopes:
+            preference:read: Read your preferences
+            preference:write: Write your preferences
+            email:read: Read your email address
+            engine:read: Read your external engines
+            engine:write: Create, update, delete your external engines
+            challenge:read: Read incoming challenges
+            challenge:write: Create, accept, decline challenges
+            challenge:bulk: Create, delete, query bulk pairings
+            study:read: Read private studies and broadcasts
+            study:write: Create, update, delete studies and broadcasts
+            tournament:write: Create tournaments
+            racer:write: Create and join puzzle races
+            puzzle:read: Read puzzle activity
+            puzzle:write: Write puzzle activity
+            team:read: Read private team information
+            team:write: Join, leave teams
+            team:lead: Manage teams (kick members, send PMs)
+            follow:read: Read followed players
+            follow:write: Follow and unfollow other players
+            msg:write: Send private messages to other players
+            board:play: Play with the Board API
+            bot:play: Play with the Bot API. Only for [Bot accounts](#tag/bot/POST/api/bot/account/upgrade)
+            web:mod: Use moderator tools (within the bounds of your permissions)

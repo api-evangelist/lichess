@@ -1,0 +1,354 @@
+openapi: 3.1.0
+info:
+  version: 2.0.144
+  title: Lichess.org API reference Account Analysis API
+  contact:
+    name: Lichess.org API
+    url: https://lichess.org/api
+    email: contact@lichess.org
+  x-logo:
+    url: https://lichess1.org/assets/logo/lichess-pad12.svg
+  license:
+    name: AGPL-3.0-or-later
+    url: https://www.gnu.org/licenses/agpl-3.0.txt
+  description: '# Introduction
+
+    Welcome to the reference for the Lichess API! Lichess is free/libre,
+
+    open-source chess server powered by volunteers and donations.
+
+    - Get help in the [Lichess Discord channel](https://discord.gg/lichess)
+
+    - API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)
+
+    - API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)
+
+    - [Contribute to this documentation on Github](https://github.com/lichess-org/api)
+
+    - Check out [Lichess widgets to embed in your website](https://lichess.org/developers)
+
+    - [Download all Lichess rated games](https://database.lichess.org/)
+
+    - [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)
+
+    - [Download all evaluated positions](https://database.lichess.org/#evals)
+
+
+    ## Endpoint
+
+    All requests go to `https://lichess.org` (unless otherwise specified).
+
+
+    ## Clients
+
+    - [Python general API](https://github.com/lichess-org/berserk)
+
+    - [MicroPython general API](https://github.com/mkomon/uberserk)
+
+    - [Python general API - async](https://pypi.org/project/async-lichess-sdk)
+
+    - [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)
+
+    - [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)
+
+    - [Java general API](https://github.com/tors42/chariot)
+
+    - [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)
+
+    - [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)
+
+    - [.NET general API](https://github.com/Dblike/LichessSharp)
+
+
+    ## Rate limiting
+
+    All requests are rate limited using various strategies,
+
+    to ensure the API remains responsive for everyone.
+
+    Only make one request at a time.
+
+    If you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),
+
+    you have exceded one of the rate limits.
+
+    In most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.
+
+    Reduce your request frequency before retrying.
+
+
+    ## Streaming with ND-JSON
+
+    Some API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.
+
+
+    Here''s a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.
+
+
+    ## Authentication
+
+    ### Which authentication method is right for me?
+
+    [Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)
+
+
+    ### Personal Access Token
+
+    Personal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.
+
+    - [Generate a personal access token](https://lichess.org/account/oauth/token)
+
+    - `curl https://lichess.org/api/account -H "Authorization: Bearer {token}"`
+
+    - [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)
+
+
+    ### Token Security
+
+    - Keep your tokens secret. Do not share them in public repositories or public forums.
+
+    - Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens'' scope). You remain responsible for all activities on your account.
+
+    - Do not hardcode tokens in your application''s code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.
+
+    - If you suspect a token has been compromised, revoke it immediately.
+
+
+    To see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).
+
+
+    ### Authorization Code Flow with PKCE
+
+    The authorization code flow with PKCE allows your users to **login with Lichess**.
+
+    Lichess supports unregistered and public clients (no client authentication, choose any unique client id).
+
+    The only accepted code challenge method is `S256`.
+
+    Access tokens are long-lived (expect one year), unless they are revoked.
+
+    Refresh tokens are not supported.
+
+
+    See the [documentation for the OAuth endpoints](#tag/OAuth) or
+
+    the [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.
+
+
+    - [Demo app](https://lichess-org.github.io/api-demo/)
+
+    - [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)
+
+    - [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)
+
+    - [Java example](https://github.com/tors42/lichess-oauth-pkce-app)
+
+    - [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)
+
+
+    #### Real life examples
+
+    - [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))
+
+    - [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))
+
+    - [English Chess Federation](https://ecf.octoknight.com/)
+
+    - [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)
+
+
+    ### Token format
+
+    Access tokens and authorization codes match `^[A-Za-z0-9_]+$`.
+
+    The length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.
+
+    By convention tokens have a recognizable prefix, but do not rely on this.
+
+    '
+servers:
+- url: https://lichess.org
+- url: https://lichess.dev
+- url: http://localhost:{port}
+  variables:
+    port:
+      default: '8080'
+- url: http://l.org
+tags:
+- name: Analysis
+  description: 'Access Lichess cloud evaluations database.
+
+    <https://lichess.org/analysis>
+
+    '
+paths:
+  /api/cloud-eval:
+    get:
+      operationId: apiCloudEval
+      summary: Get cloud evaluation of a position.
+      description: 'Get the cached evaluation of a position, if available.
+
+        Opening positions have more chances of being available. There are about 320 million positions in the database.
+
+        Up to 5 variations may be available. Variants are supported.
+
+        Use this endpoint to fetch a few positions here and there.
+
+        If you want to download a lot of positions, [get the full list](https://database.lichess.org/#evals) from our exported database.
+
+        '
+      tags:
+      - Analysis
+      security: []
+      parameters:
+      - in: query
+        name: fen
+        required: true
+        description: X-FEN of the position
+        schema:
+          type: string
+        example: r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3
+      - in: query
+        name: multiPv
+        description: Number of variations
+        schema:
+          type: integer
+          default: 1
+      - in: query
+        name: variant
+        description: Variant
+        schema:
+          $ref: '#/components/schemas/VariantKey'
+      responses:
+        '200':
+          description: The evaluation of the position.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CloudEval'
+        '404':
+          description: The position was not found in the cloud evaluation database.
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: string
+                    example: No cloud evaluation available for that position
+components:
+  schemas:
+    CloudEval:
+      type: object
+      required:
+      - depth
+      - fen
+      - knodes
+      - pvs
+      properties:
+        depth:
+          type: integer
+        fen:
+          type: string
+        knodes:
+          type: integer
+        pvs:
+          type: array
+          items:
+            oneOf:
+            - type: object
+              title: Non-mate variation
+              required:
+              - cp
+              - moves
+              properties:
+                cp:
+                  type: integer
+                  description: Evaluation in centi-pawns, from White's point of view
+                moves:
+                  type: string
+                  description: 'Variation in UCI notation (King to rook for Chess960-compatible
+
+                    castling notation)
+
+                    '
+            - type: object
+              title: Mate variation
+              required:
+              - mate
+              - moves
+              properties:
+                mate:
+                  type: integer
+                  description: Evaluation in moves to mate, from White's point of view
+                moves:
+                  type: string
+                  description: 'Variation in UCI notation (King to rook for Chess960-compatible
+
+                    castling notation)
+
+                    '
+      example:
+        fen: r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R
+        knodes: 106325
+        depth: 29
+        pvs:
+        - moves: d1e2 d8e7 a2a4 a7a6 b5c4 d7d6 d2d3 g8f6 c1e3 c6a5
+          cp: 41
+        - moves: c2c3 a7a6 b5a4 g8f6 d2d3 b7b5 a4b3 h7h6 a2a4 c8b7
+          cp: 39
+        - moves: d2d3 d8f6 c2c3 a7a6 b5a4 f8c5 d3d4 c5a7 c1e3 g8e7
+          cp: 37
+    VariantKey:
+      type: string
+      enum:
+      - standard
+      - chess960
+      - crazyhouse
+      - antichess
+      - atomic
+      - horde
+      - kingOfTheHill
+      - racingKings
+      - threeCheck
+      - fromPosition
+      example: standard
+      default: standard
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: 'Read [the introduction for how to make authenticated requests](#description/authentication).
+
+        '
+      flows:
+        authorizationCode:
+          authorizationUrl: https://lichess.org/oauth
+          tokenUrl: https://lichess.org/api/token
+          scopes:
+            preference:read: Read your preferences
+            preference:write: Write your preferences
+            email:read: Read your email address
+            engine:read: Read your external engines
+            engine:write: Create, update, delete your external engines
+            challenge:read: Read incoming challenges
+            challenge:write: Create, accept, decline challenges
+            challenge:bulk: Create, delete, query bulk pairings
+            study:read: Read private studies and broadcasts
+            study:write: Create, update, delete studies and broadcasts
+            tournament:write: Create tournaments
+            racer:write: Create and join puzzle races
+            puzzle:read: Read puzzle activity
+            puzzle:write: Write puzzle activity
+            team:read: Read private team information
+            team:write: Join, leave teams
+            team:lead: Manage teams (kick members, send PMs)
+            follow:read: Read followed players
+            follow:write: Follow and unfollow other players
+            msg:write: Send private messages to other players
+            board:play: Play with the Board API
+            bot:play: Play with the Bot API. Only for [Bot accounts](#tag/bot/POST/api/bot/account/upgrade)
+            web:mod: Use moderator tools (within the bounds of your permissions)

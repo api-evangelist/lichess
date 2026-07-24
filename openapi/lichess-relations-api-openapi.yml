@@ -1,0 +1,748 @@
+openapi: 3.1.0
+info:
+  version: 2.0.144
+  title: Lichess.org API reference Account Relations API
+  contact:
+    name: Lichess.org API
+    url: https://lichess.org/api
+    email: contact@lichess.org
+  x-logo:
+    url: https://lichess1.org/assets/logo/lichess-pad12.svg
+  license:
+    name: AGPL-3.0-or-later
+    url: https://www.gnu.org/licenses/agpl-3.0.txt
+  description: '# Introduction
+
+    Welcome to the reference for the Lichess API! Lichess is free/libre,
+
+    open-source chess server powered by volunteers and donations.
+
+    - Get help in the [Lichess Discord channel](https://discord.gg/lichess)
+
+    - API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)
+
+    - API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)
+
+    - [Contribute to this documentation on Github](https://github.com/lichess-org/api)
+
+    - Check out [Lichess widgets to embed in your website](https://lichess.org/developers)
+
+    - [Download all Lichess rated games](https://database.lichess.org/)
+
+    - [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)
+
+    - [Download all evaluated positions](https://database.lichess.org/#evals)
+
+
+    ## Endpoint
+
+    All requests go to `https://lichess.org` (unless otherwise specified).
+
+
+    ## Clients
+
+    - [Python general API](https://github.com/lichess-org/berserk)
+
+    - [MicroPython general API](https://github.com/mkomon/uberserk)
+
+    - [Python general API - async](https://pypi.org/project/async-lichess-sdk)
+
+    - [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)
+
+    - [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)
+
+    - [Java general API](https://github.com/tors42/chariot)
+
+    - [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)
+
+    - [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)
+
+    - [.NET general API](https://github.com/Dblike/LichessSharp)
+
+
+    ## Rate limiting
+
+    All requests are rate limited using various strategies,
+
+    to ensure the API remains responsive for everyone.
+
+    Only make one request at a time.
+
+    If you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),
+
+    you have exceded one of the rate limits.
+
+    In most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.
+
+    Reduce your request frequency before retrying.
+
+
+    ## Streaming with ND-JSON
+
+    Some API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.
+
+
+    Here''s a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.
+
+
+    ## Authentication
+
+    ### Which authentication method is right for me?
+
+    [Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)
+
+
+    ### Personal Access Token
+
+    Personal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.
+
+    - [Generate a personal access token](https://lichess.org/account/oauth/token)
+
+    - `curl https://lichess.org/api/account -H "Authorization: Bearer {token}"`
+
+    - [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)
+
+
+    ### Token Security
+
+    - Keep your tokens secret. Do not share them in public repositories or public forums.
+
+    - Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens'' scope). You remain responsible for all activities on your account.
+
+    - Do not hardcode tokens in your application''s code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.
+
+    - If you suspect a token has been compromised, revoke it immediately.
+
+
+    To see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).
+
+
+    ### Authorization Code Flow with PKCE
+
+    The authorization code flow with PKCE allows your users to **login with Lichess**.
+
+    Lichess supports unregistered and public clients (no client authentication, choose any unique client id).
+
+    The only accepted code challenge method is `S256`.
+
+    Access tokens are long-lived (expect one year), unless they are revoked.
+
+    Refresh tokens are not supported.
+
+
+    See the [documentation for the OAuth endpoints](#tag/OAuth) or
+
+    the [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.
+
+
+    - [Demo app](https://lichess-org.github.io/api-demo/)
+
+    - [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)
+
+    - [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)
+
+    - [Java example](https://github.com/tors42/lichess-oauth-pkce-app)
+
+    - [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)
+
+
+    #### Real life examples
+
+    - [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))
+
+    - [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))
+
+    - [English Chess Federation](https://ecf.octoknight.com/)
+
+    - [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)
+
+
+    ### Token format
+
+    Access tokens and authorization codes match `^[A-Za-z0-9_]+$`.
+
+    The length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.
+
+    By convention tokens have a recognizable prefix, but do not rely on this.
+
+    '
+servers:
+- url: https://lichess.org
+- url: https://lichess.dev
+- url: http://localhost:{port}
+  variables:
+    port:
+      default: '8080'
+- url: http://l.org
+tags:
+- name: Relations
+  description: 'Access relations between users.
+
+    '
+paths:
+  /api/rel/following:
+    get:
+      operationId: apiUserFollowing
+      summary: Get users followed by the logged in user
+      description: 'Users are streamed as [ndjson](#description/streaming-with-nd-json).
+
+        '
+      tags:
+      - Relations
+      security:
+      - OAuth2:
+        - follow:read
+      responses:
+        '200':
+          description: The list of users followed by a user.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/x-ndjson:
+              schema:
+                $ref: '#/components/schemas/UserExtended'
+              examples:
+                default:
+                  $ref: '#/components/examples/relations-getMyFollowing.json'
+  /api/rel/follow/{username}:
+    post:
+      operationId: followUser
+      summary: Follow a player
+      description: 'Follow a player, adding them to your list of Lichess friends.
+
+        '
+      tags:
+      - Relations
+      security:
+      - OAuth2:
+        - follow:write
+      parameters:
+      - in: path
+        name: username
+        schema:
+          type: string
+          example: thibault
+        required: true
+      responses:
+        '200':
+          description: The player was successfully added.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+              examples:
+                default:
+                  $ref: '#/components/examples/relations-followPlayer.json'
+  /api/rel/unfollow/{username}:
+    post:
+      operationId: unfollowUser
+      summary: Unfollow a player
+      description: 'Unfollow a player, removing them from your list of Lichess friends.
+
+        '
+      tags:
+      - Relations
+      security:
+      - OAuth2:
+        - follow:write
+      parameters:
+      - in: path
+        name: username
+        schema:
+          type: string
+          example: thibault
+        required: true
+      responses:
+        '200':
+          description: The player was successfully removed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+              examples:
+                default:
+                  $ref: '#/components/examples/relations-unfollowPlayer.json'
+  /api/rel/block/{username}:
+    post:
+      operationId: blockUser
+      summary: Block a player
+      description: 'Block a player, adding them to your list of blocked Lichess users.
+
+        '
+      tags:
+      - Relations
+      security:
+      - OAuth2:
+        - follow:write
+      parameters:
+      - in: path
+        name: username
+        schema:
+          type: string
+          example: thibault
+        required: true
+      responses:
+        '200':
+          description: The player was successfully added.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+              examples:
+                default:
+                  $ref: '#/components/examples/relations-blockPlayer.json'
+  /api/rel/unblock/{username}:
+    post:
+      operationId: unblockUser
+      summary: Unblock a player
+      description: 'Unblock a player, removing them from your list of blocked Lichess users.
+
+        '
+      tags:
+      - Relations
+      security:
+      - OAuth2:
+        - follow:write
+      parameters:
+      - in: path
+        name: username
+        schema:
+          type: string
+          example: thibault
+        required: true
+      responses:
+        '200':
+          description: The player was successfully removed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+              examples:
+                default:
+                  $ref: '#/components/examples/relations-unblockPlayer.json'
+components:
+  schemas:
+    PuzzleModePerf:
+      type: object
+      properties:
+        runs:
+          type: integer
+        score:
+          type: integer
+      required:
+      - runs
+      - score
+    PatronColor:
+      type: integer
+      description: 'Players can choose a color for their Patron wings.
+
+        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
+
+
+        The presence of this field indicates the player is an active Patron.
+
+        '
+      minimum: 1
+      maximum: 10
+    PlayTime:
+      type: object
+      properties:
+        total:
+          type: integer
+        tv:
+          type: integer
+        human:
+          type: integer
+      required:
+      - total
+      - tv
+    Patron:
+      type: boolean
+      deprecated: true
+      description: 'Use patronColor value instead to determine if player is a patron.
+
+        '
+    Count:
+      type: object
+      properties:
+        all:
+          type: integer
+        rated:
+          type: integer
+        ai:
+          type: integer
+        draw:
+          type: integer
+        drawH:
+          type: integer
+        loss:
+          type: integer
+        lossH:
+          type: integer
+        win:
+          type: integer
+        winH:
+          type: integer
+        bookmark:
+          type: integer
+        playing:
+          type: integer
+        import:
+          type: integer
+        me:
+          type: integer
+      required:
+      - all
+      - rated
+      - draw
+      - loss
+      - win
+      - bookmark
+      - playing
+      - import
+      - me
+    UserExtended:
+      allOf:
+      - $ref: '#/components/schemas/User'
+      - type: object
+        properties:
+          url:
+            type: string
+            format: uri
+          playing:
+            type: string
+            format: uri
+          count:
+            $ref: '#/components/schemas/Count'
+          streaming:
+            type: boolean
+          streamer:
+            $ref: '#/components/schemas/UserStreamer'
+          followable:
+            type: boolean
+            description: only appears if the request is [authenticated with OAuth2](#description/authentication)
+          following:
+            type: boolean
+            description: only appears if the request is [authenticated with OAuth2](#description/authentication)
+          blocking:
+            type: boolean
+            description: only appears if the request is [authenticated with OAuth2](#description/authentication)
+          fideId:
+            type: number
+        required:
+        - url
+    UserStreamer:
+      type: object
+      properties:
+        twitch:
+          type: object
+          properties:
+            channel:
+              type: string
+              format: uri
+              example: https://www.twitch.tv/lichessdotorg
+        youtube:
+          type: object
+          properties:
+            channel:
+              type: string
+              format: uri
+              example: https://www.youtube.com/c/LichessDotOrg
+    Ok:
+      properties:
+        ok:
+          type: boolean
+      required:
+      - ok
+    Profile:
+      type: object
+      properties:
+        flag:
+          type: string
+          example: EC
+        location:
+          type: string
+        bio:
+          type: string
+          example: Free bugs!
+        realName:
+          type: string
+          example: Thibault Duplessis
+        fideRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        uscfRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        ecfRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        cfcRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        rcfRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        dsbRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        links:
+          type: string
+          example: "github.com/ornicar\r\nmas.to/@thibault"
+    Flair:
+      type: string
+      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
+    Perf:
+      type: object
+      properties:
+        games:
+          type: integer
+        rating:
+          type: integer
+        rd:
+          type: integer
+          description: rating deviation
+        prog:
+          type: integer
+        prov:
+          type: boolean
+          description: only appears if a user's perf rating are [provisional](https://lichess.org/faq#provisional)
+        rank:
+          type: integer
+          description: global lichess ranking, only appears for recently active players
+      required:
+      - games
+      - rating
+      - rd
+      - prog
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        perfs:
+          $ref: '#/components/schemas/Perfs'
+        title:
+          $ref: '#/components/schemas/Title'
+        flair:
+          $ref: '#/components/schemas/Flair'
+        createdAt:
+          type: integer
+          format: int64
+        disabled:
+          type: boolean
+          description: only appears if a user's account is closed
+        tosViolation:
+          type: boolean
+          description: only appears if a user's account is marked for the violation of [Lichess TOS](https://lichess.org/terms-of-service)
+        profile:
+          $ref: '#/components/schemas/Profile'
+        seenAt:
+          type: integer
+          format: int64
+        playTime:
+          $ref: '#/components/schemas/PlayTime'
+        patron:
+          $ref: '#/components/schemas/Patron'
+        patronColor:
+          $ref: '#/components/schemas/PatronColor'
+        verified:
+          type: boolean
+      required:
+      - id
+      - username
+    Perfs:
+      type: object
+      properties:
+        chess960:
+          $ref: '#/components/schemas/Perf'
+        atomic:
+          $ref: '#/components/schemas/Perf'
+        racingKings:
+          $ref: '#/components/schemas/Perf'
+        ultraBullet:
+          $ref: '#/components/schemas/Perf'
+        blitz:
+          $ref: '#/components/schemas/Perf'
+        kingOfTheHill:
+          $ref: '#/components/schemas/Perf'
+        threeCheck:
+          $ref: '#/components/schemas/Perf'
+        antichess:
+          $ref: '#/components/schemas/Perf'
+        crazyhouse:
+          $ref: '#/components/schemas/Perf'
+        bullet:
+          $ref: '#/components/schemas/Perf'
+        correspondence:
+          $ref: '#/components/schemas/Perf'
+        horde:
+          $ref: '#/components/schemas/Perf'
+        puzzle:
+          $ref: '#/components/schemas/Perf'
+        classical:
+          $ref: '#/components/schemas/Perf'
+        rapid:
+          $ref: '#/components/schemas/Perf'
+        storm:
+          $ref: '#/components/schemas/PuzzleModePerf'
+        racer:
+          $ref: '#/components/schemas/PuzzleModePerf'
+        streak:
+          $ref: '#/components/schemas/PuzzleModePerf'
+    Title:
+      type: string
+      enum:
+      - GM
+      - WGM
+      - IM
+      - WIM
+      - FM
+      - WFM
+      - NM
+      - CM
+      - WCM
+      - WNM
+      - LM
+      - BOT
+      description: only appears if the user is a titled player or a bot user
+  examples:
+    relations-getMyFollowing.json:
+      value:
+        id: angel
+        username: Angel
+        perfs:
+          bullet:
+            games: 69
+            rating: 2223
+            rd: 47
+            prog: -40
+          blitz:
+            games: 571
+            rating: 2204
+            rd: 76
+            prog: 51
+          rapid:
+            games: 279
+            rating: 2245
+            rd: 46
+            prog: -3
+          classical:
+            games: 36
+            rating: 2366
+            rd: 49
+            prog: -43
+          correspondence:
+            games: 329
+            rating: 2248
+            rd: 114
+            prog: -18
+            prov: true
+          chess960:
+            games: 65
+            rating: 2199
+            rd: 45
+            prog: 2
+          kingOfTheHill:
+            games: 2917
+            rating: 2306
+            rd: 64
+            prog: -12
+          threeCheck:
+            games: 136
+            rating: 2311
+            rd: 45
+            prog: -3
+          antichess:
+            games: 190
+            rating: 2255
+            rd: 79
+            prog: 4
+          atomic:
+            games: 544
+            rating: 2424
+            rd: 100
+            prog: 42
+          horde:
+            games: 50
+            rating: 2345
+            rd: 55
+            prog: 52
+          crazyhouse:
+            games: 1717
+            rating: 2286
+            rd: 111
+            prog: 5
+            prov: true
+          puzzle:
+            games: 485
+            rating: 2338
+            rd: 58
+            prog: -6
+        title: CM
+        flair: people.person-in-motorized-wheelchair-facing-right-medium-light-skin-tone
+        patron: true
+        patronColor: 1
+        createdAt: 1774542084429
+        seenAt: 1777308613557
+        playTime:
+          total: 15563
+          tv: 0
+        url: https://lichess.org/@/Angel
+    relations-unfollowPlayer.json:
+      value:
+        ok: true
+    relations-unblockPlayer.json:
+      value:
+        ok: true
+    relations-followPlayer.json:
+      value:
+        ok: true
+    relations-blockPlayer.json:
+      value:
+        ok: true
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: 'Read [the introduction for how to make authenticated requests](#description/authentication).
+
+        '
+      flows:
+        authorizationCode:
+          authorizationUrl: https://lichess.org/oauth
+          tokenUrl: https://lichess.org/api/token
+          scopes:
+            preference:read: Read your preferences
+            preference:write: Write your preferences
+            email:read: Read your email address
+            engine:read: Read your external engines
+            engine:write: Create, update, delete your external engines
+            challenge:read: Read incoming challenges
+            challenge:write: Create, accept, decline challenges
+            challenge:bulk: Create, delete, query bulk pairings
+            study:read: Read private studies and broadcasts
+            study:write: Create, update, delete studies and broadcasts
+            tournament:write: Create tournaments
+            racer:write: Create and join puzzle races
+            puzzle:read: Read puzzle activity
+            puzzle:write: Write puzzle activity
+            team:read: Read private team information
+            team:write: Join, leave teams
+            team:lead: Manage teams (kick members, send PMs)
+            follow:read: Read followed players
+            follow:write: Follow and unfollow other players
+            msg:write: Send private messages to other players
+            board:play: Play with the Board API
+            bot:play: Play with the Bot API. Only for [Bot accounts](#tag/bot/POST/api/bot/account/upgrade)
+            web:mod: Use moderator tools (within the bounds of your permissions)

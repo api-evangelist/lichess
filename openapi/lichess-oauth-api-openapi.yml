@@ -1,0 +1,448 @@
+openapi: 3.1.0
+info:
+  version: 2.0.144
+  title: Lichess.org API reference Account OAuth API
+  contact:
+    name: Lichess.org API
+    url: https://lichess.org/api
+    email: contact@lichess.org
+  x-logo:
+    url: https://lichess1.org/assets/logo/lichess-pad12.svg
+  license:
+    name: AGPL-3.0-or-later
+    url: https://www.gnu.org/licenses/agpl-3.0.txt
+  description: '# Introduction
+
+    Welcome to the reference for the Lichess API! Lichess is free/libre,
+
+    open-source chess server powered by volunteers and donations.
+
+    - Get help in the [Lichess Discord channel](https://discord.gg/lichess)
+
+    - API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)
+
+    - API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)
+
+    - [Contribute to this documentation on Github](https://github.com/lichess-org/api)
+
+    - Check out [Lichess widgets to embed in your website](https://lichess.org/developers)
+
+    - [Download all Lichess rated games](https://database.lichess.org/)
+
+    - [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)
+
+    - [Download all evaluated positions](https://database.lichess.org/#evals)
+
+
+    ## Endpoint
+
+    All requests go to `https://lichess.org` (unless otherwise specified).
+
+
+    ## Clients
+
+    - [Python general API](https://github.com/lichess-org/berserk)
+
+    - [MicroPython general API](https://github.com/mkomon/uberserk)
+
+    - [Python general API - async](https://pypi.org/project/async-lichess-sdk)
+
+    - [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)
+
+    - [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)
+
+    - [Java general API](https://github.com/tors42/chariot)
+
+    - [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)
+
+    - [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)
+
+    - [.NET general API](https://github.com/Dblike/LichessSharp)
+
+
+    ## Rate limiting
+
+    All requests are rate limited using various strategies,
+
+    to ensure the API remains responsive for everyone.
+
+    Only make one request at a time.
+
+    If you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),
+
+    you have exceded one of the rate limits.
+
+    In most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.
+
+    Reduce your request frequency before retrying.
+
+
+    ## Streaming with ND-JSON
+
+    Some API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.
+
+
+    Here''s a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.
+
+
+    ## Authentication
+
+    ### Which authentication method is right for me?
+
+    [Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)
+
+
+    ### Personal Access Token
+
+    Personal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.
+
+    - [Generate a personal access token](https://lichess.org/account/oauth/token)
+
+    - `curl https://lichess.org/api/account -H "Authorization: Bearer {token}"`
+
+    - [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)
+
+
+    ### Token Security
+
+    - Keep your tokens secret. Do not share them in public repositories or public forums.
+
+    - Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens'' scope). You remain responsible for all activities on your account.
+
+    - Do not hardcode tokens in your application''s code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.
+
+    - If you suspect a token has been compromised, revoke it immediately.
+
+
+    To see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).
+
+
+    ### Authorization Code Flow with PKCE
+
+    The authorization code flow with PKCE allows your users to **login with Lichess**.
+
+    Lichess supports unregistered and public clients (no client authentication, choose any unique client id).
+
+    The only accepted code challenge method is `S256`.
+
+    Access tokens are long-lived (expect one year), unless they are revoked.
+
+    Refresh tokens are not supported.
+
+
+    See the [documentation for the OAuth endpoints](#tag/OAuth) or
+
+    the [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.
+
+
+    - [Demo app](https://lichess-org.github.io/api-demo/)
+
+    - [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)
+
+    - [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)
+
+    - [Java example](https://github.com/tors42/lichess-oauth-pkce-app)
+
+    - [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)
+
+
+    #### Real life examples
+
+    - [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))
+
+    - [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))
+
+    - [English Chess Federation](https://ecf.octoknight.com/)
+
+    - [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)
+
+
+    ### Token format
+
+    Access tokens and authorization codes match `^[A-Za-z0-9_]+$`.
+
+    The length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.
+
+    By convention tokens have a recognizable prefix, but do not rely on this.
+
+    '
+servers:
+- url: https://lichess.org
+- url: https://lichess.dev
+- url: http://localhost:{port}
+  variables:
+    port:
+      default: '8080'
+- url: http://l.org
+tags:
+- name: OAuth
+  description: 'Obtaining and revoking OAuth tokens.
+
+
+    [Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md).
+
+    '
+paths:
+  /oauth:
+    get:
+      operationId: oauth
+      summary: Request authorization code
+      tags:
+      - OAuth
+      security: []
+      description: "OAuth2 authorization endpoint.\nStart the OAuth2 Authorization Code Flow with PKCE by securely\ngenerating two random strings unique to each authorization\nrequest:\n\n* `code_verifier`\n* `state`\n\nStore these in session storage. Make sure not to reveal `code_verifier`\nto eavesdroppers. Do not show it in URLs, do not abuse `state` to store\nit, do not send it over insecure connections. However it is fine if\nthe user themselves can extract `code_verifier`, which will always be\npossible for fully client-side apps.\nThen send the user to this endpoint. They will be prompted to grant\nauthorization and then be redirected back to the given `redirect_uri`.\nIf the authorization failed, the following query string parameters will\nbe appended to the redirection:\n\n* `error`, in particular with value `access_denied` if the user\n   cancelled authorization\n* `error_description` to aid debugging\n* `state`, exactly as passed in the `state` parameter\n\nIf the authorization succeeded, the following query string parameters\nwill be appended to the redirection:\n\n* `code`, containing a fresh short-lived authorization code\n* `state`, exactly as passed in the `state` parameter\n\nNext, to defend against cross site request forgery, check that the\nreturned `state` matches the `state` you originally generated.\n\nFinally, continue by using the authorization code to\n[obtain an access token](#tag/oauth/POST/api/token).\n"
+      parameters:
+      - in: query
+        name: response_type
+        description: Must be `code`.
+        required: true
+        schema:
+          type: string
+          const: code
+      - in: query
+        name: client_id
+        description: Arbitrary identifier that uniquely identifies your application.
+        example: example.com
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: redirect_uri
+        description: The absolute URL that the user should be redirected to with the authorization result.
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: code_challenge_method
+        description: Must be `S256`.
+        required: true
+        schema:
+          type: string
+          const: S256
+      - in: query
+        name: code_challenge
+        description: Compute `BASE64URL(SHA256(code_verifier))`.
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: scope
+        description: Space separated list of requested OAuth scopes, if any.
+        schema:
+          type: string
+      - in: query
+        name: username
+        description: Hint that you want the user to log in with a specific Lichess username.
+        schema:
+          type: string
+      - in: query
+        name: state
+        description: Arbitrary state that will be returned verbatim with the authorization result.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Authorization prompt will be displayed to the user.
+  /api/token:
+    post:
+      operationId: apiToken
+      summary: Obtain access token
+      tags:
+      - OAuth
+      security: []
+      description: 'OAuth2 token endpoint. Exchanges an authorization code for an access token.
+
+        '
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                grant_type:
+                  type: string
+                  example: authorization_code
+                  const: authorization_code
+                code:
+                  type: string
+                  example: liu_iS1uOZg99Htmo58ex2jKgYziUfzsnAl0
+                  description: The authorization code that was sent in the `code` parameter to your `redirect_uri`.
+                code_verifier:
+                  type: string
+                  example: Ry1rbGdOMTQtUjhOc0lmTnFKak1LTHV0NjlRMll2aXYtTThkQnlJRkRpaGwyQjh0ZDNFdzFPSG9KUlY4M1NrRzJ5ZHhUdjVZR08zLTZOT3dCN2xLfjZOXzU2WHk4SENP
+                  description: A `code_challenge` was used to request the authorization code. This must be the `code_verifier` it was derived from.
+                redirect_uri:
+                  type: string
+                  example: http://example.com/
+                  description: Must match the `redirect_uri` used to request the authorization code.
+                client_id:
+                  type: string
+                  example: example.com
+                  description: Must match the `client_id` used to request the authorization code.
+      responses:
+        '200':
+          description: Access token successfully obtained.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                properties:
+                  token_type:
+                    type: string
+                    example: Bearer
+                  access_token:
+                    type: string
+                    example: lio_EXAMPLE_TOKEN_REDACTED_FOR_SECRET_SCAN
+                  expires_in:
+                    type: integer
+                    example: 31536000
+                required:
+                - token_type
+                - access_token
+                - expires_in
+        '400':
+          description: Failed to obtain access token.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OAuthError'
+    delete:
+      operationId: apiTokenDelete
+      summary: Revoke access token
+      description: Revokes the access token sent as Bearer for this request.
+      tags:
+      - OAuth
+      security:
+      - OAuth2: []
+      responses:
+        '204':
+          description: Access token revoked.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+  /api/token/test:
+    post:
+      operationId: tokenTest
+      summary: Test multiple OAuth tokens
+      description: 'For up to 1000 OAuth tokens,
+
+        returns their associated user ID and scopes,
+
+        or `null` if the token is invalid.
+
+        The method is `POST` so a longer list of tokens can be sent in the request body.
+
+        '
+      tags:
+      - OAuth
+      security: []
+      requestBody:
+        description: OAuth tokens separated by commas. Up to 1000.
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+            examples:
+              body:
+                $ref: '#/components/examples/oauth-testMultipleOauthTokens-request.txt'
+      responses:
+        '200':
+          description: The representation of the OAuth tokens.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  x-additionalPropertiesName: token
+                  oneOf:
+                  - type: object
+                    properties:
+                      userId:
+                        type: string
+                      scopes:
+                        type: string
+                        description: Comma-separated list of scopes. Empty string if the token has no scopes.
+                      expires:
+                        type:
+                        - integer
+                        - 'null'
+                        description: Unix-timestamp in milliseconds or null if the token never expires.
+                  - type: 'null'
+              examples:
+                default:
+                  $ref: '#/components/examples/oauth-testMultipleOauthTokens.json'
+components:
+  examples:
+    oauth-testMultipleOauthTokens.json:
+      value:
+        lip_jose:
+          userId: jose
+          scopes: preference:read,preference:write,email:read,challenge:read,challenge:write,challenge:bulk,study:read,study:write,tournament:write,racer:write,puzzle:read,puzzle:write,team:read,team:write,team:lead,follow:read,follow:write,msg:write,board:play,bot:play,engine:read,engine:write,web:mod
+          expires: null
+        lip_badToken: null
+    oauth-testMultipleOauthTokens-request.txt:
+      value: 'lip_jose,lip_badToken
+
+        '
+  schemas:
+    OAuthError:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The cause of the error.
+        error_description:
+          type: string
+          description: The reason why the request was rejected.
+      required:
+      - error
+      example:
+        error: invalid_grant
+        error_description: hash of code_verifier does not match code_challenge
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: 'Read [the introduction for how to make authenticated requests](#description/authentication).
+
+        '
+      flows:
+        authorizationCode:
+          authorizationUrl: https://lichess.org/oauth
+          tokenUrl: https://lichess.org/api/token
+          scopes:
+            preference:read: Read your preferences
+            preference:write: Write your preferences
+            email:read: Read your email address
+            engine:read: Read your external engines
+            engine:write: Create, update, delete your external engines
+            challenge:read: Read incoming challenges
+            challenge:write: Create, accept, decline challenges
+            challenge:bulk: Create, delete, query bulk pairings
+            study:read: Read private studies and broadcasts
+            study:write: Create, update, delete studies and broadcasts
+            tournament:write: Create tournaments
+            racer:write: Create and join puzzle races
+            puzzle:read: Read puzzle activity
+            puzzle:write: Write puzzle activity
+            team:read: Read private team information
+            team:write: Join, leave teams
+            team:lead: Manage teams (kick members, send PMs)
+            follow:read: Read followed players
+            follow:write: Follow and unfollow other players
+            msg:write: Send private messages to other players
+            board:play: Play with the Board API
+            bot:play: Play with the Bot API. Only for [Bot accounts](#tag/bot/POST/api/bot/account/upgrade)
+            web:mod: Use moderator tools (within the bounds of your permissions)

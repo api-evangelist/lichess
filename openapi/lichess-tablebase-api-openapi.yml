@@ -1,0 +1,1531 @@
+openapi: 3.1.0
+info:
+  version: 2.0.144
+  title: Lichess.org API reference Account Tablebase API
+  contact:
+    name: Lichess.org API
+    url: https://lichess.org/api
+    email: contact@lichess.org
+  x-logo:
+    url: https://lichess1.org/assets/logo/lichess-pad12.svg
+  license:
+    name: AGPL-3.0-or-later
+    url: https://www.gnu.org/licenses/agpl-3.0.txt
+  description: '# Introduction
+
+    Welcome to the reference for the Lichess API! Lichess is free/libre,
+
+    open-source chess server powered by volunteers and donations.
+
+    - Get help in the [Lichess Discord channel](https://discord.gg/lichess)
+
+    - API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)
+
+    - API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)
+
+    - [Contribute to this documentation on Github](https://github.com/lichess-org/api)
+
+    - Check out [Lichess widgets to embed in your website](https://lichess.org/developers)
+
+    - [Download all Lichess rated games](https://database.lichess.org/)
+
+    - [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)
+
+    - [Download all evaluated positions](https://database.lichess.org/#evals)
+
+
+    ## Endpoint
+
+    All requests go to `https://lichess.org` (unless otherwise specified).
+
+
+    ## Clients
+
+    - [Python general API](https://github.com/lichess-org/berserk)
+
+    - [MicroPython general API](https://github.com/mkomon/uberserk)
+
+    - [Python general API - async](https://pypi.org/project/async-lichess-sdk)
+
+    - [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)
+
+    - [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)
+
+    - [Java general API](https://github.com/tors42/chariot)
+
+    - [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)
+
+    - [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)
+
+    - [.NET general API](https://github.com/Dblike/LichessSharp)
+
+
+    ## Rate limiting
+
+    All requests are rate limited using various strategies,
+
+    to ensure the API remains responsive for everyone.
+
+    Only make one request at a time.
+
+    If you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),
+
+    you have exceded one of the rate limits.
+
+    In most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.
+
+    Reduce your request frequency before retrying.
+
+
+    ## Streaming with ND-JSON
+
+    Some API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.
+
+
+    Here''s a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.
+
+
+    ## Authentication
+
+    ### Which authentication method is right for me?
+
+    [Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)
+
+
+    ### Personal Access Token
+
+    Personal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.
+
+    - [Generate a personal access token](https://lichess.org/account/oauth/token)
+
+    - `curl https://lichess.org/api/account -H "Authorization: Bearer {token}"`
+
+    - [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)
+
+
+    ### Token Security
+
+    - Keep your tokens secret. Do not share them in public repositories or public forums.
+
+    - Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens'' scope). You remain responsible for all activities on your account.
+
+    - Do not hardcode tokens in your application''s code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.
+
+    - If you suspect a token has been compromised, revoke it immediately.
+
+
+    To see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).
+
+
+    ### Authorization Code Flow with PKCE
+
+    The authorization code flow with PKCE allows your users to **login with Lichess**.
+
+    Lichess supports unregistered and public clients (no client authentication, choose any unique client id).
+
+    The only accepted code challenge method is `S256`.
+
+    Access tokens are long-lived (expect one year), unless they are revoked.
+
+    Refresh tokens are not supported.
+
+
+    See the [documentation for the OAuth endpoints](#tag/OAuth) or
+
+    the [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.
+
+
+    - [Demo app](https://lichess-org.github.io/api-demo/)
+
+    - [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)
+
+    - [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)
+
+    - [Java example](https://github.com/tors42/lichess-oauth-pkce-app)
+
+    - [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)
+
+
+    #### Real life examples
+
+    - [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))
+
+    - [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))
+
+    - [English Chess Federation](https://ecf.octoknight.com/)
+
+    - [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)
+
+
+    ### Token format
+
+    Access tokens and authorization codes match `^[A-Za-z0-9_]+$`.
+
+    The length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.
+
+    By convention tokens have a recognizable prefix, but do not rely on this.
+
+    '
+servers:
+- url: https://lichess.org
+- url: https://lichess.dev
+- url: http://localhost:{port}
+  variables:
+    port:
+      default: '8080'
+- url: http://l.org
+tags:
+- name: Tablebase
+  description: 'Lookup positions from the [Lichess tablebase server](https://lichess.org/blog/W3WeMyQAACQAdfAL/7-piece-syzygy-tablebases-are-complete).
+
+
+    > [!important]
+
+    > The hostname for these endpoints is `tablebase.lichess.org` and not `lichess.org`.
+
+    '
+paths:
+  /standard:
+    get:
+      operationId: tablebaseStandard
+      summary: Tablebase lookup
+      description: '**Endpoint: <https://tablebase.lichess.org>**
+
+
+        Example: `curl http://tablebase.lichess.org/standard?fen=4k3/6KP/8/8/8/8/7p/8_w_-_-_0_1`
+
+        '
+      tags:
+      - Tablebase
+      servers:
+      - url: https://tablebase.lichess.org
+      - url: http://localhost:{port}
+        variables:
+          port:
+            default: '9000'
+      security: []
+      parameters:
+      - in: query
+        name: fen
+        description: X-FEN of the position. Underscores allowed.
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: dtc
+        description: 'When to query the tablebase for `dtc` values. The default is
+
+          `auxiliary`, i.e., only when the position is not covered by one of the
+
+          other tablebases.
+
+          '
+        schema:
+          type: string
+          enum:
+          - never
+          - auxiliary
+          - always
+        required: false
+      responses:
+        '200':
+          description: The tablebase information for the position in standard chess.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TablebaseJson'
+              examples:
+                default:
+                  $ref: '#/components/examples/tablebase-lookupStandard.json'
+  /atomic:
+    get:
+      operationId: tablebaseAtomic
+      summary: Tablebase lookup for Atomic chess
+      description: '**Endpoint: <https://tablebase.lichess.org>**
+
+        '
+      tags:
+      - Tablebase
+      servers:
+      - url: https://tablebase.lichess.org
+      - url: http://localhost:{port}
+        variables:
+          port:
+            default: '9000'
+      security: []
+      parameters:
+      - in: query
+        name: fen
+        description: X-FEN of the position. Underscores allowed.
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: The tablebase information for the position in atomic chess.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TablebaseJson'
+              examples:
+                default:
+                  $ref: '#/components/examples/tablebase-lookupAtomic.json'
+  /antichess:
+    get:
+      operationId: antichessAtomic
+      summary: Tablebase lookup for Antichess
+      description: '**Endpoint: <https://tablebase.lichess.org>**
+
+        '
+      tags:
+      - Tablebase
+      servers:
+      - url: https://tablebase.lichess.org
+      - url: http://localhost:{port}
+        variables:
+          port:
+            default: '9000'
+      security: []
+      parameters:
+      - in: query
+        name: fen
+        description: X-FEN of the position. Underscores allowed.
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: The tablebase information for the position in antichess.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TablebaseJson'
+              examples:
+                default:
+                  $ref: '#/components/examples/tablebase-lookupAntichess.json'
+components:
+  schemas:
+    TablebaseMove:
+      type: object
+      properties:
+        uci:
+          type: string
+          example: h7h8q
+        san:
+          type: string
+          example: h8=Q+
+        category:
+          type: string
+          enum:
+          - loss
+          - unknown
+          - syzygy-loss
+          - maybe-loss
+          - blessed-loss
+          - draw
+          - cursed-win
+          - maybe-win
+          - syzygy-win
+          - win
+        dtz:
+          type:
+          - 'null'
+          - integer
+        precise_dtz:
+          type:
+          - 'null'
+          - integer
+        dtc:
+          type:
+          - 'null'
+          - integer
+        dtm:
+          type:
+          - 'null'
+          - integer
+        dtw:
+          type:
+          - 'null'
+          - integer
+        zeroing:
+          type: boolean
+        conversion:
+          type: boolean
+        checkmate:
+          type: boolean
+        stalemate:
+          type: boolean
+        variant_win:
+          type: boolean
+        variant_loss:
+          type: boolean
+        insufficient_material:
+          type: boolean
+      required:
+      - uci
+      - san
+      - category
+    TablebaseJson:
+      type: object
+      properties:
+        category:
+          type: string
+          enum:
+          - win
+          - unknown
+          - syzygy-win
+          - maybe-win
+          - cursed-win
+          - draw
+          - blessed-loss
+          - maybe-loss
+          - syzygy-loss
+          - loss
+          description: '`cursed-win` and `blessed-loss` means the 50-move rule prevents
+
+            the decisive result.
+
+
+            `syzygy-win` and `syzygy-loss` means exact result is unknown due to
+
+            [DTZ rounding](https://syzygy-tables.info/metrics#dtz), i.e., the
+
+            win or loss could also be prevented by the 50-move rule if
+
+            the user has deviated from the tablebase recommendation since the
+
+            last pawn move or capture.
+
+
+            `maybe-win` and `maybe-loss` means the result with regard to the
+
+            50-move rule is unknown, because DTZ is unknown and the DTC tablebase
+
+            does not guarantee to reach a zeroing move as soon as possible.
+
+            '
+        dtz:
+          type:
+          - 'null'
+          - integer
+          description: '[DTZ50'''' with rounding](https://syzygy-tables.info/metrics#dtz) in plies
+
+            (for Standard chess positions with not more than 7 pieces and variant
+
+            positions not more than 6 pieces)
+
+            '
+        precise_dtz:
+          type:
+          - 'null'
+          - integer
+          description: 'DTZ50'''' in plies, only if guaranteed to not be rounded, or absent if unknown
+
+            '
+        dtc:
+          type:
+          - 'null'
+          - integer
+          description: "Depth to Conversion: Moves to next capture, promotion,\nor checkmate. Available for:\n* Standard chess positions with 8 pieces, more than one pawn of material\n  value for each side, and at least one pair of opposing pawns,\n  short *op1*, if query parameter `dtc` is `auxiliary` or `always`.\n* Some standard chess positions with up to 7 pieces, if query parameter\n  `dtc` is `always`. Work in progress.\n"
+        dtm:
+          type:
+          - 'null'
+          - integer
+          description: 'Depth To Mate: Plies to mate (available only for Standard positions
+
+            with not more than 6 pieces)
+
+            '
+        dtw:
+          type:
+          - 'null'
+          - integer
+          description: 'Depth To Win: Plies to win (available only for Antichess positions
+
+            with not more than 4 pieces)
+
+            '
+        checkmate:
+          type: boolean
+        stalemate:
+          type: boolean
+        variant_win:
+          type: boolean
+          description: Only in chess variants
+        variant_loss:
+          type: boolean
+          description: Only in chess variants
+        insufficient_material:
+          type: boolean
+        moves:
+          type: array
+          description: Information about legal moves, best first
+          items:
+            $ref: '#/components/schemas/TablebaseMove'
+      required:
+      - category
+      - moves
+      example:
+        dtz: 1
+        precise_dtz: 1
+        dtc: null
+        dtm: 17
+        dtw: null
+        checkmate: false
+        stalemate: false
+        variant_win: false
+        variant_loss: false
+        insufficient_material: false
+        category: win
+        moves:
+        - uci: h7h8q
+          san: h8=Q+
+          dtz: -2
+          precise_dtz: -2
+          dtc: null
+          dtm: -16
+          dtw: null
+          zeroing: true
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          category: loss
+  examples:
+    tablebase-lookupAtomic.json:
+      value:
+        checkmate: false
+        stalemate: false
+        variant_win: false
+        variant_loss: false
+        insufficient_material: false
+        dtz: null
+        precise_dtz: null
+        dtm: null
+        dtw: null
+        dtc: null
+        category: unknown
+        moves:
+        - uci: a6b5
+          san: Bxb5
+          zeroing: true
+          conversion: true
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: b4c3
+          san: Bxc3
+          zeroing: true
+          conversion: true
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: d4c3
+          san: Qxc3
+          zeroing: true
+          conversion: true
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: d4d3
+          san: Qxd3+
+          zeroing: true
+          conversion: true
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: d4e3
+          san: Qxe3
+          zeroing: true
+          conversion: true
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: e6e5
+          san: e5
+          zeroing: true
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: f7f6
+          san: f6
+          zeroing: true
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: g7g6
+          san: g6
+          zeroing: true
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: f7f5
+          san: f5
+          zeroing: true
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: g7g5
+          san: g5
+          zeroing: true
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: h5h4
+          san: h4
+          zeroing: true
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: d4d6
+          san: Qd6
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: b4c5
+          san: Bc5
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: b4d6
+          san: Bd6
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: b4e7
+          san: Be7
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: b4f8
+          san: Bf8
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: g8h6
+          san: Nh6
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: a6b7
+          san: Bb7
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: a6c8
+          san: Bc8
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: a8b8
+          san: Rb8
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: a8c8
+          san: Rc8
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: a8d8
+          san: Rd8
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: h8h6
+          san: Rh6
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: h8h7
+          san: Rh7
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: g8e7
+          san: Ne7
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: b4a3
+          san: Ba3
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: g8f6
+          san: Nf6
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: d4c4
+          san: Qc4
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: d4e4
+          san: Qe4
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: d4f4
+          san: Qf4
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: d4g4
+          san: Qg4
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: d4h4
+          san: Qh4
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: d4c5
+          san: Qc5
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: d4d5
+          san: Qd5
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: d4e5
+          san: Qe5
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: b4a5
+          san: Ba5
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: d4f6
+          san: Qf6
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: e8e7
+          san: Ke7
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: e8d8
+          san: Kd8
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: e8f8
+          san: Kf8
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: e8c8
+          san: O-O-O
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+    tablebase-lookupAntichess.json:
+      value:
+        checkmate: false
+        stalemate: false
+        variant_win: false
+        variant_loss: false
+        insufficient_material: false
+        dtz: null
+        precise_dtz: null
+        dtm: null
+        dtw: null
+        dtc: null
+        category: unknown
+        moves:
+        - uci: f7f6
+          san: f6
+          zeroing: true
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: h7h6
+          san: h6
+          zeroing: true
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: f7f5
+          san: f5
+          zeroing: true
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: h7h5
+          san: h5
+          zeroing: true
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: g8f6
+          san: Nf6
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: g8h6
+          san: Nh6
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: e7d6
+          san: Kd6
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: e7e6
+          san: Ke6
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: e7f6
+          san: Kf6
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: e7d7
+          san: Kd7
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: e7d8
+          san: Kd8
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: e7e8
+          san: Ke8
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: e7f8
+          san: Kf8
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+    tablebase-lookupStandard.json:
+      value:
+        checkmate: false
+        stalemate: false
+        variant_win: false
+        variant_loss: false
+        insufficient_material: false
+        dtz: 1
+        precise_dtz: 1
+        dtm: 17
+        dtw: null
+        dtc: null
+        category: win
+        moves:
+        - uci: h7h8q
+          san: h8=Q+
+          zeroing: true
+          conversion: true
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: -2
+          precise_dtz: -2
+          dtm: -16
+          dtw: null
+          dtc: null
+          category: loss
+        - uci: h7h8r
+          san: h8=R+
+          zeroing: true
+          conversion: true
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: -2
+          precise_dtz: -2
+          dtm: -26
+          dtw: null
+          dtc: null
+          category: loss
+        - uci: g7g8
+          san: Kg8
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: 0
+          precise_dtz: 0
+          dtm: 0
+          dtw: null
+          dtc: null
+          category: draw
+        - uci: g7f6
+          san: Kf6
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: 1
+          precise_dtz: 1
+          dtm: 19
+          dtw: null
+          dtc: null
+          category: win
+        - uci: g7g6
+          san: Kg6
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: 1
+          precise_dtz: 1
+          dtm: 19
+          dtw: null
+          dtc: null
+          category: win
+        - uci: g7h6
+          san: Kh6
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: 1
+          precise_dtz: 1
+          dtm: 19
+          dtw: null
+          dtc: null
+          category: win
+        - uci: g7h8
+          san: Kh8
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: 1
+          precise_dtz: 1
+          dtm: 19
+          dtw: null
+          dtc: null
+          category: win
+        - uci: h7h8n
+          san: h8=N
+          zeroing: true
+          conversion: true
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: 1
+          precise_dtz: 1
+          dtm: 19
+          dtw: null
+          dtc: null
+          category: win
+        - uci: h7h8b
+          san: h8=B
+          zeroing: true
+          conversion: true
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: 1
+          precise_dtz: 1
+          dtm: 15
+          dtw: null
+          dtc: null
+          category: win
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: 'Read [the introduction for how to make authenticated requests](#description/authentication).
+
+        '
+      flows:
+        authorizationCode:
+          authorizationUrl: https://lichess.org/oauth
+          tokenUrl: https://lichess.org/api/token
+          scopes:
+            preference:read: Read your preferences
+            preference:write: Write your preferences
+            email:read: Read your email address
+            engine:read: Read your external engines
+            engine:write: Create, update, delete your external engines
+            challenge:read: Read incoming challenges
+            challenge:write: Create, accept, decline challenges
+            challenge:bulk: Create, delete, query bulk pairings
+            study:read: Read private studies and broadcasts
+            study:write: Create, update, delete studies and broadcasts
+            tournament:write: Create tournaments
+            racer:write: Create and join puzzle races
+            puzzle:read: Read puzzle activity
+            puzzle:write: Write puzzle activity
+            team:read: Read private team information
+            team:write: Join, leave teams
+            team:lead: Manage teams (kick members, send PMs)
+            follow:read: Read followed players
+            follow:write: Follow and unfollow other players
+            msg:write: Send private messages to other players
+            board:play: Play with the Board API
+            bot:play: Play with the Bot API. Only for [Bot accounts](#tag/bot/POST/api/bot/account/upgrade)
+            web:mod: Use moderator tools (within the bounds of your permissions)

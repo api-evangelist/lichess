@@ -1,0 +1,1731 @@
+openapi: 3.1.0
+info:
+  version: 2.0.144
+  title: Lichess.org API reference Account API
+  contact:
+    name: Lichess.org API
+    url: https://lichess.org/api
+    email: contact@lichess.org
+  x-logo:
+    url: https://lichess1.org/assets/logo/lichess-pad12.svg
+  license:
+    name: AGPL-3.0-or-later
+    url: https://www.gnu.org/licenses/agpl-3.0.txt
+  description: '# Introduction
+
+    Welcome to the reference for the Lichess API! Lichess is free/libre,
+
+    open-source chess server powered by volunteers and donations.
+
+    - Get help in the [Lichess Discord channel](https://discord.gg/lichess)
+
+    - API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)
+
+    - API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)
+
+    - [Contribute to this documentation on Github](https://github.com/lichess-org/api)
+
+    - Check out [Lichess widgets to embed in your website](https://lichess.org/developers)
+
+    - [Download all Lichess rated games](https://database.lichess.org/)
+
+    - [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)
+
+    - [Download all evaluated positions](https://database.lichess.org/#evals)
+
+
+    ## Endpoint
+
+    All requests go to `https://lichess.org` (unless otherwise specified).
+
+
+    ## Clients
+
+    - [Python general API](https://github.com/lichess-org/berserk)
+
+    - [MicroPython general API](https://github.com/mkomon/uberserk)
+
+    - [Python general API - async](https://pypi.org/project/async-lichess-sdk)
+
+    - [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)
+
+    - [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)
+
+    - [Java general API](https://github.com/tors42/chariot)
+
+    - [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)
+
+    - [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)
+
+    - [.NET general API](https://github.com/Dblike/LichessSharp)
+
+
+    ## Rate limiting
+
+    All requests are rate limited using various strategies,
+
+    to ensure the API remains responsive for everyone.
+
+    Only make one request at a time.
+
+    If you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),
+
+    you have exceded one of the rate limits.
+
+    In most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.
+
+    Reduce your request frequency before retrying.
+
+
+    ## Streaming with ND-JSON
+
+    Some API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.
+
+
+    Here''s a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.
+
+
+    ## Authentication
+
+    ### Which authentication method is right for me?
+
+    [Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)
+
+
+    ### Personal Access Token
+
+    Personal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.
+
+    - [Generate a personal access token](https://lichess.org/account/oauth/token)
+
+    - `curl https://lichess.org/api/account -H "Authorization: Bearer {token}"`
+
+    - [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)
+
+
+    ### Token Security
+
+    - Keep your tokens secret. Do not share them in public repositories or public forums.
+
+    - Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens'' scope). You remain responsible for all activities on your account.
+
+    - Do not hardcode tokens in your application''s code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.
+
+    - If you suspect a token has been compromised, revoke it immediately.
+
+
+    To see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).
+
+
+    ### Authorization Code Flow with PKCE
+
+    The authorization code flow with PKCE allows your users to **login with Lichess**.
+
+    Lichess supports unregistered and public clients (no client authentication, choose any unique client id).
+
+    The only accepted code challenge method is `S256`.
+
+    Access tokens are long-lived (expect one year), unless they are revoked.
+
+    Refresh tokens are not supported.
+
+
+    See the [documentation for the OAuth endpoints](#tag/OAuth) or
+
+    the [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.
+
+
+    - [Demo app](https://lichess-org.github.io/api-demo/)
+
+    - [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)
+
+    - [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)
+
+    - [Java example](https://github.com/tors42/lichess-oauth-pkce-app)
+
+    - [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)
+
+
+    #### Real life examples
+
+    - [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))
+
+    - [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))
+
+    - [English Chess Federation](https://ecf.octoknight.com/)
+
+    - [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)
+
+
+    ### Token format
+
+    Access tokens and authorization codes match `^[A-Za-z0-9_]+$`.
+
+    The length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.
+
+    By convention tokens have a recognizable prefix, but do not rely on this.
+
+    '
+servers:
+- url: https://lichess.org
+- url: https://lichess.dev
+- url: http://localhost:{port}
+  variables:
+    port:
+      default: '8080'
+- url: http://l.org
+tags:
+- name: Account
+  description: 'Read and write account information and preferences.
+
+    <https://lichess.org/account/preferences/game-display>
+
+    '
+paths:
+  /api/account:
+    get:
+      operationId: accountMe
+      summary: Get my profile
+      description: 'Public information about the logged in user.
+
+        '
+      tags:
+      - Account
+      security:
+      - OAuth2: []
+      responses:
+        '200':
+          description: The public information about the logged in user.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserExtended'
+              examples:
+                default:
+                  $ref: '#/components/examples/account-getMyProfile.json'
+  /api/account/email:
+    get:
+      operationId: accountEmail
+      summary: Get my email address
+      description: 'Read the email address of the logged in user.
+
+        '
+      tags:
+      - Account
+      security:
+      - OAuth2:
+        - email:read
+      responses:
+        '200':
+          description: The email address of the logged in user.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                properties:
+                  email:
+                    type: string
+              examples:
+                default:
+                  $ref: '#/components/examples/account-getMyEmailAddress.json'
+  /api/account/preferences:
+    get:
+      operationId: account
+      summary: Get my preferences
+      description: 'Read the preferences of the logged in user.
+
+        - <https://lichess.org/account/preferences/game-display>
+
+        - <https://github.com/ornicar/lila/blob/master/modules/pref/src/main/Pref.scala>
+
+        '
+      tags:
+      - Account
+      security:
+      - OAuth2:
+        - preference:read
+      responses:
+        '200':
+          description: The preferences of the logged in user.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                properties:
+                  prefs:
+                    $ref: '#/components/schemas/UserPreferences'
+                  language:
+                    type: string
+                    example: en-GB
+              examples:
+                default:
+                  $ref: '#/components/examples/account-getMyPreferences.json'
+  /api/account/kid:
+    get:
+      operationId: accountKid
+      summary: Get my kid mode status
+      description: 'Read the kid mode status of the logged in user.
+
+        - <https://lichess.org/account/kid>
+
+        '
+      tags:
+      - Account
+      security:
+      - OAuth2:
+        - preference:read
+      responses:
+        '200':
+          description: The kid mode status of the logged in user.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                properties:
+                  kid:
+                    type: boolean
+              examples:
+                default:
+                  $ref: '#/components/examples/account-getMyKidModeStatus.json'
+    post:
+      operationId: accountKidPost
+      summary: Set my kid mode status
+      description: 'Set the kid mode status of the logged in user.
+
+        - <https://lichess.org/account/kid>
+
+        '
+      tags:
+      - Account
+      security:
+      - OAuth2:
+        - preference:write
+      parameters:
+      - in: query
+        name: v
+        required: true
+        description: Kid mode status
+        schema:
+          type: boolean
+        example: true
+      responses:
+        '200':
+          description: The kid mode status was set successfully for the logged in user.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+              examples:
+                default:
+                  $ref: '#/components/examples/account-setMyKidModeStatus.json'
+  /api/timeline:
+    get:
+      operationId: timeline
+      summary: Get my timeline
+      description: 'Get the timeline events of the logged in user.
+
+        '
+      tags:
+      - Account
+      security:
+      - OAuth2: []
+      parameters:
+      - in: query
+        name: since
+        description: Show events since this timestamp.
+        schema:
+          type: integer
+          minimum: 1356998400070
+      - in: query
+        name: nb
+        description: Max number of events to fetch.
+        schema:
+          type: integer
+          default: 15
+          minimum: 1
+          maximum: 30
+      responses:
+        '200':
+          description: The events in the timeline of the logged in user.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Timeline'
+              examples:
+                default:
+                  $ref: '#/components/examples/account-getMyTimeline.json'
+components:
+  schemas:
+    PuzzleModePerf:
+      type: object
+      properties:
+        runs:
+          type: integer
+        score:
+          type: integer
+      required:
+      - runs
+      - score
+    PatronColor:
+      type: integer
+      description: 'Players can choose a color for their Patron wings.
+
+        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
+
+
+        The presence of this field indicates the player is an active Patron.
+
+        '
+      minimum: 1
+      maximum: 10
+    TimelineEntryGameEnd:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - game-end
+        date:
+          type: number
+        data:
+          type: object
+          properties:
+            fullId:
+              type: string
+            opponent:
+              type: string
+            win:
+              type: boolean
+            perf:
+              $ref: '#/components/schemas/PerfType'
+          required:
+          - fullId
+          - opponent
+          - win
+          - perf
+      required:
+      - type
+      - date
+      - data
+    PlayTime:
+      type: object
+      properties:
+        total:
+          type: integer
+        tv:
+          type: integer
+        human:
+          type: integer
+      required:
+      - total
+      - tv
+    Timeline:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/TimelineEntryFollow'
+            - $ref: '#/components/schemas/TimelineEntryTeamJoin'
+            - $ref: '#/components/schemas/TimelineEntryTeamCreate'
+            - $ref: '#/components/schemas/TimelineEntryForumPost'
+            - $ref: '#/components/schemas/TimelineEntryBlogPost'
+            - $ref: '#/components/schemas/TimelineEntryUblogPost'
+            - $ref: '#/components/schemas/TimelineEntryTourJoin'
+            - $ref: '#/components/schemas/TimelineEntryGameEnd'
+            - $ref: '#/components/schemas/TimelineEntrySimul'
+            - $ref: '#/components/schemas/TimelineEntryStudyLike'
+            - $ref: '#/components/schemas/TimelineEntryPlanStart'
+            - $ref: '#/components/schemas/TimelineEntryPlanRenew'
+            - $ref: '#/components/schemas/TimelineEntryUblogPostLike'
+            - $ref: '#/components/schemas/TimelineEntryStreamStart'
+            discriminator:
+              propertyName: type
+              mapping:
+                follow: '#/components/schemas/TimelineEntryFollow'
+                team-join: '#/components/schemas/TimelineEntryTeamJoin'
+                team-create: '#/components/schemas/TimelineEntryTeamCreate'
+                forum-post: '#/components/schemas/TimelineEntryForumPost'
+                blog-post: '#/components/schemas/TimelineEntryBlogPost'
+                ublog-post: '#/components/schemas/TimelineEntryUblogPost'
+                tour-join: '#/components/schemas/TimelineEntryTourJoin'
+                game-end: '#/components/schemas/TimelineEntryGameEnd'
+                simul-create: '#/components/schemas/TimelineEntrySimul'
+                simul-join: '#/components/schemas/TimelineEntrySimul'
+                study-like: '#/components/schemas/TimelineEntryStudyLike'
+                plan-start: '#/components/schemas/TimelineEntryPlanStart'
+                plan-renew: '#/components/schemas/TimelineEntryPlanRenew'
+                ublog-post-like: '#/components/schemas/TimelineEntryUblogPostLike'
+                stream-start: '#/components/schemas/TimelineEntryStreamStart'
+            required:
+            - type
+        users:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              title:
+                $ref: '#/components/schemas/Title'
+              flair:
+                $ref: '#/components/schemas/Flair'
+              patron:
+                $ref: '#/components/schemas/Patron'
+              patronColor:
+                $ref: '#/components/schemas/PatronColor'
+            required:
+            - id
+            - name
+      required:
+      - entries
+      - users
+      example:
+        entries:
+        - type: follow
+          data:
+            u1: neio
+            u2: chess-network
+          date: 1644232201429
+        - type: team-join
+          data:
+            userId: neio
+            teamId: coders
+          date: 1644232201429
+        - type: team-create
+          data:
+            userId: neio
+            teamId: coders
+          date: 1644232201429
+        - type: forum-post
+          data:
+            userId: neio
+            topicId: AAAAAAAN
+            topicName: World's Tallest LEGO Tower Completed in City Square
+            postId: AAAAAAAL
+          date: 1644232201429
+        - type: ublog-post
+          data:
+            userId: neio
+            id: og5pkt1c
+            slug: gotta-go-fast
+            title: Gotta Go Fast
+          date: 1644232201429
+        - type: tour-join
+          data:
+            userId: chess-network
+            tourId: Z24oxqgU
+            tourName: Daily Blitz Arena
+          date: 1644232201429
+        - type: game-end
+          data:
+            fullId: iGkAXUdEfLZC
+            perf: correspondence
+            opponent: chess-network
+            win: false
+          date: 1644232201429
+        - type: simul-create
+          data:
+            userId: neio
+            simulId: m3c0Wvu3
+            simulName: RCA 1st Jan simul
+          date: 1644232201429
+        - type: simul-join
+          data:
+            userId: chess-network
+            simulId: m3c0Wvu3
+            simulName: RCA 1st Jan simul
+          date: 1644232201429
+        - type: study-like
+          data:
+            userId: neio
+            studyId: ma5AvZ7o
+            studyName: Free wins | Danish Gambit
+          date: 1644232201429
+        - type: plan-start
+          data:
+            userId: chess-network
+          date: 1644232201429
+        - type: plan-renew
+          data:
+            userId: chess-network
+            months: 64
+          date: 1644232201429
+        - type: blog-post
+          data:
+            id: ZUviXRIAACYAVtMm
+            slug: lichess-development-made-easy-with-gitpod
+            title: Lichess Development Made Easy With Gitpod
+          date: 1644232201429
+        - type: ublog-post-like
+          data:
+            userId: neio
+            id: ZUviXRIAACYAVtMm
+            title: Lichess Development Made Easy With Gitpod
+          date: 1644232201429
+        - type: stream-start
+          data:
+            id: chess-network
+            title: Streamers Battle December !team | lichess.org
+          date: 1644232201429
+        users:
+          neio:
+            id: neio
+            name: Neio
+            title: NM
+          chess-network:
+            id: chess-network
+            name: Chess-Network
+            title: NM
+            patron: true
+    Patron:
+      type: boolean
+      deprecated: true
+      description: 'Use patronColor value instead to determine if player is a patron.
+
+        '
+    Count:
+      type: object
+      properties:
+        all:
+          type: integer
+        rated:
+          type: integer
+        ai:
+          type: integer
+        draw:
+          type: integer
+        drawH:
+          type: integer
+        loss:
+          type: integer
+        lossH:
+          type: integer
+        win:
+          type: integer
+        winH:
+          type: integer
+        bookmark:
+          type: integer
+        playing:
+          type: integer
+        import:
+          type: integer
+        me:
+          type: integer
+      required:
+      - all
+      - rated
+      - draw
+      - loss
+      - win
+      - bookmark
+      - playing
+      - import
+      - me
+    TimelineEntryFollow:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - follow
+        date:
+          type: number
+        data:
+          type: object
+          properties:
+            u1:
+              type: string
+            u2:
+              type: string
+          required:
+          - u1
+          - u2
+      required:
+      - type
+      - date
+      - data
+    UserExtended:
+      allOf:
+      - $ref: '#/components/schemas/User'
+      - type: object
+        properties:
+          url:
+            type: string
+            format: uri
+          playing:
+            type: string
+            format: uri
+          count:
+            $ref: '#/components/schemas/Count'
+          streaming:
+            type: boolean
+          streamer:
+            $ref: '#/components/schemas/UserStreamer'
+          followable:
+            type: boolean
+            description: only appears if the request is [authenticated with OAuth2](#description/authentication)
+          following:
+            type: boolean
+            description: only appears if the request is [authenticated with OAuth2](#description/authentication)
+          blocking:
+            type: boolean
+            description: only appears if the request is [authenticated with OAuth2](#description/authentication)
+          fideId:
+            type: number
+        required:
+        - url
+    UserStreamer:
+      type: object
+      properties:
+        twitch:
+          type: object
+          properties:
+            channel:
+              type: string
+              format: uri
+              example: https://www.twitch.tv/lichessdotorg
+        youtube:
+          type: object
+          properties:
+            channel:
+              type: string
+              format: uri
+              example: https://www.youtube.com/c/LichessDotOrg
+    Ok:
+      properties:
+        ok:
+          type: boolean
+      required:
+      - ok
+    PerfType:
+      type: string
+      enum:
+      - ultraBullet
+      - bullet
+      - blitz
+      - rapid
+      - classical
+      - correspondence
+      - chess960
+      - crazyhouse
+      - antichess
+      - atomic
+      - horde
+      - kingOfTheHill
+      - racingKings
+      - threeCheck
+    TimelineEntryPlanStart:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - plan-start
+        date:
+          type: number
+        data:
+          type: object
+          properties:
+            userId:
+              type: string
+          required:
+          - userId
+      required:
+      - type
+      - date
+      - data
+    TimelineEntryForumPost:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - forum-post
+        date:
+          type: number
+        data:
+          type: object
+          properties:
+            userId:
+              type: string
+            topicId:
+              type: string
+            topicName:
+              type: string
+            postId:
+              type: string
+          required:
+          - userId
+          - topicId
+          - topicName
+          - postId
+      required:
+      - type
+      - date
+      - data
+    UserPreferences:
+      type: object
+      properties:
+        dark:
+          type: boolean
+        transp:
+          type: boolean
+        bgImg:
+          type: string
+          format: uri
+        is3d:
+          type: boolean
+        theme:
+          type: string
+          enum:
+          - blue
+          - blue2
+          - blue3
+          - blue-marble
+          - canvas
+          - wood
+          - wood2
+          - wood3
+          - wood4
+          - maple
+          - maple2
+          - brown
+          - leather
+          - green
+          - marble
+          - green-plastic
+          - grey
+          - metal
+          - olive
+          - newspaper
+          - purple
+          - purple-diag
+          - pink
+          - ic
+        pieceSet:
+          type: string
+          enum:
+          - cburnett
+          - merida
+          - alpha
+          - pirouetti
+          - chessnut
+          - chess7
+          - reillycraig
+          - companion
+          - riohacha
+          - kosal
+          - leipzig
+          - fantasy
+          - spatial
+          - california
+          - pixel
+          - maestro
+          - fresca
+          - cardinal
+          - gioco
+          - tatiana
+          - staunty
+          - governor
+          - dubrovny
+          - icpieces
+          - shapes
+          - letter
+        theme3d:
+          type: string
+          enum:
+          - Black-White-Aluminium
+          - Brushed-Aluminium
+          - China-Blue
+          - China-Green
+          - China-Grey
+          - China-Scarlet
+          - Classic-Blue
+          - Gold-Silver
+          - Light-Wood
+          - Power-Coated
+          - Rosewood
+          - Marble
+          - Wax
+          - Jade
+          - Woodi
+        pieceSet3d:
+          type: string
+          enum:
+          - Basic
+          - Wood
+          - Metal
+          - RedVBlue
+          - ModernJade
+          - ModernWood
+          - Glass
+          - Trimmed
+          - Experimental
+          - Staunton
+          - CubesAndPi
+        soundSet:
+          type: string
+          enum:
+          - silent
+          - standard
+          - piano
+          - nes
+          - sfx
+          - futuristic
+          - robot
+          - music
+          - speech
+        blindfold:
+          type: integer
+        autoQueen:
+          type: integer
+          description: 1 = Never, 2 = When premoving, 3 = Always
+        autoThreefold:
+          type: integer
+          description: 0 = Never, 2 = When time remaining < 30 seconds,  3 = Always
+        takeback:
+          type: integer
+          description: 1 = Never, 2 = In casual games only, 3 = Always
+        moretime:
+          type: integer
+          description: 1 = Never, 2 = In casual games only, 3 = Always
+        clockTenths:
+          type: integer
+          description: 0 = Never, 1 = When remaining time less than 10 seconds, 2 = Always
+        clockBar:
+          type: boolean
+        clockSound:
+          type: boolean
+        premove:
+          type: boolean
+        animation:
+          type: integer
+          description: 0 = None, 1 = Fast, 2 = Normal, 3 = Slow
+        pieceNotation:
+          type: integer
+          description: 0 = Chess piece symbol, 1 = KQRBN Letter
+        captured:
+          type: boolean
+        follow:
+          type: boolean
+        highlight:
+          type: boolean
+        destination:
+          type: boolean
+        coords:
+          type: integer
+          description: 0 = No, 1 = Inside the board, 2 = Outside the board, 3 = All squares
+        replay:
+          type: integer
+        challenge:
+          type: integer
+        message:
+          type: integer
+        submitMove:
+          type: integer
+        confirmResign:
+          type: integer
+          description: 1 = Confirm resignation and draw offers, 0 = Do not confirm
+        insightShare:
+          type: integer
+        keyboardMove:
+          type: integer
+          description: 1 = input moves with the keyboard
+        voiceMove:
+          type: boolean
+        zen:
+          type: integer
+          description: 0 = No, 1 = yes, 2 = in-game only
+        ratings:
+          type: integer
+          description: 0 = Hide ratings, 1 = Show ratings, 2 = Show ratings except in-game
+        moveEvent:
+          type: integer
+        rookCastle:
+          type: integer
+          description: 0 = Move king two squares, 1 = Move king onto rook
+        flairs:
+          type: boolean
+          description: Show player flairs
+        sayGG:
+          type: integer
+          enum:
+          - 0
+          - 1
+          - 2
+          description: 0 = No, 1 = When losing, 2 = When losing or drawing
+    Profile:
+      type: object
+      properties:
+        flag:
+          type: string
+          example: EC
+        location:
+          type: string
+        bio:
+          type: string
+          example: Free bugs!
+        realName:
+          type: string
+          example: Thibault Duplessis
+        fideRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        uscfRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        ecfRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        cfcRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        rcfRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        dsbRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        links:
+          type: string
+          example: "github.com/ornicar\r\nmas.to/@thibault"
+    TimelineEntryUblogPost:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - ublog-post
+        date:
+          type: number
+        data:
+          type: object
+          properties:
+            userId:
+              type: string
+            id:
+              type: string
+            slug:
+              type: string
+            title:
+              type: string
+          required:
+          - userId
+          - id
+          - slug
+          - title
+      required:
+      - type
+      - date
+      - data
+    TimelineEntryStreamStart:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - stream-start
+        date:
+          type: number
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            title:
+              type: string
+          required:
+          - id
+      required:
+      - type
+      - date
+      - data
+    Flair:
+      type: string
+      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
+    Perf:
+      type: object
+      properties:
+        games:
+          type: integer
+        rating:
+          type: integer
+        rd:
+          type: integer
+          description: rating deviation
+        prog:
+          type: integer
+        prov:
+          type: boolean
+          description: only appears if a user's perf rating are [provisional](https://lichess.org/faq#provisional)
+        rank:
+          type: integer
+          description: global lichess ranking, only appears for recently active players
+      required:
+      - games
+      - rating
+      - rd
+      - prog
+    TimelineEntryTeamJoin:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - team-join
+        date:
+          type: number
+        data:
+          type: object
+          properties:
+            userId:
+              type: string
+            teamId:
+              type: string
+          required:
+          - userId
+          - teamId
+      required:
+      - type
+      - date
+      - data
+    TimelineEntryUblogPostLike:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - ublog-post-like
+        date:
+          type: number
+        data:
+          type: object
+          properties:
+            userId:
+              type: string
+            id:
+              type: string
+            title:
+              type: string
+          required:
+          - userId
+          - id
+          - title
+      required:
+      - type
+      - date
+      - data
+    TimelineEntrySimul:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - simul-create
+          - simul-join
+        date:
+          type: number
+        data:
+          type: object
+          properties:
+            userId:
+              type: string
+            simulId:
+              type: string
+            simulName:
+              type: string
+          required:
+          - userId
+          - simulId
+          - simulName
+      required:
+      - type
+      - date
+      - data
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        perfs:
+          $ref: '#/components/schemas/Perfs'
+        title:
+          $ref: '#/components/schemas/Title'
+        flair:
+          $ref: '#/components/schemas/Flair'
+        createdAt:
+          type: integer
+          format: int64
+        disabled:
+          type: boolean
+          description: only appears if a user's account is closed
+        tosViolation:
+          type: boolean
+          description: only appears if a user's account is marked for the violation of [Lichess TOS](https://lichess.org/terms-of-service)
+        profile:
+          $ref: '#/components/schemas/Profile'
+        seenAt:
+          type: integer
+          format: int64
+        playTime:
+          $ref: '#/components/schemas/PlayTime'
+        patron:
+          $ref: '#/components/schemas/Patron'
+        patronColor:
+          $ref: '#/components/schemas/PatronColor'
+        verified:
+          type: boolean
+      required:
+      - id
+      - username
+    Perfs:
+      type: object
+      properties:
+        chess960:
+          $ref: '#/components/schemas/Perf'
+        atomic:
+          $ref: '#/components/schemas/Perf'
+        racingKings:
+          $ref: '#/components/schemas/Perf'
+        ultraBullet:
+          $ref: '#/components/schemas/Perf'
+        blitz:
+          $ref: '#/components/schemas/Perf'
+        kingOfTheHill:
+          $ref: '#/components/schemas/Perf'
+        threeCheck:
+          $ref: '#/components/schemas/Perf'
+        antichess:
+          $ref: '#/components/schemas/Perf'
+        crazyhouse:
+          $ref: '#/components/schemas/Perf'
+        bullet:
+          $ref: '#/components/schemas/Perf'
+        correspondence:
+          $ref: '#/components/schemas/Perf'
+        horde:
+          $ref: '#/components/schemas/Perf'
+        puzzle:
+          $ref: '#/components/schemas/Perf'
+        classical:
+          $ref: '#/components/schemas/Perf'
+        rapid:
+          $ref: '#/components/schemas/Perf'
+        storm:
+          $ref: '#/components/schemas/PuzzleModePerf'
+        racer:
+          $ref: '#/components/schemas/PuzzleModePerf'
+        streak:
+          $ref: '#/components/schemas/PuzzleModePerf'
+    TimelineEntryBlogPost:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - blog-post
+        date:
+          type: number
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            slug:
+              type: string
+            title:
+              type: string
+          required:
+          - id
+          - slug
+          - title
+      required:
+      - type
+      - date
+      - data
+    TimelineEntryTourJoin:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - tour-join
+        date:
+          type: number
+        data:
+          type: object
+          properties:
+            userId:
+              type: string
+            tourId:
+              type: string
+            tourName:
+              type: string
+          required:
+          - userId
+          - tourId
+          - tourName
+      required:
+      - type
+      - date
+      - data
+    Title:
+      type: string
+      enum:
+      - GM
+      - WGM
+      - IM
+      - WIM
+      - FM
+      - WFM
+      - NM
+      - CM
+      - WCM
+      - WNM
+      - LM
+      - BOT
+      description: only appears if the user is a titled player or a bot user
+    TimelineEntryTeamCreate:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - team-create
+        date:
+          type: number
+        data:
+          type: object
+          properties:
+            userId:
+              type: string
+            teamId:
+              type: string
+          required:
+          - userId
+          - teamId
+      required:
+      - type
+      - date
+      - data
+    TimelineEntryPlanRenew:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - plan-renew
+        date:
+          type: number
+        data:
+          type: object
+          properties:
+            userId:
+              type: string
+            months:
+              type: number
+          required:
+          - userId
+          - months
+      required:
+      - type
+      - date
+      - data
+    TimelineEntryStudyLike:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - study-like
+        date:
+          type: number
+        data:
+          type: object
+          properties:
+            userId:
+              type: string
+            studyId:
+              type: string
+            studyName:
+              type: string
+          required:
+          - userId
+          - studyId
+          - studyName
+      required:
+      - type
+      - date
+      - data
+  examples:
+    account-getMyTimeline.json:
+      value:
+        entries:
+        - type: team-join
+          data:
+            userId: mary
+            teamId: two-bishops-two-steeds-two-wellhidden-beads
+          date: 1778797290118
+        - type: team-join
+          data:
+            userId: dmitry
+            teamId: i-dont-think-he-knows-about-second-piece-sac-pip
+          date: 1778796409740
+        - type: follow
+          data:
+            u1: mary
+            u2: marcel
+          date: 1778794086387
+        - type: team-join
+          data:
+            userId: yun
+            teamId: this-team-name-has-been-purchased-by-chesscom
+          date: 1778771081591
+        - type: team-join
+          data:
+            userId: yun
+            teamId: god-sac-the-queen
+          date: 1778743477150
+        - type: team-join
+          data:
+            userId: yarah
+            teamId: god-sac-the-queen
+          date: 1778741318351
+        - type: team-join
+          data:
+            userId: kenneth
+            teamId: god-sac-the-queen
+          date: 1778735292388
+        - type: team-join
+          data:
+            userId: dmitry
+            teamId: god-sac-the-queen
+          date: 1778730999374
+        - type: team-join
+          data:
+            userId: iryna
+            teamId: god-sac-the-queen
+          date: 1778726337298
+        - type: team-join
+          data:
+            userId: hui
+            teamId: massive-minority-attack
+          date: 1778725729602
+        - type: team-join
+          data:
+            userId: pedro
+            teamId: the-prep-leaks-for-itself
+          date: 1778719719539
+        - type: team-join
+          data:
+            userId: ikem
+            teamId: this-team-name-has-been-purchased-by-chesscom
+          date: 1778715702099
+        - type: team-create
+          data:
+            userId: kenneth
+            teamId: god-sac-the-queen
+          date: 1778707835827
+        - type: follow
+          data:
+            u1: marcel
+            u2: abubakar
+          date: 1778697218585
+        - type: follow
+          data:
+            u1: broadcaster
+            u2: sai
+          date: 1778695013138
+        users:
+          kenneth:
+            name: Kenneth
+            flair: objects.paperclip
+            id: kenneth
+          broadcaster:
+            name: Broadcaster
+            flair: people.oncoming-fist-dark-skin-tone
+            id: broadcaster
+          yarah:
+            name: Yarah
+            flair: nature.coral
+            patron: true
+            patronColor: 1
+            id: yarah
+          abubakar:
+            name: Abubakar
+            flair: people.woman-mountain-biking-dark-skin-tone
+            id: abubakar
+          mary:
+            name: Mary
+            flair: people.open-hands-medium-light-skin-tone
+            id: mary
+          pedro:
+            name: Pedro
+            flair: people.person-walking-dark-skin-tone
+            patron: true
+            patronColor: 1
+            id: pedro
+          ikem:
+            name: Ikem
+            flair: people.astronaut-medium-light-skin-tone
+            patron: true
+            patronColor: 1
+            id: ikem
+          marcel:
+            name: Marcel
+            flair: objects.guitar
+            id: marcel
+          dmitry:
+            name: Dmitry
+            id: dmitry
+          sai:
+            name: Sai
+            id: sai
+          hui:
+            name: Hui
+            patron: true
+            patronColor: 1
+            id: hui
+          yun:
+            name: Yun
+            flair: travel-places.globe-showing-europe-africa
+            id: yun
+          iryna:
+            name: Iryna
+            flair: people.call-me-hand-dark-skin-tone
+            id: iryna
+    account-setMyKidModeStatus.json:
+      value:
+        ok: true
+    account-getMyKidModeStatus.json:
+      value:
+        kid: false
+    account-getMyEmailAddress.json:
+      value:
+        email: bobby@localhost
+    account-getMyPreferences.json:
+      value:
+        prefs:
+          dark: true
+          transp: false
+          bgImg: https://lichess1.org/assets/lifat/background/gallery/bg25.webp
+          is3d: false
+          theme: brown
+          pieceSet: cburnett
+          theme3d: Woodi
+          pieceSet3d: Basic
+          soundSet: standard
+          autoQueen: 2
+          autoThreefold: 3
+          takeback: 3
+          moretime: 3
+          clockTenths: 1
+          clockBar: true
+          clockSound: true
+          premove: true
+          animation: 2
+          pieceNotation: 0
+          captured: true
+          follow: true
+          highlight: true
+          destination: true
+          coords: 1
+          replay: 2
+          challenge: 4
+          message: 3
+          submitMove: 0
+          confirmResign: 1
+          insightShare: 1
+          keyboardMove: 0
+          voiceMove: false
+          zen: 0
+          ratings: 1
+          moveEvent: 2
+          rookCastle: 1
+          flairs: true
+          sayGG: 0
+        language: en-US
+    account-getMyProfile.json:
+      value:
+        id: bobby
+        username: Bobby
+        perfs:
+          bullet:
+            games: 17
+            rating: 1681
+            rd: 76
+            prog: -25
+          blitz:
+            games: 109
+            rating: 1814
+            rd: 55
+            prog: -19
+          rapid:
+            games: 137
+            rating: 1761
+            rd: 88
+            prog: -2
+          classical:
+            games: 62
+            rating: 1619
+            rd: 114
+            prog: -37
+            prov: true
+          correspondence:
+            games: 1
+            rating: 1804
+            rd: 48
+            prog: -43
+          chess960:
+            games: 6
+            rating: 1703
+            rd: 49
+            prog: -52
+          kingOfTheHill:
+            games: 17
+            rating: 1728
+            rd: 45
+            prog: -17
+          threeCheck:
+            games: 576
+            rating: 1615
+            rd: 115
+            prog: -5
+            prov: true
+          antichess:
+            games: 25
+            rating: 1661
+            rd: 48
+            prog: -20
+          atomic:
+            games: 118
+            rating: 1707
+            rd: 76
+            prog: -22
+          horde:
+            games: 80
+            rating: 1678
+            rd: 78
+            prog: -5
+          crazyhouse:
+            games: 37
+            rating: 1722
+            rd: 53
+            prog: 18
+          puzzle:
+            games: 31
+            rating: 1756
+            rd: 51
+            prog: -17
+        createdAt: 1775598473954
+        profile:
+          flag: VA
+          location: Bobby City
+          bio: The succeeding period, from 1820 to 1830, was notable in England for scientific activity in the domain of Political Economy. It was the time as well of the vulgarising and extending of Ricardo's theory, as of the contest of that theory with the old school. Splendid tournaments were held. What was done then, is little known to the Continent generall
+          fideRating: 1725
+          uscfRating: 1756
+          ecfRating: 1569
+          rcfRating: 1736
+          cfcRating: 1793
+          dsbRating: 1794
+          links: 'https://en.wikipedia.org/wiki/Niels_Bohr
+
+            https://en.wikipedia.org/wiki/Voltaire
+
+            https://en.wikipedia.org/wiki/Archimedes
+
+            https://en.wikipedia.org/wiki/Nelson_Mandela
+
+            https://en.wikipedia.org/wiki/Euler'
+        seenAt: 1778760604182
+        playTime:
+          total: 19991
+          tv: 0
+        url: https://lichess.org/@/Bobby
+        count:
+          all: 2054
+          rated: 1643
+          draw: 231
+          loss: 921
+          win: 902
+          bookmark: 0
+          playing: 0
+          import: 0
+          me: 0
+        followable: true
+        following: false
+        blocking: false
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: 'Read [the introduction for how to make authenticated requests](#description/authentication).
+
+        '
+      flows:
+        authorizationCode:
+          authorizationUrl: https://lichess.org/oauth
+          tokenUrl: https://lichess.org/api/token
+          scopes:
+            preference:read: Read your preferences
+            preference:write: Write your preferences
+            email:read: Read your email address
+            engine:read: Read your external engines
+            engine:write: Create, update, delete your external engines
+            challenge:read: Read incoming challenges
+            challenge:write: Create, accept, decline challenges
+            challenge:bulk: Create, delete, query bulk pairings
+            study:read: Read private studies and broadcasts
+            study:write: Create, update, delete studies and broadcasts
+            tournament:write: Create tournaments
+            racer:write: Create and join puzzle races
+            puzzle:read: Read puzzle activity
+            puzzle:write: Write puzzle activity
+            team:read: Read private team information
+            team:write: Join, leave teams
+            team:lead: Manage teams (kick members, send PMs)
+            follow:read: Read followed players
+            follow:write: Follow and unfollow other players
+            msg:write: Send private messages to other players
+            board:play: Play with the Board API
+            bot:play: Play with the Bot API. Only for [Bot accounts](#tag/bot/POST/api/bot/account/upgrade)
+            web:mod: Use moderator tools (within the bounds of your permissions)

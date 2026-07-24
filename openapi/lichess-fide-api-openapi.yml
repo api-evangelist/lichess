@@ -1,0 +1,469 @@
+openapi: 3.1.0
+info:
+  version: 2.0.144
+  title: Lichess.org API reference Account FIDE API
+  contact:
+    name: Lichess.org API
+    url: https://lichess.org/api
+    email: contact@lichess.org
+  x-logo:
+    url: https://lichess1.org/assets/logo/lichess-pad12.svg
+  license:
+    name: AGPL-3.0-or-later
+    url: https://www.gnu.org/licenses/agpl-3.0.txt
+  description: '# Introduction
+
+    Welcome to the reference for the Lichess API! Lichess is free/libre,
+
+    open-source chess server powered by volunteers and donations.
+
+    - Get help in the [Lichess Discord channel](https://discord.gg/lichess)
+
+    - API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)
+
+    - API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)
+
+    - [Contribute to this documentation on Github](https://github.com/lichess-org/api)
+
+    - Check out [Lichess widgets to embed in your website](https://lichess.org/developers)
+
+    - [Download all Lichess rated games](https://database.lichess.org/)
+
+    - [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)
+
+    - [Download all evaluated positions](https://database.lichess.org/#evals)
+
+
+    ## Endpoint
+
+    All requests go to `https://lichess.org` (unless otherwise specified).
+
+
+    ## Clients
+
+    - [Python general API](https://github.com/lichess-org/berserk)
+
+    - [MicroPython general API](https://github.com/mkomon/uberserk)
+
+    - [Python general API - async](https://pypi.org/project/async-lichess-sdk)
+
+    - [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)
+
+    - [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)
+
+    - [Java general API](https://github.com/tors42/chariot)
+
+    - [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)
+
+    - [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)
+
+    - [.NET general API](https://github.com/Dblike/LichessSharp)
+
+
+    ## Rate limiting
+
+    All requests are rate limited using various strategies,
+
+    to ensure the API remains responsive for everyone.
+
+    Only make one request at a time.
+
+    If you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),
+
+    you have exceded one of the rate limits.
+
+    In most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.
+
+    Reduce your request frequency before retrying.
+
+
+    ## Streaming with ND-JSON
+
+    Some API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.
+
+
+    Here''s a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.
+
+
+    ## Authentication
+
+    ### Which authentication method is right for me?
+
+    [Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)
+
+
+    ### Personal Access Token
+
+    Personal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.
+
+    - [Generate a personal access token](https://lichess.org/account/oauth/token)
+
+    - `curl https://lichess.org/api/account -H "Authorization: Bearer {token}"`
+
+    - [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)
+
+
+    ### Token Security
+
+    - Keep your tokens secret. Do not share them in public repositories or public forums.
+
+    - Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens'' scope). You remain responsible for all activities on your account.
+
+    - Do not hardcode tokens in your application''s code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.
+
+    - If you suspect a token has been compromised, revoke it immediately.
+
+
+    To see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).
+
+
+    ### Authorization Code Flow with PKCE
+
+    The authorization code flow with PKCE allows your users to **login with Lichess**.
+
+    Lichess supports unregistered and public clients (no client authentication, choose any unique client id).
+
+    The only accepted code challenge method is `S256`.
+
+    Access tokens are long-lived (expect one year), unless they are revoked.
+
+    Refresh tokens are not supported.
+
+
+    See the [documentation for the OAuth endpoints](#tag/OAuth) or
+
+    the [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.
+
+
+    - [Demo app](https://lichess-org.github.io/api-demo/)
+
+    - [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)
+
+    - [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)
+
+    - [Java example](https://github.com/tors42/lichess-oauth-pkce-app)
+
+    - [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)
+
+
+    #### Real life examples
+
+    - [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))
+
+    - [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))
+
+    - [English Chess Federation](https://ecf.octoknight.com/)
+
+    - [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)
+
+
+    ### Token format
+
+    Access tokens and authorization codes match `^[A-Za-z0-9_]+$`.
+
+    The length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.
+
+    By convention tokens have a recognizable prefix, but do not rely on this.
+
+    '
+servers:
+- url: https://lichess.org
+- url: https://lichess.dev
+- url: http://localhost:{port}
+  variables:
+    port:
+      default: '8080'
+- url: http://l.org
+tags:
+- name: FIDE
+  description: 'FIDE players and federations from [their public download](https://ratings.fide.com/download_lists.phtml).
+
+
+    <https://lichess.org/fide>
+
+    '
+paths:
+  /api/fide/player/{playerId}:
+    get:
+      operationId: fidePlayerGet
+      summary: Get a FIDE player
+      description: 'Get information about a FIDE player.
+
+        '
+      tags:
+      - FIDE
+      security: []
+      parameters:
+      - in: path
+        name: playerId
+        description: The FIDE player ID.
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: The information about the FIDE player.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FIDEPlayer'
+              examples:
+                example player:
+                  $ref: '#/components/examples/fide-getFidePlayer.json'
+                example player without all values:
+                  $ref: '#/components/examples/fide-getFidePlayer-nullYear.json'
+  /api/fide/player/{playerId}/ratings:
+    get:
+      operationId: fidePlayerRatings
+      summary: Get ratings history of a FIDE player
+      description: 'Historical standard, rapid and blitz ratings of a FIDE player
+
+        '
+      tags:
+      - FIDE
+      security: []
+      parameters:
+      - in: path
+        name: playerId
+        description: The FIDE player ID.
+        required: true
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: The rating histories
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FIDEPlayerRatings'
+              examples:
+                example player:
+                  $ref: '#/components/examples/fide-getFidePlayerRatings.json'
+  /api/fide/player:
+    get:
+      operationId: fidePlayerSearch
+      summary: Search FIDE players
+      description: 'List of FIDE players search results for a query.
+
+        '
+      tags:
+      - FIDE
+      security: []
+      parameters:
+      - in: query
+        name: q
+        description: The search query.
+        required: true
+        schema:
+          type: string
+          example: Erigaisi Arjun
+      responses:
+        '200':
+          description: The list of FIDE players.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FIDEPlayer'
+              examples:
+                default:
+                  $ref: '#/components/examples/fide-searchFidePlayers.json'
+components:
+  schemas:
+    FIDEPlayerPhoto:
+      type: object
+      properties:
+        small:
+          description: URL of a small (100x100) thumbnail of the photo
+          type: string
+        medium:
+          description: URL of a medium (500x500) version of the photo
+          type: string
+        credit:
+          description: If set, then you should make it appear next to the photo
+          type: string
+      required:
+      - small
+      - medium
+    FIDEPlayerRatings:
+      type: object
+      description: "Data points are encoded. Each number contains a year, a month, and an ELO rating.\n\n`2015081568` -> `August 2015: 1568`\n\nHere's an example decoding implementation in JS:\n\n```js\n  const decodePoint = point => {\n    const elo = point % 10000;\n    const dateNum = Math.floor(point / 10000);\n    const year = Math.floor(dateNum / 100);\n    const month = dateNum % 100;\n    return [year, month, elo];\n  };\n```\n\nConsecutive months with same ELO are omitted. For a given ELO, only the first and last month are provided.\n"
+      properties:
+        standard:
+          type: array
+          items:
+            type: number
+        rapid:
+          type: array
+          items:
+            type: number
+        blitz:
+          type: array
+          items:
+            type: number
+      required:
+      - standard
+      - rapid
+      - blitz
+    Title:
+      type: string
+      enum:
+      - GM
+      - WGM
+      - IM
+      - WIM
+      - FM
+      - WFM
+      - NM
+      - CM
+      - WCM
+      - WNM
+      - LM
+      - BOT
+      description: only appears if the user is a titled player or a bot user
+    FIDEPlayer:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        title:
+          $ref: '#/components/schemas/Title'
+        federation:
+          type: string
+        year:
+          type:
+          - integer
+          - 'null'
+        inactive:
+          type: integer
+        standard:
+          type: integer
+        rapid:
+          type: integer
+        blitz:
+          type: integer
+        gender:
+          type: string
+          description: FIDE uses mandatory binary gender.
+          enum:
+          - M
+          - F
+        photo:
+          $ref: '#/components/schemas/FIDEPlayerPhoto'
+      required:
+      - id
+      - name
+      - federation
+  examples:
+    fide-getFidePlayer-nullYear.json:
+      value:
+        id: 8700761
+        name: Hampus, Sorensen
+        federation: ZAM
+        year: null
+    fide-searchFidePlayers.json:
+      value:
+      - id: 35009192
+        name: Erigaisi Arjun
+        federation: IND
+        year: 2003
+        title: GM
+        standard: 2751
+        rapid: 2741
+        blitz: 2776
+        gender: M
+        photo:
+          small: https://image.lichess1.org/display?fmt=webp&h=100&op=thumbnail&path=ZtNkAl1_0MHT.webp&w=100&sig=8a2122f91eab6c3f0528bce8ea5854fd561bbcde
+          medium: https://image.lichess1.org/display?fmt=webp&h=500&op=thumbnail&path=ZtNkAl1_0MHT.webp&w=500&sig=f2faf575e19147ee8b1d2b573f1fd2e18fab88e7
+          credit: Brigham Aldrich
+      - id: 35009060
+        name: Erigaisi Keerthana
+        federation: IND
+        year: 2002
+        gender: F
+    fide-getFidePlayerRatings.json:
+      value:
+        blitz: []
+        rapid:
+        - 2015081568
+        - 2022091568
+        - 2022101620
+        - 2024021620
+        - 2024031772
+        - 2025121772
+        standard:
+        - 2015021577
+        - 2015071577
+        - 2015081679
+        - 2015111679
+        - 2015121616
+        - 2016071616
+        - 2016081618
+        - 2016101618
+        - 2016111685
+        - 2017031685
+        - 2017041692
+        - 2017061692
+        - 2017071698
+        - 2017081698
+        - 2017091720
+        - 2024021720
+        - 2024031832
+        - 2025121832
+    fide-getFidePlayer.json:
+      value:
+        id: 35009192
+        name: Erigaisi Arjun
+        federation: IND
+        year: 2003
+        title: GM
+        standard: 2751
+        rapid: 2741
+        blitz: 2776
+        gender: M
+        photo:
+          small: https://image.lichess1.org/display?fmt=webp&h=100&op=thumbnail&path=ZtNkAl1_0MHT.webp&w=100&sig=8a2122f91eab6c3f0528bce8ea5854fd561bbcde
+          medium: https://image.lichess1.org/display?fmt=webp&h=500&op=thumbnail&path=ZtNkAl1_0MHT.webp&w=500&sig=f2faf575e19147ee8b1d2b573f1fd2e18fab88e7
+          credit: Brigham Aldrich
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: 'Read [the introduction for how to make authenticated requests](#description/authentication).
+
+        '
+      flows:
+        authorizationCode:
+          authorizationUrl: https://lichess.org/oauth
+          tokenUrl: https://lichess.org/api/token
+          scopes:
+            preference:read: Read your preferences
+            preference:write: Write your preferences
+            email:read: Read your email address
+            engine:read: Read your external engines
+            engine:write: Create, update, delete your external engines
+            challenge:read: Read incoming challenges
+            challenge:write: Create, accept, decline challenges
+            challenge:bulk: Create, delete, query bulk pairings
+            study:read: Read private studies and broadcasts
+            study:write: Create, update, delete studies and broadcasts
+            tournament:write: Create tournaments
+            racer:write: Create and join puzzle races
+            puzzle:read: Read puzzle activity
+            puzzle:write: Write puzzle activity
+            team:read: Read private team information
+            team:write: Join, leave teams
+            team:lead: Manage teams (kick members, send PMs)
+            follow:read: Read followed players
+            follow:write: Follow and unfollow other players
+            msg:write: Send private messages to other players
+            board:play: Play with the Board API
+            bot:play: Play with the Bot API. Only for [Bot accounts](#tag/bot/POST/api/bot/account/upgrade)
+            web:mod: Use moderator tools (within the bounds of your permissions)

@@ -1,0 +1,2357 @@
+openapi: 3.1.0
+info:
+  version: 2.0.144
+  title: Lichess.org API reference Account Teams API
+  contact:
+    name: Lichess.org API
+    url: https://lichess.org/api
+    email: contact@lichess.org
+  x-logo:
+    url: https://lichess1.org/assets/logo/lichess-pad12.svg
+  license:
+    name: AGPL-3.0-or-later
+    url: https://www.gnu.org/licenses/agpl-3.0.txt
+  description: '# Introduction
+
+    Welcome to the reference for the Lichess API! Lichess is free/libre,
+
+    open-source chess server powered by volunteers and donations.
+
+    - Get help in the [Lichess Discord channel](https://discord.gg/lichess)
+
+    - API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)
+
+    - API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)
+
+    - [Contribute to this documentation on Github](https://github.com/lichess-org/api)
+
+    - Check out [Lichess widgets to embed in your website](https://lichess.org/developers)
+
+    - [Download all Lichess rated games](https://database.lichess.org/)
+
+    - [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)
+
+    - [Download all evaluated positions](https://database.lichess.org/#evals)
+
+
+    ## Endpoint
+
+    All requests go to `https://lichess.org` (unless otherwise specified).
+
+
+    ## Clients
+
+    - [Python general API](https://github.com/lichess-org/berserk)
+
+    - [MicroPython general API](https://github.com/mkomon/uberserk)
+
+    - [Python general API - async](https://pypi.org/project/async-lichess-sdk)
+
+    - [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)
+
+    - [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)
+
+    - [Java general API](https://github.com/tors42/chariot)
+
+    - [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)
+
+    - [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)
+
+    - [.NET general API](https://github.com/Dblike/LichessSharp)
+
+
+    ## Rate limiting
+
+    All requests are rate limited using various strategies,
+
+    to ensure the API remains responsive for everyone.
+
+    Only make one request at a time.
+
+    If you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),
+
+    you have exceded one of the rate limits.
+
+    In most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.
+
+    Reduce your request frequency before retrying.
+
+
+    ## Streaming with ND-JSON
+
+    Some API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.
+
+
+    Here''s a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.
+
+
+    ## Authentication
+
+    ### Which authentication method is right for me?
+
+    [Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)
+
+
+    ### Personal Access Token
+
+    Personal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.
+
+    - [Generate a personal access token](https://lichess.org/account/oauth/token)
+
+    - `curl https://lichess.org/api/account -H "Authorization: Bearer {token}"`
+
+    - [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)
+
+
+    ### Token Security
+
+    - Keep your tokens secret. Do not share them in public repositories or public forums.
+
+    - Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens'' scope). You remain responsible for all activities on your account.
+
+    - Do not hardcode tokens in your application''s code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.
+
+    - If you suspect a token has been compromised, revoke it immediately.
+
+
+    To see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).
+
+
+    ### Authorization Code Flow with PKCE
+
+    The authorization code flow with PKCE allows your users to **login with Lichess**.
+
+    Lichess supports unregistered and public clients (no client authentication, choose any unique client id).
+
+    The only accepted code challenge method is `S256`.
+
+    Access tokens are long-lived (expect one year), unless they are revoked.
+
+    Refresh tokens are not supported.
+
+
+    See the [documentation for the OAuth endpoints](#tag/OAuth) or
+
+    the [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.
+
+
+    - [Demo app](https://lichess-org.github.io/api-demo/)
+
+    - [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)
+
+    - [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)
+
+    - [Java example](https://github.com/tors42/lichess-oauth-pkce-app)
+
+    - [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)
+
+
+    #### Real life examples
+
+    - [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))
+
+    - [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))
+
+    - [English Chess Federation](https://ecf.octoknight.com/)
+
+    - [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)
+
+
+    ### Token format
+
+    Access tokens and authorization codes match `^[A-Za-z0-9_]+$`.
+
+    The length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.
+
+    By convention tokens have a recognizable prefix, but do not rely on this.
+
+    '
+servers:
+- url: https://lichess.org
+- url: https://lichess.dev
+- url: http://localhost:{port}
+  variables:
+    port:
+      default: '8080'
+- url: http://l.org
+tags:
+- name: Teams
+  description: 'Access and manage Lichess teams and their members.
+
+    <https://lichess.org/team>
+
+    '
+paths:
+  /api/team/{teamId}/swiss:
+    get:
+      operationId: apiTeamSwiss
+      summary: Get team swiss tournaments
+      description: 'Get all swiss tournaments of a team.
+
+        Tournaments are sorted by reverse chronological order of start date (last starting first).
+
+        Tournaments are streamed as [ndjson](#description/streaming-with-nd-json).
+
+        '
+      tags:
+      - Teams
+      security: []
+      parameters:
+      - in: path
+        name: teamId
+        schema:
+          type: string
+        required: true
+        example: coders
+      - in: query
+        name: max
+        description: How many tournaments to download.
+        schema:
+          type: integer
+          minimum: 1
+          default: 100
+      - in: query
+        name: status
+        description: '[Filter] Only swiss tournaments in this current state.
+
+          '
+        schema:
+          $ref: '#/components/schemas/SwissStatus'
+      - in: query
+        name: createdBy
+        description: '[Filter] Only swiss tournaments created by a given user.
+
+          '
+        schema:
+          type: string
+      - in: query
+        name: name
+        description: '[Filter] Only swiss tournaments with a given name.
+
+          '
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The list of Swiss tournaments of a team.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/x-ndjson:
+              schema:
+                $ref: '#/components/schemas/SwissTournament'
+              examples:
+                default:
+                  $ref: '#/components/examples/teams-getTeamSwissTournaments.json'
+  /api/team/{teamId}:
+    get:
+      operationId: teamShow
+      summary: Get a single team
+      description: Public info about a team. Includes the list of publicly visible leaders.
+      tags:
+      - Teams
+      security: []
+      parameters:
+      - in: path
+        name: teamId
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: The information about the team.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+              examples:
+                default:
+                  $ref: '#/components/examples/teams-getSingleTeam.json'
+  /api/team/all:
+    get:
+      operationId: teamAll
+      summary: Get popular teams
+      description: 'Paginator of the most popular teams.
+
+        '
+      tags:
+      - Teams
+      security: []
+      parameters:
+      - in: query
+        name: page
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      responses:
+        '200':
+          description: A paginated list of the most popular teams.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamPaginatorJson'
+              examples:
+                default:
+                  $ref: '#/components/examples/teams-getPopularTeams.json'
+  /api/team/of/{username}:
+    get:
+      operationId: teamOfUsername
+      summary: Teams of a player
+      description: 'All the teams a player is a member of.
+
+        Teams that hide their player list are only included if you also belong to the team.
+
+        '
+      tags:
+      - Teams
+      security:
+      - OAuth2: []
+      parameters:
+      - in: path
+        name: username
+        schema:
+          type: string
+          example: thibault
+        required: true
+      responses:
+        '200':
+          description: The list of teams the player is a member of.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Team'
+              examples:
+                default:
+                  $ref: '#/components/examples/teams-teamsOfPlayer.json'
+  /api/team/search:
+    get:
+      operationId: teamSearch
+      summary: Search teams
+      description: 'Paginator of team search results for a keyword.
+
+        '
+      tags:
+      - Teams
+      security: []
+      parameters:
+      - in: query
+        name: text
+        schema:
+          type: string
+          example: coders
+      - in: query
+        name: page
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      responses:
+        '200':
+          description: The paginated list of teams.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamPaginatorJson'
+              examples:
+                default:
+                  $ref: '#/components/examples/teams-searchTeams.json'
+  /api/team/{teamId}/users:
+    get:
+      operationId: teamIdUsers
+      summary: Get members of a team
+      description: 'Members are sorted by reverse chronological order of joining the team (most recent first).
+
+        OAuth is only required if the list of members is private.
+
+        Up to 5,000 users are streamed as [ndjson](#description/streaming-with-nd-json).
+
+        '
+      tags:
+      - Teams
+      security:
+      - OAuth2:
+        - team:read
+      parameters:
+      - in: path
+        name: teamId
+        schema:
+          type: string
+          example: coders
+        required: true
+      - in: query
+        name: full
+        description: 'Full user documents with performance ratings.
+
+          This limits the response to 1,000 users.
+
+          '
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: The list of users in the team.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/x-ndjson:
+              schema:
+                type: object
+                properties:
+                  joinedTeamAt:
+                    type: integer
+                    format: int64
+                    example: 1716930043067
+                  id:
+                    type: string
+                    example: chess-network
+                  name:
+                    type: string
+                    example: Chess-Network
+                  title:
+                    $ref: '#/components/schemas/Title'
+                  patronColor:
+                    $ref: '#/components/schemas/PatronColor'
+                required:
+                - id
+                - name
+  /api/team/{teamId}/arena:
+    get:
+      operationId: apiTeamArena
+      summary: Get team Arena tournaments
+      description: 'Get all Arena tournaments relevant to a team.
+
+        Tournaments are sorted by reverse chronological order of start date (last starting first).
+
+        Tournaments are streamed as [ndjson](#description/streaming-with-nd-json).
+
+        '
+      tags:
+      - Teams
+      security: []
+      parameters:
+      - in: path
+        name: teamId
+        description: ID of the team
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: max
+        description: How many tournaments to download.
+        schema:
+          type: integer
+          minimum: 1
+          default: 100
+      - in: query
+        name: status
+        description: '[Filter] Only arena tournaments in this current state.
+
+          '
+        schema:
+          $ref: '#/components/schemas/ArenaStatusName'
+      - in: query
+        name: createdBy
+        description: '[Filter] Only arena tournaments created by a given user.
+
+          '
+        schema:
+          type: string
+      - in: query
+        name: name
+        description: '[Filter] Only arena tournaments with a given name.
+
+          '
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The list of Arena tournaments of a team.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/x-ndjson:
+              schema:
+                $ref: '#/components/schemas/ArenaTournament'
+              examples:
+                default:
+                  $ref: '#/components/examples/arenas-getTeamArenaTournaments.json'
+  /team/{teamId}/join:
+    post:
+      operationId: teamIdJoin
+      summary: Join a team
+      description: 'Join a team.
+
+        If the team requires a password but the `password` field is incorrect,
+
+        then the call fails with `403 Forbidden`.
+
+        Similarly, if the team join policy requires a confirmation but the
+
+        `message` parameter is not given, then the call fails with
+
+        `403 Forbidden`.
+
+        '
+      tags:
+      - Teams
+      security:
+      - OAuth2:
+        - team:write
+      parameters:
+      - in: path
+        name: teamId
+        schema:
+          type: string
+          example: coders
+        required: true
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: Required if team manually reviews admission requests.
+                  minLength: 30
+                  maxLength: 2000
+                password:
+                  type: string
+                  description: Optional password, if the team requires one.
+      responses:
+        '200':
+          description: The request to join a team was successfully sent.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+  /team/{teamId}/quit:
+    post:
+      operationId: teamIdQuit
+      summary: Leave a team
+      description: 'Leave a team.
+
+        - <https://lichess.org/team>
+
+        '
+      tags:
+      - Teams
+      security:
+      - OAuth2:
+        - team:write
+      parameters:
+      - in: path
+        name: teamId
+        schema:
+          type: string
+          example: coders
+        required: true
+      responses:
+        '200':
+          description: The logged in user has successfully left the team.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+  /api/team/{teamId}/requests:
+    get:
+      operationId: teamRequests
+      summary: Get join requests
+      description: Get pending join requests of your team
+      tags:
+      - Teams
+      security:
+      - OAuth2:
+        - team:read
+      parameters:
+      - in: path
+        name: teamId
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: declined
+        description: Get the declined join requests
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: The list of pending join requests on your team
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TeamRequestWithUser'
+                example:
+                - request:
+                    userId: mary
+                    teamId: my-private-team
+                    message: Hello, I would like to join the team!
+                    date: 1745112259637
+                  user:
+                    id: mary
+                    username: Mary
+                    perfs:
+                      bullet:
+                        games: 119
+                        rating: 1066
+                        rd: 101
+                        prog: -1
+                      blitz:
+                        games: 34
+                        rating: 1007
+                        rd: 55
+                        prog: -59
+                      rapid:
+                        games: 134
+                        rating: 1021
+                        rd: 70
+                        prog: 26
+                      classical:
+                        games: 451
+                        rating: 1136
+                        rd: 78
+                        prog: -1
+                      correspondence:
+                        games: 35
+                        rating: 1049
+                        rd: 45
+                        prog: 15
+                      chess960:
+                        games: 52
+                        rating: 996
+                        rd: 72
+                        prog: -9
+                      kingOfTheHill:
+                        games: 1998
+                        rating: 1169
+                        rd: 79
+                        prog: -13
+                      threeCheck:
+                        games: 6
+                        rating: 946
+                        rd: 52
+                        prog: 32
+                      antichess:
+                        games: 79
+                        rating: 1143
+                        rd: 48
+                        prog: 61
+                      atomic:
+                        games: 239
+                        rating: 978
+                        rd: 76
+                        prog: 22
+                      horde:
+                        games: 246
+                        rating: 1031
+                        rd: 108
+                        prog: -28
+                      crazyhouse:
+                        games: 473
+                        rating: 1063
+                        rd: 88
+                        prog: 2
+                      puzzle:
+                        games: 37
+                        rating: 977
+                        rd: 86
+                        prog: 26
+                    flair: food-drink.coconut
+                    createdAt: 1744526339498
+                    seenAt: 1745112249912
+                    playTime:
+                      total: 14336
+                      tv: 0
+  /api/team/{teamId}/request/{userId}/accept:
+    post:
+      operationId: teamRequestAccept
+      summary: Accept join request
+      description: Accept someone's request to join your team
+      tags:
+      - Teams
+      security:
+      - OAuth2:
+        - team:lead
+      parameters:
+      - in: path
+        name: teamId
+        schema:
+          type: string
+          example: coders
+        required: true
+      - in: path
+        name: userId
+        schema:
+          type: string
+          example: neio
+        required: true
+      responses:
+        '200':
+          description: The member has been added to the team.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+  /api/team/{teamId}/request/{userId}/decline:
+    post:
+      operationId: teamRequestDecline
+      summary: Decline join request
+      description: Decline someone's request to join your team
+      tags:
+      - Teams
+      security:
+      - OAuth2:
+        - team:lead
+      parameters:
+      - in: path
+        name: teamId
+        schema:
+          type: string
+          example: coders
+        required: true
+      - in: path
+        name: userId
+        schema:
+          type: string
+          example: neio
+        required: true
+      responses:
+        '200':
+          description: The join request has been declined and is no longer pending.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+  /api/team/{teamId}/kick/{userId}:
+    post:
+      operationId: teamIdKickUserId
+      summary: Kick a user from your team
+      description: 'Kick a member out of one of your teams.
+
+        - <https://lichess.org/team>
+
+        '
+      tags:
+      - Teams
+      security:
+      - OAuth2:
+        - team:lead
+      parameters:
+      - in: path
+        name: teamId
+        schema:
+          type: string
+          example: coders
+        required: true
+      - in: path
+        name: userId
+        schema:
+          type: string
+          example: neio
+        required: true
+      responses:
+        '200':
+          description: The member has been kicked from the team.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+  /team/{teamId}/pm-all:
+    post:
+      operationId: teamIdPmAll
+      summary: Message all members
+      description: 'Send a private message to all members of a team.
+
+        You must be a team leader with the "Messages" permission.
+
+        '
+      tags:
+      - Teams
+      security:
+      - OAuth2:
+        - team:lead
+      parameters:
+      - in: path
+        name: teamId
+        schema:
+          type: string
+          example: coders
+        required: true
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: The message to send to all your team members.
+      responses:
+        '200':
+          description: The message has successfully been sent to all team members.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+        '400':
+          description: The sending of message to all team members has failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    PuzzleModePerf:
+      type: object
+      properties:
+        runs:
+          type: integer
+        score:
+          type: integer
+      required:
+      - runs
+      - score
+    PatronColor:
+      type: integer
+      description: 'Players can choose a color for their Patron wings.
+
+        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
+
+
+        The presence of this field indicates the player is an active Patron.
+
+        '
+      minimum: 1
+      maximum: 10
+    Verdicts:
+      type: object
+      properties:
+        accepted:
+          type: boolean
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/Verdict'
+      required:
+      - accepted
+      - list
+    Variant:
+      type: object
+      properties:
+        key:
+          $ref: '#/components/schemas/VariantKey'
+        name:
+          type: string
+        short:
+          type: string
+      required:
+      - key
+      - name
+    ArenaPerf:
+      type: object
+      properties:
+        key:
+          $ref: '#/components/schemas/PerfType'
+        name:
+          type: string
+          example: Blitz
+        position:
+          type: integer
+          example: 1
+        icon:
+          type: string
+          example: )
+      required:
+      - key
+      - name
+      - position
+    ArenaStatus:
+      type: integer
+      description: '10: created, 20: started, 30: finished
+
+        '
+      enum:
+      - 10
+      - 20
+      - 30
+    PlayTime:
+      type: object
+      properties:
+        total:
+          type: integer
+        tv:
+          type: integer
+        human:
+          type: integer
+      required:
+      - total
+      - tv
+    Patron:
+      type: boolean
+      deprecated: true
+      description: 'Use patronColor value instead to determine if player is a patron.
+
+        '
+    ArenaStatusName:
+      type: string
+      description: The current state of the arena tournament
+      enum:
+      - created
+      - started
+      - finished
+    VariantKey:
+      type: string
+      enum:
+      - standard
+      - chess960
+      - crazyhouse
+      - antichess
+      - atomic
+      - horde
+      - kingOfTheHill
+      - racingKings
+      - threeCheck
+      - fromPosition
+      example: standard
+      default: standard
+    TeamRequest:
+      type: object
+      properties:
+        teamId:
+          type: string
+          example: coders
+        userId:
+          type: string
+          example: thibault
+        date:
+          type: integer
+          example: 1514505150384
+        message:
+          type: string
+          example: Hello, I would like to join the team!
+      required:
+      - teamId
+      - userId
+      - date
+    Ok:
+      properties:
+        ok:
+          type: boolean
+      required:
+      - ok
+    PerfType:
+      type: string
+      enum:
+      - ultraBullet
+      - bullet
+      - blitz
+      - rapid
+      - classical
+      - correspondence
+      - chess960
+      - crazyhouse
+      - antichess
+      - atomic
+      - horde
+      - kingOfTheHill
+      - racingKings
+      - threeCheck
+    Team:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        flair:
+          $ref: '#/components/schemas/Flair'
+        leader:
+          $ref: '#/components/schemas/LightUser'
+        leaders:
+          type: array
+          items:
+            $ref: '#/components/schemas/LightUser'
+        nbMembers:
+          type: integer
+        open:
+          type: boolean
+        joined:
+          type: boolean
+        requested:
+          type: boolean
+      required:
+      - id
+      - name
+    SwissTournament:
+      type: object
+      properties:
+        id:
+          type: string
+        createdBy:
+          type: string
+        startsAt:
+          type: string
+        name:
+          type: string
+        clock:
+          type: object
+          properties:
+            limit:
+              type: number
+            increment:
+              type: number
+          required:
+          - limit
+          - increment
+        variant:
+          type: string
+        round:
+          type: number
+        nbRounds:
+          type: number
+        nbPlayers:
+          type: number
+        nbOngoing:
+          type: number
+        status:
+          $ref: '#/components/schemas/SwissStatus'
+        stats:
+          type: object
+          properties:
+            games:
+              type: number
+            whiteWins:
+              type: number
+            blackWins:
+              type: number
+            draws:
+              type: number
+            byes:
+              type: number
+            absences:
+              type: number
+            averageRating:
+              type: number
+          required:
+          - games
+          - whiteWins
+          - blackWins
+          - draws
+          - byes
+          - absences
+          - averageRating
+        rated:
+          type: boolean
+        verdicts:
+          $ref: '#/components/schemas/Verdicts'
+        nextRound:
+          type: object
+          properties:
+            at:
+              type: string
+              format: date-time
+            in:
+              type: integer
+              description: The number of seconds until the next round starts.
+      required:
+      - id
+      - createdBy
+      - startsAt
+      - name
+      - clock
+      - variant
+      - round
+      - nbRounds
+      - nbPlayers
+      - nbOngoing
+      - status
+      - rated
+      - verdicts
+    Profile:
+      type: object
+      properties:
+        flag:
+          type: string
+          example: EC
+        location:
+          type: string
+        bio:
+          type: string
+          example: Free bugs!
+        realName:
+          type: string
+          example: Thibault Duplessis
+        fideRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        uscfRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        ecfRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        cfcRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        rcfRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        dsbRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        links:
+          type: string
+          example: "github.com/ornicar\r\nmas.to/@thibault"
+    Verdict:
+      type: object
+      properties:
+        condition:
+          type: string
+        verdict:
+          type: string
+      required:
+      - condition
+      - verdict
+    Clock:
+      type: object
+      properties:
+        limit:
+          type: integer
+        increment:
+          type: integer
+      required:
+      - limit
+      - increment
+    Flair:
+      type: string
+      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
+    Perf:
+      type: object
+      properties:
+        games:
+          type: integer
+        rating:
+          type: integer
+        rd:
+          type: integer
+          description: rating deviation
+        prog:
+          type: integer
+        prov:
+          type: boolean
+          description: only appears if a user's perf rating are [provisional](https://lichess.org/faq#provisional)
+        rank:
+          type: integer
+          description: global lichess ranking, only appears for recently active players
+      required:
+      - games
+      - rating
+      - rd
+      - prog
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The cause of the error.
+      required:
+      - error
+      example:
+        error: This request is invalid because [...]
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        perfs:
+          $ref: '#/components/schemas/Perfs'
+        title:
+          $ref: '#/components/schemas/Title'
+        flair:
+          $ref: '#/components/schemas/Flair'
+        createdAt:
+          type: integer
+          format: int64
+        disabled:
+          type: boolean
+          description: only appears if a user's account is closed
+        tosViolation:
+          type: boolean
+          description: only appears if a user's account is marked for the violation of [Lichess TOS](https://lichess.org/terms-of-service)
+        profile:
+          $ref: '#/components/schemas/Profile'
+        seenAt:
+          type: integer
+          format: int64
+        playTime:
+          $ref: '#/components/schemas/PlayTime'
+        patron:
+          $ref: '#/components/schemas/Patron'
+        patronColor:
+          $ref: '#/components/schemas/PatronColor'
+        verified:
+          type: boolean
+      required:
+      - id
+      - username
+    Perfs:
+      type: object
+      properties:
+        chess960:
+          $ref: '#/components/schemas/Perf'
+        atomic:
+          $ref: '#/components/schemas/Perf'
+        racingKings:
+          $ref: '#/components/schemas/Perf'
+        ultraBullet:
+          $ref: '#/components/schemas/Perf'
+        blitz:
+          $ref: '#/components/schemas/Perf'
+        kingOfTheHill:
+          $ref: '#/components/schemas/Perf'
+        threeCheck:
+          $ref: '#/components/schemas/Perf'
+        antichess:
+          $ref: '#/components/schemas/Perf'
+        crazyhouse:
+          $ref: '#/components/schemas/Perf'
+        bullet:
+          $ref: '#/components/schemas/Perf'
+        correspondence:
+          $ref: '#/components/schemas/Perf'
+        horde:
+          $ref: '#/components/schemas/Perf'
+        puzzle:
+          $ref: '#/components/schemas/Perf'
+        classical:
+          $ref: '#/components/schemas/Perf'
+        rapid:
+          $ref: '#/components/schemas/Perf'
+        storm:
+          $ref: '#/components/schemas/PuzzleModePerf'
+        racer:
+          $ref: '#/components/schemas/PuzzleModePerf'
+        streak:
+          $ref: '#/components/schemas/PuzzleModePerf'
+    ArenaPosition:
+      oneOf:
+      - type: object
+        title: Thematic
+        properties:
+          eco:
+            type: string
+            example: C41
+          name:
+            type: string
+            example: Philidor Defense
+          fen:
+            type: string
+            example: rnbqkbnr/ppp2ppp/3p4/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq -
+          url:
+            type: string
+            format: uri
+            example: https://lichess.org/opening/Philidor_Defense
+        required:
+        - eco
+        - name
+        - fen
+        - url
+      - type: object
+        title: Custom position
+        properties:
+          name:
+            type: string
+            const: Custom position
+          fen:
+            type: string
+            example: rnbq1bnr/ppppkppp/8/4p3/4P3/8/PPPPKPPP/RNBQ1BNR w - - 2 3
+        required:
+        - name
+        - fen
+    LightUser:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        flair:
+          $ref: '#/components/schemas/Flair'
+        title:
+          $ref: '#/components/schemas/Title'
+        patron:
+          $ref: '#/components/schemas/Patron'
+        patronColor:
+          $ref: '#/components/schemas/PatronColor'
+      required:
+      - id
+      - name
+    TeamRequestWithUser:
+      type: object
+      properties:
+        request:
+          $ref: '#/components/schemas/TeamRequest'
+        user:
+          $ref: '#/components/schemas/User'
+      required:
+      - request
+      - user
+    TeamPaginatorJson:
+      type: object
+      properties:
+        currentPage:
+          type: integer
+          example: 4
+        maxPerPage:
+          type: integer
+          example: 15
+        currentPageResults:
+          type: array
+          items:
+            $ref: '#/components/schemas/Team'
+        previousPage:
+          type:
+          - integer
+          - 'null'
+          example: 3
+        nextPage:
+          type:
+          - integer
+          - 'null'
+          example: 5
+        nbResults:
+          type: integer
+        nbPages:
+          type: integer
+      required:
+      - currentPage
+      - maxPerPage
+      - currentPageResults
+      - previousPage
+      - nextPage
+      - nbResults
+      - nbPages
+    Title:
+      type: string
+      enum:
+      - GM
+      - WGM
+      - IM
+      - WIM
+      - FM
+      - WFM
+      - NM
+      - CM
+      - WCM
+      - WNM
+      - LM
+      - BOT
+      description: only appears if the user is a titled player or a bot user
+    ArenaTournament:
+      type: object
+      properties:
+        id:
+          type: string
+        createdBy:
+          type: string
+        system:
+          type: string
+          const: arena
+        minutes:
+          type: integer
+        clock:
+          $ref: '#/components/schemas/Clock'
+        rated:
+          type: boolean
+        fullName:
+          type: string
+        nbPlayers:
+          type: integer
+        variant:
+          $ref: '#/components/schemas/Variant'
+        startsAt:
+          type: integer
+          format: int64
+        finishesAt:
+          type: integer
+          format: int64
+        status:
+          $ref: '#/components/schemas/ArenaStatus'
+        perf:
+          $ref: '#/components/schemas/ArenaPerf'
+        secondsToStart:
+          type: integer
+        hasMaxRating:
+          type: boolean
+        maxRating:
+          $ref: '#/components/schemas/ArenaRatingObj'
+        minRating:
+          $ref: '#/components/schemas/ArenaRatingObj'
+        minRatedGames:
+          type: object
+          properties:
+            nb:
+              type: integer
+        botsAllowed:
+          type: boolean
+        minAccountAgeInDays:
+          type: integer
+        onlyTitled:
+          type: boolean
+        teamMember:
+          type: string
+        private:
+          type: boolean
+        position:
+          $ref: '#/components/schemas/ArenaPosition'
+        schedule:
+          type: object
+          properties:
+            freq:
+              type: string
+            speed:
+              type: string
+        teamBattle:
+          type: object
+          properties:
+            teams:
+              type: array
+              items:
+                type: string
+            nbLeaders:
+              type: integer
+        winner:
+          $ref: '#/components/schemas/LightUser'
+      required:
+      - id
+      - createdBy
+      - system
+      - minutes
+      - clock
+      - rated
+      - fullName
+      - nbPlayers
+      - variant
+      - startsAt
+      - finishesAt
+      - status
+      - perf
+    ArenaRatingObj:
+      type: object
+      properties:
+        perf:
+          $ref: '#/components/schemas/PerfType'
+        rating:
+          type: integer
+          example: 1700
+      required:
+      - rating
+    SwissStatus:
+      type: string
+      description: The current state of the swiss tournament
+      enum:
+      - created
+      - started
+      - finished
+  examples:
+    teams-teamsOfPlayer.json:
+      value:
+      - id: chesster-speaks-for-itself
+        name: Chesster Speaks For Itself
+        description: International Pillow Fight Day Breaks World Record
+        open: false
+        leader:
+          name: Rudra
+          id: rudra
+        nbMembers: 17
+        flair: symbols.digit-nine
+        leaders:
+        - name: Rudra
+          id: rudra
+      - id: ignorance-is-blitz
+        name: Ignorance is Blitz
+        description: Smart Umbrella Tells You When It's Going to Rain
+        open: false
+        leader:
+          name: Dae
+          id: dae
+        nbMembers: 18
+        leaders:
+        - name: Dae
+          id: dae
+      - id: ive-seen-this-1b4
+        name: I've seen this 1.b4
+        description: Cat Café Introduces Yoga Classes with Feline Instructors
+        open: true
+        leader:
+          name: Monica
+          flair: people.man-supervillain-medium-dark-skin-tone
+          patron: true
+          patronColor: 1
+          id: monica
+        nbMembers: 17
+        flair: objects.three-thirty
+        leaders:
+        - name: Monica
+          flair: people.man-supervillain-medium-dark-skin-tone
+          patron: true
+          patronColor: 1
+          id: monica
+      - id: lichess-swiss
+        name: Lichess Swiss
+        description: World's Largest Rubber Duck to Visit Coastal Cities
+        open: true
+        leader:
+          name: Elizabeth
+          id: elizabeth
+        nbMembers: 64
+        flair: food-drink.cheese-wedge
+        leaders: []
+      - id: on-topalov-the-world
+        name: On Topalov The World
+        description: Scientists Discover Laughing Gas Emitted by Goats – Hilarity Ensues
+        open: true
+        leader:
+          name: Akeem
+          id: akeem
+        nbMembers: 17
+        flair: symbols.python-logo
+        leaders:
+        - name: Akeem
+          id: akeem
+      - id: qe2-kxe2
+        name: Qe2+ Kxe2
+        description: Scientists Develop Anti-Gravity Shoes for Effortless Walking
+        open: true
+        leader:
+          name: Vera
+          flair: nature.full-moon-face
+          id: vera
+        nbMembers: 18
+        leaders:
+        - name: Vera
+          flair: nature.full-moon-face
+          id: vera
+        - name: Benjamin
+          id: benjamin
+      - id: sacsacoops
+        name: Sac-sac-oops
+        description: Giant Inflatable Unicorn Parade Takes Over Downtown
+        open: true
+        leader:
+          name: Suresh
+          flair: people.pilot-dark-skin-tone
+          id: suresh
+        nbMembers: 17
+        leaders:
+        - name: Suresh
+          flair: people.pilot-dark-skin-tone
+          id: suresh
+        - name: Gabriela
+          flair: objects.yen-banknote
+          id: gabriela
+      - id: stockfishing-for-compliments
+        name: Stockfishing for compliments
+        description: World's First Talking Parrot Runs for Mayor – Campaign Soars
+        open: true
+        leader:
+          name: Gabriela
+          flair: objects.yen-banknote
+          id: gabriela
+        nbMembers: 17
+        leaders:
+        - name: Gabriela
+          flair: objects.yen-banknote
+          id: gabriela
+      - id: this-team-name-has-been-purchased-by-chesscom
+        name: '[This team name has been purchased by chess.com]'
+        description: Town Celebrates Annual 'Ugly Sweater' Parade
+        open: true
+        leader:
+          name: Fatima
+          flair: people.man-facepalming-dark-skin-tone
+          id: fatima
+        nbMembers: 16
+        leaders:
+        - name: Fatima
+          flair: people.man-facepalming-dark-skin-tone
+          id: fatima
+      - id: thor-love-and-blunder
+        name: Thor - Love and Blunder
+        description: AI Robot Breakdances Its Way into the Guinness World Records
+        open: false
+        leader:
+          name: Vera
+          flair: nature.full-moon-face
+          id: vera
+        nbMembers: 17
+        flair: people.palm-up-hand-light-skin-tone
+        leaders:
+        - name: Vera
+          flair: nature.full-moon-face
+          id: vera
+      - id: two-bishops-two-steeds-two-wellhidden-beads
+        name: Two bishops, two steeds, two well-hidden beads
+        description: Local Bakery Creates Giant Cupcake for Charity
+        open: false
+        leader:
+          name: Patricia
+          patron: true
+          patronColor: 1
+          id: patricia
+        nbMembers: 18
+        leaders:
+        - name: Lola
+          title: CM
+          id: lola
+        - name: Patricia
+          patron: true
+          patronColor: 1
+          id: patricia
+      - id: will-withdraw-after-round-3
+        name: Will Withdraw After Round 3
+        description: Dancing Robots Entertain Crowds at City Square
+        open: true
+        leader:
+          name: Hui
+          patron: true
+          patronColor: 1
+          id: hui
+        nbMembers: 17
+        flair: travel-places.earth-blue
+        leaders:
+        - name: Li
+          flair: activity.kite
+          id: li
+        - name: Ana
+          title: WCM
+          flair: smileys.downcast-face-with-sweat
+          id: ana
+        - name: Hui
+          patron: true
+          patronColor: 1
+          id: hui
+      - id: withdrawing-like-a-champion
+        name: (With)Drawing like a champion
+        description: Local Library Introduces Silent Disco Book Club
+        open: true
+        leader:
+          name: Ekaterina
+          title: NM
+          flair: people.person-in-steamy-room
+          id: ekaterina
+        nbMembers: 19
+        flair: people.man-facepalming-medium-dark-skin-tone
+        leaders:
+        - name: Ekaterina
+          title: NM
+          flair: people.person-in-steamy-room
+          id: ekaterina
+        - name: Xioyan
+          id: xioyan
+    arenas-getTeamArenaTournaments.json:
+      value:
+        id: LojvlQOo
+        createdBy: natebrady23
+        system: arena
+        minutes: 60
+        clock:
+          limit: 300
+          increment: 3
+        rated: false
+        fullName: Return of the BBB No. 140 Arena
+        nbPlayers: 12
+        variant:
+          key: standard
+          short: Std
+          name: Standard
+        startsAt: 1762914600000
+        finishesAt: 1762918200000
+        status: 30
+        perf:
+          key: blitz
+          name: Blitz
+          position: 1
+          icon: )
+        teamMember: bradys-blunder-buddies
+        winner:
+          name: Mennonite
+          flair: objects.guitar
+          id: mennonite
+    teams-getPopularTeams.json:
+      value:
+        currentPage: 1
+        maxPerPage: 15
+        currentPageResults:
+        - id: lichess-swiss
+          name: Lichess Swiss
+          description: The official Lichess Swiss team. We organize regular swiss tournaments for all to join.
+          open: true
+          leader:
+            name: Lichess
+            flair: activity.lichess
+            patron: true
+            patronColor: 10
+            id: lichess
+          nbMembers: 702757
+          flair: food-drink.cheese-wedge
+          leaders:
+          - name: thibault
+            flair: nature.seedling
+            patron: true
+            patronColor: 10
+            id: thibault
+          - name: Lichess
+            flair: activity.lichess
+            patron: true
+            patronColor: 10
+            id: lichess
+        - id: zhigalko_sergei-fan-club
+          name: Zhigalko_Sergei & Friends
+          description: "### Добро пожаловать!\r\n\r\nOfficial Club of the Belarusian International Grandmaster\r\nZhigalko Sergei \r\n\r\nОфициальный клуб белорусского международного гроссмейстера \r\nЖигалко Сергея Александровича \r\n\r\n**YOUTUBE КАНАЛ:**\r\nhttps://www.youtube.com/c/SergeiZhigalkoChess\r\n\r\n**ОФИЦИАЛЬНЫЙ САЙТ:**\r\nhttps://zhigalko-sergei.com/\r\n\r\n**Про наш КЛУБ:**\r\nОдин из сильнейших клубов на Lichess!\r\nМного титульных шахматистов!\r\nНевероятно дружеская атмосфера!\r\nЦеним и уважаем каждого члена клуба!\r\n\r\n**WE ARE CHAMPIONS!!  МЫ - ЧЕМПИОНЫ!!**\r\nStreamers Battle ([1](https://lichess.org/tournament/jvl0QupJ), [2](https://lichess.org/tournament/QBP2rB6P), [3](https://lichess.org/tournament/SrsgOeVU), [4](https://lichess.org/tournament/eLmQqxYp), [5](https://lichess.org/tournament/aug22str), [6](https://lichess.org/tournament/sep22str), [7](https://lichess.org/tournament/nov22str), [8](https://lichess.org/tournament/feb23str), [9](https://lichess.org/tournament/apr23str), [10](https://lichess.org/tournament/may23str), [11](https://lichess.org/tournament/jun23str), [12](https://lichess.org/tournament/jul23str), [13](https://lichess.org/tournament/sep23str), [14](https://lichess.org/tournament/oct23str)) \r\nLichess Mega ([1](https://lichess.org/tournament/323recdF), [2](https://lichess.org/tournament/952cWgJU), [3](https://lichess.org/tournament/QH2iifj5), [4](https://lichess.org/tournament/KCe4znVp), [5](https://lichess.org/tournament/wS1QTjV9), [6](https://lichess.org/tournament/oJ5QU5Jn), [7](https://lichess.org/tournament/IMapVfbK), [8](https://lichess.org/tournament/TJUognMG), [9](https://lichess.org/tournament/q7ylg3Xg), [10](https://lichess.org/tournament/8fPDiXem), [11](https://lichess.org/tournament/wa0hE8zz), [12](https://lichess.org/tournament/O38mTryX), [13](https://lichess.org/tournament/qxTG2W1L), [14](https://lichess.org/tournament/HsuY0nrH), [15](https://lichess.org/tournament/qTT1ZCvr), [16](https://lichess.org/tournament/uz7rBb8W), [17](https://lichess.org/tournament/AhHStbDN), [18](https://lichess.org/tournament/0Wtg1HEM), [19](https://lichess.org/tournament/R9qCNO9y), [20](https://lichess.org/tournament/zajHUySm), [21](https://lichess.org/tournament/3rIv4ZRF), [22](https://lichess.org/tournament/Ajqo8PcO), [23](https://lichess.org/tournament/LHCX7nK2), [24](https://lichess.org/tournament/orKmy9DG), [25](https://lichess.org/tournament/bgEbXjXs), [26](https://lichess.org/tournament/WvLWf69r), [27](https://lichess.org/tournament/BJ3w8DS2)\r\n\r\n**Преимущества для членов клуба \"Zhigalko_Sergei & Friends\":**\r\nУчастие в ТУРНИРАХ клуба.\r\nУчастие в СЕАНСАХ одновременной игры с гроссмейстером Сергеем Жигалко.\r\nУчастие за нашу дружную команду в командных БИТВАХ.\r\nЗдесь публикуются АНОНСЫ будущих СТРИМОВ гроссмейстера Сергея Жигалко.\r\nИ многое другое! \r\n\r\n#### Гроссмейстер Сергей Жигалко - Кто Такой? :)\r\n\r\n**Максимальные рейтинги FIDE Сергея Жигалко за карьеру:**\r\n 2696 - в классику\r\n 2701 - в блиц\r\n 2752 - в рапид\r\n\r\n**Максимальные рейтинги на Lichess:**\r\n3037 - в рапид\r\n2919 - в блиц\r\n3338 - в пулю\r\n\r\n**Достижения Сергея Жигалко:**\r\nЧемпион Европы по блицу (2017)\r\nЧемпион Мира и Европы до 14 лет (2003)\r\nЧемпион Европы до 18 лет (2006)\r\nВице-Чемпион Мира среди юниоров (2009)\r\n\r\n**На данный момент Жигалко Сергей:**\r\nПрофессиональный шахматный тренер.\r\nАктивный шахматный стример на Youtube.\r\nОдин из сильнейших игроков на Lichess.\r\n\r\n**SITE:** https://zhigalko-sergei.com/\r\n**YOUTUBE:** https://www.youtube.com/c/SergeiZhigalkoChess\r\n**TWITCH:** https://www.twitch.tv/chess_zhigalko_sergei\r\n**INSTAGRAM:** https://www.instagram.com/zhigalko_sergei/\r\n**DONATION ALERTS:** https://www.donationalerts.com/r/zhigalko_sergei\r\n**LICHESS:** https://lichess.org/@/Zhigalko_Sergei\r\n**CHESS.COM:** https://www.chess.com/member/zhigalko_sergei\r\n\r\nПочётный основатель клуба:\r\n@SergeyVoronChess \r\n\r\n**50K MEMBERS**\r\n17.01.2023\r\n\r\n**Дорогие Друзья! Вступайте в Наш Клуб! Вместе - Мы большая СИЛА!!**"
+          open: true
+          leader:
+            name: Zhigalko_Sergei
+            title: GM
+            patron: true
+            patronColor: 10
+            id: zhigalko_sergei
+          nbMembers: 76170
+          leaders:
+          - name: Zhigalko_Sergei
+            title: GM
+            patron: true
+            patronColor: 10
+            id: zhigalko_sergei
+          - name: Chess_Blondinka
+            title: WFM
+            patron: true
+            patronColor: 10
+            id: chess_blondinka
+          - name: SergeyVoronChess
+            flair: nature.phoenix-bird
+            id: sergeyvoronchess
+        - id: crestbook-chess-club
+          name: Crestbook Chess Club
+          description: "Клуб мг Сергея Шипова \"Crestbook\"\r\nCrestbook club by GM Sergei Shipov\r\n\r\nПо всем вопросам пишите/contacts: https://lichess.org/@/Challenger_Spy\r\n\r\nYoutube - https://www.youtube.com/user/crestbook\r\n\r\nСтримеры клуба / Club streamers:\r\nГроссмейстер Сергей Шипов / GM Sergei Shipov https://lichess.org/@/Crest64\r\nКМС Дмитрий Филимонов / CM Dmitry Filimonov https://lichess.org/@/Challenger_Spy"
+          open: false
+          leader:
+            name: Challenger_Spy
+            patron: true
+            patronColor: 10
+            id: challenger_spy
+          nbMembers: 44851
+          leaders:
+          - name: Challenger_Spy
+            patron: true
+            patronColor: 10
+            id: challenger_spy
+          - name: Crestbook-club
+            id: crestbook-club
+          - name: SU-1704
+            id: su-1704
+        - id: fide-checkmate-coronavirus
+          name: FIDE Checkmate Coronavirus
+          description: "FIDE Checkmate Coronavirus tournaments on Lichess ran non-stop for 30 days or 720 hours. \r\n\r\nTournaments were aimed at all chess players, regardless of age, country, or level of play. 1500 special prizes, were distributed among winners of a random draw (raffle). Inspired by the Olympic Creed, we give a winning chance to everyone and reward involvement and participation. The major prize was 64 one-week invitations to the 2021 Chess Olympiad in Moscow!\r\n\r\n To check if you are on the list of winners, have a look here: https://results.checkmatecoronavirus.com/tournaments/prizes\r\n Saw your name among the winners? Don't forget to claim the prize! Please contact us before June 30th 2020 by sending an email to\r\nprizes@checkmatecoronavirus.com with the following data:\r\n• player’s nickname\r\n• player’s real name\r\n• player’s email address\r\n• player’s home address (only for players who won Checkmate Coronavirus Souvenirs)\r\n\r\nAll the details - https://www.checkmatecoronavirus.com"
+          open: true
+          leader:
+            name: FIDE
+            id: fide
+          nbMembers: 38271
+          leaders:
+          - name: FIDE
+            id: fide
+          - name: cinemakro
+            flair: objects.film-projector
+            id: cinemakro
+          - name: akispara
+            flair: nature.hippopotamus
+            id: akispara
+          - name: lexydim
+            title: WGM
+            flair: nature.blossom
+            id: lexydim
+          - name: mprevenios
+            id: mprevenios
+          - name: leonid_elkin
+            id: leonid_elkin
+          - name: AnastasisTzoumpas
+            title: FM
+            id: anastasistzoumpas
+        - id: online-world-chess-lovers
+          name: Online World Chess Lovers
+          description: "**Top 5Th Team In World**\r\n![](https://i.imgur.com/5fHM5fn.jpg)\r\n-\r\nhttps://chat.whatsapp.com/BojpMPX0uZS5JaYVp023sy?mode=gi_t  \r\n-\r\n![](https://i.imgur.com/2R1xWvI.jpeg)\r\n**GP Chess Promotion**\r\n@gouravprithyani\r\nhttps://wa.me/918871232674\r\n-\r\n**1 K USD Cash Prize Battle**  (Free)\r\n\r\n\"**Now,Prizes are Fixed**\"\r\n*\"No Matter of Team Rank,* !!️\r\nPlay For **Online World Chess Lovers** (Top 5th team in world)\r\n_________\r\n\"Prize Distribution\"\r\n(1USD = 90 Rs)\r\n\r\n**Fixed Prizes**(Even we come last,Then also) + **Special Benefit**\r\n\r\n**1)100 USD** (Just Wow)\r\n2)70 USD\r\n3)50 USD\r\n4)30 USD\r\n5)20 USD\r\n6)10 USD\r\n7)10 USD\r\n8)10 USD\r\n9)10 USD\r\n10)10 USD\r\n\r\n**Join Team Link-**\r\nhttps://lichess.org/team/online-world-chess-lovers\r\n\r\n**Join Battle link-**\r\nhttps://lichess.org/tournament/CMQ26May\r\n\r\n**Why To Join \"Online World Chess Lovers\" Team in Team Battle**\r\n_\r\n1)**Top 5Th Team In world  Having 35,400+ Members From World Wide**\r\n\r\n2)Top 5 Players of Our Team Will get **entry in 600 USD (51,600INR+) Cash Fund Online Tournment.**\r\n\r\n3)All 2600-2900+ Blitz Lichess Rated Players who will join for owcl and play for owcl without any Deal,will get **Free promotion by \"GP Chess Promotion https://wa.me/918871232674\" Which has World Wide Reach**.( Promotion of website/ Classes/Social Chess Media/it will be useful For Getting Students/Good Views on website)\r\n\r\n4)Top 5 Players of Our team Will get Chessmood Course 99 USD(8900Rs)\r\n\r\n5)Payout by Upi/Paypal/Crypto.\r\n\r\n6)Contact team leader after the tournament for prize.\r\n\r\n6)All countries Players are most Welcome.\r\n\r\n7)For fixed Prize,Contact @gouravprithyani\r\n\r\n**Join Group For Updates-**\r\nhttps://chat.whatsapp.com/BojpMPX0uZS5JaYVp023sy?mode=gi_t\r\n\r\n **Share with Your Friends,Invite Your friends,Help us to win this battle** !!️\r\n\r\n**Join Battle Now-** https://lichess.org/tournament/CMQ26May\r\n-\r\n\r\n*ANICHESS TEAM BATTLE I Team Battle*\r\nPrize Pool: **$700 USD (excluding bonus rewards)**\r\n\r\nTournament Details:\r\nDate: *16 May 2026* (Saturday)\r\nTime: *8:30 PM IST*\r\nFormat:3+2\r\n\r\n*Team Link-*\r\nhttps://lichess.org/team/online-world-chess-lovers\r\n\r\n**Battle link-**\r\nhttps://lichess.org/tournament/eQiOIvDu\r\n\r\n**Prize Structure**\r\nIf the team gets 1ST Rank\r\n1-15) 10 USD=150 USD Total\r\n\r\nIf the team gets 2ND rank \r\n1-15) 8$=120 USD total\r\n\r\nIf the team gets 3RD rank\r\n1-15) 7$=105 USD total\r\n\r\nIf the team gets 4TH Rank\r\n1-15) 6$=90 USD Total\r\n\r\nIf the team gets 5TH Rank\r\n1-15) 5$=75 USD total\r\n\r\n*Above Prizes will be given in Anichess Wallet By Organizer Directly,See Battle description for more Details*\r\n\r\nAnd\r\n**Below Are The Prizes Given by Main leader of Owcl Team In  \"Upi Only\"**\r\n**Prizes For Owcl Players only**\r\n\r\n**\"If we come 1st\"**\r\n\"300 Rs\" To *Top 15*\r\n\r\n**\"If we come 2nd\"**\r\n\"200 Rs\" To *Top 15*\r\n\r\n**If 3 or Outside,Even Last**\r\n\"30 Rs\" to *top 10* \r\n\r\nAnd\r\n\r\n**1st rank Player of Owcl  will Get Chessmood Course worth 99 USD ( No matter of team Rank)**\r\n\r\n**Join for OWCL Now-**\r\nhttps://lichess.org/tournament/eQiOIvDu\r\n-\r\n**Join Our Special Team** https://lichess.org/team/chess-city-team\r\n**Happy Lichess Day\"** (20 June)\r\nhttps://lichess.org/swiss/8JrQVE0f\r\n1)Patron\r\n________________________________________\r\n**[Daily  Cash Tmt Qualifiers](https://lichess.org/team/online-world-chess-lovers/tournaments)** -Join in advance\r\n**Pre Join in swiss/ team battle will be appreciated**\r\n-\r\n**Mega Cash Tournament**\r\nhttps://lichess.org/swiss/BaS6PZVe\r\n-\r\n**GP Cash Prize Team Battle**\r\nhttps://lichess.org/tournament/1i4RIHjI\r\n-\r\n**Daily Team Battles**\r\nhttps://lichess.org/team/chess-city-team/tournaments\r\n-\r\nWe frequently Conduct Free Cash Prize Tournaments,Daily So Many Practice Tournaments.\r\n\r\nIf you want to sponsor any cash events on your birthday,Special Events.Inform us.\r\n\r\n**If you want to support us.You can Use below Details.Don't forget to mention the note**\r\nPaypal- https://www.paypal.me/GouravPrithyani\r\nUpi- gouravprithyani@okhdfcbank\r\n-"
+          open: true
+          leader:
+            name: Yogesh02005
+            id: yogesh02005
+          nbMembers: 35478
+          flair: activity.mirror-ball
+          leaders:
+          - name: Gouravprithyani
+            flair: activity.lichess-mohawk
+            id: gouravprithyani
+          - name: stambul65
+            id: stambul65
+          - name: black_knight22
+            title: IM
+            flair: smileys.alien
+            id: black_knight22
+          - name: argentum123
+            patron: true
+            patronColor: 1
+            id: argentum123
+          - name: ElardV02
+            flair: activity.military-medal
+            id: elardv02
+        - id: bengal-tiger
+          name: Bengal tiger
+          description: "Dear reader,\r\nOn a daily basis we organize 7 online chess tournaments. Based on Swiss form.\r\nTournaments are further time & types :-\r\n8:00 am IST= 2:30 am GMT (7 min+2 sec) 7 rounds\r\n11:00 am IST = 5:30 am GMT (10min+0 sec) 7 rounds\r\n2:00 pm IST=8:30 am GMT (7 min +2 sec) 7 rounds\r\n5:00 pm IST = 11:30 am GMT (5 min+2 sec) 7 rounds\r\n8:00 pm IST =2:30 pm GMT (3 min +2 sec) 7 rounds\r\n10:30 pm IST =5:00 pm GMT (1 min+1 sec) 11 rounds\r\n11:30 pm IST =6:00pm GMT (15 min+5 sec) 5 rounds\r\nThe participation is and will continue beyond any national or geographical border. This team was established in India on 19/04/2020. You are just a click away from your contribution to the game you love, the chess.\r\n------------x-----------"
+          open: true
+          leader:
+            name: Bipulb
+            id: bipulb
+          nbMembers: 33199
+          leaders:
+          - name: Bipulb
+            id: bipulb
+          - name: Punamb
+            id: punamb
+          - name: Biruda
+            id: biruda
+          - name: DAMODARKUMAR
+            flair: activity.chess-pawn
+            id: damodarkumar
+        - id: satranc-dunyam-youtube
+          name: Satranç Dünyam Youtube
+          description: "![white_logo_color_background.jpg](https://image.lichess1.org/display?fmt=webp&h=0&op=resize&path=POtYP_HEYG5a.jpg&w=768&sig=5464e11dcabb5bfae558a535dbba798c7dd89f05)\r\n## **Türkiye'nin En Büyük Satranç Ailesine Hoş Geldiniz!**\r\n\r\n## **[Satranç Dünyam Youtube](https://www.youtube.com/c/satrancdunyam?sub_confirmation=1)**\r\n\r\n## **[satrancdunyam.com](https://satrancdunyam.com/)**"
+          open: false
+          leader:
+            name: YasinEmrah
+            title: FM
+            flair: symbols.play-button
+            patron: true
+            patronColor: 8
+            id: yasinemrah
+          nbMembers: 32727
+          flair: symbols.play-button
+          leaders:
+          - name: YasinEmrah
+            title: FM
+            flair: symbols.play-button
+            patron: true
+            patronColor: 8
+            id: yasinemrah
+          - name: CanliSatranc
+            flair: objects.nazar-amulet
+            id: canlisatranc
+        - id: masthanaiah-chess-world
+          name: MASTHANAIAH CHESS WORLD
+          description: "#https://imgur.com/sFC62gN\r\n\r\n*MASTHANAIAH CHESS WORLD FIDE RATING RAPID OPEN CHESS TMT 2022-July 9 & 10*\r\n\r\n*️ Reg P.Masthan babu+91 9848147889 G pay/ P pay*\r\n\r\n*2022 JULY NELLORE, AP, *\r\nhttps://chess-results.com/tnr653095.aspx?lan=1&flag=30&turdet=YES&zeilen=99999\r\n\r\n*️2022 March NELLORE ,AP*\r\nhttps://chess-results.com/tnr617014.aspx?lan=1&turdet=YES&zeilen=99999\r\n\r\n*️2021 HYDERABAD, TEL*\r\nhttp://chess-results.com/tnr557180.aspx?lan=1&zeilen=99999\r\n\r\n*️ 2020 NELLORE, AP*\r\nhttps://chess-results.com/tnr514572.aspx?lan=1&zeilen=9999\r\n\r\n https://www.chess.com/club/masthanaiah3  April18 \r\n\r\n https://lichess.org/swiss/70Lytw5z   October 2\r\n\r\n  https://lichess.org/swiss/Zb6YA3XO    October 25\r\n\r\n  https://lichess.org/tournament/XivJOMfi Nov14"
+          open: true
+          leader:
+            name: mcw2011
+            id: mcw2011
+          nbMembers: 30222
+          leaders:
+          - name: mcw2011
+            id: mcw2011
+          - name: somnadh78
+            id: somnadh78
+        - id: pawn-stars-2
+          name: pawn stars 2
+          description: "![Pawnstars2logo](https://i.imgur.com/2EYYg6w.jpg)\r\n\r\nWelcome to the Biggest Indian and the Top-5 Team of lichess! \r\nThis Club was formed on 7th August 2020 and the main leader of this team is [Bhavisha0101](https://lichess.org/@/Bhavisha0101) Contact him for any queries or suggestions regarding the team, we also accept paid promotion and sponsorships for tournaments, contact him for the same.\r\n\r\nWe Are #5 among all **[Lichess Teams](https://lichess.org/team/all)**\r\n\r\nThe team has **150+ Titled members!**\r\n\r\n**Our Major Team battles/Chessathons**\r\n**[Jaysheel's Birthday Swiss](https://lichess.org/swiss/ADKFm9Tw)**\r\n\r\n**Hall Of Fame**\r\n[Best Swiss](https://lichess.org/swiss/OTe9lPik)\r\n[Best Arena](https://lichess.org/tournament/HBcZbxBO)\r\n[Best Team Battle](https://lichess.org/tournament/RRkR5bZ2)\r\n\r\nDo join our Elite Team (only 2100+ allowed)\r\n[https://lichess.org/team/pawn-stars-2-elites-2100](https://lichess.org/team/pawn-stars-2-elites-2100)\r\n\r\nDo join our Friendly Club\r\n[https://lichess.org/team/pawns-hurricane-2]( https://lichess.org/team/pawns-hurricane-2 )\r\n\r\nDescription Maintained by [Bhavisha0101](https://lichess.org/@/Bhavisha0101)\r\n\r\nTeam owners/leaders-\r\n\r\n[Bhavisha0101](https://lichess.org/@/Bhavisha0101)\r\n[Jaysheelchess2009](https://lichess.org/@/Jaysheelchess2009)\r\n\r\nLocation- **India**, But all Nations are Welcome!"
+          open: true
+          leader:
+            name: Unknown_Warrior11
+            id: unknown_warrior11
+          nbMembers: 30134
+          leaders:
+          - name: Bhavisha0101
+            id: bhavisha0101
+          - name: Jaysheelchess2009
+            id: jaysheelchess2009
+        - id: the-house-discord-server
+          name: The House Discord Server
+          description: "![House logo](https://i.postimg.cc/FR9bXyJd/23-House-Logox6-small.png)\r\n\r\n##\r\n\r\nWe are the **House**, a Lichess team for chess and variant players. We’ve won 134 Bundesliga events and five straight season titles since 2020. With 20,000+ members from amateurs to GMs, we value fair play and sportsmanship. Our tournament schedule consists of Bundesliga excitement complemented by multiple variant team battles throughout the week.\r\n\r\nAre you seeking a team that offers both competitive play and a welcoming environment? Look no further than our community. We compete in Lichess Bundesliga tournaments every Thursday and Sunday against top-tier opponents. But the excitement doesn't stop there: our team also engages in variant team tournaments, offering a variety of chess experiences to suit your preferences.\r\n\r\nExplore our unique Puzzle Packs, a collection of puzzles selected from team's Bundesliga games. The latest edition is waiting you [here](https://lichess.org/study/YSwTDVB6) and our full archive is accessible [here](https://lichess.org/study/by/TheHouseDiscord/newest).\r\n\r\n***\r\n\r\n# **Team News & Updates**\r\n- Jan 1: Happy New year! Read about our [journey of 2024 in the forum](https://lichess.org/forum/team-the-house-discord-server/year-of-2024).\r\n\r\n- Sep 22: Things are heating up in the **House Multi-Variant Championship 2025**. Who’s making the Final Four? Follow along on the [forum](https://lichess.org/forum/team-the-house-discord-server/hmvc-2025-pairings-and-results?page=1).\r\n\r\n- Oct 12: Back-to-back **Bundesliga** victories! Props to @satunnainen, @caternion, and @markamp for carrying the team [tonight](https://lichess.org/tournament/vIZ1HsYG).\r\n\r\nCheck out our [upcoming team tournaments](https://lichess.org/team/the-house-discord-server/tournaments).\r\n\r\n***\r\n\r\n# **Lichess Bundesliga**\r\n\r\nThe House joined the [Lichess Bundesliga](https://lichess.org/@/lichess/blog/announcing-the-lichess-bundesliga/X4da-RAA) in [April 2020](https://lichess.org/tournament/oGeaCHx7). After winning the inaugural season, we achieved three consecutive championships by 2022, claimed our fourth title in 2023, and we triumped again in 2024. Five titles in a row! Now we aim for a sixth. Whether you’re a strong player or a newcomer seeking a community with a legacy, The House awaits.\r\n\r\nBundesliga tournaments occur twice weekly, on **Thursdays** and **Sundays**, starting at 18:00 UTC. They offer a valuable opportunity to face formidable opponents and stregthen our team spirit.\r\n\r\nCheck out the results: [all-time scores](https://rochadeeuropa.de/ewige-q-bundesliga-tabelle/), current [season 2025](https://rochadeeuropa.de/lichess-2025/), and relive our victories in [season 2024](https://rochadeeuropa.de/lichess-2024/), [season 2023](https://rochadeeuropa.de/lichess-2023), [season 2022](https://rochadeeuropa.de/lichess-2022), [season 2021](https://rochadeeuropa.de/lichess-2021), and [season 2020](https://rochadeeuropa.de/lichess-2020). The journey isn’t over – join us as we aim for even greater heights!\r\n\r\n***\r\n\r\n# **Discord**\r\n\r\nWe have a Discord server – a chat platform for chess and variants. It's a great place to discuss chess, learn a new variant or deepen your knowledge on your favourite variants! We host group calls during team tournaments, play bughouse on voice chat, explore other games, and more.\r\n\r\nJoin us there! https://discord.gg/RhWgzcC\r\n\r\n***\r\n\r\n# **Contact**\r\n\r\nGot a question? Want to learn more about The House? Reach out to @TheHouseDiscord. Are you a team tournament organizer? While our chess schedule is packed with Lichess Bundesliga commitments, please contact @TheFinnisher for joining your variant team tournaments."
+          open: true
+          leader:
+            name: TheHouseDiscord
+            id: thehousediscord
+          nbMembers: 29006
+          leaders:
+          - name: TheHouseDiscord
+            id: thehousediscord
+          - name: TheFinnisher
+            patron: true
+            patronColor: 10
+            id: thefinnisher
+          - name: gsvc
+            title: GM
+            flair: symbols.question-mark
+            id: gsvc
+          - name: calcu_later
+            title: FM
+            id: calcu_later
+        - id: lichess-chess960
+          name: Lichess Chess960
+          description: "![](https://i.imgur.com/BH4KzL2.gif)\r\n\r\n**Welcome to the official Lichess Chess960 Team!**\r\n\r\nWe are the home of [Chess960](https://lichess.org/variant/chess960) fans across Lichess. Join the team for tournaments and other community-driven Chess960 events. Everyone is welcome to join!\r\n\r\n[VOTE here](https://forms.gle/iwdeyZwLTzkVar64A) for the time control you would like to see more for Chess960 Tournaments\r\n\r\n#### Weekly Chess960 Team Battle every Saturday, 11:00 UTC\r\n\r\n***\r\n\r\n**Resources:**\r\n\r\n• [Detailed Guide to Chess960](https://lichess.org/@/visualdennis/blog/my-ultimate-guide-to-chess960/de25UOqM) with history, strategy and opening tips as well as further resources. \r\n\r\n• [Table of all 960 starting positions](https://chess960.net/wp-content/uploads/2018/02/chess960-starting-positions.pdf) (PDF)\r\n\r\n• [Chess960 Generator](https://farley-gpt.github.io/Chess960-Generator/)\r\n\r\n• [Castling Rules](https://lichess.org/study/7LaW0hAX)\r\n\r\n***\r\n\r\n**Tournaments Schedule:**\r\n\r\n|**Time**|**Day**|**Event**|**Time Control**|\r\n|---|---|---|---|\r\n|Hourly|Every day|Hourly Chess960|Various|\r\n|18:00 UTC|Wednesdays| Weekly Chess960 SuperBlitz Arena|3+0|\r\n|11:00 UTC|Saturdays| Weekly Chess960 SuperBlitz Team Battle|3+0|\r\n|15:00 UTC|Sunday| Weekly Chess960 Blitz Team Battle|3+2|\r\n\r\n+ The Lichess Chess960 Titled Arenas twice every 6 months. \r\n\r\n+ The Hourly Tournaments\r\n\r\nLinks to these regular tournaments can be found [below](https://lichess.org/team/lichess-chess960/tournaments)\r\n\r\nAdditionally, if you are fan of team battles, you can find [Daily Chess960 Team Battles](https://lichess.org/team/fischer-random-chess-center/tournaments) hosted by [Fischer Random Chess Center](https://lichess.org/team/fischer-random-chess-center)\r\n\r\nChess 960 league with 20+20: https://www.lichess4545.com/chess960/ \r\nChess960 Ladders: https://lichessladders.com/ \r\n\r\n***\r\n\r\n**Community:**\r\n\r\n• [Share and discuss your games here](https://lichess.org/forum/team-lichess-chess960/share-your-cool-chess960-games-here-for-discussion-or-analysis)\r\n\r\n• [Feel free to create a topic in the forum](https://lichess.org/forum/team-lichess-chess960) if you have questions, want to give feedback, or make suggestion for tournament ideas, events, format or any kind of thing. \r\n\r\n• [Lichess Arena Ranking](https://lichess.thijs.com/rankings/chess960/monthly/list_players_trophies.html)\r\n\r\n• Chess960 versions for other variants, such as Crazyhouse960 and Atomic960 can be played on [Pychess](https://www.pychess.org/tournament/J0JLXYFy). Every 2nd Monday of the month, Crazyhouse960 Shield takes place [here](https://www.pychess.org/tournament/J0JLXYFy) \r\n\r\n• Chess960 Puzzles: https://www.960dojo.com/tactics \r\n\r\n***\r\n\r\n**Lichess official variant teams**\r\n\r\n[Lichess Chess960](https://lichess.org/team/lichess-chess960) • [Lichess King of the Hill](https://lichess.org/team/lichess-king-of-the-hill) • [Lichess Three-check](https://lichess.org/team/lichess-three-check) • [Lichess Antichess](https://lichess.org/team/lichess-antichess) • [Lichess Atomic](https://lichess.org/team/lichess-atomic) • [Lichess Horde](https://lichess.org/team/lichess-horde) • [Lichess Racing Kings](https://lichess.org/team/lichess-racing-kings) • [Lichess Crazyhouse](https://lichess.org/team/lichess-crazyhouse)"
+          open: true
+          leader:
+            name: Lichess
+            flair: activity.lichess
+            patron: true
+            patronColor: 10
+            id: lichess
+          nbMembers: 27462
+          flair: activity.lichess-variant-960
+          leaders:
+          - name: visualdennis
+            title: NM
+            flair: activity.lichess-blitz
+            patron: true
+            patronColor: 9
+            id: visualdennis
+          - name: TeamChess960
+            id: teamchess960
+          - name: Lichess
+            flair: activity.lichess
+            patron: true
+            patronColor: 10
+            id: lichess
+        - id: im-eric-rosen-fan-club
+          name: IM Eric Rosen Fan Club
+          description: Hey all! By popular request, I've created this fan club in which my friends, followers, and subscribers can engage in chess discussion.
+          open: true
+          leader:
+            name: EricRosen
+            title: IM
+            flair: travel-places.ambulance
+            patron: true
+            patronColor: 10
+            id: ericrosen
+          nbMembers: 26675
+          leaders:
+          - name: EricRosen
+            title: IM
+            flair: travel-places.ambulance
+            patron: true
+            patronColor: 10
+            id: ericrosen
+        - id: agadmators-team
+          name: agadmator's Team
+          description: Hello everyone! Lets play some chess games!
+          open: true
+          leader:
+            name: agadmator
+            patron: true
+            patronColor: 10
+            id: agadmator
+          nbMembers: 23686
+          leaders:
+          - name: agadmator
+            patron: true
+            patronColor: 10
+            id: agadmator
+        - id: livechess
+          name: LiveChess
+          description: '![](https://imgur.com/pCM2YmC.png)'
+          open: true
+          leader:
+            name: Witaj_I_Am_Light
+            flair: nature.high-voltage
+            id: witaj_i_am_light
+          nbMembers: 22024
+          flair: activity.sparkles
+          leaders:
+          - name: S7nR153
+            flair: travel-places.desert-island
+            id: s7nr153
+          - name: RegistraciaProfila
+            flair: objects.telephone
+            id: registraciaprofila
+          - name: Lyubomir-39
+            flair: travel-places.sunset
+            id: lyubomir-39
+        - id: lichess-antichess
+          name: Lichess Antichess
+          description: "Join the team for regular tournaments and other community-driven events. Everyone is welcome to join!\r\n\r\n## Upcoming events\nDay|Date|Time, [UTC](https://savvytime.com/converter/utc)|Event\n---|---|---|---\nFriday|May 15|19:00|[Weekly Arena](https://lichess.org/tournament/V6u8TCNN)\nSaturday|May 16|16:00|[Team Battle](https://lichess.org/tournament/yQkkr4Xn)\nSunday|May 17|15:00|[Patron wings Arena](https://lichess.org/tournament/2fychJs4)\nSunday|May 17|16:00|[U2000 Arena](https://lichess.org/tournament/Ne8UdI2Z)\nThursday|May 21|16:00|[Shield Arena](https://lichess.org/tournament/j5fF833F)\nFriday|May 29|19:00|[Monthly Arena](https://lichess.org/tournament/21Ihagyj)\nSat+Sun|Jun 6–7||[Amsterdam OTB](https://lichess.org/team/iaf-antichess-world-championship-team)\n\nReigning champs: @Tetiksh1Agrawal (ACWC), @Lmaoooooooooooooooo (Shield), [Antichessmasters](https://lichess.org/team/antichessmasters) (Team Battle), @joshicat (U2000).\n## Learning Material\r\n**Studies**: [Basics](/study/4XBZbCFY) • [Tactics](/study/WLrT4U2E) • [Endgames](/study/VFsD8X5H) • [3v1 Endgames](/study/k5DATDVV) • [Openings](/study/vXxLrBTY)\r\n**Intro videos**: [How to play antichess: Part 1](https://youtu.be/5KLVSxAfQ9M), [Part 2](https://youtu.be/n2Mw6E8WabQ) • [Rules & brief history](https://youtu.be/fm7FLblKFv0)\r\n**Book**: [The Ultimate Guide to Antichess](http://perpetualcheck.com/antichess)\r\n**Puzzles**: [Various](/study/5GrkXfA0) • [Themed](/study/lJfYzKtd) • [Endgame](/study/YuktqKg2) • [Midgame](/study/jKyrZTxS) • [Chess Variants Training](https://chessvariants.training/Puzzle/Antichess)\r\n**Ranked puzzles**: [1](/study/yqP1uKPO) • [2](/study/ZJJrwtTo) • [3](/study/yTnMHbGY) • [4](/study/7LbMHGFk) • [5](/study/BV5fZcXK) • [6](/study/gdiGuDJs)\r\n\r\n---\r\n**Papers** (PDF): [1.e3 wins for White](http://magma.maths.usyd.edu.au/~watkins/LOSING_CHESS/LCsolved.pdf) • [3-man pawnless endings](http://www.jsbeasley.co.uk/vchess/losing3man.pdf) • [Survey: Endgames ](http://www.jsbeasley.co.uk/vchess/losingendlit.pdf)\r\n**Openings theory**: [Proof](https://magma.maths.usyd.edu.au/~watkins/LOSING_CHESS) • [Solutions](https://antichess.onrender.com/) • [Nilatac's opening book](https://catalin.francu.com/nilatac/book.php)\r\n**Video content**: [Firebatprime](https://www.youtube.com/channel/UCVWt6kOPS_HvKkADhYs8L_g) • [YourselfAntichess](https://www.youtube.com/channel/UCIfjM1orOwnkrQoYt1NVSCQ) • [Antichess Lore](https://www.youtube.com/channel/UCwO6d9Rtzt3LweUVhGJHAuw) • [TUGR](https://www.youtube.com/channel/UCdkPoOjHeiHyzX-KXhlZfUA) • [KidCh3ss](https://www.youtube.com/channel/UCeF5D5HDj5bKvfUzGZ1g9Hw)\r\n**Bots**: @anti-bot • @VariantsBot\r\n**Other**: [Guide](/@/firebatprime/blog/-/L7OCljZF) • [ACWC results](http://perpetualcheck.com/antichess/lichess.php) • [ACWC team](/team/antichess-wc) • [Academy](/team/antichess-academy) • [Openings](http://perpetualcheck.com/antichess/openings.php) • [Chess variants](http://www.jsbeasley.co.uk/cvariants.htm)\r\n\r\n## Other Lichess Variant Teams\r\n[Chess960](/team/lichess-chess960) • [King of the Hill](/team/lichess-king-of-the-hill) • [Three-check](/team/lichess-three-check) • [Atomic](/team/lichess-atomic) • [Horde](/team/lichess-horde) • [Racing Kings](/team/lichess-racing-kings) • [Crazyhouse](/team/lichess-crazyhouse)"
+          open: true
+          leader:
+            name: Lichess
+            flair: activity.lichess
+            patron: true
+            patronColor: 10
+            id: lichess
+          nbMembers: 21060
+          flair: activity.lichess-variant-antichess
+          leaders:
+          - name: tolius
+            flair: nature.frog
+            patron: true
+            patronColor: 10
+            id: tolius
+          - name: TheUnknownGuyReborn
+            flair: smileys.face-with-spiral-eyes
+            patron: true
+            patronColor: 5
+            id: theunknownguyreborn
+          - name: Lichess
+            flair: activity.lichess
+            patron: true
+            patronColor: 10
+            id: lichess
+        previousPage: null
+        nextPage: 2
+        nbResults: 500000
+        nbPages: 33334
+    teams-getTeamSwissTournaments.json:
+      value:
+        id: GWAM5JK9
+        createdBy: lichess
+        startsAt: '2026-05-18T23:30:00Z'
+        name: Rapid Increment
+        clock:
+          limit: 420
+          increment: 2
+        variant: standard
+        round: 0
+        nbRounds: 7
+        nbPlayers: 0
+        nbOngoing: 0
+        status: created
+        nextRound:
+          at: '2026-05-18T23:30:00Z'
+          in: 334377
+        verdicts:
+          list:
+          - condition: ≥ 8 rated Rapid games
+            verdict: ok
+          - condition: Play your games
+            verdict: ok
+          accepted: true
+        rated: true
+    teams-getSingleTeam.json:
+      value:
+        id: lichess-swiss
+        name: Lichess Swiss
+        description: The official Lichess Swiss team. We organize regular swiss tournaments for all to join.
+        open: true
+        leader:
+          name: Lichess
+          flair: activity.lichess
+          patron: true
+          patronColor: 10
+          id: lichess
+        nbMembers: 702757
+        flair: food-drink.cheese-wedge
+        leaders:
+        - name: thibault
+          flair: nature.seedling
+          patron: true
+          patronColor: 10
+          id: thibault
+        - name: Lichess
+          flair: activity.lichess
+          patron: true
+          patronColor: 10
+          id: lichess
+        joined: false
+        requested: false
+    teams-searchTeams.json:
+      value:
+        currentPage: 1
+        maxPerPage: 15
+        currentPageResults:
+        - id: coders
+          name: Coders
+          description: If you want to join the team, prove (briefly) that you can code in the request message!
+          open: false
+          leader:
+            name: thibault
+            flair: nature.seedling
+            patron: true
+            patronColor: 10
+            id: thibault
+          nbMembers: 481
+          flair: objects.hammer-and-wrench
+          leaders:
+          - name: thibault
+            flair: nature.seedling
+            patron: true
+            patronColor: 10
+            id: thibault
+        - id: f5-coders
+          name: f5 coders
+          description: "Equipo de coders de factoria f5.\r\nRompemos el código y los tableros."
+          open: false
+          leader:
+            name: RogerAiguas
+            id: rogeraiguas
+          nbMembers: 16
+          leaders:
+          - name: RogerAiguas
+            id: rogeraiguas
+          - name: ABPNET
+            id: abpnet
+        - id: rising-coders
+          name: Rising coders
+          description: We're the rising coders we make bugs and fix them yeah!!
+          open: false
+          leader:
+            name: GovinD_2017
+            flair: people.man-scientist
+            id: govind_2017
+          nbMembers: 13
+          flair: objects.laptop
+          leaders:
+          - name: GovinD_2017
+            flair: people.man-scientist
+            id: govind_2017
+          - name: Drymajorgem
+            flair: activity.jack-o-lantern
+            id: drymajorgem
+          - name: DevIsTheBest
+            flair: smileys.astonished-face-blob
+            id: devisthebest
+          - name: GatoChess89
+            flair: smileys.grinning-cat-with-smiling-eyes
+            id: gatochess89
+          - name: vilmaratheesh12
+            flair: travel-places.airplane
+            id: vilmaratheesh12
+        - id: bot-developing-team
+          name: Bot Developing Team
+          description: "Here we develop bots For our bot developing team.\r\nJoin this team if you have question to ask in the forum. Leaders will respond in at least 7 days.\r\nAnd to be apply as a bot developer, you must be a coder, a developer can be asked by private message with @MrAllVariant. And you might need the [FAQ](https://lichess.org/forum/team-bot-developing-team/faq) , Wanted to be a [developer](https://lichess.org/@/Zkwong1877)? Contact [here](https://lichess.org/inbox/Zkwong1877)!\r\n![text](https://media.giphy.com/media/e4tOcMeLeG2rlCeSuW/giphy.gif)"
+          open: true
+          leader:
+            name: Zkwong1877
+            flair: nature.fire
+            id: zkwong1877
+          nbMembers: 6
+          leaders: []
+        - id: coders-community
+          name: Coders Community
+          description: "Seja bem-vindo ao time da Coders Community: https://discord.gg/qydeyntwye\r\n\r\n**Para entrar, informe seu username do Discord!**"
+          open: false
+          leader:
+            name: intermezo
+            flair: smileys.disguised-face
+            patron: true
+            patronColor: 1
+            id: intermezo
+          nbMembers: 5
+          leaders:
+          - name: intermezo
+            flair: smileys.disguised-face
+            patron: true
+            patronColor: 1
+            id: intermezo
+        - id: afternoon-coders
+          name: Afternoon Coders
+          description: Hello there we are the afternoon coders
+          open: false
+          leader:
+            name: GabMons123456789
+            id: gabmons123456789
+          nbMembers: 4
+          leaders:
+          - name: GabMons123456789
+            id: gabmons123456789
+        - id: coders-gambit
+          name: coder's gambit
+          description: A chess team started by RRT members of Infinera. All friends and family welcome. We plan to have weekly arena for playing.
+          open: true
+          leader:
+            name: e8pawn
+            id: e8pawn
+          nbMembers: 4
+          leaders:
+          - name: e8pawn
+            id: e8pawn
+        - id: codere
+          name: Codere
+          description: "Cordere equipo                       \r\nTorneo de hoy Sabado 16 10 hs https://lichess.org/tournament/m8kOBnG8                                                                      ."
+          open: false
+          leader:
+            name: eugeealegre
+            flair: nature.cherry-blossom
+            id: eugeealegre
+          nbMembers: 4
+          leaders:
+          - name: eugeealegre
+            flair: nature.cherry-blossom
+            id: eugeealegre
+          - name: elplot
+            id: elplot
+        - id: statmattarmy
+          name: statmattarmy
+          description: A place where some of the greatest coders go
+          open: true
+          leader:
+            name: statmatt
+            id: statmatt
+          nbMembers: 4
+          leaders:
+          - name: statmatt
+            id: statmatt
+        - id: coders-and-co
+          name: Coders and co.
+          description: "## Coders and co., **the** team for coding!\r\n\r\nCurrently active!\r\nThis is a team, fully focused on coding, sharing ideas and projects! If you know anything about coding, you're allowed to join, though:\r\n\r\n**when joining, DO give a little proof you actually know something abt code!**"
+          open: false
+          leader:
+            name: GCVM
+            flair: objects.books
+            id: gcvm
+          nbMembers: 3
+          flair: smileys.alien-monster
+          leaders:
+          - name: GCVM
+            flair: objects.books
+            id: gcvm
+        - id: hang-coder
+          name: Hang coder
+          description: skibidi toilet co cot truyen dinh cao vl
+          open: false
+          leader:
+            name: Duc1234xxx1
+            id: duc1234xxx1
+          nbMembers: 2
+          leaders:
+          - name: Duc1234xxx1
+            id: duc1234xxx1
+        - id: cool-coders
+          name: Cool Coders
+          description: "Hi all! This team is for all computer programmers and coders.\r\nWe can code [here](https://studio.code.org)"
+          open: true
+          leader:
+            name: Jay1210
+            flair: activity.chess
+            id: jay1210
+          nbMembers: 2
+          leaders:
+          - name: vishnu_rainbow
+            id: vishnu_rainbow
+        - id: coder-knight-team
+          name: Coder Knight Team
+          description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi cursus diam in nibh molestie, id feugiat lorem cursus. Etiam finibus tellus purus, nec volutpat augue aliquet sed. Phasellus ornare tincidunt velit, id feugiat augue aliquam vitae. Integer blandit aliquam sem, a posuere purus posuere a. Nam congue dolor magna, non dictum elit eleifend ac. Nam mattis nisl vel molestie condimentum. Duis bibendum ipsum ut mauris vestibulum viverra. Praesent lobortis neque at elementum lacinia.
+          open: true
+          leader:
+            name: CoderKnight64
+            id: coderknight64
+          nbMembers: 2
+          leaders:
+          - name: CoderKnight64
+            id: coderknight64
+        - id: coders-club
+          name: 💻Coders Club💻
+          description: "Team Creater - ⏩⏩ @SiyahGiyenGencYT \U0001F525\U0001F525\r\n\r\n------------✮✮------------\r\n\U0001F4A5FOR ANY PROBLEMS ..\r\nFORUM .. https://lichess.org/forum/team-coders-club\r\n✮✮✮✮✮✮✮✮✮✮✮✮\r\nLICHESS ID .. @SiyahGiyenGencYT\r\n------------✮✮------------\r\n\U0001F4A5TOURNAMENTS\r\nLINK .. https://lichess.org/team/coders-club/tournaments\r\n------------✮✮------------\r\n\U0001F4A5OUR TEAM SCORE\r\n\r\n------------✮✮----------\r\n\U0001F4A5 Coder WARRIORS\U0001F4A5\r\n\r\n-----------✮✮----------\r\n\U0001F530: BOTC Select WorldCup 2020\r\n- ↪ Free Entry\r\n- ✔ Standard Initial Position\r\n- ✔ 1️⃣ Min\r\n- ✔ \U0001F51F Min\r\n- ✔ 3️⃣ Minute\r\n- ✔ Tournament's Time : Undefined\r\n- ❌ ♨️ Allowed Berserk\r\n- ✔ Arena Streak\r\n- ✔ Team Battle\r\n- ✔ \U0001F381 Prized\r\n------------✮✮----------\r\n\U0001F308\U0001F308OUR SPONSERS: @ATCThyKe\r\nPRIZES ARE..\r\n\U0001F947 3 PDFs + 10$ \r\n\U0001F948 2 PDFs + 5$\r\n\U0001F949 1 PDFs \r\n\U0001F381 LUCKY PRIZES 6,14 ,20,28\r\n\U0001F381 PRIZES BY @ATChyKe \U0001F381\r\nTHANK YOU..\U0001F387✨\U0001F381\r\n------------✮✮------------\r\n\U0001F64FThank you \U0001F64F.\r\nKonum: \U0001F30EWORLD \U0001F30E"
+          open: false
+          leader:
+            name: SiyahGiyenGencYT
+            id: siyahgiyengencyt
+          nbMembers: 1
+          leaders:
+          - name: SiyahGiyenGencYT
+            id: siyahgiyengencyt
+        - id: the-coders-team
+          name: The coders team
+          description: Like scratch or python or mac and chess then join the coders team we do king of the hill chess930 and many more with a personality for fun coding and chess join the coders team! meet you on the battlefield!
+          open: false
+          leader:
+            name: the010100110master
+            id: the010100110master
+          nbMembers: 1
+          leaders:
+          - name: the010100110master
+            id: the010100110master
+        previousPage: null
+        nextPage: 2
+        nbResults: 18
+        nbPages: 2
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: 'Read [the introduction for how to make authenticated requests](#description/authentication).
+
+        '
+      flows:
+        authorizationCode:
+          authorizationUrl: https://lichess.org/oauth
+          tokenUrl: https://lichess.org/api/token
+          scopes:
+            preference:read: Read your preferences
+            preference:write: Write your preferences
+            email:read: Read your email address
+            engine:read: Read your external engines
+            engine:write: Create, update, delete your external engines
+            challenge:read: Read incoming challenges
+            challenge:write: Create, accept, decline challenges
+            challenge:bulk: Create, delete, query bulk pairings
+            study:read: Read private studies and broadcasts
+            study:write: Create, update, delete studies and broadcasts
+            tournament:write: Create tournaments
+            racer:write: Create and join puzzle races
+            puzzle:read: Read puzzle activity
+            puzzle:write: Write puzzle activity
+            team:read: Read private team information
+            team:write: Join, leave teams
+            team:lead: Manage teams (kick members, send PMs)
+            follow:read: Read followed players
+            follow:write: Follow and unfollow other players
+            msg:write: Send private messages to other players
+            board:play: Play with the Board API
+            bot:play: Play with the Bot API. Only for [Bot accounts](#tag/bot/POST/api/bot/account/upgrade)
+            web:mod: Use moderator tools (within the bounds of your permissions)

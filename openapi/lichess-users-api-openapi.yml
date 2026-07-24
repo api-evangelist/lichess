@@ -1,0 +1,4451 @@
+openapi: 3.1.0
+info:
+  version: 2.0.144
+  title: Lichess.org API reference Account Users API
+  contact:
+    name: Lichess.org API
+    url: https://lichess.org/api
+    email: contact@lichess.org
+  x-logo:
+    url: https://lichess1.org/assets/logo/lichess-pad12.svg
+  license:
+    name: AGPL-3.0-or-later
+    url: https://www.gnu.org/licenses/agpl-3.0.txt
+  description: '# Introduction
+
+    Welcome to the reference for the Lichess API! Lichess is free/libre,
+
+    open-source chess server powered by volunteers and donations.
+
+    - Get help in the [Lichess Discord channel](https://discord.gg/lichess)
+
+    - API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)
+
+    - API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)
+
+    - [Contribute to this documentation on Github](https://github.com/lichess-org/api)
+
+    - Check out [Lichess widgets to embed in your website](https://lichess.org/developers)
+
+    - [Download all Lichess rated games](https://database.lichess.org/)
+
+    - [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)
+
+    - [Download all evaluated positions](https://database.lichess.org/#evals)
+
+
+    ## Endpoint
+
+    All requests go to `https://lichess.org` (unless otherwise specified).
+
+
+    ## Clients
+
+    - [Python general API](https://github.com/lichess-org/berserk)
+
+    - [MicroPython general API](https://github.com/mkomon/uberserk)
+
+    - [Python general API - async](https://pypi.org/project/async-lichess-sdk)
+
+    - [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)
+
+    - [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)
+
+    - [Java general API](https://github.com/tors42/chariot)
+
+    - [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)
+
+    - [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)
+
+    - [.NET general API](https://github.com/Dblike/LichessSharp)
+
+
+    ## Rate limiting
+
+    All requests are rate limited using various strategies,
+
+    to ensure the API remains responsive for everyone.
+
+    Only make one request at a time.
+
+    If you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),
+
+    you have exceded one of the rate limits.
+
+    In most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.
+
+    Reduce your request frequency before retrying.
+
+
+    ## Streaming with ND-JSON
+
+    Some API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.
+
+
+    Here''s a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.
+
+
+    ## Authentication
+
+    ### Which authentication method is right for me?
+
+    [Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)
+
+
+    ### Personal Access Token
+
+    Personal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.
+
+    - [Generate a personal access token](https://lichess.org/account/oauth/token)
+
+    - `curl https://lichess.org/api/account -H "Authorization: Bearer {token}"`
+
+    - [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)
+
+
+    ### Token Security
+
+    - Keep your tokens secret. Do not share them in public repositories or public forums.
+
+    - Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens'' scope). You remain responsible for all activities on your account.
+
+    - Do not hardcode tokens in your application''s code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.
+
+    - If you suspect a token has been compromised, revoke it immediately.
+
+
+    To see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).
+
+
+    ### Authorization Code Flow with PKCE
+
+    The authorization code flow with PKCE allows your users to **login with Lichess**.
+
+    Lichess supports unregistered and public clients (no client authentication, choose any unique client id).
+
+    The only accepted code challenge method is `S256`.
+
+    Access tokens are long-lived (expect one year), unless they are revoked.
+
+    Refresh tokens are not supported.
+
+
+    See the [documentation for the OAuth endpoints](#tag/OAuth) or
+
+    the [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.
+
+
+    - [Demo app](https://lichess-org.github.io/api-demo/)
+
+    - [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)
+
+    - [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)
+
+    - [Java example](https://github.com/tors42/lichess-oauth-pkce-app)
+
+    - [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)
+
+
+    #### Real life examples
+
+    - [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))
+
+    - [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))
+
+    - [English Chess Federation](https://ecf.octoknight.com/)
+
+    - [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)
+
+
+    ### Token format
+
+    Access tokens and authorization codes match `^[A-Za-z0-9_]+$`.
+
+    The length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.
+
+    By convention tokens have a recognizable prefix, but do not rely on this.
+
+    '
+servers:
+- url: https://lichess.org
+- url: https://lichess.dev
+- url: http://localhost:{port}
+  variables:
+    port:
+      default: '8080'
+- url: http://l.org
+tags:
+- name: Users
+  description: 'Access registered users on Lichess.
+
+    <https://lichess.org/player>
+
+
+    - Each user blog exposes an atom (RSS) feed, like <https://lichess.org/@/thibault/blog.atom>
+
+    - User blogs mashup feed: https://lichess.org/blog/community.atom
+
+    - User blogs mashup feed for a language: https://lichess.org/blog/community/fr.atom
+
+    '
+paths:
+  /api/users/status:
+    get:
+      operationId: apiUsersStatus
+      summary: Get real-time users status
+      description: 'Read the `online`, `playing` and `streaming` flags of several users.
+
+        This API is very fast and cheap on lichess side.
+
+        So you can call it quite often (like once every 5 seconds).
+
+        Use it to track players and know when they''re connected on lichess and playing games.
+
+        '
+      tags:
+      - Users
+      security: []
+      parameters:
+      - in: query
+        name: ids
+        required: true
+        description: User IDs separated by commas. Up to 100 IDs.
+        schema:
+          type: string
+        example: thibault,maia1,maia5
+      - in: query
+        name: withSignal
+        required: false
+        description: 'Also return the network signal of the player, when available.
+
+          It ranges from 1 (poor connection, lag > 500ms) to 4 (great connection, lag < 150ms)
+
+          Defaults to `false` to preserve server resources.
+
+          '
+        schema:
+          type: boolean
+        example: true
+      - in: query
+        name: withGameIds
+        required: false
+        description: 'Also return the ID of the game being played, if any, for each player, in a `playingId` field.
+
+          Defaults to `false` to preserve server resources.
+
+          '
+        schema:
+          type: boolean
+        example: true
+      - in: query
+        name: withGameMetas
+        required: false
+        description: 'Also return the id, time control and variant of the game being played, if any, for each player, in a `playing` field.
+
+          Defaults to `false` to preserve server resources. Disables `withGameIds`.
+
+          '
+        schema:
+          type: boolean
+        example: true
+      responses:
+        '200':
+          description: The list of users and their respective statuses.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                    flair:
+                      $ref: '#/components/schemas/Flair'
+                    title:
+                      $ref: '#/components/schemas/Title'
+                    online:
+                      type: boolean
+                    playing:
+                      type: boolean
+                    streaming:
+                      type: boolean
+                    patron:
+                      $ref: '#/components/schemas/Patron'
+                    patronColor:
+                      $ref: '#/components/schemas/PatronColor'
+                  required:
+                  - id
+                  - name
+              examples:
+                default:
+                  $ref: '#/components/examples/users-getRealTimeUsersStatus.json'
+  /api/player:
+    get:
+      operationId: player
+      summary: Get all top 10
+      tags:
+      - Users
+      security: []
+      description: 'Get the top 10 players for each speed and variant.
+
+        See <https://lichess.org/player>.
+
+        '
+      responses:
+        '200':
+          description: The list of variants with their respective top players.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Top10s'
+              examples:
+                default:
+                  $ref: '#/components/examples/users-getAllTop10.json'
+  /api/player/top/{nb}/{perfType}:
+    get:
+      operationId: playerTopNbPerfType
+      summary: Get one leaderboard
+      tags:
+      - Users
+      security: []
+      description: 'Get the leaderboard for a single speed or variant (a.k.a. `perfType`).
+
+        There is no leaderboard for correspondence or puzzles.
+
+        See <https://lichess.org/player/top/100/bullet>.
+
+        '
+      parameters:
+      - in: path
+        name: nb
+        description: How many users to fetch
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          example: 100
+        required: true
+      - in: path
+        name: perfType
+        description: The speed or variant
+        schema:
+          type: string
+          example: bullet
+          enum:
+          - ultraBullet
+          - bullet
+          - blitz
+          - rapid
+          - classical
+          - chess960
+          - crazyhouse
+          - antichess
+          - atomic
+          - horde
+          - kingOfTheHill
+          - racingKings
+          - threeCheck
+        required: true
+      responses:
+        '200':
+          description: The list of top players for the variant.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/vnd.lichess.v3+json:
+              schema:
+                $ref: '#/components/schemas/Leaderboard'
+              examples:
+                default:
+                  $ref: '#/components/examples/users-getOneLeaderboard.json'
+  /api/user/{username}:
+    get:
+      operationId: apiUser
+      summary: Get user public data
+      description: 'Read public data of a user.
+
+        '
+      tags:
+      - Users
+      security:
+      - OAuth2: []
+      parameters:
+      - in: path
+        name: username
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: trophies
+        description: Include user trophies
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: profile
+        description: Include user profile data
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: rank
+        description: Include global lichess ranking for each perf
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: fideId
+        description: Include public FIDE ID if any
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: The information of the user.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserExtended'
+              examples:
+                default:
+                  $ref: '#/components/examples/users-getUserPublicData.json'
+  /api/user/{username}/rating-history:
+    get:
+      operationId: apiUserRatingHistory
+      summary: Get rating history of a user
+      description: 'Read rating history of a user, for all perf types.
+
+        There is at most one entry per day.
+
+        Format of an entry is `[year, month, day, rating]`.
+
+        `month` starts at zero (January).
+
+        '
+      tags:
+      - Users
+      security: []
+      parameters:
+      - in: path
+        name: username
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: The rating history of the user.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RatingHistory'
+              examples:
+                default:
+                  $ref: '#/components/examples/users-getRatingHistoryOfAUser.json'
+  /api/user/{username}/perf/{perf}:
+    get:
+      operationId: apiUserPerf
+      summary: Get performance statistics of a user
+      description: 'Read performance statistics of a user, for a single performance.
+
+        Similar to the [performance pages on the website](https://lichess.org/@/thibault/perf/bullet).
+
+        '
+      tags:
+      - Users
+      security: []
+      parameters:
+      - in: path
+        name: username
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: perf
+        schema:
+          $ref: '#/components/schemas/PerfType'
+        required: true
+      responses:
+        '200':
+          description: The performance statistics of the user
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PerfStat'
+              examples:
+                default:
+                  $ref: '#/components/examples/users-getPerformanceStatisticsOfAUser.json'
+  /api/user/{username}/activity:
+    get:
+      operationId: apiUserActivity
+      summary: Get user activity
+      description: 'Read data to generate the activity feed of a user.
+
+        '
+      tags:
+      - Users
+      security: []
+      parameters:
+      - in: path
+        name: username
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: The activity feed of the user.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserActivity'
+              examples:
+                default:
+                  $ref: '#/components/examples/users-getUserActivity.json'
+  /api/users:
+    post:
+      operationId: apiUsers
+      summary: Get users by ID
+      tags:
+      - Users
+      security: []
+      description: 'Get up to 300 users by their IDs. Users are returned in the same order as the IDs.
+
+        The method is `POST` to allow a longer list of IDs to be sent in the request body.
+
+        Please do not try to download all the Lichess users with this endpoint, or any other endpoint.
+
+        An API is not a way to fully export a website. We do not provide a full download of the Lichess users.
+
+        This endpoint is limited to 8,000 users every 10 minutes, and 120,000 every day.
+
+        '
+      requestBody:
+        description: User IDs separated by commas.
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+            example: thibault,maia1,maia5
+      parameters:
+      - in: query
+        name: profile
+        description: Include user profile data
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: rank
+        description: Include global lichess ranking for each perf
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: The list of users.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+              examples:
+                default:
+                  $ref: '#/components/examples/users-getUsersById.json'
+  /api/streamer/live:
+    get:
+      operationId: streamerLive
+      summary: Get live streamers
+      description: 'Get basic info about currently streaming users.
+
+        This API is very fast and cheap on lichess side.
+
+        So you can call it quite often (like once every 5 seconds).
+
+        '
+      tags:
+      - Users
+      security: []
+      responses:
+        '200':
+          description: The list of live streamers and their respective information.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  allOf:
+                  - $ref: '#/components/schemas/LightUser'
+                  - type: object
+                    properties:
+                      stream:
+                        type: object
+                        properties:
+                          service:
+                            type: string
+                            enum:
+                            - twitch
+                            - youtube
+                          status:
+                            type: string
+                            description: The stream title
+                          lang:
+                            type: string
+                      streamer:
+                        type: object
+                        properties:
+                          name:
+                            type: string
+                          headline:
+                            type: string
+                          description:
+                            type: string
+                          twitch:
+                            type: string
+                            format: uri
+                          youtube:
+                            type: string
+                            format: uri
+                          image:
+                            type: string
+                            format: uri
+              examples:
+                default:
+                  $ref: '#/components/examples/users-getLiveStreamers.json'
+  /api/crosstable/{user1}/{user2}:
+    get:
+      operationId: apiCrosstable
+      summary: Get crosstable
+      description: 'Get total number of games, and current score, of any two users.
+
+        If the `matchup` flag is provided, and the users are currently playing, also gets the current match game number and scores.
+
+        '
+      tags:
+      - Users
+      security: []
+      parameters:
+      - in: path
+        name: user1
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: user2
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: matchup
+        description: Whether to get the current match data, if any
+        schema:
+          type: boolean
+      responses:
+        '200':
+          description: The crosstable of the two users.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Crosstable'
+              examples:
+                default:
+                  $ref: '#/components/examples/users-getCrosstable.json'
+  /api/player/autocomplete:
+    get:
+      operationId: apiPlayerAutocomplete
+      summary: Autocomplete usernames
+      description: 'Provides autocompletion options for an incomplete username.
+
+        '
+      tags:
+      - Users
+      security:
+      - {}
+      - OAuth2: []
+      parameters:
+      - in: query
+        name: term
+        description: The beginning of a username
+        schema:
+          type: string
+          minLength: 3
+        required: true
+      - in: query
+        name: exists
+        description: 'If `true`, only checks if the user exists.
+
+          '
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: object
+        description: '- `false` returns an array of usernames
+
+          - `true` returns an object with matching users
+
+          '
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: names
+        description: '- `false` returns an array of usernames
+
+          - `true` returns an array of usernames with preferred casing
+
+          '
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: friend
+        description: 'Returns followed players matching `term` if any, else returns other players.
+
+          Requires [OAuth](#tag/OAuth).
+
+          '
+        schema:
+          type: boolean
+      - in: query
+        name: team
+        description: 'Search within a team.
+
+          Use team ID/slug.
+
+          '
+        schema:
+          type: string
+      - in: query
+        name: tour
+        description: 'Search within a arena tournament.
+
+          Use tournament ID.
+
+          '
+        schema:
+          type: string
+      - in: query
+        name: swiss
+        description: 'Search within a Swiss tournament.
+
+          '
+        schema:
+          type: string
+      - in: query
+        name: teacher
+        description: 'Only search for players who also have a teacher role.
+
+          '
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: An array of players which usernames start with the provided term.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - type: array
+                  items:
+                    type: string
+                - type: object
+                  properties:
+                    result:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/LightUserOnline'
+              examples:
+                list of usernames:
+                  $ref: '#/components/examples/users-autocompleteUsernames-list.json'
+                array of user objects:
+                  $ref: '#/components/examples/users-autocompleteUsernames-object.json'
+  /api/user/{username}/note:
+    post:
+      operationId: writeNote
+      summary: Add a note for a user
+      description: 'Add a private note available only to you about this account.
+
+        '
+      tags:
+      - Users
+      security:
+      - OAuth2: []
+      parameters:
+      - in: path
+        name: username
+        schema:
+          type: string
+          example: thibault
+        required: true
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                text:
+                  description: The contents of the note
+                  type: string
+              required:
+              - text
+      responses:
+        '200':
+          description: The note was successfully added.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+              examples:
+                default:
+                  $ref: '#/components/examples/users-addNoteForUser.json'
+    get:
+      operationId: readNote
+      summary: Get notes for a user
+      description: 'Get the private notes that you have added for a user.
+
+        '
+      tags:
+      - Users
+      security:
+      - OAuth2: []
+      parameters:
+      - in: path
+        name: username
+        schema:
+          type: string
+          example: thibault
+        required: true
+      responses:
+        '200':
+          description: The list of notes you have added for this user
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserNote'
+              examples:
+                default:
+                  $ref: '#/components/examples/users-getNotesForUser.json'
+components:
+  schemas:
+    PuzzleModePerf:
+      type: object
+      properties:
+        runs:
+          type: integer
+        score:
+          type: integer
+      required:
+      - runs
+      - score
+    PatronColor:
+      type: integer
+      description: 'Players can choose a color for their Patron wings.
+
+        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
+
+
+        The presence of this field indicates the player is an active Patron.
+
+        '
+      minimum: 1
+      maximum: 10
+    LightUserOnline:
+      allOf:
+      - $ref: '#/components/schemas/LightUser'
+      - properties:
+          online:
+            type: boolean
+    UserActivity:
+      type: object
+      properties:
+        interval:
+          type: object
+          properties:
+            start:
+              type: integer
+            end:
+              type: integer
+          required:
+          - start
+          - end
+        games:
+          type: object
+          properties:
+            chess960:
+              $ref: '#/components/schemas/UserActivityScore'
+            atomic:
+              $ref: '#/components/schemas/UserActivityScore'
+            racingKings:
+              $ref: '#/components/schemas/UserActivityScore'
+            ultraBullet:
+              $ref: '#/components/schemas/UserActivityScore'
+            blitz:
+              $ref: '#/components/schemas/UserActivityScore'
+            kingOfTheHill:
+              $ref: '#/components/schemas/UserActivityScore'
+            bullet:
+              $ref: '#/components/schemas/UserActivityScore'
+            correspondence:
+              $ref: '#/components/schemas/UserActivityScore'
+            horde:
+              $ref: '#/components/schemas/UserActivityScore'
+            puzzle:
+              $ref: '#/components/schemas/UserActivityScore'
+            classical:
+              $ref: '#/components/schemas/UserActivityScore'
+            rapid:
+              $ref: '#/components/schemas/UserActivityScore'
+        puzzles:
+          type: object
+          properties:
+            score:
+              $ref: '#/components/schemas/UserActivityScore'
+        storm:
+          $ref: '#/components/schemas/PuzzleModePerf'
+        racer:
+          $ref: '#/components/schemas/PuzzleModePerf'
+        streak:
+          $ref: '#/components/schemas/PuzzleModePerf'
+        tournaments:
+          type: object
+          properties:
+            nb:
+              type: integer
+            best:
+              type: array
+              items:
+                type: object
+                required:
+                - tournament
+                - nbGames
+                - score
+                - rank
+                - rankPercent
+                properties:
+                  tournament:
+                    type: object
+                    required:
+                    - id
+                    - name
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                  nbGames:
+                    type: integer
+                  score:
+                    type: integer
+                  rank:
+                    type: integer
+                  rankPercent:
+                    type: integer
+        practice:
+          type: array
+          items:
+            type: object
+            required:
+            - url
+            - name
+            - nbPositions
+            properties:
+              url:
+                type: string
+              name:
+                type: string
+              nbPositions:
+                type: integer
+        simuls:
+          type: array
+          items:
+            type: string
+        correspondenceMoves:
+          type: object
+          required:
+          - nb
+          - games
+          properties:
+            nb:
+              type: integer
+            games:
+              type: array
+              items:
+                $ref: '#/components/schemas/UserActivityCorrespondenceGame'
+        correspondenceEnds:
+          type: object
+          properties:
+            correspondence:
+              type: object
+              properties:
+                score:
+                  $ref: '#/components/schemas/UserActivityScore'
+                games:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/UserActivityCorrespondenceGame'
+              required:
+              - score
+              - games
+          required:
+          - correspondence
+        follows:
+          type: object
+          properties:
+            in:
+              $ref: '#/components/schemas/UserActivityFollowList'
+            out:
+              $ref: '#/components/schemas/UserActivityFollowList'
+        studies:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+            required:
+            - id
+            - name
+        teams:
+          type: array
+          items:
+            type: object
+            required:
+            - url
+            - name
+            properties:
+              url:
+                type: string
+                format: uri
+              name:
+                type: string
+              flair:
+                $ref: '#/components/schemas/Flair'
+        posts:
+          type: array
+          items:
+            type: object
+            required:
+            - topicUrl
+            - topicName
+            - posts
+            properties:
+              topicUrl:
+                type: string
+              topicName:
+                type: string
+              posts:
+                type: array
+                items:
+                  type: object
+                  required:
+                  - url
+                  - text
+                  properties:
+                    url:
+                      type: string
+                    text:
+                      type: string
+        patron:
+          type: object
+          required:
+          - months
+          properties:
+            months:
+              type: integer
+        stream:
+          type: boolean
+      required:
+      - interval
+    PlayTime:
+      type: object
+      properties:
+        total:
+          type: integer
+        tv:
+          type: integer
+        human:
+          type: integer
+      required:
+      - total
+      - tv
+    Patron:
+      type: boolean
+      deprecated: true
+      description: 'Use patronColor value instead to determine if player is a patron.
+
+        '
+    Count:
+      type: object
+      properties:
+        all:
+          type: integer
+        rated:
+          type: integer
+        ai:
+          type: integer
+        draw:
+          type: integer
+        drawH:
+          type: integer
+        loss:
+          type: integer
+        lossH:
+          type: integer
+        win:
+          type: integer
+        winH:
+          type: integer
+        bookmark:
+          type: integer
+        playing:
+          type: integer
+        import:
+          type: integer
+        me:
+          type: integer
+      required:
+      - all
+      - rated
+      - draw
+      - loss
+      - win
+      - bookmark
+      - playing
+      - import
+      - me
+    VariantKey:
+      type: string
+      enum:
+      - standard
+      - chess960
+      - crazyhouse
+      - antichess
+      - atomic
+      - horde
+      - kingOfTheHill
+      - racingKings
+      - threeCheck
+      - fromPosition
+      example: standard
+      default: standard
+    GameColor:
+      type: string
+      enum:
+      - white
+      - black
+    RatingHistory:
+      type: array
+      items:
+        $ref: '#/components/schemas/RatingHistoryEntry'
+      example:
+      - name: Bullet
+        points:
+        - - 2011
+          - 0
+          - 8
+          - 1472
+        - - 2011
+          - 0
+          - 9
+          - 1332
+        - - 2011
+          - 8
+          - 12
+          - 1314
+      - name: Blitz
+        points:
+        - - 2011
+          - 7
+          - 29
+          - 1332
+    PerfStat:
+      type: object
+      properties:
+        user:
+          type: object
+          properties:
+            name:
+              type: string
+          required:
+          - name
+        perf:
+          type: object
+          properties:
+            glicko:
+              type: object
+              properties:
+                rating:
+                  type: number
+                deviation:
+                  type: number
+                provisional:
+                  type: boolean
+            nb:
+              type: integer
+            progress:
+              type: integer
+        rank:
+          type:
+          - integer
+          - 'null'
+        percentile:
+          type: number
+        stat:
+          type: object
+          properties:
+            highest:
+              type: object
+              properties:
+                int:
+                  type: integer
+                at:
+                  type: string
+                  format: date-time
+                gameId:
+                  type: string
+              required:
+              - int
+              - at
+              - gameId
+            lowest:
+              type: object
+              properties:
+                int:
+                  type: integer
+                at:
+                  type: string
+                  format: date-time
+                gameId:
+                  type: string
+              required:
+              - int
+              - at
+              - gameId
+            bestWins:
+              type: object
+              properties:
+                results:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      opRating:
+                        type: integer
+                      opId:
+                        $ref: '#/components/schemas/LightUser'
+                      at:
+                        type: string
+                        format: date-time
+                      gameId:
+                        type: string
+                    required:
+                    - opRating
+                    - opId
+                    - at
+                    - gameId
+              required:
+              - results
+            worstLosses:
+              type: object
+              properties:
+                results:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      opRating:
+                        type: integer
+                      opId:
+                        $ref: '#/components/schemas/LightUser'
+                      at:
+                        type: string
+                        format: date-time
+                      gameId:
+                        type: string
+                    required:
+                    - opRating
+                    - opId
+                    - at
+                    - gameId
+              required:
+              - results
+            count:
+              type: object
+              properties:
+                all:
+                  type: integer
+                rated:
+                  type: integer
+                win:
+                  type: integer
+                loss:
+                  type: integer
+                draw:
+                  type: integer
+                tour:
+                  type: integer
+                berserk:
+                  type: integer
+                opAvg:
+                  type: number
+                seconds:
+                  type: integer
+                disconnects:
+                  type: integer
+              required:
+              - all
+              - rated
+              - win
+              - loss
+              - draw
+              - tour
+              - berserk
+              - opAvg
+              - seconds
+              - disconnects
+            resultStreak:
+              type: object
+              properties:
+                win:
+                  type: object
+                  properties:
+                    cur:
+                      type: object
+                      properties:
+                        v:
+                          type: integer
+                        from:
+                          type: object
+                          properties:
+                            at:
+                              type: string
+                              format: date-time
+                            gameId:
+                              type: string
+                          required:
+                          - at
+                          - gameId
+                        to:
+                          type: object
+                          properties:
+                            at:
+                              type: string
+                              format: date-time
+                            gameId:
+                              type: string
+                          required:
+                          - at
+                          - gameId
+                      required:
+                      - v
+                    max:
+                      type: object
+                      properties:
+                        v:
+                          type: integer
+                        from:
+                          type: object
+                          properties:
+                            at:
+                              type: string
+                              format: date-time
+                            gameId:
+                              type: string
+                          required:
+                          - at
+                          - gameId
+                        to:
+                          type: object
+                          properties:
+                            at:
+                              type: string
+                              format: date-time
+                            gameId:
+                              type: string
+                          required:
+                          - at
+                          - gameId
+                      required:
+                      - v
+                  required:
+                  - cur
+                  - max
+                loss:
+                  type: object
+                  properties:
+                    cur:
+                      type: object
+                      properties:
+                        v:
+                          type: integer
+                        from:
+                          type: object
+                          properties:
+                            at:
+                              type: string
+                              format: date-time
+                            gameId:
+                              type: string
+                          required:
+                          - at
+                          - gameId
+                        to:
+                          type: object
+                          properties:
+                            at:
+                              type: string
+                              format: date-time
+                            gameId:
+                              type: string
+                          required:
+                          - at
+                          - gameId
+                      required:
+                      - v
+                    max:
+                      type: object
+                      properties:
+                        v:
+                          type: integer
+                        from:
+                          type: object
+                          properties:
+                            at:
+                              type: string
+                            gameId:
+                              type: string
+                          required:
+                          - at
+                          - gameId
+                        to:
+                          type: object
+                          properties:
+                            at:
+                              type: string
+                            gameId:
+                              type: string
+                          required:
+                          - at
+                          - gameId
+                      required:
+                      - v
+                  required:
+                  - cur
+                  - max
+              required:
+              - win
+              - loss
+            playStreak:
+              type: object
+              properties:
+                nb:
+                  type: object
+                  properties:
+                    cur:
+                      type: object
+                      properties:
+                        v:
+                          type: integer
+                      required:
+                      - v
+                    max:
+                      type: object
+                      properties:
+                        v:
+                          type: integer
+                        from:
+                          type: object
+                          properties:
+                            at:
+                              type: string
+                              format: date-time
+                            gameId:
+                              type: string
+                          required:
+                          - at
+                          - gameId
+                        to:
+                          type: object
+                          properties:
+                            at:
+                              type: string
+                              format: date-time
+                            gameId:
+                              type: string
+                          required:
+                          - at
+                          - gameId
+                      required:
+                      - v
+                  required:
+                  - cur
+                  - max
+                time:
+                  type: object
+                  properties:
+                    cur:
+                      type: object
+                      properties:
+                        v:
+                          type: integer
+                      required:
+                      - v
+                    max:
+                      type: object
+                      properties:
+                        v:
+                          type: integer
+                        from:
+                          type: object
+                          properties:
+                            at:
+                              type: string
+                              format: date-time
+                            gameId:
+                              type: string
+                          required:
+                          - at
+                          - gameId
+                        to:
+                          type: object
+                          properties:
+                            at:
+                              type: string
+                              format: date-time
+                            gameId:
+                              type: string
+                          required:
+                          - at
+                          - gameId
+                      required:
+                      - v
+                  required:
+                  - cur
+                  - max
+                lastDate:
+                  type: string
+                  format: date-time
+              required:
+              - nb
+              - time
+          required:
+          - bestWins
+          - worstLosses
+          - count
+          - resultStreak
+          - playStreak
+      required:
+      - user
+      - perf
+      - rank
+      - percentile
+      - stat
+    UserExtended:
+      allOf:
+      - $ref: '#/components/schemas/User'
+      - type: object
+        properties:
+          url:
+            type: string
+            format: uri
+          playing:
+            type: string
+            format: uri
+          count:
+            $ref: '#/components/schemas/Count'
+          streaming:
+            type: boolean
+          streamer:
+            $ref: '#/components/schemas/UserStreamer'
+          followable:
+            type: boolean
+            description: only appears if the request is [authenticated with OAuth2](#description/authentication)
+          following:
+            type: boolean
+            description: only appears if the request is [authenticated with OAuth2](#description/authentication)
+          blocking:
+            type: boolean
+            description: only appears if the request is [authenticated with OAuth2](#description/authentication)
+          fideId:
+            type: number
+        required:
+        - url
+    Leaderboard:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/TopUser'
+      required:
+      - users
+    UserStreamer:
+      type: object
+      properties:
+        twitch:
+          type: object
+          properties:
+            channel:
+              type: string
+              format: uri
+              example: https://www.twitch.tv/lichessdotorg
+        youtube:
+          type: object
+          properties:
+            channel:
+              type: string
+              format: uri
+              example: https://www.youtube.com/c/LichessDotOrg
+    Ok:
+      properties:
+        ok:
+          type: boolean
+      required:
+      - ok
+    PerfType:
+      type: string
+      enum:
+      - ultraBullet
+      - bullet
+      - blitz
+      - rapid
+      - classical
+      - correspondence
+      - chess960
+      - crazyhouse
+      - antichess
+      - atomic
+      - horde
+      - kingOfTheHill
+      - racingKings
+      - threeCheck
+    UserNote:
+      type: object
+      properties:
+        from:
+          $ref: '#/components/schemas/LightUser'
+        to:
+          $ref: '#/components/schemas/LightUser'
+        text:
+          type: string
+          example: This is a note
+        date:
+          type: integer
+          format: int64
+          example: 1290415680000
+    Profile:
+      type: object
+      properties:
+        flag:
+          type: string
+          example: EC
+        location:
+          type: string
+        bio:
+          type: string
+          example: Free bugs!
+        realName:
+          type: string
+          example: Thibault Duplessis
+        fideRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        uscfRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        ecfRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        cfcRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        rcfRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        dsbRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        links:
+          type: string
+          example: "github.com/ornicar\r\nmas.to/@thibault"
+    Flair:
+      type: string
+      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
+    Perf:
+      type: object
+      properties:
+        games:
+          type: integer
+        rating:
+          type: integer
+        rd:
+          type: integer
+          description: rating deviation
+        prog:
+          type: integer
+        prov:
+          type: boolean
+          description: only appears if a user's perf rating are [provisional](https://lichess.org/faq#provisional)
+        rank:
+          type: integer
+          description: global lichess ranking, only appears for recently active players
+      required:
+      - games
+      - rating
+      - rd
+      - prog
+    Top10s:
+      type: object
+      properties:
+        bullet:
+          $ref: '#/components/schemas/PerfTop10'
+        blitz:
+          $ref: '#/components/schemas/PerfTop10'
+        rapid:
+          $ref: '#/components/schemas/PerfTop10'
+        classical:
+          $ref: '#/components/schemas/PerfTop10'
+        ultraBullet:
+          $ref: '#/components/schemas/PerfTop10'
+        crazyhouse:
+          $ref: '#/components/schemas/PerfTop10'
+        chess960:
+          $ref: '#/components/schemas/PerfTop10'
+        kingOfTheHill:
+          $ref: '#/components/schemas/PerfTop10'
+        threeCheck:
+          $ref: '#/components/schemas/PerfTop10'
+        antichess:
+          $ref: '#/components/schemas/PerfTop10'
+        atomic:
+          $ref: '#/components/schemas/PerfTop10'
+        horde:
+          $ref: '#/components/schemas/PerfTop10'
+        racingKings:
+          $ref: '#/components/schemas/PerfTop10'
+      required:
+      - bullet
+      - blitz
+      - rapid
+      - classical
+      - ultraBullet
+      - crazyhouse
+      - chess960
+      - kingOfTheHill
+      - threeCheck
+      - antichess
+      - atomic
+      - horde
+      - racingKings
+    TopUser:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        perfs:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              rating:
+                type: integer
+              progress:
+                type: integer
+            required:
+            - rating
+            - progress
+        title:
+          $ref: '#/components/schemas/Title'
+        patron:
+          $ref: '#/components/schemas/Patron'
+        patronColor:
+          $ref: '#/components/schemas/PatronColor'
+        online:
+          type: boolean
+      required:
+      - id
+      - username
+    UserActivityFollowList:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+        nb:
+          type: integer
+      required:
+      - ids
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        perfs:
+          $ref: '#/components/schemas/Perfs'
+        title:
+          $ref: '#/components/schemas/Title'
+        flair:
+          $ref: '#/components/schemas/Flair'
+        createdAt:
+          type: integer
+          format: int64
+        disabled:
+          type: boolean
+          description: only appears if a user's account is closed
+        tosViolation:
+          type: boolean
+          description: only appears if a user's account is marked for the violation of [Lichess TOS](https://lichess.org/terms-of-service)
+        profile:
+          $ref: '#/components/schemas/Profile'
+        seenAt:
+          type: integer
+          format: int64
+        playTime:
+          $ref: '#/components/schemas/PlayTime'
+        patron:
+          $ref: '#/components/schemas/Patron'
+        patronColor:
+          $ref: '#/components/schemas/PatronColor'
+        verified:
+          type: boolean
+      required:
+      - id
+      - username
+    Perfs:
+      type: object
+      properties:
+        chess960:
+          $ref: '#/components/schemas/Perf'
+        atomic:
+          $ref: '#/components/schemas/Perf'
+        racingKings:
+          $ref: '#/components/schemas/Perf'
+        ultraBullet:
+          $ref: '#/components/schemas/Perf'
+        blitz:
+          $ref: '#/components/schemas/Perf'
+        kingOfTheHill:
+          $ref: '#/components/schemas/Perf'
+        threeCheck:
+          $ref: '#/components/schemas/Perf'
+        antichess:
+          $ref: '#/components/schemas/Perf'
+        crazyhouse:
+          $ref: '#/components/schemas/Perf'
+        bullet:
+          $ref: '#/components/schemas/Perf'
+        correspondence:
+          $ref: '#/components/schemas/Perf'
+        horde:
+          $ref: '#/components/schemas/Perf'
+        puzzle:
+          $ref: '#/components/schemas/Perf'
+        classical:
+          $ref: '#/components/schemas/Perf'
+        rapid:
+          $ref: '#/components/schemas/Perf'
+        storm:
+          $ref: '#/components/schemas/PuzzleModePerf'
+        racer:
+          $ref: '#/components/schemas/PuzzleModePerf'
+        streak:
+          $ref: '#/components/schemas/PuzzleModePerf'
+    PerfTop10:
+      type: array
+      minItems: 10
+      maxItems: 10
+      items:
+        $ref: '#/components/schemas/TopUser'
+    LightUser:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        flair:
+          $ref: '#/components/schemas/Flair'
+        title:
+          $ref: '#/components/schemas/Title'
+        patron:
+          $ref: '#/components/schemas/Patron'
+        patronColor:
+          $ref: '#/components/schemas/PatronColor'
+      required:
+      - id
+      - name
+    RatingHistoryEntry:
+      type: object
+      properties:
+        name:
+          type: string
+        points:
+          type: array
+          items:
+            type: array
+            description: '[year, month, day, rating]'
+            items:
+              type: integer
+            minItems: 4
+            maxItems: 4
+      example:
+        name: Bullet
+        points:
+        - - 2011
+          - 0
+          - 8
+          - 1472
+        - - 2011
+          - 0
+          - 9
+          - 1332
+        - - 2011
+          - 8
+          - 12
+          - 1314
+    Crosstable:
+      type: object
+      properties:
+        users:
+          additionalProperties:
+            type: number
+        nbGames:
+          type: integer
+      required:
+      - users
+      - nbGames
+      example:
+        users:
+          neio: 201.5
+          thibault: 144.5
+        nbGames: 346
+    Title:
+      type: string
+      enum:
+      - GM
+      - WGM
+      - IM
+      - WIM
+      - FM
+      - WFM
+      - NM
+      - CM
+      - WCM
+      - WNM
+      - LM
+      - BOT
+      description: only appears if the user is a titled player or a bot user
+    UserActivityCorrespondenceGame:
+      type: object
+      properties:
+        id:
+          type: string
+        color:
+          $ref: '#/components/schemas/GameColor'
+        url:
+          type: string
+          format: uri
+        variant:
+          $ref: '#/components/schemas/VariantKey'
+        speed:
+          type: string
+          const: correspondence
+        perf:
+          type: string
+          const: correspondence
+        rated:
+          type: boolean
+        opponent:
+          oneOf:
+          - type: object
+            required:
+            - aiLevel
+            properties:
+              aiLevel:
+                type: integer
+          - type: object
+            required:
+            - user
+            - rating
+            properties:
+              user:
+                type: string
+              rating:
+                type: integer
+      required:
+      - id
+      - color
+      - url
+      - opponent
+    UserActivityScore:
+      type: object
+      properties:
+        win:
+          type: integer
+        loss:
+          type: integer
+        draw:
+          type: integer
+        rp:
+          type: object
+          properties:
+            before:
+              type: integer
+            after:
+              type: integer
+          required:
+          - before
+          - after
+      required:
+      - win
+      - loss
+      - draw
+      - rp
+  examples:
+    users-getAllTop10.json:
+      value:
+        bullet:
+        - id: chessplayer202024
+          username: chessplayer202024
+          perfs:
+            bullet:
+              rating: 3337
+              progress: 50
+        - id: ediz_gurel
+          username: Ediz_Gurel
+          perfs:
+            bullet:
+              rating: 3314
+              progress: -15
+          title: GM
+        - id: rodosfatihi
+          username: RoDoSfAtiHi
+          perfs:
+            bullet:
+              rating: 3309
+              progress: -5
+        - id: chess-art-us
+          username: chess-art-us
+          perfs:
+            bullet:
+              rating: 3302
+              progress: 23
+          title: GM
+        - id: grizzlybear15
+          username: grizzlybear15
+          perfs:
+            bullet:
+              rating: 3302
+              progress: 34
+        - id: sindarovgm
+          username: SindarovGM
+          perfs:
+            bullet:
+              rating: 3294
+              progress: 13
+          title: GM
+        - id: vladimirovich9000
+          username: Vladimirovich9000
+          perfs:
+            bullet:
+              rating: 3243
+              progress: 1
+          title: GM
+        - id: arka50
+          username: Arka50
+          perfs:
+            bullet:
+              rating: 3224
+              progress: 8
+          title: GM
+        - id: shant7777777
+          username: Shant7777777
+          perfs:
+            bullet:
+              rating: 3222
+              progress: 14
+          title: GM
+        - id: woshigeshagua
+          username: woshigeshagua
+          perfs:
+            bullet:
+              rating: 3207
+              progress: 14
+          online: true
+        blitz:
+        - id: asdert9
+          username: asdert9
+          perfs:
+            blitz:
+              rating: 3039
+              progress: 33
+        - id: wonderland305
+          username: wonderland305
+          perfs:
+            blitz:
+              rating: 3003
+              progress: -11
+        - id: functionjunkie
+          username: FunctionJunkie
+          perfs:
+            blitz:
+              rating: 2968
+              progress: 41
+        - id: athena-pallada
+          username: athena-pallada
+          perfs:
+            blitz:
+              rating: 2954
+              progress: 4
+          title: GM
+        - id: yarebore
+          username: Yarebore
+          perfs:
+            blitz:
+              rating: 2953
+              progress: -7
+          title: GM
+        - id: woshigeshagua
+          username: woshigeshagua
+          perfs:
+            blitz:
+              rating: 2938
+              progress: -18
+          online: true
+        - id: vladimirovich9000
+          username: Vladimirovich9000
+          perfs:
+            blitz:
+              rating: 2932
+              progress: 21
+          title: GM
+        - id: dr_tiger
+          username: Dr_Tiger
+          perfs:
+            blitz:
+              rating: 2931
+              progress: 30
+          title: GM
+        - id: lu_shanglei
+          username: Lu_Shanglei
+          perfs:
+            blitz:
+              rating: 2931
+              progress: -21
+        - id: worstplayerinbullet
+          username: worstplayerinbullet
+          perfs:
+            blitz:
+              rating: 2922
+              progress: 31
+        rapid:
+        - id: ultra_d_instinct
+          username: Ultra_D_Instinct
+          perfs:
+            rapid:
+              rating: 2801
+              progress: 7
+        - id: just_no_fun
+          username: Just_No_Fun
+          perfs:
+            rapid:
+              rating: 2801
+              progress: -21
+        - id: ilqar_7474
+          username: ilqar_7474
+          perfs:
+            rapid:
+              rating: 2768
+              progress: -44
+        - id: tuzakli_egitim
+          username: Tuzakli_Egitim
+          perfs:
+            rapid:
+              rating: 2754
+              progress: 12
+          title: FM
+        - id: coolchessschool
+          username: CoolChessSchool
+          perfs:
+            rapid:
+              rating: 2752
+              progress: 56
+        - id: fluorinedesu
+          username: Fluorinedesu
+          perfs:
+            rapid:
+              rating: 2749
+              progress: 44
+        - id: andrey11976
+          username: Andrey11976
+          perfs:
+            rapid:
+              rating: 2733
+              progress: 10
+          title: NM
+        - id: sashakuzhilniy
+          username: SashaKuzhilniy
+          perfs:
+            rapid:
+              rating: 2725
+              progress: -2
+          title: CM
+        - id: metan0ia
+          username: metan0ia
+          perfs:
+            rapid:
+              rating: 2718
+              progress: 36
+        - id: wuinmas
+          username: WUINMAS
+          perfs:
+            rapid:
+              rating: 2717
+              progress: 31
+        classical:
+        - id: belyakovbogdan
+          username: BelyakovBogdan
+          perfs:
+            classical:
+              rating: 2612
+              progress: 8
+          title: IM
+          patron: true
+          patronColor: 3
+        - id: heisingen1234
+          username: heisingen1234
+          perfs:
+            classical:
+              rating: 2559
+              progress: 53
+        - id: mw1966
+          username: MW1966
+          perfs:
+            classical:
+              rating: 2520
+              progress: 8
+          patron: true
+          patronColor: 4
+        - id: vlad_lazarev79
+          username: Vlad_Lazarev79
+          perfs:
+            classical:
+              rating: 2512
+              progress: -23
+        - id: lance5500
+          username: Lance5500
+          perfs:
+            classical:
+              rating: 2495
+              progress: 7
+          title: LM
+          patron: true
+          patronColor: 10
+          online: true
+        - id: ojaijoao
+          username: OjaiJoao
+          perfs:
+            classical:
+              rating: 2482
+              progress: -3
+          title: FM
+        - id: chesstheory64
+          username: ChessTheory64
+          perfs:
+            classical:
+              rating: 2480
+              progress: -39
+          title: FM
+          patron: true
+          patronColor: 7
+        - id: dynamicus
+          username: Dynamicus
+          perfs:
+            classical:
+              rating: 2469
+              progress: 17
+          title: CM
+        - id: inner___join
+          username: Inner___Join
+          perfs:
+            classical:
+              rating: 2467
+              progress: 19
+        - id: marshal67
+          username: marshal67
+          perfs:
+            classical:
+              rating: 2459
+              progress: -2
+        ultraBullet:
+        - id: arkadiy_khromaev
+          username: Arkadiy_Khromaev
+          perfs:
+            ultraBullet:
+              rating: 2804
+              progress: 37
+          patron: true
+          patronColor: 1
+        - id: nihalsarin2004
+          username: nihalsarin2004
+          perfs:
+            ultraBullet:
+              rating: 2744
+              progress: -6
+          title: GM
+          patron: true
+          patronColor: 10
+        - id: tamojerry
+          username: tamojerry
+          perfs:
+            ultraBullet:
+              rating: 2731
+              progress: 17
+          title: IM
+        - id: shadowking78
+          username: ShadowKing78
+          perfs:
+            ultraBullet:
+              rating: 2635
+              progress: 18
+          title: FM
+          online: true
+        - id: amethyst27
+          username: AmeThyst27
+          perfs:
+            ultraBullet:
+              rating: 2613
+              progress: -36
+        - id: blazinq
+          username: Blazinq
+          perfs:
+            ultraBullet:
+              rating: 2613
+              progress: 9
+          title: IM
+        - id: trixr4kidzzz
+          username: TrixR4Kidzzz
+          perfs:
+            ultraBullet:
+              rating: 2611
+              progress: -24
+          title: FM
+        - id: aa175
+          username: aa175
+          perfs:
+            ultraBullet:
+              rating: 2572
+              progress: -26
+          online: true
+        - id: mysterious_expert
+          username: mysterious_expert
+          perfs:
+            ultraBullet:
+              rating: 2564
+              progress: -37
+          title: IM
+          patron: true
+          patronColor: 10
+        - id: impogthefunnyfrog
+          username: impogthefunnyfrog
+          perfs:
+            ultraBullet:
+              rating: 2555
+              progress: 1
+        crazyhouse:
+        - id: littleplotkin
+          username: littleplotkin
+          perfs:
+            crazyhouse:
+              rating: 2849
+              progress: 1
+          title: IM
+          online: true
+        - id: jannlee
+          username: JannLee
+          perfs:
+            crazyhouse:
+              rating: 2817
+              progress: 4
+          title: LM
+          patron: true
+          patronColor: 10
+        - id: visualdennis
+          username: visualdennis
+          perfs:
+            crazyhouse:
+              rating: 2765
+              progress: 3
+          title: NM
+          patron: true
+          patronColor: 9
+        - id: bzdybowicz
+          username: bzdybowicz
+          perfs:
+            crazyhouse:
+              rating: 2686
+              progress: 25
+          online: true
+        - id: vikal00
+          username: vikal00
+          perfs:
+            crazyhouse:
+              rating: 2638
+              progress: 15
+        - id: tobyrizzo
+          username: tobyrizzo
+          perfs:
+            crazyhouse:
+              rating: 2637
+              progress: -29
+          title: NM
+        - id: samuraitonto
+          username: Samuraitonto
+          perfs:
+            crazyhouse:
+              rating: 2594
+              progress: 21
+        - id: sonogoneli
+          username: sonogoneli
+          perfs:
+            crazyhouse:
+              rating: 2585
+              progress: 18
+        - id: pknm
+          username: pknm
+          perfs:
+            crazyhouse:
+              rating: 2584
+              progress: -1
+        - id: unjournakamura
+          username: unjournakamura
+          perfs:
+            crazyhouse:
+              rating: 2555
+              progress: 33
+        chess960:
+        - id: chess-art-us
+          username: chess-art-us
+          perfs:
+            chess960:
+              rating: 2817
+              progress: 42
+          title: GM
+        - id: jumpingknight20
+          username: jumpingknight20
+          perfs:
+            chess960:
+              rating: 2773
+              progress: -12
+        - id: guary1
+          username: Guary1
+          perfs:
+            chess960:
+              rating: 2667
+              progress: -8
+          title: FM
+          online: true
+        - id: matteorf2b
+          username: matteorf2b
+          perfs:
+            chess960:
+              rating: 2602
+              progress: 32
+          title: CM
+        - id: johnsam1
+          username: johnsam1
+          perfs:
+            chess960:
+              rating: 2600
+              progress: 8
+        - id: potnie_ladoshki2
+          username: Potnie_Ladoshki2
+          perfs:
+            chess960:
+              rating: 2596
+              progress: -10
+          title: CM
+        - id: maratgilfanovyoutube
+          username: MaratGilfanovYoutube
+          perfs:
+            chess960:
+              rating: 2594
+              progress: 43
+          title: FM
+        - id: hanskai
+          username: Hanskai
+          perfs:
+            chess960:
+              rating: 2566
+              progress: -15
+        - id: neverenough
+          username: NeverEnough
+          perfs:
+            chess960:
+              rating: 2551
+              progress: 28
+          title: GM
+        - id: mereseberserknhi
+          username: MereseBerserkNhi
+          perfs:
+            chess960:
+              rating: 2531
+              progress: -22
+        kingOfTheHill:
+        - id: trixr4kidzzz
+          username: TrixR4Kidzzz
+          perfs:
+            kingOfTheHill:
+              rating: 2609
+              progress: -10
+          title: FM
+        - id: chess-art-us
+          username: chess-art-us
+          perfs:
+            kingOfTheHill:
+              rating: 2605
+              progress: 22
+          title: GM
+        - id: johnsam1
+          username: johnsam1
+          perfs:
+            kingOfTheHill:
+              rating: 2559
+              progress: 14
+        - id: aqua_blazing
+          username: Aqua_Blazing
+          perfs:
+            kingOfTheHill:
+              rating: 2518
+              progress: -9
+        - id: yakov25
+          username: Yakov25
+          perfs:
+            kingOfTheHill:
+              rating: 2501
+              progress: 25
+        - id: marek_religa
+          username: Marek_Religa
+          perfs:
+            kingOfTheHill:
+              rating: 2485
+              progress: 9
+        - id: move5
+          username: move5
+          perfs:
+            kingOfTheHill:
+              rating: 2471
+              progress: 20
+          title: FM
+        - id: yuuki-asuna
+          username: yuuki-asuna
+          perfs:
+            kingOfTheHill:
+              rating: 2463
+              progress: 13
+          title: CM
+          online: true
+        - id: mereseberserknhi
+          username: MereseBerserkNhi
+          perfs:
+            kingOfTheHill:
+              rating: 2452
+              progress: -21
+        - id: lance5500
+          username: Lance5500
+          perfs:
+            kingOfTheHill:
+              rating: 2426
+              progress: 13
+          title: LM
+          patron: true
+          patronColor: 10
+          online: true
+        threeCheck:
+        - id: statham_13
+          username: Statham_13
+          perfs:
+            threeCheck:
+              rating: 2667
+              progress: 12
+          title: FM
+        - id: unholycrusade
+          username: UnholyCrusade
+          perfs:
+            threeCheck:
+              rating: 2570
+              progress: 10
+          title: FM
+        - id: knightrider-777
+          username: Knightrider-777
+          perfs:
+            threeCheck:
+              rating: 2521
+              progress: -14
+        - id: maxwellssilvrhammer
+          username: maxwellssilvrhaMMer
+          perfs:
+            threeCheck:
+              rating: 2459
+              progress: -11
+        - id: lion2006-45
+          username: lion2006-45
+          perfs:
+            threeCheck:
+              rating: 2459
+              progress: 2
+        - id: coldstar1
+          username: ColdStar1
+          perfs:
+            threeCheck:
+              rating: 2449
+              progress: -20
+        - id: maimel
+          username: Maimel
+          perfs:
+            threeCheck:
+              rating: 2448
+              progress: 9
+        - id: yuuki-asuna
+          username: yuuki-asuna
+          perfs:
+            threeCheck:
+              rating: 2444
+              progress: -26
+          title: CM
+          online: true
+        - id: yakov25
+          username: Yakov25
+          perfs:
+            threeCheck:
+              rating: 2439
+              progress: 20
+        - id: vikal00
+          username: vikal00
+          perfs:
+            threeCheck:
+              rating: 2435
+              progress: 20
+        antichess:
+        - id: bonab_bakery
+          username: Bonab_Bakery
+          perfs:
+            antichess:
+              rating: 2559
+              progress: -19
+        - id: mr_pirinchoo
+          username: Mr_Pirinchoo
+          perfs:
+            antichess:
+              rating: 2546
+              progress: 5
+          patron: true
+          patronColor: 2
+          online: true
+        - id: theunknownguyreborn
+          username: TheUnknownGuyReborn
+          perfs:
+            antichess:
+              rating: 2543
+              progress: 19
+          patron: true
+          patronColor: 5
+        - id: tetiksh1agrawal
+          username: Tetiksh1Agrawal
+          perfs:
+            antichess:
+              rating: 2542
+              progress: -33
+          patron: true
+          patronColor: 4
+        - id: antichessepico
+          username: AntichessEpico
+          perfs:
+            antichess:
+              rating: 2485
+              progress: 15
+        - id: rush_g15
+          username: Rush_G15
+          perfs:
+            antichess:
+              rating: 2471
+              progress: -6
+          online: true
+        - id: pf2000
+          username: pf2000
+          perfs:
+            antichess:
+              rating: 2457
+              progress: -5
+        - id: irlywnttply
+          username: irlywnttply
+          perfs:
+            antichess:
+              rating: 2457
+              progress: 23
+        - id: antichess_valentino
+          username: Antichess_Valentino
+          perfs:
+            antichess:
+              rating: 2421
+              progress: 10
+        - id: iithearunii
+          username: IiTheAruNiI
+          perfs:
+            antichess:
+              rating: 2417
+              progress: 7
+        atomic:
+        - id: chrisrapid
+          username: chrisrapid
+          perfs:
+            atomic:
+              rating: 2472
+              progress: -20
+        - id: maxwellssilvrhammer
+          username: maxwellssilvrhaMMer
+          perfs:
+            atomic:
+              rating: 2464
+              progress: -25
+        - id: jakestatefarm
+          username: JakeStateFarm
+          perfs:
+            atomic:
+              rating: 2460
+              progress: 9
+        - id: rechesster
+          username: ReChesster
+          perfs:
+            atomic:
+              rating: 2444
+              progress: 6
+          patron: true
+          patronColor: 3
+        - id: rkrounit
+          username: RKROUNIT
+          perfs:
+            atomic:
+              rating: 2442
+              progress: 12
+        - id: mss365
+          username: mss365
+          perfs:
+            atomic:
+              rating: 2423
+              progress: 19
+        - id: quasabianth
+          username: Quasabianth
+          perfs:
+            atomic:
+              rating: 2420
+              progress: 21
+        - id: ihatespammers
+          username: ihatespaMMers
+          perfs:
+            atomic:
+              rating: 2405
+              progress: -10
+        - id: chembaby
+          username: Chembaby
+          perfs:
+            atomic:
+              rating: 2383
+              progress: -43
+        - id: statham_13
+          username: Statham_13
+          perfs:
+            atomic:
+              rating: 2374
+              progress: -18
+          title: FM
+        horde:
+        - id: horus_88
+          username: Horus_88
+          perfs:
+            horde:
+              rating: 2738
+              progress: 6
+          online: true
+        - id: matvei-e2e4
+          username: Matvei-e2e4
+          perfs:
+            horde:
+              rating: 2734
+              progress: 2
+        - id: kutlugbilgekagan
+          username: KutlugBilgeKagan
+          perfs:
+            horde:
+              rating: 2668
+              progress: -10
+        - id: mindhoonter-f5f6
+          username: MindHoonter-f5f6
+          perfs:
+            horde:
+              rating: 2586
+              progress: 5
+        - id: hod-konem96
+          username: hod-konem96
+          perfs:
+            horde:
+              rating: 2580
+              progress: 9
+        - id: tahaaminecherraben
+          username: TahaAmineCherraben
+          perfs:
+            horde:
+              rating: 2559
+              progress: 55
+        - id: yakov25
+          username: Yakov25
+          perfs:
+            horde:
+              rating: 2556
+              progress: 4
+        - id: stubenfisch
+          username: Stubenfisch
+          perfs:
+            horde:
+              rating: 2548
+              progress: -41
+          patron: true
+          patronColor: 10
+        - id: rayholt
+          username: RayHolt
+          perfs:
+            horde:
+              rating: 2543
+              progress: -37
+        - id: aar_77on
+          username: Aar_77on
+          perfs:
+            horde:
+              rating: 2524
+              progress: -16
+          online: true
+        racingKings:
+        - id: royalmaniac
+          username: RoyalManiac
+          perfs:
+            racingKings:
+              rating: 2522
+              progress: -12
+          patron: true
+          patronColor: 10
+        - id: m-a01
+          username: M-A01
+          perfs:
+            racingKings:
+              rating: 2448
+              progress: 7
+        - id: r2300
+          username: R2300
+          perfs:
+            racingKings:
+              rating: 2422
+              progress: 15
+        - id: playanotherone
+          username: playanotherone
+          perfs:
+            racingKings:
+              rating: 2384
+              progress: 0
+        - id: seth_777
+          username: seth_777
+          perfs:
+            racingKings:
+              rating: 2383
+              progress: -38
+        - id: cybershredder
+          username: CyberShredder
+          perfs:
+            racingKings:
+              rating: 2371
+              progress: 0
+          online: true
+        - id: oscarsm80
+          username: OSCARSM80
+          perfs:
+            racingKings:
+              rating: 2353
+              progress: 30
+        - id: gleb_momot
+          username: Gleb_Momot
+          perfs:
+            racingKings:
+              rating: 2319
+              progress: -7
+        - id: controllerofficial77
+          username: ControllerOfficial77
+          perfs:
+            racingKings:
+              rating: 2313
+              progress: -26
+          patron: true
+          patronColor: 1
+        - id: cr0c0d1l3
+          username: cr0c0d1l3
+          perfs:
+            racingKings:
+              rating: 2299
+              progress: -33
+    users-getNotesForUser.json:
+      value:
+      - from:
+          name: Bobby
+          id: bobby
+        to:
+          name: Mary
+          flair: people.open-hands-medium-light-skin-tone
+          id: mary
+        text: this is a private note
+        date: 1778812629766
+    users-getUsersById.json:
+      value:
+      - id: thibault
+        username: thibault
+        perfs:
+          ultraBullet:
+            games: 3
+            rating: 1688
+            rd: 358
+            prog: 0
+            prov: true
+          bullet:
+            games: 7482
+            rating: 1785
+            rd: 86
+            prog: 12
+          blitz:
+            games: 11614
+            rating: 1791
+            rd: 47
+            prog: -1
+          rapid:
+            games: 894
+            rating: 1907
+            rd: 72
+            prog: -34
+          classical:
+            games: 25
+            rating: 1858
+            rd: 241
+            prog: 48
+            prov: true
+          correspondence:
+            games: 377
+            rating: 1942
+            rd: 165
+            prog: -12
+            prov: true
+          chess960:
+            games: 348
+            rating: 1551
+            rd: 264
+            prog: 61
+            prov: true
+          kingOfTheHill:
+            games: 94
+            rating: 1744
+            rd: 284
+            prog: 14
+            prov: true
+          threeCheck:
+            games: 66
+            rating: 1728
+            rd: 257
+            prog: 132
+            prov: true
+          antichess:
+            games: 73
+            rating: 1465
+            rd: 248
+            prog: -56
+            prov: true
+          atomic:
+            games: 99
+            rating: 1633
+            rd: 297
+            prog: 18
+            prov: true
+          horde:
+            games: 46
+            rating: 1592
+            rd: 278
+            prog: -20
+            prov: true
+          racingKings:
+            games: 13
+            rating: 1552
+            rd: 329
+            prog: -75
+            prov: true
+          crazyhouse:
+            games: 50
+            rating: 1567
+            rd: 295
+            prog: -34
+            prov: true
+          puzzle:
+            games: 5875
+            rating: 2009
+            rd: 66
+            prog: 0
+          storm:
+            runs: 44
+            score: 33
+          racer:
+            runs: 83
+            score: 51
+          streak:
+            runs: 49
+            score: 33
+        flair: nature.seedling
+        patron: true
+        patronColor: 10
+        verified: true
+        createdAt: 1290415680000
+        profile:
+          bio: I turn coffee into bugs.
+          realName: Thibault Duplessis
+          links: "github.com/ornicar\r\nmas.to/@thibault"
+        seenAt: 1778797754768
+        playTime:
+          total: 6501837
+          tv: 18024
+      - id: maia1
+        username: maia1
+        perfs:
+          bullet:
+            games: 213943
+            rating: 1646
+            rd: 45
+            prog: 9
+          blitz:
+            games: 405348
+            rating: 1454
+            rd: 45
+            prog: -19
+          rapid:
+            games: 531260
+            rating: 1554
+            rd: 45
+            prog: -12
+          classical:
+            games: 141761
+            rating: 1648
+            rd: 45
+            prog: 17
+          correspondence:
+            games: 265
+            rating: 1527
+            rd: 219
+            prog: -18
+            prov: true
+        title: BOT
+        verified: true
+        createdAt: 1582579972726
+        profile:
+          bio: "Maia is a human-like neural network chess engine. This version was trained by learning from over 10 million Lichess games between 1100s. \r\n\r\nMaia Chess is an ongoing research project aiming to make a more human-friendly, useful, and fun chess AI. For more information go to maiachess.com. You can also play against @maia5 and @maia9. Developed by @ashtonanderson, @sidsen and @reidmcy."
+          realName: Maia Chess 1100
+          links: "https://maiachess.com\r\nhttps://github.com/CSSLab/maia-chess\r\nhttps://twitter.com/maiachess"
+        seenAt: 1778812162634
+        playTime:
+          total: 1241669416
+          tv: 3031257
+          human: 975711343
+      - id: maia5
+        username: maia5
+        perfs:
+          bullet:
+            games: 64081
+            rating: 1619
+            rd: 45
+            prog: 0
+          blitz:
+            games: 182714
+            rating: 1436
+            rd: 45
+            prog: -11
+          rapid:
+            games: 205434
+            rating: 1666
+            rd: 45
+            prog: 10
+          classical:
+            games: 49627
+            rating: 1726
+            rd: 45
+            prog: -16
+          correspondence:
+            games: 18
+            rating: 1792
+            rd: 240
+            prog: 30
+            prov: true
+        title: BOT
+        verified: true
+        createdAt: 1582580198358
+        profile:
+          bio: Maia is a human-like neural network chess engine. This version was trained by learning from over 10 million Lichess games between 1500s. Maia Chess is an ongoing research project aiming to make a more human-friendly, useful, and fun chess AI. For more information go to maiachess.com. You can also play @maia1 and @maia9. Developed by @ashtonanderson,  @sidsen and @reidmcy.
+          realName: Maia Chess 1500
+          links: "https://maiachess.com\r\ngithub.com/CSSLab/maia-chess\r\nhttps://twitter.com/maiachess"
+        seenAt: 1778812197532
+        playTime:
+          total: 562691901
+          tv: 3859273
+          human: 410999173
+    users-getUserPublicData.json:
+      value:
+        id: mary
+        username: Mary
+        perfs:
+          bullet:
+            games: 1593
+            rating: 1119
+            rd: 66
+            prog: -27
+          blitz:
+            games: 1560
+            rating: 1145
+            rd: 56
+            prog: -29
+          rapid:
+            games: 358
+            rating: 1124
+            rd: 83
+            prog: -8
+          classical:
+            games: 414
+            rating: 946
+            rd: 110
+            prog: 33
+            prov: true
+          correspondence:
+            games: 692
+            rating: 1083
+            rd: 56
+            prog: 23
+          chess960:
+            games: 600
+            rating: 1104
+            rd: 92
+            prog: 22
+          kingOfTheHill:
+            games: 454
+            rating: 1077
+            rd: 54
+            prog: 43
+          threeCheck:
+            games: 159
+            rating: 1018
+            rd: 108
+            prog: -6
+          antichess:
+            games: 114
+            rating: 937
+            rd: 49
+            prog: -51
+          atomic:
+            games: 1261
+            rating: 1073
+            rd: 45
+            prog: -6
+          horde:
+            games: 83
+            rating: 1115
+            rd: 45
+            prog: -28
+          crazyhouse:
+            games: 1556
+            rating: 965
+            rd: 49
+            prog: 2
+          puzzle:
+            games: 60
+            rating: 1033
+            rd: 45
+            prog: -36
+        flair: people.open-hands-medium-light-skin-tone
+        createdAt: 1775221588473
+        profile:
+          flag: GW
+          location: Mary City
+          bio: A normal working day for modern industry only dates from the Factory Act of 1833, which included cotton, wool, flax, and silk factories. Nothing is more characteristic of the spirit of capital than the history of the English Factory Acts from 1833 to 1864.
+          fideRating: 1400
+          uscfRating: 1035
+          ecfRating: 1084
+          rcfRating: 910
+          cfcRating: 992
+          dsbRating: 1129
+          links: 'https://en.wikipedia.org/wiki/Srinivasa_Ramanujan
+
+            https://en.wikipedia.org/wiki/Charles_Darwin
+
+            https://lichess.org
+
+            https://reddit.com/r/chess
+
+            https://en.wikipedia.org/wiki/Noam_Chomsky'
+        seenAt: 1776880668894
+        playTime:
+          total: 15514
+          tv: 0
+        url: https://lichess.org/@/Mary
+        count:
+          all: 9795
+          rated: 7836
+          draw: 904
+          loss: 4408
+          win: 4483
+          bookmark: 0
+          playing: 0
+          import: 0
+          me: 1
+        followable: true
+        following: true
+        blocking: false
+    users-getCrosstable.json:
+      value:
+        users:
+          drnykterstein: 753.5
+          rebeccaharris: 459.5
+        nbGames: 1213
+    users-getOneLeaderboard.json:
+      value:
+        users:
+        - id: ana
+          username: Ana
+          perfs:
+            blitz:
+              rating: 2512
+              progress: 0
+          title: WCM
+        - id: elena
+          username: Elena
+          perfs:
+            blitz:
+              rating: 2389
+              progress: 0
+          title: WNM
+          patron: true
+          patronColor: 1
+        - id: lola
+          username: Lola
+          perfs:
+            blitz:
+              rating: 2366
+              progress: 0
+          title: CM
+    users-autocompleteUsernames-object.json:
+      value:
+        result:
+        - name: Bobby
+          id: bobby
+    users-getRatingHistoryOfAUser.json:
+      value:
+      - name: UltraBullet
+        points: []
+      - name: Bullet
+        points:
+        - - 2026
+          - 3
+          - 3
+          - 1193
+        - - 2026
+          - 3
+          - 6
+          - 1195
+        - - 2026
+          - 3
+          - 9
+          - 1262
+        - - 2026
+          - 3
+          - 12
+          - 1150
+        - - 2026
+          - 3
+          - 15
+          - 1213
+        - - 2026
+          - 3
+          - 18
+          - 1120
+        - - 2026
+          - 3
+          - 21
+          - 1220
+        - - 2026
+          - 3
+          - 24
+          - 1115
+        - - 2026
+          - 3
+          - 27
+          - 1076
+        - - 2026
+          - 3
+          - 30
+          - 1219
+        - - 2026
+          - 4
+          - 3
+          - 1231
+        - - 2026
+          - 4
+          - 6
+          - 1138
+        - - 2026
+          - 4
+          - 9
+          - 1134
+        - - 2026
+          - 4
+          - 12
+          - 1220
+      - name: Blitz
+        points:
+        - - 2026
+          - 3
+          - 3
+          - 697
+        - - 2026
+          - 3
+          - 5
+          - 674
+        - - 2026
+          - 3
+          - 7
+          - 671
+        - - 2026
+          - 3
+          - 9
+          - 717
+        - - 2026
+          - 3
+          - 11
+          - 838
+        - - 2026
+          - 3
+          - 13
+          - 807
+        - - 2026
+          - 3
+          - 15
+          - 862
+        - - 2026
+          - 3
+          - 17
+          - 919
+        - - 2026
+          - 3
+          - 19
+          - 900
+        - - 2026
+          - 3
+          - 21
+          - 900
+        - - 2026
+          - 3
+          - 23
+          - 1005
+        - - 2026
+          - 3
+          - 25
+          - 992
+        - - 2026
+          - 3
+          - 27
+          - 870
+        - - 2026
+          - 3
+          - 29
+          - 933
+        - - 2026
+          - 4
+          - 1
+          - 1027
+        - - 2026
+          - 4
+          - 3
+          - 983
+        - - 2026
+          - 4
+          - 5
+          - 1119
+        - - 2026
+          - 4
+          - 7
+          - 1023
+        - - 2026
+          - 4
+          - 9
+          - 1137
+        - - 2026
+          - 4
+          - 11
+          - 1019
+        - - 2026
+          - 4
+          - 13
+          - 1098
+      - name: Rapid
+        points:
+        - - 2026
+          - 3
+          - 3
+          - 737
+        - - 2026
+          - 3
+          - 9
+          - 750
+        - - 2026
+          - 3
+          - 15
+          - 784
+        - - 2026
+          - 3
+          - 21
+          - 859
+        - - 2026
+          - 3
+          - 27
+          - 852
+        - - 2026
+          - 4
+          - 3
+          - 959
+        - - 2026
+          - 4
+          - 9
+          - 1000
+      - name: Classical
+        points:
+        - - 2026
+          - 3
+          - 3
+          - 988
+        - - 2026
+          - 3
+          - 10
+          - 1069
+        - - 2026
+          - 3
+          - 17
+          - 963
+        - - 2026
+          - 3
+          - 24
+          - 946
+        - - 2026
+          - 4
+          - 1
+          - 907
+        - - 2026
+          - 4
+          - 8
+          - 864
+      - name: Correspondence
+        points:
+        - - 2026
+          - 3
+          - 3
+          - 1474
+        - - 2026
+          - 3
+          - 10
+          - 1270
+        - - 2026
+          - 3
+          - 17
+          - 1291
+        - - 2026
+          - 3
+          - 24
+          - 1307
+        - - 2026
+          - 4
+          - 1
+          - 1229
+        - - 2026
+          - 4
+          - 8
+          - 1058
+      - name: Crazyhouse
+        points:
+        - - 2026
+          - 3
+          - 3
+          - 1158
+        - - 2026
+          - 3
+          - 6
+          - 1196
+        - - 2026
+          - 3
+          - 9
+          - 1120
+        - - 2026
+          - 3
+          - 12
+          - 1170
+        - - 2026
+          - 3
+          - 15
+          - 1106
+        - - 2026
+          - 3
+          - 18
+          - 1045
+        - - 2026
+          - 3
+          - 21
+          - 1156
+        - - 2026
+          - 3
+          - 24
+          - 1066
+        - - 2026
+          - 3
+          - 27
+          - 1061
+        - - 2026
+          - 3
+          - 30
+          - 1056
+        - - 2026
+          - 4
+          - 3
+          - 1074
+        - - 2026
+          - 4
+          - 6
+          - 1014
+        - - 2026
+          - 4
+          - 9
+          - 931
+        - - 2026
+          - 4
+          - 12
+          - 965
+      - name: Chess960
+        points:
+        - - 2026
+          - 3
+          - 3
+          - 1035
+        - - 2026
+          - 3
+          - 8
+          - 957
+        - - 2026
+          - 3
+          - 13
+          - 1084
+        - - 2026
+          - 3
+          - 18
+          - 1043
+        - - 2026
+          - 3
+          - 23
+          - 1055
+        - - 2026
+          - 3
+          - 28
+          - 1118
+        - - 2026
+          - 4
+          - 3
+          - 1139
+        - - 2026
+          - 4
+          - 8
+          - 1146
+        - - 2026
+          - 4
+          - 13
+          - 1194
+      - name: King of the Hill
+        points:
+        - - 2026
+          - 3
+          - 3
+          - 1346
+        - - 2026
+          - 3
+          - 5
+          - 1405
+        - - 2026
+          - 3
+          - 7
+          - 1377
+        - - 2026
+          - 3
+          - 9
+          - 1259
+        - - 2026
+          - 3
+          - 11
+          - 1290
+        - - 2026
+          - 3
+          - 13
+          - 1269
+        - - 2026
+          - 3
+          - 15
+          - 1227
+        - - 2026
+          - 3
+          - 17
+          - 1338
+        - - 2026
+          - 3
+          - 19
+          - 1321
+        - - 2026
+          - 3
+          - 21
+          - 1155
+        - - 2026
+          - 3
+          - 23
+          - 1220
+        - - 2026
+          - 3
+          - 25
+          - 1132
+        - - 2026
+          - 3
+          - 27
+          - 1143
+        - - 2026
+          - 3
+          - 29
+          - 1099
+        - - 2026
+          - 4
+          - 1
+          - 1143
+        - - 2026
+          - 4
+          - 3
+          - 1211
+        - - 2026
+          - 4
+          - 5
+          - 1182
+        - - 2026
+          - 4
+          - 7
+          - 1219
+        - - 2026
+          - 4
+          - 9
+          - 1171
+        - - 2026
+          - 4
+          - 11
+          - 1105
+        - - 2026
+          - 4
+          - 13
+          - 1162
+      - name: Three-Check
+        points:
+        - - 2026
+          - 3
+          - 3
+          - 1575
+        - - 2026
+          - 3
+          - 7
+          - 1371
+        - - 2026
+          - 3
+          - 11
+          - 1388
+        - - 2026
+          - 3
+          - 15
+          - 1379
+        - - 2026
+          - 3
+          - 19
+          - 1245
+        - - 2026
+          - 3
+          - 23
+          - 1358
+        - - 2026
+          - 3
+          - 27
+          - 1234
+        - - 2026
+          - 4
+          - 1
+          - 1113
+        - - 2026
+          - 4
+          - 5
+          - 1161
+        - - 2026
+          - 4
+          - 9
+          - 1062
+        - - 2026
+          - 4
+          - 13
+          - 1042
+      - name: Antichess
+        points:
+        - - 2026
+          - 3
+          - 3
+          - 1126
+        - - 2026
+          - 3
+          - 10
+          - 1200
+        - - 2026
+          - 3
+          - 17
+          - 1147
+        - - 2026
+          - 3
+          - 24
+          - 1030
+        - - 2026
+          - 4
+          - 1
+          - 1074
+        - - 2026
+          - 4
+          - 8
+          - 1065
+      - name: Atomic
+        points:
+        - - 2026
+          - 3
+          - 3
+          - 1576
+        - - 2026
+          - 3
+          - 5
+          - 1399
+        - - 2026
+          - 3
+          - 7
+          - 1359
+        - - 2026
+          - 3
+          - 9
+          - 1416
+        - - 2026
+          - 3
+          - 11
+          - 1364
+        - - 2026
+          - 3
+          - 13
+          - 1405
+        - - 2026
+          - 3
+          - 15
+          - 1364
+        - - 2026
+          - 3
+          - 17
+          - 1343
+        - - 2026
+          - 3
+          - 19
+          - 1365
+        - - 2026
+          - 3
+          - 21
+          - 1385
+        - - 2026
+          - 3
+          - 23
+          - 1236
+        - - 2026
+          - 3
+          - 25
+          - 1280
+        - - 2026
+          - 3
+          - 27
+          - 1156
+        - - 2026
+          - 3
+          - 29
+          - 1191
+        - - 2026
+          - 4
+          - 1
+          - 1124
+        - - 2026
+          - 4
+          - 3
+          - 1122
+        - - 2026
+          - 4
+          - 5
+          - 1163
+        - - 2026
+          - 4
+          - 7
+          - 1131
+        - - 2026
+          - 4
+          - 9
+          - 1053
+        - - 2026
+          - 4
+          - 11
+          - 1169
+        - - 2026
+          - 4
+          - 13
+          - 1140
+      - name: Horde
+        points:
+        - - 2026
+          - 3
+          - 3
+          - 701
+        - - 2026
+          - 3
+          - 6
+          - 853
+        - - 2026
+          - 3
+          - 9
+          - 919
+        - - 2026
+          - 3
+          - 12
+          - 844
+        - - 2026
+          - 3
+          - 15
+          - 826
+        - - 2026
+          - 3
+          - 18
+          - 959
+        - - 2026
+          - 3
+          - 21
+          - 851
+        - - 2026
+          - 3
+          - 24
+          - 859
+        - - 2026
+          - 3
+          - 27
+          - 1012
+        - - 2026
+          - 3
+          - 30
+          - 1043
+        - - 2026
+          - 4
+          - 3
+          - 1108
+        - - 2026
+          - 4
+          - 6
+          - 1138
+        - - 2026
+          - 4
+          - 9
+          - 986
+        - - 2026
+          - 4
+          - 12
+          - 1121
+      - name: Racing Kings
+        points: []
+      - name: Puzzles
+        points:
+        - - 2026
+          - 3
+          - 3
+          - 1123
+        - - 2026
+          - 3
+          - 7
+          - 1094
+        - - 2026
+          - 3
+          - 11
+          - 1268
+        - - 2026
+          - 3
+          - 15
+          - 1223
+        - - 2026
+          - 3
+          - 19
+          - 1232
+        - - 2026
+          - 3
+          - 23
+          - 1085
+        - - 2026
+          - 3
+          - 27
+          - 1021
+        - - 2026
+          - 4
+          - 1
+          - 1146
+        - - 2026
+          - 4
+          - 5
+          - 1076
+        - - 2026
+          - 4
+          - 9
+          - 965
+        - - 2026
+          - 4
+          - 13
+          - 1108
+    users-addNoteForUser.json:
+      value:
+        ok: true
+    users-getLiveStreamers.json:
+      value:
+      - name: lefonghua
+        title: FM
+        id: lefonghua
+        stream:
+          service: twitch
+          status: Analyzing Viewers Games! | !analyze !rapid !plus | lichess.org
+          lang: en
+        streamer:
+          name: Lefong Hua
+          headline: FM Lefong Hua. Professional chess coach from Montreal, Canada.
+          twitch: https://www.twitch.tv/lefonghua
+          image: https://image.lichess1.org/display?fmt=webp&h=350&op=thumbnail&path=lefonghua:streamer:lefonghua:Vr5ViPnv.jpg&w=350&sig=4dec7bb87631c83eb93b427fc24e4726582e6af0
+      - name: sabinafoisor
+        title: WGM
+        id: sabinafoisor
+        stream:
+          service: twitch
+          status: Commentary on US Chess this weekend | lichess.org
+          lang: en
+        streamer:
+          name: Sabina Foisor
+          headline: WGM Sabina Foisor
+          description: "Hello everyone,\r\n\r\nMy name is Sabina Foisor and I am a WGM representing the United States. I was born in Romania to a chess family and learned to play chess at 4 years old. At around  5 and a half y.o I have competed in my first open tournament. Despite not having won any games, I have made up my mind to make a career out of chess, though there were many moments when I struggled. In 1997, I won the European Championship for Girls under 8 years old. In my teens I have won multiple national girls youth championships. In the European scene I triumphed winning  medals in Classical, Blitz, Rapid and Solving Problems competitions. At the age of 16 I became a WIM and at 18 I received the title of WGM. I consider the year 2007 to have been the peak of my chess career sharing 5th place at the European Individual Women’s Chess Championship from which I qualified for the Women’s World Chess Championship. That same year I was ranked in the top 10 Junior Girls in the World. In 2008 I received a chess scholarship at UMBC and decided to put chess on pause to focus on my studies. I graduated in 2012 with an BA in Modern Languages and Linguistics and in 2014 I received my Masters Degree in Intercultural Communication, specializing in intercultural training. In the begging of 2009 I started representing the United States and proudly participated in 5 Chess Olympiads and 4 Women’s World Team Championships. My biggest achievement was winning US Women’s Chess Championship in 2017.\r\n\r\nI started my streaming in March 2020. I hope you enjoy my channel and stream! I am taking challenges from viewers and subscribers and happy to take on different chess variants. \r\n\r\nTwitter: https://twitter.com/SabinaFoisor\r\nFacebook: https://www.facebook.com/SabinaFoisor/\r\nInstagram: https://www.instagram.com/sabinafoisor/\r\nTwitch: https://www.twitch.tv/sabinafoisor"
+          twitch: https://www.twitch.tv/sabinafoisor
+          youtube: https://www.youtube.com/channel/UC2hjYBYRdE2ynHqfQpo_gow/live
+          image: https://image.lichess1.org/display?fmt=webp&h=350&op=thumbnail&path=sabinafoisor:streamer:sabinafoisor:JpKJW8ke.jpg&w=350&sig=fcefac30465d2a3db65e123dd45393bd2dc03494
+      - name: sloppydogg
+        title: IM
+        id: sloppydogg
+        stream:
+          service: twitch
+          status: 'Lichess Simul Record Attempt #10 lichess.org'
+          lang: en
+        streamer:
+          name: John Ludwig
+          headline: Watch and learn chess from an International Master! :)
+          description: 'Thank you so much for checking my stream out! It will be a great mix of entertaining play, teaching moments, and all other things great with chess! The more you engage, the better! I will play whatever openings you recommend, or even specific ideas you would like to see! '
+          twitch: https://www.twitch.tv/jludwig
+          image: https://image.lichess1.org/display?fmt=webp&h=350&op=thumbnail&path=psrd6rY4J8tr.webp&w=350&sig=7959c8fdc44570537eefe98bc450d81022fe13f3
+      - name: chessoptics
+        patron: true
+        patronColor: 1
+        id: chessoptics
+        stream:
+          service: twitch
+          status: '|Chess is the lens life is the view| Variety Music |Lichess.org {Training with the chessbook app}'
+          lang: en
+        streamer:
+          name: chessoptics
+          headline: This is a place to enjoy chess and learn.
+          description: If you Love Chess then come watch me play and enjoy. leave some comments and lets talk about chess.
+          twitch: https://www.twitch.tv/chessoptics
+          image: https://image.lichess1.org/display?fmt=webp&h=350&op=thumbnail&path=vPkudbELA3pE.webp&w=350&sig=4240861f841d02a38742f5a5f9f2d40ce89315ec
+      - name: account4BD
+        flair: people.troll
+        patron: true
+        patronColor: 4
+        id: account4bd
+        stream:
+          service: twitch
+          status: Fred Again... X Chess Again Best NightTime recipe !! | Dailys Fastest Echecs Arènes's Fully Zerked Only on @Lichess.org
+          lang: en
+        streamer:
+          name: account4BD
+          headline: hey chess addicts
+          twitch: https://www.twitch.tv/chess_punk
+          image: https://image.lichess1.org/display?fmt=webp&h=350&op=thumbnail&path=streamer:account4bd:fUQxz0qi.webp&w=350&sig=a3c17df24c8be4a4016e0029b730680e5db4fb5c
+    users-getRealTimeUsersStatus.json:
+      value:
+      - name: Mary
+        flair: people.open-hands-medium-light-skin-tone
+        id: mary
+      - name: Ana
+        title: WCM
+        flair: smileys.downcast-face-with-sweat
+        id: ana
+    users-autocompleteUsernames-list.json:
+      value:
+      - bobby
+    users-getUserActivity.json:
+      value:
+      - interval:
+          start: 1778803200000
+          end: 1778889600000
+        follows:
+          in:
+            ids:
+            - chrisc5mb
+      - interval:
+          start: 1778716800000
+          end: 1778803200000
+        puzzles:
+          score:
+            win: 1
+            loss: 0
+            draw: 0
+            rp:
+              before: 1999
+              after: 2009
+        follows:
+          in:
+            ids:
+            - lisanthm
+            - pureaperionsq
+            - arda_kslc21
+            - teso22
+            - ww0ut
+            - vidhathathreya
+            - shirakuchess
+      - interval:
+          start: 1778630400000
+          end: 1778716800000
+        games:
+          blitz:
+            win: 0
+            loss: 2
+            draw: 0
+            rp:
+              before: 1805
+              after: 1791
+        puzzles:
+          score:
+            win: 1
+            loss: 0
+            draw: 0
+            rp:
+              before: 1986
+              after: 1999
+        follows:
+          in:
+            ids:
+            - sathvik_nannuri
+            - raphael_171123
+            - l3azwa
+            - orion_banerjee
+            - leftfreezingdoor
+            - shapovalov1
+            - tolbrandir
+            - jhansirani
+            - mailtoadvik
+            - battledudes606dbdb
+            - hdjjkf
+            - advit_bhat
+            - j_harshiv
+            - bobybot
+            - jackhlay
+            nb: 18
+      - interval:
+          start: 1778544000000
+          end: 1778630400000
+        puzzles:
+          score:
+            win: 1
+            loss: 0
+            draw: 0
+            rp:
+              before: 1978
+              after: 1986
+        follows:
+          in:
+            ids:
+            - xinyilovechess
+            - kushnorris
+            - enrigo93
+            - zanycolourfulwindow
+            - pet_your_enemy
+            - advikrnair
+            - rom1_chess
+            - gleb1234567899
+            - masterr_67
+            - gknuchamp
+            - mr_checkmate007
+            - karpov005
+            - pragyanreddy
+        stream: true
+      - interval:
+          start: 1778457600000
+          end: 1778544000000
+        games:
+          blitz:
+            win: 1
+            loss: 0
+            draw: 0
+            rp:
+              before: 1799
+              after: 1805
+        follows:
+          in:
+            ids:
+            - kolya228322
+            - uluthrek
+            - sixtyseven_67
+            - jilbo1234
+            - onemorekiwi
+            - laskeristhebomb
+            - vihariuppalapati
+            - alexhuerta
+            - fjcruiser
+            - thenameisstan
+            - bhoomin
+            - zeus555
+            - ramrachit_2204
+            - kishalay_m
+            - dayronf1
+      - interval:
+          start: 1778371200000
+          end: 1778457600000
+        puzzles:
+          score:
+            win: 13
+            loss: 2
+            draw: 0
+            rp:
+              before: 1886
+              after: 1978
+        follows:
+          in:
+            ids:
+            - coolcoldice3
+            - johndoe5743
+            - kemalbaitemir
+            - emmanuelrv1
+            - qlibet
+            - jay63
+            - rchess14102013
+            - r-a1h8h1a8
+            - tidahy
+            - tikhon_loud
+            - danielgg14
+            - chessking20122026
+            - h4zuop
+            - schiffskoch
+            - nilusha1984
+      - interval:
+          start: 1778284800000
+          end: 1778371200000
+        puzzles:
+          score:
+            win: 1
+            loss: 0
+            draw: 0
+            rp:
+              before: 1872
+              after: 1886
+        follows:
+          in:
+            ids:
+            - h4zuop
+            - thebeguiler
+            - rawlyfearful
+            - brilliant-siesta
+            - r01-f2f7
+            - iamsubhajitroy
+            - akshayksingh
+            - nel_2000
+            - feshom
+            - remotecon_troller
+            - yonilavo
+            - basitbc02
+    users-getPerformanceStatisticsOfAUser.json:
+      value:
+        user:
+          name: thibault
+        perf:
+          glicko:
+            rating: 1791.48
+            deviation: 47.84
+          nb: 11614
+          progress: -1
+        rank: 147171
+        percentile: 77.6
+        stat:
+          highest:
+            int: 1970
+            at: '2022-02-23T13:44:54.633Z'
+            gameId: Blpjmhnf
+          lowest:
+            int: 1385
+            at: '2015-08-05T10:13:41.326Z'
+            gameId: tgbRykg2
+          bestWins:
+            results:
+            - opRating: 2239
+              opId:
+                name: aqua21
+                flair: objects.postal-horn
+                id: aqua21
+              at: '2020-02-15T19:13:05.329Z'
+              gameId: UxNJmMXz
+            - opRating: 2163
+              opId:
+                name: Staffan67
+                id: staffan67
+              at: '2022-12-28T10:54:21.597Z'
+              gameId: 9IMlwEv1
+            - opRating: 2120
+              opId:
+                name: Heissenberger
+                id: heissenberger
+              at: '2021-10-25T08:26:27.155Z'
+              gameId: 2buPRuV8
+            - opRating: 2051
+              opId:
+                name: Stas235
+                id: stas235
+              at: '2021-11-06T18:55:53.728Z'
+              gameId: VLxCVzDY
+            - opRating: 2040
+              opId:
+                name: Harryz-77
+                id: harryz-77
+              at: '2021-11-03T17:39:40.181Z'
+              gameId: eCgiYDS7
+          worstLosses:
+            results:
+            - opRating: 995
+              opId:
+                name: dahupetitjoueur
+                id: dahupetitjoueur
+              at: '2017-04-12T14:31:58.002Z'
+              gameId: 7zyddy2c
+            - opRating: 1121
+              opId:
+                name: Tinkugupta1011
+                id: tinkugupta1011
+              at: '2022-10-22T03:36:35.447Z'
+              gameId: CCyyGKmD
+            - opRating: 1146
+              opId:
+                name: chemkhihabib
+                id: chemkhihabib
+              at: '2016-06-01T09:31:09.694Z'
+              gameId: XatMm3RO
+            - opRating: 1166
+              opId:
+                name: Bottios
+                title: BOT
+                id: bottios
+              at: '2018-12-14T09:22:52.633Z'
+              gameId: 3fke4MHX
+            - opRating: 1182
+              opId:
+                name: skanerterry
+                id: skanerterry
+              at: '2016-06-09T15:32:10.474Z'
+              gameId: n4ViqGlp
+          count:
+            all: 12101
+            rated: 11492
+            win: 5726
+            loss: 5802
+            draw: 573
+            tour: 1601
+            berserk: 52
+            opAvg: 1706.62
+            seconds: 3767400
+            disconnects: 9
+          resultStreak:
+            win:
+              cur:
+                v: 0
+              max:
+                v: 11
+                from:
+                  at: '2018-10-19T10:02:05.144Z'
+                  gameId: ycmyqK6e
+                to:
+                  at: '2018-10-19T12:25:31.868Z'
+                  gameId: 3PwQXIBN
+            loss:
+              cur:
+                v: 2
+                from:
+                  at: '2026-05-13T08:23:38.653Z'
+                  gameId: nrO6iTZ3
+                to:
+                  at: '2026-05-13T08:32:58.61Z'
+                  gameId: fSJcMeCL
+              max:
+                v: 19
+                from:
+                  at: '2018-03-09T23:54:54.771Z'
+                  gameId: iAJe1M8f
+                to:
+                  at: '2018-03-16T20:52:03.611Z'
+                  gameId: 7CZ1SEF5
+          playStreak:
+            nb:
+              cur:
+                v: 0
+              max:
+                v: 115
+                from:
+                  at: '2024-10-18T11:32:12.142Z'
+                  gameId: l819pRNp
+                to:
+                  at: '2024-10-18T20:54:30.256Z'
+                  gameId: 1HeDeGbe
+            time:
+              cur:
+                v: 0
+              max:
+                v: 23231
+                from:
+                  at: '2024-10-18T11:32:12.142Z'
+                  gameId: l819pRNp
+                to:
+                  at: '2024-10-18T20:54:30.256Z'
+                  gameId: 1HeDeGbe
+            lastDate: '2026-05-13T08:32:58.61Z'
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: 'Read [the introduction for how to make authenticated requests](#description/authentication).
+
+        '
+      flows:
+        authorizationCode:
+          authorizationUrl: https://lichess.org/oauth
+          tokenUrl: https://lichess.org/api/token
+          scopes:
+            preference:read: Read your preferences
+            preference:write: Write your preferences
+            email:read: Read your email address
+            engine:read: Read your external engines
+            engine:write: Create, update, delete your external engines
+            challenge:read: Read incoming challenges
+            challenge:write: Create, accept, decline challenges
+            challenge:bulk: Create, delete, query bulk pairings
+            study:read: Read private studies and broadcasts
+            study:write: Create, update, delete studies and broadcasts
+            tournament:write: Create tournaments
+            racer:write: Create and join puzzle races
+            puzzle:read: Read puzzle activity
+            puzzle:write: Write puzzle activity
+            team:read: Read private team information
+            team:write: Join, leave teams
+            team:lead: Manage teams (kick members, send PMs)
+            follow:read: Read followed players
+            follow:write: Follow and unfollow other players
+            msg:write: Send private messages to other players
+            board:play: Play with the Board API
+            bot:play: Play with the Bot API. Only for [Bot accounts](#tag/bot/POST/api/bot/account/upgrade)
+            web:mod: Use moderator tools (within the bounds of your permissions)

@@ -1,0 +1,1248 @@
+openapi: 3.1.0
+info:
+  version: 2.0.144
+  title: Lichess.org API reference Account TV API
+  contact:
+    name: Lichess.org API
+    url: https://lichess.org/api
+    email: contact@lichess.org
+  x-logo:
+    url: https://lichess1.org/assets/logo/lichess-pad12.svg
+  license:
+    name: AGPL-3.0-or-later
+    url: https://www.gnu.org/licenses/agpl-3.0.txt
+  description: '# Introduction
+
+    Welcome to the reference for the Lichess API! Lichess is free/libre,
+
+    open-source chess server powered by volunteers and donations.
+
+    - Get help in the [Lichess Discord channel](https://discord.gg/lichess)
+
+    - API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)
+
+    - API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)
+
+    - [Contribute to this documentation on Github](https://github.com/lichess-org/api)
+
+    - Check out [Lichess widgets to embed in your website](https://lichess.org/developers)
+
+    - [Download all Lichess rated games](https://database.lichess.org/)
+
+    - [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)
+
+    - [Download all evaluated positions](https://database.lichess.org/#evals)
+
+
+    ## Endpoint
+
+    All requests go to `https://lichess.org` (unless otherwise specified).
+
+
+    ## Clients
+
+    - [Python general API](https://github.com/lichess-org/berserk)
+
+    - [MicroPython general API](https://github.com/mkomon/uberserk)
+
+    - [Python general API - async](https://pypi.org/project/async-lichess-sdk)
+
+    - [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)
+
+    - [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)
+
+    - [Java general API](https://github.com/tors42/chariot)
+
+    - [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)
+
+    - [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)
+
+    - [.NET general API](https://github.com/Dblike/LichessSharp)
+
+
+    ## Rate limiting
+
+    All requests are rate limited using various strategies,
+
+    to ensure the API remains responsive for everyone.
+
+    Only make one request at a time.
+
+    If you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),
+
+    you have exceded one of the rate limits.
+
+    In most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.
+
+    Reduce your request frequency before retrying.
+
+
+    ## Streaming with ND-JSON
+
+    Some API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.
+
+
+    Here''s a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.
+
+
+    ## Authentication
+
+    ### Which authentication method is right for me?
+
+    [Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)
+
+
+    ### Personal Access Token
+
+    Personal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.
+
+    - [Generate a personal access token](https://lichess.org/account/oauth/token)
+
+    - `curl https://lichess.org/api/account -H "Authorization: Bearer {token}"`
+
+    - [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)
+
+
+    ### Token Security
+
+    - Keep your tokens secret. Do not share them in public repositories or public forums.
+
+    - Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens'' scope). You remain responsible for all activities on your account.
+
+    - Do not hardcode tokens in your application''s code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.
+
+    - If you suspect a token has been compromised, revoke it immediately.
+
+
+    To see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).
+
+
+    ### Authorization Code Flow with PKCE
+
+    The authorization code flow with PKCE allows your users to **login with Lichess**.
+
+    Lichess supports unregistered and public clients (no client authentication, choose any unique client id).
+
+    The only accepted code challenge method is `S256`.
+
+    Access tokens are long-lived (expect one year), unless they are revoked.
+
+    Refresh tokens are not supported.
+
+
+    See the [documentation for the OAuth endpoints](#tag/OAuth) or
+
+    the [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.
+
+
+    - [Demo app](https://lichess-org.github.io/api-demo/)
+
+    - [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)
+
+    - [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)
+
+    - [Java example](https://github.com/tors42/lichess-oauth-pkce-app)
+
+    - [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)
+
+
+    #### Real life examples
+
+    - [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))
+
+    - [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))
+
+    - [English Chess Federation](https://ecf.octoknight.com/)
+
+    - [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)
+
+
+    ### Token format
+
+    Access tokens and authorization codes match `^[A-Za-z0-9_]+$`.
+
+    The length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.
+
+    By convention tokens have a recognizable prefix, but do not rely on this.
+
+    '
+servers:
+- url: https://lichess.org
+- url: https://lichess.dev
+- url: http://localhost:{port}
+  variables:
+    port:
+      default: '8080'
+- url: http://l.org
+tags:
+- name: TV
+  description: 'Access Lichess TV channels and games.
+
+    <https://lichess.org/tv> & <https://lichess.org/games>
+
+    '
+paths:
+  /api/tv/channels:
+    get:
+      operationId: tvChannels
+      summary: Get current TV games
+      description: 'Get basic info about the best games being played for each speed and variant,
+
+        but also computer games and bot games.
+
+        See [lichess.org/tv](https://lichess.org/tv).
+
+        '
+      tags:
+      - TV
+      security: []
+      responses:
+        '200':
+          description: The list of games being played for each speed and variant.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - bot
+                - blitz
+                - racingKings
+                - ultraBullet
+                - bullet
+                - classical
+                - threeCheck
+                - antichess
+                - computer
+                - horde
+                - rapid
+                - atomic
+                - crazyhouse
+                - chess960
+                - kingOfTheHill
+                - best
+                properties:
+                  bot:
+                    $ref: '#/components/schemas/TvGame'
+                  blitz:
+                    $ref: '#/components/schemas/TvGame'
+                  racingKings:
+                    $ref: '#/components/schemas/TvGame'
+                  ultraBullet:
+                    $ref: '#/components/schemas/TvGame'
+                  bullet:
+                    $ref: '#/components/schemas/TvGame'
+                  classical:
+                    $ref: '#/components/schemas/TvGame'
+                  threeCheck:
+                    $ref: '#/components/schemas/TvGame'
+                  antichess:
+                    $ref: '#/components/schemas/TvGame'
+                  computer:
+                    $ref: '#/components/schemas/TvGame'
+                  horde:
+                    $ref: '#/components/schemas/TvGame'
+                  rapid:
+                    $ref: '#/components/schemas/TvGame'
+                  atomic:
+                    $ref: '#/components/schemas/TvGame'
+                  crazyhouse:
+                    $ref: '#/components/schemas/TvGame'
+                  chess960:
+                    $ref: '#/components/schemas/TvGame'
+                  kingOfTheHill:
+                    $ref: '#/components/schemas/TvGame'
+                  best:
+                    $ref: '#/components/schemas/TvGame'
+              examples:
+                default:
+                  $ref: '#/components/examples/tv-getCurrentTvGames.json'
+  /api/tv/feed:
+    get:
+      operationId: tvFeed
+      summary: Stream current TV game
+      description: 'Stream positions and moves of the current [TV game](https://lichess.org/tv) in [ndjson](#description/streaming-with-nd-json).
+
+        Try it with `curl https://lichess.org/api/tv/feed`.
+
+        '
+      tags:
+      - TV
+      security: []
+      responses:
+        '200':
+          description: The stream of the current TV game.
+          content:
+            application/x-ndjson:
+              schema:
+                $ref: '#/components/schemas/TvFeed'
+              examples:
+                new featured game:
+                  $ref: '#/components/examples/tv-streamCurrentTvGame-newGame.json'
+                move:
+                  $ref: '#/components/examples/tv-streamCurrentTvGame-move.json'
+  /api/tv/{channel}/feed:
+    get:
+      operationId: tvChannelFeed
+      summary: Stream current TV game of a TV channel
+      description: 'Stream positions and moves of a current [TV channel''s game](https://lichess.org/tv/rapid) in [ndjson](#description/streaming-with-nd-json).
+
+        Try it with `curl https://lichess.org/api/tv/rapid/feed`.
+
+        '
+      tags:
+      - TV
+      security: []
+      parameters:
+      - in: path
+        name: channel
+        description: The name of the channel in camel case.
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: The stream of the current TV game of a TV channel.
+          content:
+            application/x-ndjson:
+              schema:
+                $ref: '#/components/schemas/TvFeed'
+              examples:
+                new featured game:
+                  $ref: '#/components/examples/tv-streamCurrentTvGame-newGame.json'
+                move:
+                  $ref: '#/components/examples/tv-streamCurrentTvGame-move.json'
+  /api/tv/{channel}:
+    get:
+      operationId: tvChannelGames
+      summary: Get best ongoing games of a TV channel
+      description: 'Get a list of ongoing games for a given TV channel. Similar to [lichess.org/games](https://lichess.org/games).
+
+        Available in PGN or [ndjson](#description/streaming-with-nd-json) format, depending on the request `Accept` header.
+
+        '
+      tags:
+      - TV
+      security: []
+      parameters:
+      - $ref: '#/components/parameters/AcceptPgnOrNdjson'
+      - in: path
+        name: channel
+        description: The name of the channel in camel case.
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: nb
+        description: Number of games to fetch.
+        schema:
+          type: integer
+          default: 10
+          minimum: 1
+          maximum: 30
+      - in: query
+        name: moves
+        description: Include the PGN moves.
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: pgnInJson
+        description: Include the full PGN within the JSON response, in a `pgn` field.
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: tags
+        description: Include the PGN tags.
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: clocks
+        description: 'Include clock status when available.
+
+          Either as PGN comments: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`
+
+          Or in a `clocks` JSON field, as centisecond integers, depending on the response type.
+
+          '
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: opening
+        description: 'Include the opening name.
+
+          Example: `[Opening "King''s Gambit Accepted, King''s Knight Gambit"]`
+
+          '
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: The representation of the games.
+          content:
+            application/x-chess-pgn:
+              schema:
+                $ref: '#/components/schemas/GamePgn'
+              examples:
+                pgn:
+                  $ref: '#/components/examples/tv-getBestOngoingGamesOfTvChannel.pgn'
+            application/x-ndjson:
+              schema:
+                $ref: '#/components/schemas/GameJson'
+              examples:
+                default:
+                  $ref: '#/components/examples/tv-getBestOngoingGamesOfTvChannel.json'
+components:
+  schemas:
+    TvFeedFen:
+      type: object
+      title: fen
+      properties:
+        t:
+          type: string
+          description: 'The type of message.
+
+            A summary of the game is sent as the first message and when the featured game changes.
+
+            Subsequent messages are just the X-FEN, last move, and clocks.
+
+            '
+          const: fen
+        d:
+          type: object
+          description: The data of the message
+          title: fen
+          properties:
+            fen:
+              type: string
+              description: The X-FEN of the current position
+            lm:
+              type: string
+              description: 'The last move in UCI format (King to rook for Chess960-compatible
+
+                castling notation)
+
+                '
+            wc:
+              type: integer
+              description: White's clock in seconds
+            bc:
+              type: integer
+              description: Black's clock in seconds
+          required:
+          - fen
+          - lm
+          - wc
+          - bc
+      required:
+      - t
+      - d
+    GameJson:
+      type: object
+      properties:
+        id:
+          type: string
+        rated:
+          type: boolean
+        variant:
+          $ref: '#/components/schemas/VariantKey'
+        speed:
+          $ref: '#/components/schemas/Speed'
+        perf:
+          type: string
+        createdAt:
+          type: integer
+          format: int64
+        lastMoveAt:
+          type: integer
+          format: int64
+        status:
+          $ref: '#/components/schemas/GameStatusName'
+        source:
+          type: string
+        players:
+          $ref: '#/components/schemas/GamePlayers'
+        initialFen:
+          type: string
+        winner:
+          $ref: '#/components/schemas/GameColor'
+        opening:
+          $ref: '#/components/schemas/GameOpening'
+        moves:
+          type: string
+        pgn:
+          type: string
+        daysPerTurn:
+          type: integer
+        analysis:
+          type: array
+          items:
+            $ref: '#/components/schemas/GameMoveAnalysis'
+        tournament:
+          type: string
+        swiss:
+          type: string
+        clock:
+          type: object
+          properties:
+            initial:
+              type: integer
+            increment:
+              type: integer
+            totalTime:
+              type: integer
+          required:
+          - initial
+          - increment
+          - totalTime
+        clocks:
+          type: array
+          items:
+            type: integer
+        division:
+          type: object
+          properties:
+            middle:
+              type: integer
+              description: Ply at which the middlegame begins
+            end:
+              type: integer
+              description: Ply at which the endgame begins
+          required: []
+      required:
+      - id
+      - rated
+      - variant
+      - speed
+      - perf
+      - createdAt
+      - lastMoveAt
+      - status
+      - players
+    PatronColor:
+      type: integer
+      description: 'Players can choose a color for their Patron wings.
+
+        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
+
+
+        The presence of this field indicates the player is an active Patron.
+
+        '
+      minimum: 1
+      maximum: 10
+    TvGame:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/LightUser'
+        rating:
+          type: integer
+        gameId:
+          type: string
+        color:
+          $ref: '#/components/schemas/GameColor'
+      required:
+      - user
+      - rating
+      - gameId
+      - color
+    Patron:
+      type: boolean
+      deprecated: true
+      description: 'Use patronColor value instead to determine if player is a patron.
+
+        '
+    VariantKey:
+      type: string
+      enum:
+      - standard
+      - chess960
+      - crazyhouse
+      - antichess
+      - atomic
+      - horde
+      - kingOfTheHill
+      - racingKings
+      - threeCheck
+      - fromPosition
+      example: standard
+      default: standard
+    GameMoveAnalysis:
+      type: object
+      properties:
+        eval:
+          type: integer
+          description: Evaluation in centipawns
+        mate:
+          type: integer
+          description: Number of moves until forced mate
+        best:
+          type: string
+          example: c2c3
+          description: Best move in UCI notation (only if played move was inaccurate)
+        variation:
+          type: string
+          example: c3 Nc6 d4 Qb6 Be2 Nge7 Na3 cxd4 cxd4 Nf5
+          description: Best variation in SAN notation (only if played move was inaccurate)
+        judgment:
+          type: object
+          description: Judgment annotation (only if played move was inaccurate)
+          properties:
+            name:
+              type: string
+              enum:
+              - Inaccuracy
+              - Mistake
+              - Blunder
+            comment:
+              type: string
+              example: Blunder. Nxg6 was best.
+    GameColor:
+      type: string
+      enum:
+      - white
+      - black
+    GamePgn:
+      type: string
+      example: '[Event "Rated Blitz game"]
+
+        [Site "https://lichess.org/fY44h4OY"]
+
+        [Date "2018.03.29"]
+
+        [Round "-"]
+
+        [White "pveldman"]
+
+        [Black "thibault"]
+
+        [Result "1-0"]
+
+        [UTCDate "2018.03.29"]
+
+        [UTCTime "01:38:15"]
+
+        [WhiteElo "1610"]
+
+        [BlackElo "1601"]
+
+        [WhiteRatingDiff "+10"]
+
+        [BlackRatingDiff "-10"]
+
+        [Variant "Standard"]
+
+        [TimeControl "180+0"]
+
+        [ECO "C62"]
+
+        [Opening "Ruy Lopez: Steinitz Defense"]
+
+        [Termination "Normal"]
+
+
+        1. e4 { [%clk 0:03:00] } e5 { [%clk 0:03:00] } 2. Nf3 { [%clk 0:02:59] } Nc6 { [%clk 0:02:58] } 3. Bb5 { [%clk 0:02:57] } d6 { [%clk 0:02:55] } 4. h3 { [%clk 0:02:54] } Nf6 { [%clk 0:02:52] } 5. Bxc6+ { [%clk 0:02:52] } bxc6 { [%clk 0:02:49] } 6. d3 { [%clk 0:02:51] } Be7 { [%clk 0:02:46] } 7. O-O { [%clk 0:02:47] } O-O { [%clk 0:02:45] } 8. b3 { [%clk 0:02:45] } d5 { [%clk 0:02:45] } 9. exd5 { [%clk 0:02:33] } cxd5 { [%clk 0:02:40] } 10. Nxe5 { [%clk 0:02:31] } Qd6 { [%clk 0:02:38] } 1-0
+
+        '
+    TvFeedFeatured:
+      type: object
+      title: featured
+      properties:
+        t:
+          type: string
+          description: 'The type of message.
+
+            A summary of the game is sent as the first message and when the featured game changes.
+
+            Subsequent messages are just the X-FEN, last move, and clocks.
+
+            '
+          const: featured
+        d:
+          type: object
+          description: The data of the message
+          title: featured
+          properties:
+            id:
+              type: string
+              description: The game ID
+            orientation:
+              $ref: '#/components/schemas/GameColor'
+            players:
+              type: array
+              items:
+                type: object
+                properties:
+                  color:
+                    $ref: '#/components/schemas/GameColor'
+                  user:
+                    $ref: '#/components/schemas/LightUser'
+                  rating:
+                    type: integer
+                  seconds:
+                    type: integer
+                    description: The player's remaining time in seconds
+                required:
+                - color
+                - rating
+                - seconds
+                - user
+              minItems: 2
+              maxItems: 2
+            fen:
+              type: string
+              description: The X-FEN of the current position
+          required:
+          - id
+          - orientation
+          - players
+          - fen
+      required:
+      - t
+      - d
+    GameOpening:
+      type: object
+      properties:
+        eco:
+          type: string
+        name:
+          type: string
+        ply:
+          type: integer
+      required:
+      - eco
+      - name
+      - ply
+    GamePlayers:
+      type: object
+      properties:
+        white:
+          $ref: '#/components/schemas/GamePlayerUser'
+        black:
+          $ref: '#/components/schemas/GamePlayerUser'
+      required:
+      - white
+      - black
+    Flair:
+      type: string
+      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
+    GameStatusName:
+      type: string
+      enum:
+      - created
+      - started
+      - aborted
+      - mate
+      - resign
+      - stalemate
+      - timeout
+      - draw
+      - outoftime
+      - cheat
+      - noStart
+      - unknownFinish
+      - insufficientMaterialClaim
+      - variantEnd
+    Speed:
+      type: string
+      enum:
+      - ultraBullet
+      - bullet
+      - blitz
+      - rapid
+      - classical
+      - correspondence
+    TvFeed:
+      oneOf:
+      - $ref: '#/components/schemas/TvFeedFeatured'
+      - $ref: '#/components/schemas/TvFeedFen'
+    LightUser:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        flair:
+          $ref: '#/components/schemas/Flair'
+        title:
+          $ref: '#/components/schemas/Title'
+        patron:
+          $ref: '#/components/schemas/Patron'
+        patronColor:
+          $ref: '#/components/schemas/PatronColor'
+      required:
+      - id
+      - name
+    GamePlayerUser:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/LightUser'
+        rating:
+          type: integer
+        ratingDiff:
+          type: integer
+        name:
+          type: string
+        provisional:
+          type: boolean
+        aiLevel:
+          type: integer
+        analysis:
+          type: object
+          properties:
+            inaccuracy:
+              type: integer
+            mistake:
+              type: integer
+            blunder:
+              type: integer
+            acpl:
+              type: integer
+            accuracy:
+              type: integer
+          required:
+          - inaccuracy
+          - mistake
+          - blunder
+          - acpl
+        team:
+          type: string
+      required:
+      - user
+      - rating
+    Title:
+      type: string
+      enum:
+      - GM
+      - WGM
+      - IM
+      - WIM
+      - FM
+      - WFM
+      - NM
+      - CM
+      - WCM
+      - WNM
+      - LM
+      - BOT
+      description: only appears if the user is a titled player or a bot user
+  parameters:
+    AcceptPgnOrNdjson:
+      in: header
+      name: Accept
+      description: 'Specify the desired response format.
+
+        Use `application/x-chess-pgn` to get the games in PGN format.
+
+        Use `application/x-ndjson` to get the games in ndjson format. [Read about ndjson here](#description/streaming-with-nd-json) and how you can parse it in Javascript.
+
+        '
+      schema:
+        type: string
+        enum:
+        - application/x-chess-pgn
+        - application/x-ndjson
+        default: application/x-chess-pgn
+  examples:
+    tv-streamCurrentTvGame-move.json:
+      value:
+        t: fen
+        d:
+          fen: 2n1rrk1/1p3ppp/3p4/pP1P2qn/2PB4/5Q2/P1N2PPP/4RRK1 b - - 6 21
+          lm: a1e1
+          wc: 39
+          bc: 43
+    tv-getCurrentTvGames.json:
+      value:
+        chess960:
+          user:
+            name: realNomenNescio
+            id: realnomennescio
+          rating: 2366
+          gameId: doTaX3pm
+          color: black
+        best:
+          user:
+            name: DrawMerchant
+            title: IM
+            id: drawmerchant
+          rating: 2787
+          gameId: 2i3nCKuq
+          color: black
+        antichess:
+          user:
+            name: Penguinept
+            flair: activity.puzzle-piece
+            id: penguinept
+          rating: 2197
+          gameId: Mm5RSBXg
+          color: white
+        computer:
+          user:
+            name: AIDARED
+            flair: food-drink.red-apple
+            id: aidared
+          rating: 2506
+          gameId: Y1D9abkF
+          color: white
+        bullet:
+          user:
+            name: DrawMerchant
+            title: IM
+            id: drawmerchant
+          rating: 2787
+          gameId: 2i3nCKuq
+          color: black
+        horde:
+          user:
+            name: Andr88
+            flair: symbols.triangular-flag
+            id: andr88
+          rating: 2133
+          gameId: zv6BfeT6
+          color: black
+        atomic:
+          user:
+            name: cyberpunks
+            flair: smileys.cold-face
+            patron: true
+            patronColor: 1
+            id: cyberpunks
+          rating: 1932
+          gameId: EBddIJbc
+          color: white
+        bot:
+          user:
+            name: PetersBot
+            title: BOT
+            id: petersbot
+          rating: 2921
+          gameId: 0xBV4AeD
+          color: black
+        racingKings:
+          user:
+            name: AahaanTheChamp
+            flair: food-drink.mango
+            id: aahaanthechamp
+          rating: 2135
+          gameId: HEmN5MUd
+          color: white
+        ultraBullet:
+          user:
+            name: Lumbrerosky
+            id: lumbrerosky
+          rating: 1942
+          gameId: v2WgmhmU
+          color: black
+        blitz:
+          user:
+            name: Bugzilla
+            title: IM
+            id: bugzilla
+          rating: 2629
+          gameId: Si5fCcRw
+          color: white
+        kingOfTheHill:
+          user:
+            name: sorrymyfault
+            id: sorrymyfault
+          rating: 2357
+          gameId: ugZHqrgZ
+          color: white
+        crazyhouse:
+          user:
+            name: Mini_verse
+            flair: smileys.skull
+            id: mini_verse
+          rating: 2295
+          gameId: f2RI9DMl
+          color: black
+        threeCheck:
+          user:
+            name: blit2
+            id: blit2
+          rating: 1978
+          gameId: ltR9SqXm
+          color: black
+        classical:
+          user:
+            name: Matador85
+            id: matador85
+          rating: 2356
+          gameId: JBrftNJe
+          color: white
+        rapid:
+          user:
+            name: fito2
+            title: FM
+            id: fito2
+          rating: 2479
+          gameId: EUO98ic9
+          color: white
+    tv-getBestOngoingGamesOfTvChannel.pgn:
+      value: '[Event "rated bullet game"]
+
+        [Site "https://lichess.org/nQSXy8Zw"]
+
+        [Date "2026.05.15"]
+
+        [Round "-"]
+
+        [White "Chess-uae"]
+
+        [Black "eloWhitekingchess"]
+
+        [Result "*"]
+
+        [GameId "nQSXy8Zw"]
+
+        [UTCDate "2026.05.15"]
+
+        [UTCTime "02:36:59"]
+
+        [WhiteElo "2995"]
+
+        [BlackElo "2868"]
+
+        [Variant "Standard"]
+
+        [TimeControl "30+0"]
+
+        [ECO "A00"]
+
+        [Termination "Unterminated"]
+
+
+        1. g3 Nf6 2. Bg2 d6 3. Nf3 g6 4. O-O Bg7 5. d4 O-O 6. c4 c6 *
+
+
+
+        [Event "GRAN FINAL BULLET RAW ABRIL Team Battle"]
+
+        [Site "https://lichess.org/9U5Mc8fc"]
+
+        [Date "2026.05.15"]
+
+        [Round "-"]
+
+        [White "Goku102020newaccount"]
+
+        [Black "Misterio666"]
+
+        [Result "*"]
+
+        [GameId "9U5Mc8fc"]
+
+        [UTCDate "2026.05.15"]
+
+        [UTCTime "02:36:36"]
+
+        [WhiteElo "2826"]
+
+        [BlackElo "2530"]
+
+        [Variant "Standard"]
+
+        [TimeControl "60+0"]
+
+        [ECO "A40"]
+
+        [Termination "Unterminated"]
+
+
+        1. d4 e6 2. Bf4 Nf6 3. e3 d5 4. Nf3 Bd6 5. Bg3 Ne4 6. Nbd2 f5 7. c4 c6 8. Qb3 O-O 9. Bd3 Kh8 10. Bxe4 fxe4 11. Ne5 Bxe5 12. Bxe5 Nd7 13. Bg3 Nf6 *
+
+
+
+        [Event "rated bullet game"]
+
+        [Site "https://lichess.org/tQrb3I5l"]
+
+        [Date "2026.05.15"]
+
+        [Round "-"]
+
+        [White "eloWhitekingchess"]
+
+        [Black "Chess-uae"]
+
+        [Result "0-1"]
+
+        [GameId "tQrb3I5l"]
+
+        [UTCDate "2026.05.15"]
+
+        [UTCTime "02:36:23"]
+
+        [WhiteElo "2872"]
+
+        [BlackElo "2991"]
+
+        [WhiteRatingDiff "-4"]
+
+        [BlackRatingDiff "+4"]
+
+        [Variant "Standard"]
+
+        [TimeControl "30+0"]
+
+        [ECO "A05"]
+
+        [Termination "Normal"]
+
+
+        1. Nf3 g6 2. d3 Nf6 3. g3 Bg7 4. Bg2 O-O 5. O-O d5 6. c3 c5 7. Qc2 Nc6 8. Nbd2 d4 9. e3 dxc3 10. bxc3 Bf5 11. e4 Bg4 12. Nc4 b5 13. Ne3 Rc8 14. Nxg4 Nxg4 15. h3 Nge5 16. Nxe5 Bxe5 17. Rd1 Bg7 18. Be3 b4 19. cxb4 Nxb4 20. Qb3 Bxa1 21. Rxa1 Qxd3 22. Qa4 Rfd8 23. Qxa7 Nc2 24. Rc1 Nxe3 25. Qxe7 Nxg2 26. Kxg2 Re8 0-1
+
+        '
+    tv-getBestOngoingGamesOfTvChannel.json:
+      value:
+        id: nQSXy8Zw
+        rated: true
+        variant: standard
+        speed: bullet
+        perf: bullet
+        createdAt: 1778812619976
+        lastMoveAt: 1778812625792
+        status: started
+        source: friend
+        players:
+          white:
+            user:
+              name: Chess-uae
+              id: chess-uae
+            rating: 2995
+          black:
+            user:
+              name: eloWhitekingchess
+              flair: nature.horse-face
+              id: elowhitekingchess
+            rating: 2868
+        opening:
+          eco: A00
+          name: 'Hungarian Opening: Indian Defense'
+          ply: 2
+        moves: g3 Nf6 Bg2 d6 Nf3 g6 O-O Bg7 d4 O-O c4 c6
+        clocks:
+        - 3000
+        - 3000
+        - 3000
+        - 3000
+        - 3000
+        - 2964
+        - 3000
+        - 2964
+        - 3000
+        - 2964
+        - 3000
+        - 2955
+        pgn: '[Event "rated bullet game"]
+
+          [Site "https://lichess.org/nQSXy8Zw"]
+
+          [Date "2026.05.15"]
+
+          [Round "-"]
+
+          [White "Chess-uae"]
+
+          [Black "eloWhitekingchess"]
+
+          [Result "*"]
+
+          [GameId "nQSXy8Zw"]
+
+          [UTCDate "2026.05.15"]
+
+          [UTCTime "02:36:59"]
+
+          [WhiteElo "2995"]
+
+          [BlackElo "2868"]
+
+          [Variant "Standard"]
+
+          [TimeControl "30+0"]
+
+          [ECO "A00"]
+
+          [Opening "Hungarian Opening: Indian Defense"]
+
+          [Termination "Unterminated"]
+
+
+          1. g3 { [%clk 0:00:30] } 1... Nf6 { [%clk 0:00:30] } 2. Bg2 { [%clk 0:00:30] } 2... d6 { [%clk 0:00:30] } 3. Nf3 { [%clk 0:00:30] } 3... g6 { [%clk 0:00:30] } 4. O-O { [%clk 0:00:30] } 4... Bg7 { [%clk 0:00:30] } 5. d4 { [%clk 0:00:30] } 5... O-O { [%clk 0:00:30] } 6. c4 { [%clk 0:00:30] } 6... c6 { [%clk 0:00:30] } *
+
+
+
+          '
+        clock:
+          initial: 30
+          increment: 0
+          totalTime: 30
+    tv-streamCurrentTvGame-newGame.json:
+      value:
+        t: featured
+        d:
+          id: 2i3nCKuq
+          orientation: black
+          players:
+          - color: white
+            user:
+              name: DrawMerchant
+              title: IM
+              id: drawmerchant
+            rating: 2787
+            seconds: 60
+          - color: black
+            user:
+              name: Empathy666
+              flair: symbols.black-heart
+              id: empathy666
+            rating: 2876
+            seconds: 60
+          fen: 2n1rrk1/1p3ppp/3p4/pP1P2qn/2PB4/5Q2/P1N2PPP/R4RK1 w - - 5 21
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: 'Read [the introduction for how to make authenticated requests](#description/authentication).
+
+        '
+      flows:
+        authorizationCode:
+          authorizationUrl: https://lichess.org/oauth
+          tokenUrl: https://lichess.org/api/token
+          scopes:
+            preference:read: Read your preferences
+            preference:write: Write your preferences
+            email:read: Read your email address
+            engine:read: Read your external engines
+            engine:write: Create, update, delete your external engines
+            challenge:read: Read incoming challenges
+            challenge:write: Create, accept, decline challenges
+            challenge:bulk: Create, delete, query bulk pairings
+            study:read: Read private studies and broadcasts
+            study:write: Create, update, delete studies and broadcasts
+            tournament:write: Create tournaments
+            racer:write: Create and join puzzle races
+            puzzle:read: Read puzzle activity
+            puzzle:write: Write puzzle activity
+            team:read: Read private team information
+            team:write: Join, leave teams
+            team:lead: Manage teams (kick members, send PMs)
+            follow:read: Read followed players
+            follow:write: Follow and unfollow other players
+            msg:write: Send private messages to other players
+            board:play: Play with the Board API
+            bot:play: Play with the Bot API. Only for [Bot accounts](#tag/bot/POST/api/bot/account/upgrade)
+            web:mod: Use moderator tools (within the bounds of your permissions)

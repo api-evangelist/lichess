@@ -1,0 +1,3059 @@
+openapi: 3.1.0
+info:
+  version: 2.0.144
+  title: Lichess.org API reference Account Broadcasts API
+  contact:
+    name: Lichess.org API
+    url: https://lichess.org/api
+    email: contact@lichess.org
+  x-logo:
+    url: https://lichess1.org/assets/logo/lichess-pad12.svg
+  license:
+    name: AGPL-3.0-or-later
+    url: https://www.gnu.org/licenses/agpl-3.0.txt
+  description: '# Introduction
+
+    Welcome to the reference for the Lichess API! Lichess is free/libre,
+
+    open-source chess server powered by volunteers and donations.
+
+    - Get help in the [Lichess Discord channel](https://discord.gg/lichess)
+
+    - API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)
+
+    - API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)
+
+    - [Contribute to this documentation on Github](https://github.com/lichess-org/api)
+
+    - Check out [Lichess widgets to embed in your website](https://lichess.org/developers)
+
+    - [Download all Lichess rated games](https://database.lichess.org/)
+
+    - [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)
+
+    - [Download all evaluated positions](https://database.lichess.org/#evals)
+
+
+    ## Endpoint
+
+    All requests go to `https://lichess.org` (unless otherwise specified).
+
+
+    ## Clients
+
+    - [Python general API](https://github.com/lichess-org/berserk)
+
+    - [MicroPython general API](https://github.com/mkomon/uberserk)
+
+    - [Python general API - async](https://pypi.org/project/async-lichess-sdk)
+
+    - [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)
+
+    - [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)
+
+    - [Java general API](https://github.com/tors42/chariot)
+
+    - [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)
+
+    - [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)
+
+    - [.NET general API](https://github.com/Dblike/LichessSharp)
+
+
+    ## Rate limiting
+
+    All requests are rate limited using various strategies,
+
+    to ensure the API remains responsive for everyone.
+
+    Only make one request at a time.
+
+    If you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),
+
+    you have exceded one of the rate limits.
+
+    In most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.
+
+    Reduce your request frequency before retrying.
+
+
+    ## Streaming with ND-JSON
+
+    Some API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.
+
+
+    Here''s a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.
+
+
+    ## Authentication
+
+    ### Which authentication method is right for me?
+
+    [Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)
+
+
+    ### Personal Access Token
+
+    Personal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.
+
+    - [Generate a personal access token](https://lichess.org/account/oauth/token)
+
+    - `curl https://lichess.org/api/account -H "Authorization: Bearer {token}"`
+
+    - [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)
+
+
+    ### Token Security
+
+    - Keep your tokens secret. Do not share them in public repositories or public forums.
+
+    - Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens'' scope). You remain responsible for all activities on your account.
+
+    - Do not hardcode tokens in your application''s code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.
+
+    - If you suspect a token has been compromised, revoke it immediately.
+
+
+    To see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).
+
+
+    ### Authorization Code Flow with PKCE
+
+    The authorization code flow with PKCE allows your users to **login with Lichess**.
+
+    Lichess supports unregistered and public clients (no client authentication, choose any unique client id).
+
+    The only accepted code challenge method is `S256`.
+
+    Access tokens are long-lived (expect one year), unless they are revoked.
+
+    Refresh tokens are not supported.
+
+
+    See the [documentation for the OAuth endpoints](#tag/OAuth) or
+
+    the [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.
+
+
+    - [Demo app](https://lichess-org.github.io/api-demo/)
+
+    - [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)
+
+    - [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)
+
+    - [Java example](https://github.com/tors42/lichess-oauth-pkce-app)
+
+    - [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)
+
+
+    #### Real life examples
+
+    - [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))
+
+    - [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))
+
+    - [English Chess Federation](https://ecf.octoknight.com/)
+
+    - [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)
+
+
+    ### Token format
+
+    Access tokens and authorization codes match `^[A-Za-z0-9_]+$`.
+
+    The length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.
+
+    By convention tokens have a recognizable prefix, but do not rely on this.
+
+    '
+servers:
+- url: https://lichess.org
+- url: https://lichess.dev
+- url: http://localhost:{port}
+  variables:
+    port:
+      default: '8080'
+- url: http://l.org
+tags:
+- name: Broadcasts
+  description: 'Relay chess events on Lichess.
+
+    [Official broadcasts](https://lichess.org/broadcast) are maintained by Lichess,
+
+    but you can [create your own broadcasts](https://lichess.org/broadcast/new) to cover any live game or chess event.
+
+    You will need to publish PGN on a public URL so that Lichess can pull updates from it.
+
+    Alternatively, you can push PGN updates to Lichess using [this API endpoint](#tag/broadcasts/POST/api/broadcast/round/{broadcastRoundId}/push).
+
+
+    Broadcasts are organized in tournaments, which have several rounds, which have several games.
+
+    You must first create a tournament, then you can add rounds to them.
+
+    '
+paths:
+  /api/broadcast:
+    get:
+      operationId: broadcastsOfficial
+      summary: Get official broadcasts
+      description: "Returns active (a round is scheduled or ongoing) official broadcasts sorted by tier. \nAfter that, returns finished broadcasts sorted by most recent sync time.\nBroadcasts are streamed as [ndjson](#description/streaming-with-nd-json).\n"
+      tags:
+      - Broadcasts
+      security: []
+      parameters:
+      - in: query
+        name: nb
+        description: Max number of broadcasts to fetch
+        schema:
+          type: integer
+          default: 20
+          minimum: 1
+          maximum: 100
+      - in: query
+        name: html
+        description: Convert the "description" field from markdown to HTML
+        schema:
+          type: boolean
+        example: true
+      - in: query
+        name: live
+        description: '[Filter] only broadcasts where a round is ongoing, i.e. started and not finished'
+        schema:
+          type: boolean
+        example: true
+      responses:
+        '200':
+          description: The list of official broadcasts.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/x-ndjson:
+              schema:
+                $ref: '#/components/schemas/BroadcastWithRounds'
+              examples:
+                default:
+                  $ref: '#/components/examples/broadcasts-getOfficialBroadcasts.json'
+  /api/broadcast/top:
+    get:
+      operationId: broadcastsTop
+      summary: Get paginated top broadcast previews
+      description: 'The same data, in the same order, as can be seen on [https://lichess.org/broadcast](/broadcast).
+
+        '
+      tags:
+      - Broadcasts
+      security: []
+      parameters:
+      - in: query
+        name: page
+        description: Which page to fetch. Only page 1 has "active" broadcasts.
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+          maximum: 20
+      - in: query
+        name: html
+        description: Convert the "description" field from markdown to HTML
+        schema:
+          type: boolean
+        example: true
+      responses:
+        '200':
+          description: Paginated top broadcast previews.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BroadcastTop'
+              examples:
+                default:
+                  $ref: '#/components/examples/broadcasts-getPaginatedToBroadcastPreviews.json'
+  /api/broadcast/by/{username}:
+    get:
+      operationId: broadcastsByUser
+      summary: Get broadcasts created by a user
+      description: 'Get all incoming, ongoing, and finished official broadcasts.
+
+        The broadcasts are sorted by created date, most recent first.
+
+
+        If you are authenticated as the user whose broadcasts you are requesting, you will also see your private and unlisted broadcasts.
+
+        '
+      tags:
+      - Broadcasts
+      security:
+      - OAuth2:
+        - study:read
+      parameters:
+      - in: path
+        name: username
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: page
+        schema:
+          type: integer
+          example: 1
+          default: 1
+      - in: query
+        name: html
+        description: Convert the "description" field from markdown to HTML
+        schema:
+          type: boolean
+        example: true
+      responses:
+        '200':
+          description: A paginated list of the broadcasts created by a user.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  currentPage:
+                    type: integer
+                    example: 4
+                  maxPerPage:
+                    type: integer
+                    example: 15
+                  currentPageResults:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/BroadcastByUser'
+                  nbResults:
+                    type: integer
+                    example: 205194
+                  previousPage:
+                    type:
+                    - integer
+                    - 'null'
+                    example: 3
+                  nextPage:
+                    type:
+                    - integer
+                    - 'null'
+                    example: 5
+                  nbPages:
+                    type: integer
+                    example: 13680
+                required:
+                - currentPage
+                - maxPerPage
+                - currentPageResults
+                - nbResults
+                - previousPage
+                - nextPage
+                - nbPages
+              examples:
+                default:
+                  $ref: '#/components/examples/broadcasts-getBroadcastsCreatedByUser.json'
+  /api/broadcast/search:
+    get:
+      operationId: broadcastsSearch
+      summary: Search broadcasts
+      description: 'Search across recent official broadcasts.
+
+        '
+      tags:
+      - Broadcasts
+      security: []
+      parameters:
+      - in: query
+        name: page
+        description: Which page to fetch.
+        schema:
+          type: integer
+          default: 1
+          minimum: 1
+          maximum: 20
+      - in: query
+        name: q
+        description: Search term
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Paginated top broadcast previews.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  currentPage:
+                    type: integer
+                  maxPerPage:
+                    type: integer
+                  currentPageResults:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/BroadcastWithLastRound'
+                  previousPage:
+                    type:
+                    - integer
+                    - 'null'
+                  nextPage:
+                    type:
+                    - integer
+                    - 'null'
+                required:
+                - currentPage
+                - maxPerPage
+                - currentPageResults
+                - previousPage
+                - nextPage
+              examples:
+                default:
+                  $ref: '#/components/examples/broadcasts-searchBroadcasts.json'
+  /broadcast/new:
+    post:
+      operationId: broadcastTourCreate
+      summary: Create a broadcast tournament
+      description: 'Create a new broadcast tournament to relay external games.
+
+        This endpoint accepts the same form data as the [web form](https://lichess.org/broadcast/new).
+
+        '
+      tags:
+      - Broadcasts
+      security:
+      - OAuth2:
+        - study:write
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BroadcastForm'
+      responses:
+        '200':
+          description: The broadcast tournament was successfully created.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BroadcastWithRounds'
+              examples:
+                default:
+                  $ref: '#/components/examples/broadcasts-createBroadcastTournament.json'
+        '400':
+          description: The creation of the broadcast tournament failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/broadcast/{broadcastTournamentId}:
+    get:
+      operationId: broadcastTourGet
+      summary: Get a broadcast tournament
+      description: 'Get information about a broadcast tournament.
+
+        '
+      tags:
+      - Broadcasts
+      security:
+      - {}
+      - OAuth2:
+        - study:read
+      parameters:
+      - in: path
+        name: broadcastTournamentId
+        description: The broadcast tournament ID
+        required: true
+        schema:
+          type: string
+          minLength: 8
+          maxLength: 8
+      responses:
+        '200':
+          description: The information about the broadcast tournament.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BroadcastWithRoundsAndFullGroup'
+              examples:
+                default:
+                  $ref: '#/components/examples/broadcasts-getBroadcastTournament.json'
+  /broadcast/{broadcastTournamentId}/players:
+    get:
+      operationId: broadcastPlayersGet
+      summary: Get players of a broadcast
+      description: 'Get the list of players of a broadcast tournament, if available.
+
+        '
+      tags:
+      - Broadcasts
+      security: []
+      parameters:
+      - in: path
+        name: broadcastTournamentId
+        description: The broadcast tournament ID
+        required: true
+        schema:
+          type: string
+          minLength: 8
+          maxLength: 8
+      responses:
+        '200':
+          description: The broadcast players
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BroadcastPlayerEntry'
+              examples:
+                default:
+                  $ref: '#/components/examples/broadcasts-getPlayersOfBroadcastTournament.json'
+  /broadcast/{broadcastTournamentId}/players/{playerId}:
+    get:
+      operationId: broadcastPlayerGet
+      summary: Get a player of a broadcast
+      description: 'Get the details of a specific player and their games from a broadcast tournament.
+
+        '
+      tags:
+      - Broadcasts
+      security: []
+      parameters:
+      - in: path
+        name: broadcastTournamentId
+        description: The broadcast tournament ID
+        required: true
+        schema:
+          type: string
+          minLength: 8
+          maxLength: 8
+      - in: path
+        name: playerId
+        description: "The unique player ID within the broadcast. This is usually their fideId. \nIf the player does not have a fideId, it is their name. Consult the [list of players for the broadcast](#tag/broadcasts/GET/broadcast/{broadcastTournamentId}/players) for which ID to use.\n"
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The broadcast player
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/BroadcastPlayerEntryWithFideAndGames'
+              examples:
+                default:
+                  $ref: '#/components/examples/broadcasts-getPlayer.json'
+        '404':
+          description: The player was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+  /broadcast/{broadcastTournamentId}/teams/standings:
+    get:
+      operationId: broadcastTeamLeaderboardGet
+      summary: Get the team leaderboard of a broadcast
+      description: 'Get the team leaderboard of a broadcast tournament, if available.
+
+        '
+      tags:
+      - Broadcasts
+      security: []
+      parameters:
+      - in: path
+        name: broadcastTournamentId
+        description: The broadcast tournament ID
+        required: true
+        schema:
+          type: string
+          minLength: 8
+          maxLength: 8
+      responses:
+        '200':
+          description: The team leaderboard
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BroadcastTeamLeaderboardEntry'
+        '404':
+          description: Broadcast tournament not found
+  /broadcast/{broadcastTournamentId}/edit:
+    post:
+      operationId: broadcastTourUpdate
+      summary: Update your broadcast tournament
+      description: 'Update information about a broadcast tournament that you created.
+
+        This endpoint accepts the same form data as the web form.
+
+        All fields must be populated with data. Missing fields will override the broadcast with empty data.
+
+        '
+      tags:
+      - Broadcasts
+      security:
+      - OAuth2:
+        - study:write
+      parameters:
+      - in: path
+        name: broadcastTournamentId
+        description: The broadcast ID
+        required: true
+        schema:
+          type: string
+          minLength: 8
+          maxLength: 8
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BroadcastForm'
+      responses:
+        '200':
+          description: The broadcast tournament was successfully edited.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+              examples:
+                default:
+                  $ref: '#/components/examples/broadcasts-updateBroadcastTournament.json'
+        '400':
+          description: The broadcast tournament update failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /broadcast/{broadcastTournamentId}/new:
+    post:
+      operationId: broadcastRoundCreate
+      summary: Create a broadcast round
+      description: 'Create a new broadcast round to relay external games.
+
+        This endpoint accepts the same form data as the web form.
+
+
+        Choose one between `syncUrl`, `syncUrls`, `syncIds` and `syncUsers`, if it is missing, the broadcast needs to be fed by [pushing PGN to it](#tag/broadcasts/POST/api/broadcast/round/{broadcastRoundId}/push)
+
+        '
+      tags:
+      - Broadcasts
+      security:
+      - OAuth2:
+        - study:write
+      parameters:
+      - in: path
+        name: broadcastTournamentId
+        description: The broadcast tournament ID
+        required: true
+        schema:
+          type: string
+          minLength: 8
+          maxLength: 8
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BroadcastRoundForm'
+      responses:
+        '200':
+          description: The broadcast round was successfully created.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BroadcastRoundNew'
+              examples:
+                default:
+                  $ref: '#/components/examples/broadcasts-createBroadcastRound.json'
+        '400':
+          description: The creation of the broadcast failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/broadcast/{broadcastTournamentSlug}/{broadcastRoundSlug}/{broadcastRoundId}:
+    get:
+      operationId: broadcastRoundGet
+      summary: Get a broadcast round
+      description: 'Get information about a broadcast round.
+
+        '
+      tags:
+      - Broadcasts
+      security: []
+      parameters:
+      - in: path
+        name: broadcastTournamentSlug
+        description: The broadcast tournament slug. Only used for SEO, the slug can be safely replaced by `-`. Only the `broadcastRoundId` is actually used.
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: broadcastRoundSlug
+        description: The broadcast round slug. Only used for SEO, the slug can be safely replaced by `-`. Only the `broadcastRoundId` is actually used.
+        required: true
+        schema:
+          type: string
+      - in: path
+        name: broadcastRoundId
+        description: The broadcast Round ID
+        required: true
+        schema:
+          type: string
+          minLength: 8
+          maxLength: 8
+      responses:
+        '200':
+          description: The information about the broadcast round.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BroadcastRound'
+              examples:
+                Regular Scoring:
+                  $ref: '#/components/examples/broadcasts-getBroadcastRound.json'
+                Custom Scoring:
+                  $ref: '#/components/examples/broadcasts-getBroadcastRoundWithCustomScoring.json'
+  /broadcast/round/{broadcastRoundId}/edit:
+    post:
+      operationId: broadcastRoundUpdate
+      summary: Update a broadcast round
+      description: 'Update information about a broadcast round.
+
+        This endpoint accepts the same form data as the web form.
+
+        All fields must be populated with data. Missing fields will override the broadcast with empty data.
+
+        For instance, if you omit `startDate`, then any pre-existing start date will be removed.
+
+        '
+      tags:
+      - Broadcasts
+      security:
+      - OAuth2:
+        - study:write
+      parameters:
+      - in: path
+        name: broadcastRoundId
+        description: The broadcast round ID
+        required: true
+        schema:
+          type: string
+          minLength: 8
+          maxLength: 8
+      - $ref: '#/components/parameters/PatchQuery'
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/BroadcastRoundForm'
+      responses:
+        '200':
+          description: The broadcast round was successfully edited.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BroadcastRound'
+              examples:
+                default:
+                  $ref: '#/components/examples/broadcasts-updateBroadcastRound.json'
+        '400':
+          description: The broadcast round update failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/broadcast/round/{broadcastRoundId}/reset:
+    post:
+      operationId: broadcastRoundReset
+      summary: Reset a broadcast round
+      description: 'Remove any games from the broadcast round and reset it to its initial state.
+
+        '
+      tags:
+      - Broadcasts
+      security:
+      - OAuth2:
+        - study:write
+      parameters:
+      - in: path
+        name: broadcastRoundId
+        description: The broadcast round ID
+        required: true
+        schema:
+          type: string
+          minLength: 8
+          maxLength: 8
+      responses:
+        '200':
+          description: The broadcast round was successfully reset.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+              examples:
+                default:
+                  $ref: '#/components/examples/broadcasts-resetBroadcastRound.json'
+  /api/broadcast/round/{broadcastRoundId}/push:
+    post:
+      operationId: broadcastPush
+      summary: Push PGN to a broadcast round
+      description: 'Update a broadcast with new PGN.
+
+        Only for broadcasts without a source URL.
+
+        '
+      tags:
+      - Broadcasts
+      security:
+      - OAuth2:
+        - study:write
+      parameters:
+      - in: path
+        name: broadcastRoundId
+        description: The broadcast round ID
+        required: true
+        schema:
+          type: string
+          minLength: 8
+          maxLength: 8
+      requestBody:
+        description: The PGN. It can contain up to 100 games, separated by a double new line.
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+      responses:
+        '200':
+          description: The broadcast was successfully updated.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BroadcastPgnPush'
+              examples:
+                default:
+                  $ref: '#/components/examples/broadcasts-pushPgnToBroadcastRound.json'
+        '400':
+          description: There was a problem with the pushed PGN.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                properties:
+                  error:
+                    type: string
+                example:
+                  error: Cannot parse moves
+  /api/stream/broadcast/round/{broadcastRoundId}.pgn:
+    get:
+      operationId: broadcastStreamRoundPgn
+      summary: Stream an ongoing broadcast round as PGN
+      description: 'This streaming endpoint first sends all games of a broadcast round in PGN format.
+
+        Then, it waits for new moves to be played. As soon as it happens, the entire PGN of the game is sent to the stream.
+
+        The stream will also send PGNs when games are added to the round.
+
+        This is the best way to get updates about an ongoing round. Streaming means no polling,
+
+        and no pollings means no latency, and minimum impact on the server.
+
+        '
+      tags:
+      - Broadcasts
+      security: []
+      parameters:
+      - in: path
+        name: broadcastRoundId
+        description: The broadcast round ID
+        required: true
+        schema:
+          type: string
+          minLength: 8
+          maxLength: 8
+      - in: query
+        name: clocks
+        description: 'Include clock comments in the PGN moves, when available.
+
+          Example: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`
+
+          '
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: comments
+        description: 'Include analysis comments in the PGN moves, when available.
+
+          Example: `12. Bxf6 { [%eval 0.23] }`
+
+          '
+        schema:
+          type: boolean
+          default: true
+      responses:
+        '200':
+          description: The PGN representation of the round games, then the PGNs of games as they are updated.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/x-chess-pgn:
+              schema:
+                $ref: '#/components/schemas/StudyPgn'
+              examples:
+                pgn:
+                  $ref: '#/components/examples/broadcasts-streamOngoingBroadcastRoundAsPgn.pgn'
+  /api/broadcast/round/{broadcastRoundId}.pgn:
+    get:
+      operationId: broadcastRoundPgn
+      summary: Export one round as PGN
+      description: 'Download all games of a single round of a broadcast tournament in PGN format.
+
+        You *could* poll this endpoint to get updates about a tournament, but it would be slow,
+
+        and very inefficient.
+
+        Instead, consider [streaming the tournament](#tag/broadcasts/GET/api/stream/broadcast/round/{broadcastRoundId}.pgn) to get
+
+        a new PGN every time a game is updated, in real-time.
+
+        '
+      tags:
+      - Broadcasts
+      security: []
+      parameters:
+      - in: path
+        name: broadcastRoundId
+        description: The round ID
+        required: true
+        schema:
+          type: string
+          minLength: 8
+          maxLength: 8
+      - in: query
+        name: clocks
+        description: 'Include clock comments in the PGN moves, when available.
+
+          Example: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`
+
+          '
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: comments
+        description: 'Include analysis comments in the PGN moves, when available.
+
+          Example: `12. Bxf6 { [%eval 0.23] }`
+
+          '
+        schema:
+          type: boolean
+          default: true
+      responses:
+        '200':
+          description: The PGN representation of the round.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/x-chess-pgn:
+              schema:
+                $ref: '#/components/schemas/StudyPgn'
+              examples:
+                pgn:
+                  $ref: '#/components/examples/broadcasts-exportOneRoundAsPgn.pgn'
+  /api/broadcast/{broadcastTournamentId}.pgn:
+    get:
+      operationId: broadcastAllRoundsPgn
+      summary: Export all rounds as PGN
+      description: 'Download all games of all rounds of a broadcast in PGN format.
+
+        If a `study:read` [OAuth token](#tag/OAuth) is provided,
+
+        the private rounds where the user is a contributor will be available.
+
+        You may want to [download only the games of a single round](#tag/broadcasts/GET/api/broadcast/round/{broadcastRoundId}.pgn) instead.
+
+        '
+      tags:
+      - Broadcasts
+      security:
+      - OAuth2:
+        - study:read
+      parameters:
+      - in: path
+        name: broadcastTournamentId
+        description: The broadcast tournament ID
+        required: true
+        schema:
+          type: string
+          minLength: 8
+          maxLength: 8
+      - in: query
+        name: clocks
+        description: 'Include clock comments in the PGN moves, when available.
+
+          Example: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`
+
+          '
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: comments
+        description: 'Include analysis comments in the PGN moves, when available.
+
+          Example: `12. Bxf6 { [%eval 0.23] }`
+
+          '
+        schema:
+          type: boolean
+          default: true
+      responses:
+        '200':
+          description: The PGN representation of the broadcast.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/x-chess-pgn:
+              schema:
+                $ref: '#/components/schemas/StudyPgn'
+              examples:
+                pgn:
+                  $ref: '#/components/examples/broadcasts-exportAllRoundsAsPgn.pgn'
+  /api/broadcast/my-rounds:
+    get:
+      operationId: broadcastMyRoundsGet
+      summary: Get your broadcast rounds
+      description: 'Stream all broadcast rounds you are a member of.
+
+        Also includes broadcasts rounds you did not create, but were invited to.
+
+        Also includes broadcasts rounds where you''re a non-writing member. See the `writeable` flag in the response.
+
+        Rounds are ordered by rank, which is roughly chronological, most recent first, slightly pondered with popularity.
+
+        '
+      tags:
+      - Broadcasts
+      security:
+      - OAuth2:
+        - study:read
+      parameters:
+      - in: query
+        name: nb
+        description: How many rounds to get
+        schema:
+          type: integer
+          minimum: 1
+          example: 20
+      responses:
+        '200':
+          description: The broadcast rounds with their tournament and a `study.writeable` flag.
+          content:
+            application/x-ndjson:
+              schema:
+                $ref: '#/components/schemas/BroadcastMyRound'
+              examples:
+                default:
+                  $ref: '#/components/examples/broadcasts-getYourBroadcastRounds.json'
+components:
+  schemas:
+    BroadcastPhotos:
+      type: object
+      description: Photos of players, when available. The object keys are FIDE IDs
+      additionalProperties:
+        type: object
+        properties:
+          small:
+            description: URL of a small (100x100) thumbnail of the photo
+            type: string
+          medium:
+            description: URL of a medium (500x500) version of the photo
+            type: string
+          credit:
+            description: If set, then you should make it appear next to the photo
+            type: string
+        required:
+        - small
+        - medium
+    StatByFideTC:
+      type: object
+      properties:
+        standard:
+          type: integer
+        rapid:
+          type: integer
+        blitz:
+          type: integer
+    PatronColor:
+      type: integer
+      description: 'Players can choose a color for their Patron wings.
+
+        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
+
+
+        The presence of this field indicates the player is an active Patron.
+
+        '
+      minimum: 1
+      maximum: 10
+    BroadcastWithLastRound:
+      type: object
+      properties:
+        group:
+          type: string
+        tour:
+          $ref: '#/components/schemas/BroadcastTour'
+        round:
+          $ref: '#/components/schemas/BroadcastRoundInfo'
+    BroadcastPointStr:
+      type: string
+      enum:
+      - '1'
+      - 1/2
+      - '0'
+    BroadcastPgnPush:
+      type: object
+      properties:
+        games:
+          type: array
+          items:
+            type: object
+            properties:
+              tags:
+                $ref: '#/components/schemas/BroadcastPgnPushTags'
+              moves:
+                type: integer
+              error:
+                type: string
+            required:
+            - tags
+      required:
+      - games
+    Patron:
+      type: boolean
+      deprecated: true
+      description: 'Use patronColor value instead to determine if player is a patron.
+
+        '
+    BroadcastTeamPOVMatchEntry:
+      type: object
+      properties:
+        roundId:
+          type: string
+        opponent:
+          type: string
+          description: The name of the opposing team
+        mp:
+          type: number
+          description: Match points scored in this match
+        gp:
+          type: number
+          description: Game points scored in this match
+        points:
+          $ref: '#/components/schemas/BroadcastPointStr'
+      required:
+      - roundId
+      - opponent
+    BroadcastPlayerEntry:
+      allOf:
+      - $ref: '#/components/schemas/BroadcastPlayerWithFed'
+      - type: object
+        properties:
+          score:
+            type: number
+            example: 2.5
+          played:
+            type: integer
+            example: 7
+          ratingDiffs:
+            description: 'Rating differences by FIDE time control.
+
+              '
+            allOf:
+            - $ref: '#/components/schemas/StatByFideTC'
+            example:
+              rapid: -5
+              blitz: 10
+          ratingsMap:
+            description: 'Player''s ratings at the time of the tournament.
+
+              '
+            allOf:
+            - $ref: '#/components/schemas/StatByFideTC'
+            example:
+              rapid: 2500
+              blitz: 2450
+          performances:
+            description: 'Performance ratings by FIDE time control.
+
+              '
+            allOf:
+            - $ref: '#/components/schemas/StatByFideTC'
+            example:
+              standard: 2138
+          tiebreaks:
+            type: array
+            maxItems: 5
+            items:
+              $ref: '#/components/schemas/BroadcastPlayerTiebreak'
+          rank:
+            type: integer
+            example: 1
+            minimum: 1
+    BroadcastWithRoundsAndFullGroup:
+      type: object
+      properties:
+        tour:
+          $ref: '#/components/schemas/BroadcastTour'
+        group:
+          $ref: '#/components/schemas/BroadcastGroup'
+        rounds:
+          type: array
+          items:
+            $ref: '#/components/schemas/BroadcastRoundInfo'
+        defaultRoundId:
+          type: string
+        photos:
+          $ref: '#/components/schemas/BroadcastPhotos'
+      required:
+      - tour
+      - rounds
+    BroadcastPlayerEntryWithFideAndGames:
+      allOf:
+      - $ref: '#/components/schemas/BroadcastPlayerEntry'
+      - type: object
+        properties:
+          fide:
+            type: object
+            properties:
+              year:
+                type: integer
+                description: Year of birth
+              ratings:
+                description: Player's current ratings from the latest FIDE rating list.
+                allOf:
+                - $ref: '#/components/schemas/StatByFideTC'
+          games:
+            type: array
+            description: List of games played by the player in the broadcast tournament
+            items:
+              $ref: '#/components/schemas/BroadcastGameEntry'
+    BroadcastRoundNew:
+      type: object
+      properties:
+        round:
+          $ref: '#/components/schemas/BroadcastRoundInfo'
+        tour:
+          $ref: '#/components/schemas/BroadcastTour'
+        study:
+          $ref: '#/components/schemas/BroadcastRoundStudyInfo'
+      required:
+      - round
+      - tour
+      - study
+    BroadcastCustomScoring:
+      type: object
+      description: Scoring overrides for wins or draws.
+      properties:
+        white:
+          $ref: '#/components/schemas/BroadcastCustomPointsPerColor'
+        black:
+          $ref: '#/components/schemas/BroadcastCustomPointsPerColor'
+      required:
+      - white
+      - black
+    NotFound:
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      example:
+        error: Not found.
+    GameColor:
+      type: string
+      enum:
+      - white
+      - black
+    BroadcastTop:
+      type: object
+      properties:
+        active:
+          type: array
+          items:
+            $ref: '#/components/schemas/BroadcastWithLastRound'
+        upcoming:
+          type: array
+          items:
+            $ref: '#/components/schemas/BroadcastWithLastRound'
+          minItems: 0
+          maxItems: 0
+          deprecated: true
+        past:
+          type: object
+          properties:
+            currentPage:
+              type: integer
+              example: 4
+            maxPerPage:
+              type: integer
+              example: 20
+            currentPageResults:
+              type: array
+              items:
+                $ref: '#/components/schemas/BroadcastWithLastRound'
+            previousPage:
+              type:
+              - integer
+              - 'null'
+              example: 3
+            nextPage:
+              type:
+              - integer
+              - 'null'
+              example: 5
+    StudyPgn:
+      type: string
+      example: '[Event "All about the Sicilian Defense: Dragon Variation"]
+
+        [Site "https://lichess.org/study/8c8bmUfy/qwnXMwVC"]
+
+        [Result "*"]
+
+        [UTCDate "2017.06.25"]
+
+        [UTCTime "10:12:04"]
+
+        [Variant "Standard"]
+
+        [ECO "B76"]
+
+        [Opening "Sicilian Defense: Dragon Variation, Yugoslav Attack, Panov Variation"]
+
+        [Annotator "https://lichess.org/@/Francesco_Super"]
+
+
+        { This chapter will go over the Dragon Variation, a very common variation used by Black and it is the most aggressive variation in the Sicilian defense. }
+
+        1. e4 c5 2. Nf3 { Simple developing move to control the d4 square } { [%csl Gd4,Gc5][%cal Gf3d4,Gc5d4] } 2... d6 { [%cal Gd6e5] } (2... e6 3. d4 cxd4 4. Nxd4 Nf6 5. e5 (5. Nc3 { [%cal Ge4e5] }) 5... Qa5+) 3. d4 { Whites want the exchange of pawns } { [%cal Gc5d4] } 3... cxd4 { [%cal Gf3d4] } 4. Nxd4 { Whites are now ahead in development but blacks still have the two central pawns whereas whites only one. } { [%csl Ge7,Gd6,Ge4] } 4... Nf6 { Blacks are now developing their knight and threatening the e4 pawn } { [%csl Ge4][%cal Gf6e4] } 5. Nc3 { The e4 pawn is now protected by the c3 knight } { [%csl Ge4,Bc3][%cal Rf6e4,Bc3e4] } 5... g6 { This is the DRAGON VARIATION. g6 allows the dark-squared bishop to develop and move to g7, controlling the long dark-squared diagonal } { [%csl Gd4] } 6. Be3 { [%cal Gd1d2,Gf2f3,Ge1c1,Gg2g4,Gh2h4,Gg4g5] } (6. Be2 Bg7 7. O-O Nc6 8. Be3 { [%cal Ge3d4] } (8. f3 Nxe4 { [%cal Gg7d4,Gc6d4] } 9. Nxc6 Qb6+ { [%cal Gb6c6,Gb6g1] } 10. Kh1 Nxc3 { [%cal Gc3d1,Gc3e2] } 11. bxc3 bxc6 { [%cal Gc8a6] }) 8... O-O 9. Nb3 a6 { [%cal Gb7b5,Gb5b4,Ge2c4] }) 6... Bg7 (6... Ng4 { [%cal Gg4e3] } 7. Bb5+ { [%cal Gb5e8,Gb8d7,Gc8d7,Gd1g4] } 7... Nc6 8. Nxc6 bxc6 9. Bxc6+ { [%cal Gc6a8] }) 7. f3 { The key opening moves for White, who attempt to castle queenside , whereas f3 strengthens the pawn structure, connecting e4 to the h2 and g2, while White also plan pushing to g4 and possibly h4. } { [%csl Bf3,Be3][%cal Rg2g4,Rh2h4,Rg4g5] } 7... O-O (7... h5 { Is operating against g4. }) 8. Qd2 { [%csl Gh6,Gg7][%cal Ge1c1,Ga1d1,Re3h6,Rd2h6] } 8... Nc6 { [%csl Gc6,Gh6][%cal Gb8c6,Ge1c1,Ga7a6,Ge3h6] } 9. g4 (9. Bh6 { [%cal Ge3d4] } 9... Bxh6 10. Qxh6 Nxd4) 9... Be6 10. Nxe6 fxe6 { [%cal Gf8f1] } 11. O-O-O Ne5 12. Be2 { [%csl Gf3][%cal Re5f3,Bd1h1,Bg1d1] } 12... Qc7 { [%csl Gc4][%cal Ge5c4,Gc4e3,Gc4d2,Bf8c8,Yc7c3] } 13. h4 Nc4 *
+
+        '
+    BroadcastRoundInfo:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        createdAt:
+          type: integer
+          format: int64
+        rated:
+          type: boolean
+          description: Whether the round is used for rating calculations
+        ongoing:
+          type: boolean
+        startsAt:
+          type: integer
+          format: int64
+        startsAfterPrevious:
+          type: boolean
+          description: The start date/time is unknown and the round will start automatically when the previous round completes
+        finishedAt:
+          type: integer
+          format: int64
+        finished:
+          type: boolean
+        url:
+          type: string
+          format: uri
+        delay:
+          type: integer
+          format: int64
+        customScoring:
+          $ref: '#/components/schemas/BroadcastCustomScoring'
+      required:
+      - id
+      - name
+      - slug
+      - url
+      - createdAt
+      - rated
+    FideTimeControl:
+      type: string
+      enum:
+      - standard
+      - rapid
+      - blitz
+      description: 'FIDE rating category
+
+        '
+    BroadcastRound:
+      type: object
+      properties:
+        round:
+          $ref: '#/components/schemas/BroadcastRoundInfo'
+        tour:
+          $ref: '#/components/schemas/BroadcastTour'
+        study:
+          $ref: '#/components/schemas/BroadcastRoundStudyInfo'
+        games:
+          type: array
+          items:
+            $ref: '#/components/schemas/BroadcastRoundGame'
+        group:
+          $ref: '#/components/schemas/BroadcastGroup'
+        isSubscribed:
+          type: boolean
+          description: Indicates if the user making the request is subscribed to the broadcast
+        photos:
+          $ref: '#/components/schemas/BroadcastPhotos'
+      required:
+      - round
+      - tour
+      - study
+      - games
+      - photos
+    BroadcastMyRound:
+      type: object
+      properties:
+        round:
+          $ref: '#/components/schemas/BroadcastRoundInfo'
+        tour:
+          $ref: '#/components/schemas/BroadcastTour'
+        study:
+          $ref: '#/components/schemas/BroadcastRoundStudyInfo'
+      required:
+      - round
+      - tour
+      - study
+    BroadcastTeamLeaderboardEntry:
+      properties:
+        name:
+          type: string
+          description: The name of the team
+        mp:
+          type: number
+          description: Total match points scored
+        gp:
+          type: number
+          description: Total game points scored
+        averageRating:
+          type: integer
+          description: The average rating of the team's players
+        matches:
+          type: array
+          items:
+            $ref: '#/components/schemas/BroadcastTeamPOVMatchEntry'
+        players:
+          type: array
+          description: Players who have played for the team and their overall score
+          items:
+            $ref: '#/components/schemas/BroadcastPlayerEntry'
+      required:
+      - name
+      - mp
+      - gp
+      - matches
+      - players
+    Ok:
+      properties:
+        ok:
+          type: boolean
+      required:
+      - ok
+    BroadcastCustomPointsPerColor:
+      type: object
+      properties:
+        win:
+          $ref: '#/components/schemas/BroadcastCustomPoints'
+        draw:
+          $ref: '#/components/schemas/BroadcastCustomPoints'
+      required:
+      - win
+      - draw
+    BroadcastRoundForm:
+      allOf:
+      - oneOf:
+        - type: object
+          title: send games via push
+          required:
+          - name
+          properties:
+            name:
+              $ref: '#/components/schemas/BroadcastRoundFormName'
+        - type: object
+          title: retrieve games via PGN url
+          required:
+          - name
+          - syncUrl
+          properties:
+            name:
+              $ref: '#/components/schemas/BroadcastRoundFormName'
+            syncUrl:
+              type: string
+              format: uri
+              description: 'URL that Lichess will poll to get updates about the games. It must be publicly accessible from the Internet.
+
+
+                Example:
+
+                ```txt
+
+                https://myserver.org/myevent/round-10/games.pgn
+
+                ```
+
+                '
+            onlyRound:
+              type: integer
+              maximum: 999
+              minimum: 1
+              description: 'Filter games by round number
+
+
+                Optional, only keep games from the source that match a round number.
+
+                It uses the PGN **Round** tag. These would match round 3:
+
+                ```txt
+
+                [Round "3"]
+
+                [Round "3.1"]
+
+                ```
+
+                If you set a round number, then games without a **Round** tag are dropped.
+
+
+                It only works if you chose `syncUrl` or `syncUrls` as the source.
+
+                '
+            slices:
+              type: string
+              description: 'Select slices of the games
+
+
+                Optional. Select games based on their position in the source.
+
+                ```txt
+
+                1           only select the first board
+
+                1-4         only select the first 4 boards
+
+                1,2,3,4     same as above, first 4 boards
+
+                11-15,21-25 boards 11 to 15, and boards 21 to 25
+
+                2,3,7-9     boards 2, 3, 7, 8, and 9
+
+                ```
+
+                Slicing is done after filtering by round number.
+
+
+                It only works if you chose `syncUrl` or `syncUrls` as the source.
+
+                '
+        - type: object
+          title: retrieve games via mutiple PGN urls
+          required:
+          - name
+          - syncUrls
+          properties:
+            name:
+              $ref: '#/components/schemas/BroadcastRoundFormName'
+            syncUrls:
+              type: string
+              description: 'URLs that Lichess will poll to get updates about the games, separated by newlines. They must be publicly accessible from the Internet.
+
+
+                Example:
+
+                ```txt
+
+                https://myserver.org/myevent/round-10/game-1.pgn
+
+                https://myserver.org/myevent/round-10/game-2.pgn
+
+                ```
+
+                '
+            onlyRound:
+              type: integer
+              maximum: 999
+              minimum: 1
+              description: 'Filter games by round number
+
+
+                Optional, only keep games from the source that match a round number.
+
+                It uses the PGN **Round** tag. These would match round 3:
+
+                ```txt
+
+                [Round "3"]
+
+                [Round "3.1"]
+
+                ```
+
+                If you set a round number, then games without a **Round** tag are dropped.
+
+
+                It only works if you chose `syncUrl` or `syncUrls` as the source.
+
+                '
+            slices:
+              type: string
+              description: 'Select slices of the games
+
+
+                Optional. Select games based on their position in the source.
+
+                ```txt
+
+                1           only select the first board
+
+                1-4         only select the first 4 boards
+
+                1,2,3,4     same as above, first 4 boards
+
+                11-15,21-25 boards 11 to 15, and boards 21 to 25
+
+                2,3,7-9     boards 2, 3, 7, 8, and 9
+
+                ```
+
+                Slicing is done after filtering by round number.
+
+
+                It only works if you chose `syncUrl` or `syncUrls` as the source.
+
+                '
+        - type: object
+          title: retrieve games via Lichess game IDs
+          required:
+          - name
+          - syncIds
+          properties:
+            name:
+              $ref: '#/components/schemas/BroadcastRoundFormName'
+            syncIds:
+              type: string
+              description: 'Lichess game IDs - Up to 100 Lichess game IDs, separated by spaces.
+
+                '
+        - type: object
+          title: retrieve games via Lichess usernames
+          required:
+          - name
+          - syncUsers
+          properties:
+            name:
+              $ref: '#/components/schemas/BroadcastRoundFormName'
+            syncUsers:
+              type: string
+              description: 'Up to 100 Lichess usernames, separated by spaces
+
+                '
+      - type: object
+        properties:
+          syncSource:
+            description: 'Where the games come from.
+
+              '
+            type: string
+            enum:
+            - push
+            - url
+            - urls
+            - ids
+            - users
+            default: push
+          startsAt:
+            type: integer
+            format: int64
+            description: 'Timestamp in milliseconds of broadcast round start. Leave empty to manually start the broadcast round.
+
+              Example: `1356998400070`
+
+              '
+            minimum: 1356998400070
+          startsAfterPrevious:
+            type: boolean
+            description: 'The start date is unknown, and the round will start automatically when the previous round completes.
+
+              '
+            default: false
+          delay:
+            type: integer
+            description: 'Delay in seconds for movements to appear on the broadcast. Leave it empty if you don''t need it.
+
+              Example: `900` (15 min)
+
+              '
+            minimum: 0
+            maximum: 3600
+          status:
+            type: string
+            enum:
+            - new
+            - started
+            - finished
+            description: 'Lichess can usually detect the round status, but you can also set it manually if needed.
+
+              '
+            default: new
+          rated:
+            type: boolean
+            default: true
+            description: Whether the round is used when calculating players' rating changes.
+          customScoring.white.win:
+            $ref: '#/components/schemas/BroadcastCustomPoints'
+          customScoring.white.draw:
+            $ref: '#/components/schemas/BroadcastCustomPoints'
+          customScoring.black.win:
+            $ref: '#/components/schemas/BroadcastCustomPoints'
+          customScoring.black.draw:
+            $ref: '#/components/schemas/BroadcastCustomPoints'
+          period:
+            type: integer
+            description: '(Only for Admins) Waiting time for each poll.
+
+              '
+            minimum: 2
+            maximum: 60
+    BroadcastByUser:
+      type: object
+      properties:
+        tour:
+          $ref: '#/components/schemas/BroadcastTour'
+      required:
+      - tour
+    BroadcastRoundFormName:
+      type: string
+      minLength: 3
+      maxLength: 80
+      description: 'Name of the broadcast round.
+
+        Example: `Round 1`
+
+        '
+    BroadcastCustomPoints:
+      type: number
+      minimum: 0
+      maximum: 10
+    BroadcastRoundStudyInfo:
+      type: object
+      properties:
+        writeable:
+          description: Whether the currently authenticated user has permission to update the study
+          type: boolean
+        features:
+          type: object
+          properties:
+            chat:
+              type: boolean
+              description: Whether chat is enabled for the currently authenticated user
+            computer:
+              type: boolean
+              description: Whether engine analysis is enabled for the currently authenticated user
+            explorer:
+              type: boolean
+              description: Whether the opening explorer + tablebase is enabled for the currently authenticated user
+    Flair:
+      type: string
+      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
+    BroadcastTiebreakExtendedCode:
+      type: string
+      description: Extended tiebreak code
+      enum:
+      - AOB
+      - APPO
+      - APRO
+      - ARO
+      - ARO-C1
+      - ARO-C2
+      - ARO-M1
+      - ARO-M2
+      - BH
+      - BH-C1
+      - BH-C2
+      - BH-M1
+      - BH-M2
+      - BPG
+      - BWG
+      - DE
+      - FB
+      - FB-C1
+      - FB-C2
+      - FB-M1
+      - FB-M2
+      - KS
+      - PS
+      - PS-C1
+      - PS-C2
+      - PS-M1
+      - PS-M2
+      - PTP
+      - SB
+      - SB-C1
+      - SB-C2
+      - SB-M1
+      - SB-M2
+      - TPR
+      - WON
+    BroadcastPgnPushTags:
+      type: object
+      additionalProperties:
+        type: string
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The cause of the error.
+      required:
+      - error
+      example:
+        error: This request is invalid because [...]
+    BroadcastPlayerWithFed:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Hernandez Riera, Jose
+        title:
+          $ref: '#/components/schemas/Title'
+        rating:
+          type: integer
+          example: 2149
+        fideId:
+          type: integer
+          example: 3408230
+        team:
+          type: string
+        fed:
+          type: string
+          example: CHI
+      required:
+      - name
+    BroadcastGroup:
+      type: object
+      properties:
+        id:
+          type: string
+        slug:
+          type: string
+        name:
+          type: string
+        tours:
+          type: array
+          items:
+            $ref: '#/components/schemas/BroadcastGroupTour'
+      required:
+      - id
+      - slug
+      - name
+      - tours
+    BroadcastRoundGame:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        fen:
+          type: string
+        players:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              title:
+                $ref: '#/components/schemas/Title'
+              rating:
+                type: integer
+              fideId:
+                type: integer
+              fed:
+                type: string
+              clock:
+                type: integer
+        lastMove:
+          type: string
+        check:
+          type: string
+          enum:
+          - +
+          - '#'
+        thinkTime:
+          type: integer
+        status:
+          description: The result of the game
+          type: string
+          enum:
+          - '*'
+          - 1-0
+          - 0-1
+          - ½-½
+      required:
+      - id
+      - name
+    BroadcastForm:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 80
+          minLength: 3
+          description: 'Name of the broadcast tournament.
+
+
+            Example: `Sinquefield Cup`
+
+            '
+        info.format:
+          type: string
+          maxLength: 80
+          description: 'Tournament format.
+
+            Example: `"8-player round-robin" or "5-round Swiss"`
+
+            '
+        info.location:
+          type: string
+          maxLength: 80
+          description: 'Tournament Location
+
+            '
+        info.tc:
+          type: string
+          maxLength: 80
+          description: 'Time control.
+
+            Example: `"Classical" or "Rapid" or "Rapid & Blitz"`
+
+            '
+        info.fideTC:
+          $ref: '#/components/schemas/FideTimeControl'
+        info.timeZone:
+          type: string
+          description: 'Timezone of the tournament. Example: `America/New_York`.
+
+            See [list of possible timezone identifiers](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) for more.
+
+            '
+        info.players:
+          type: string
+          maxLength: 120
+          description: 'Mention up to 4 of the best players participating.
+
+            '
+        info.website:
+          type: string
+          format: uri
+          description: 'Official website. External website URL
+
+            '
+        info.standings:
+          type: string
+          format: uri
+          description: 'Official Standings. External website URL, e.g. chess-results.com, info64.org
+
+            '
+        markdown:
+          type: string
+          maxLength: 20000
+          description: 'Optional long description of the broadcast. Markdown is supported.
+
+            '
+        showScores:
+          type: boolean
+          default: false
+          description: 'Show players scores based on game results
+
+            '
+        showRatingDiffs:
+          type: boolean
+          default: false
+          description: 'Show player''s rating diffs
+
+            '
+        teamTable:
+          type: boolean
+          default: false
+          description: 'Show a team leaderboard. Requires WhiteTeam and BlackTeam PGN tags.
+
+            '
+        visibility:
+          type: string
+          enum:
+          - public
+          - unlisted
+          - private
+          default: public
+          description: 'Who can view the broadcast.
+
+            * `public`: Default. Anyone can view the broadcast
+
+            * `unlisted`: Only people with the link can view the broadcast
+
+            * `private`: Only the broadcast owner(s) can view the broadcast
+
+            '
+        players:
+          type: string
+          description: 'Optional replace player names, ratings and titles.
+
+
+            One line per player, formatted as such:
+
+
+            ```txt
+
+            player name / FIDE ID
+
+            ```
+
+
+            Example:
+
+
+            ```txt
+
+            Magnus Carlsen / 1503014
+
+            ```
+
+
+            Player names ignore case and punctuation, and match all possible combinations of 2 words: "Jorge Rick Vito" will match "Jorge Rick", "jorge vito", "Rick, Vito", etc.
+
+
+            If the player is NM or WNM, you can:
+
+
+            ```txt
+
+            player name / FIDE ID / title
+
+            ```
+
+
+            Alternatively, you may set tags manually, like so:
+
+
+            ```txt
+
+            player name / rating / title / new name
+
+            ```
+
+
+            All values are optional. Example:
+
+            ```txt
+
+            Magnus Carlsen / 2863 / GM
+
+            YouGotLittUp / 1890 / / Louis Litt
+
+            ```
+
+            '
+        teams:
+          type: string
+          description: 'Optional: assign players to teams
+
+
+            One line per player, formatted as such:
+
+            ```txt
+
+            Team name; Fide Id or Player name
+
+            ```
+
+
+            Example:
+
+            ```txt
+
+            Team Cats ; 3408230
+
+            Team Dogs ; Scooby Doo
+
+            ```
+
+
+            By default the PGN tags WhiteTeam and BlackTeam are used.
+
+            '
+        tier:
+          type: integer
+          enum:
+          - 3
+          - 4
+          - 5
+          description: 'Optional, for Lichess admins only, used to feature on /broadcast.
+
+
+            * `3` for Official: normal tier
+
+            * `4` for Official: high tier
+
+            * `5` for Official: best tier
+
+            '
+        tiebreaks[]:
+          type: array
+          maxItems: 5
+          items:
+            $ref: '#/components/schemas/BroadcastTiebreakExtendedCode'
+      required:
+      - name
+    BroadcastGameEntry:
+      type: object
+      properties:
+        round:
+          type: string
+          description: ID of the round
+        id:
+          type: string
+          description: The game ID. Analogous to chapterId.
+        opponent:
+          $ref: '#/components/schemas/BroadcastPlayerWithFed'
+        color:
+          $ref: '#/components/schemas/GameColor'
+        points:
+          $ref: '#/components/schemas/BroadcastPointStr'
+        customPoints:
+          $ref: '#/components/schemas/BroadcastCustomPoints'
+        ratingDiff:
+          type: integer
+          description: The change in rating for the player as a result of this game
+        fideTC:
+          $ref: '#/components/schemas/FideTimeControl'
+        ongoing:
+          type: boolean
+      required:
+      - round
+      - id
+      - opponent
+      - color
+      - fideTC
+    BroadcastGroupTour:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        active:
+          type: boolean
+        live:
+          type: boolean
+      required:
+      - id
+      - name
+      - active
+      - live
+    BroadcastPlayerTiebreak:
+      type: object
+      properties:
+        extendedCode:
+          $ref: '#/components/schemas/BroadcastTiebreakExtendedCode'
+        description:
+          type: string
+          example: Buchholz Cut 1
+        points:
+          type: number
+          example: 45.5
+      required:
+      - extendedCode
+      - description
+      - points
+    LightUser:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        flair:
+          $ref: '#/components/schemas/Flair'
+        title:
+          $ref: '#/components/schemas/Title'
+        patron:
+          $ref: '#/components/schemas/Patron'
+        patronColor:
+          $ref: '#/components/schemas/PatronColor'
+      required:
+      - id
+      - name
+    BroadcastWithRounds:
+      type: object
+      properties:
+        tour:
+          $ref: '#/components/schemas/BroadcastTour'
+        group:
+          type: string
+        rounds:
+          type: array
+          items:
+            $ref: '#/components/schemas/BroadcastRoundInfo'
+        defaultRoundId:
+          type: string
+        photos:
+          $ref: '#/components/schemas/BroadcastPhotos'
+      required:
+      - tour
+      - rounds
+    Title:
+      type: string
+      enum:
+      - GM
+      - WGM
+      - IM
+      - WIM
+      - FM
+      - WFM
+      - NM
+      - CM
+      - WCM
+      - WNM
+      - LM
+      - BOT
+      description: only appears if the user is a titled player or a bot user
+    BroadcastTour:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        createdAt:
+          type: integer
+          example: 1722169800000
+        dates:
+          type: array
+          items:
+            type: integer
+            format: int64
+          description: Start and end dates of the tournament, as Unix timestamps in milliseconds
+          minItems: 1
+          maxItems: 2
+          example:
+          - 1722169800000
+          - 1722666600000
+        info:
+          type: object
+          description: Additional display information about the tournament
+          properties:
+            website:
+              type: string
+              format: uri
+              description: Official website. External website URL
+            players:
+              type: string
+              description: Featured players
+            location:
+              type: string
+              description: Tournament location
+            tc:
+              type: string
+              description: Time control
+            fideTC:
+              description: FIDE rating category
+              $ref: '#/components/schemas/FideTimeControl'
+            timeZone:
+              type: string
+              description: 'Timezone of the tournament. Example: `America/New_York`.
+
+                See [list of possible timezone identifiers](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) for more.
+
+                '
+            standings:
+              type: string
+              format: uri
+              description: Official standings website. External website URL
+            format:
+              type: string
+              description: Tournament format
+        tier:
+          type: integer
+          description: Used to designate featured tournaments on Lichess
+        image:
+          type: string
+          format: uri
+        description:
+          type: string
+          description: Full tournament description in markdown format, or in HTML if the html=1 query parameter is set.
+        teamTable:
+          type: boolean
+        showTeamScores:
+          type: boolean
+        url:
+          type: string
+          format: uri
+        communityOwner:
+          $ref: '#/components/schemas/LightUser'
+      required:
+      - id
+      - name
+      - slug
+      - createdAt
+      - url
+  examples:
+    broadcasts-getYourBroadcastRounds.json:
+      value:
+        round:
+          id: 0JjIup0K
+          name: Final Round 2
+          slug: final-round-2
+          createdAt: 1778812603116
+          rated: false
+          ongoing: true
+          startsAt: 1778812603116
+          url: https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K
+        tour:
+          id: gJm0i5k1
+          name: Knight Invitational 2
+          slug: knight-invitational-2
+          info: {}
+          createdAt: 1778812602837
+          url: https://lichess.org/broadcast/knight-invitational-2/gJm0i5k1
+          dates:
+          - 1778812603116
+          communityOwner:
+            name: Admin
+            id: admin
+        study:
+          writeable: true
+          features:
+            chat: true
+            computer: true
+            explorer: true
+    broadcasts-updateBroadcastTournament.json:
+      value:
+        ok: true
+    broadcasts-getBroadcastTournament.json:
+      value:
+        tour:
+          id: gJm0i5k1
+          name: Knight Invitational
+          slug: knight-invitational
+          info: {}
+          createdAt: 1778812602837
+          url: https://lichess.org/broadcast/knight-invitational/gJm0i5k1
+          tier: 5
+          dates:
+          - 1778812603116
+        rounds:
+        - id: 2Ywx30MD
+          name: Round 1
+          slug: round-1
+          createdAt: 1778812602924
+          rated: false
+          ongoing: true
+          startsAt: 1778816202858
+          url: https://lichess.org/broadcast/knight-invitational/round-1/2Ywx30MD
+        - id: bJEvCanZ
+          name: Round 2
+          slug: round-2
+          createdAt: 1778812603074
+          rated: false
+          ongoing: true
+          startsAt: 1778819802858
+          url: https://lichess.org/broadcast/knight-invitational/round-2/bJEvCanZ
+        - id: cxolzwOn
+          name: Round 3
+          slug: round-3
+          createdAt: 1778812603095
+          rated: false
+          ongoing: true
+          startsAt: 1778823402858
+          url: https://lichess.org/broadcast/knight-invitational/round-3/cxolzwOn
+        - id: 0JjIup0K
+          name: Final Round
+          slug: final-round
+          createdAt: 1778812603116
+          rated: false
+          ongoing: true
+          startsAt: 1778812603116
+          url: https://lichess.org/broadcast/knight-invitational/final-round/0JjIup0K
+        defaultRoundId: 2Ywx30MD
+        photos: {}
+    broadcasts-pushPgnToBroadcastRound.json:
+      value:
+        games:
+        - tags:
+            White: Player 1
+            WhiteFideId: '123'
+            Black: Player 2
+            BlackFideId: '456'
+            Result: '*'
+            Event: Knight Invitational
+          moves: 2
+        - tags:
+            White: Player 3
+            Black: Player 4
+            Result: '*'
+            Event: Knight Invitational
+          moves: 2
+    broadcasts-exportOneRoundAsPgn.pgn:
+      value: '[Event "Knight Invitational"]
+
+        [Site "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/uHRiHXFM"]
+
+        [Date "2026.05.15"]
+
+        [White "Player 1"]
+
+        [Black "Player 2"]
+
+        [Result "*"]
+
+        [WhiteFideId "123"]
+
+        [BlackFideId "456"]
+
+        [Variant "Standard"]
+
+        [ECO "C20"]
+
+        [Opening "King''s Pawn Game"]
+
+        [UTCDate "2026.05.15"]
+
+        [UTCTime "02:36:43"]
+
+        [BroadcastName "Knight Invitational 2"]
+
+        [BroadcastURL "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K"]
+
+        [GameURL "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/uHRiHXFM"]
+
+
+        1. e4 e5 *
+
+
+
+        [Event "Knight Invitational"]
+
+        [Site "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/ZiN3hBIO"]
+
+        [Date "2026.05.15"]
+
+        [White "Player 3"]
+
+        [Black "Player 4"]
+
+        [Result "*"]
+
+        [Variant "Standard"]
+
+        [ECO "D00"]
+
+        [Opening "Queen''s Pawn Game"]
+
+        [UTCDate "2026.05.15"]
+
+        [UTCTime "02:36:43"]
+
+        [BroadcastName "Knight Invitational 2"]
+
+        [BroadcastURL "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K"]
+
+        [GameURL "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/ZiN3hBIO"]
+
+
+        1. d4 d5 *
+
+        '
+    broadcasts-getOfficialBroadcasts.json:
+      value:
+        tour:
+          id: gJm0i5k1
+          name: Knight Invitational
+          slug: knight-invitational
+          info: {}
+          createdAt: 1778812602837
+          url: https://lichess.org/broadcast/knight-invitational/gJm0i5k1
+          tier: 5
+          dates:
+          - 1778812603116
+        rounds:
+        - id: 2Ywx30MD
+          name: Round 1
+          slug: round-1
+          createdAt: 1778812602924
+          rated: false
+          ongoing: true
+          startsAt: 1778816202858
+          url: https://lichess.org/broadcast/knight-invitational/round-1/2Ywx30MD
+        - id: bJEvCanZ
+          name: Round 2
+          slug: round-2
+          createdAt: 1778812603074
+          rated: false
+          ongoing: true
+          startsAt: 1778819802858
+          url: https://lichess.org/broadcast/knight-invitational/round-2/bJEvCanZ
+        - id: cxolzwOn
+          name: Round 3
+          slug: round-3
+          createdAt: 1778812603095
+          rated: false
+          ongoing: true
+          startsAt: 1778823402858
+          url: https://lichess.org/broadcast/knight-invitational/round-3/cxolzwOn
+        - id: 0JjIup0K
+          name: Final Round
+          slug: final-round
+          createdAt: 1778812603116
+          rated: false
+          ongoing: true
+          startsAt: 1778812603116
+          url: https://lichess.org/broadcast/knight-invitational/final-round/0JjIup0K
+        defaultRoundId: 2Ywx30MD
+    broadcasts-streamOngoingBroadcastRoundAsPgn.pgn:
+      value: '[Event "Knight Invitational"]
+
+        [Site "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/uHRiHXFM"]
+
+        [Date "2026.05.15"]
+
+        [White "Player 1"]
+
+        [Black "Player 2"]
+
+        [Result "*"]
+
+        [WhiteFideId "123"]
+
+        [BlackFideId "456"]
+
+        [Variant "Standard"]
+
+        [ECO "C20"]
+
+        [Opening "King''s Pawn Game"]
+
+        [UTCDate "2026.05.15"]
+
+        [UTCTime "02:36:43"]
+
+        [BroadcastName "Knight Invitational 2"]
+
+        [BroadcastURL "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K"]
+
+        [GameURL "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/uHRiHXFM"]
+
+
+        1. e4 e5 *
+
+
+
+        [Event "Knight Invitational"]
+
+        [Site "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/ZiN3hBIO"]
+
+        [Date "2026.05.15"]
+
+        [White "Player 3"]
+
+        [Black "Player 4"]
+
+        [Result "*"]
+
+        [Variant "Standard"]
+
+        [ECO "D00"]
+
+        [Opening "Queen''s Pawn Game"]
+
+        [UTCDate "2026.05.15"]
+
+        [UTCTime "02:36:43"]
+
+        [BroadcastName "Knight Invitational 2"]
+
+        [BroadcastURL "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K"]
+
+        [GameURL "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/ZiN3hBIO"]
+
+
+        1. d4 d5 *
+
+        '
+    broadcasts-exportAllRoundsAsPgn.pgn:
+      value: "[Event \"Round 1: Chapter 1\"]\n[Site \"https://lichess.org/broadcast/knight-invitational-2/round-1/2Ywx30MD/NemhNt04\"]\n[Date \"2026.05.15\"]\n[Result \"*\"]\n[Variant \"Standard\"]\n[ECO \"?\"]\n[Opening \"?\"]\n[UTCDate \"2026.05.15\"]\n[UTCTime \"02:36:42\"]\n[BroadcastName \"Knight Invitational 2\"]\n[BroadcastURL \"https://lichess.org/broadcast/knight-invitational-2/round-1/2Ywx30MD\"]\n[GameURL \"https://lichess.org/broadcast/knight-invitational-2/round-1/2Ywx30MD/NemhNt04\"]\n\n *\n\n\n[Event \"Round 2: Chapter 1\"]\n[Site \"https://lichess.org/broadcast/knight-invitational-2/round-2/bJEvCanZ/5JK4PVm6\"]\n[Date \"2026.05.15\"]\n[Result \"*\"]\n[Variant \"Standard\"]\n[ECO \"?\"]\n[Opening \"?\"]\n[UTCDate \"2026.05.15\"]\n[UTCTime \"02:36:43\"]\n[BroadcastName \"Knight Invitational 2\"]\n[BroadcastURL \"https://lichess.org/broadcast/knight-invitational-2/round-2/bJEvCanZ\"]\n[GameURL \"https://lichess.org/broadcast/knight-invitational-2/round-2/bJEvCanZ/5JK4PVm6\"]\n\n *\n\n\n[Event \"Round 3: Chapter 1\"]\n[Site \"https://lichess.org/broadcast/knight-invitational-2/round-3/cxolzwOn/T3ClNdwy\"]\n[Date \"2026.05.15\"]\n[Result \"*\"]\n[Variant \"Standard\"]\n[ECO \"?\"]\n[Opening \"?\"]\n[UTCDate \"2026.05.15\"]\n[UTCTime \"02:36:43\"]\n[BroadcastName \"Knight Invitational 2\"]\n[BroadcastURL \"https://lichess.org/broadcast/knight-invitational-2/round-3/cxolzwOn\"]\n[GameURL \"https://lichess.org/broadcast/knight-invitational-2/round-3/cxolzwOn/T3ClNdwy\"]\n\n *\n\n\n[Event \"Knight Invitational\"]\n[Site \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/uHRiHXFM\"]\n[Date \"2026.05.15\"]\n[White \"Player 1\"]\n[Black \"Player 2\"]\n[Result \"*\"]\n[WhiteFideId \"123\"]\n[BlackFideId \"456\"]\n[Variant \"Standard\"]\n[ECO \"C20\"]\n[Opening \"King's Pawn Game\"]\n[UTCDate \"2026.05.15\"]\n[UTCTime \"02:36:43\"]\n[BroadcastName \"Knight Invitational 2\"]\n[BroadcastURL \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K\"]\n[GameURL \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/uHRiHXFM\"]\n\n1. e4 e5 *\n\n\n[Event \"Knight Invitational\"]\n[Site \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/ZiN3hBIO\"]\n[Date \"2026.05.15\"]\n[White \"Player 3\"]\n[Black \"Player 4\"]\n[Result \"*\"]\n[Variant \"Standard\"]\n[ECO \"D00\"]\n[Opening \"Queen's Pawn Game\"]\n[UTCDate \"2026.05.15\"]\n[UTCTime \"02:36:43\"]\n[BroadcastName \"Knight Invitational 2\"]\n[BroadcastURL \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K\"]\n[GameURL \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/ZiN3hBIO\"]\n\n1. d4 d5 *\n"
+    broadcasts-getBroadcastsCreatedByUser.json:
+      value:
+        currentPage: 1
+        maxPerPage: 24
+        currentPageResults:
+        - tour:
+            id: iQ7zCznG
+            name: Bobby's Tournament
+            slug: bobbys-tournament
+            info:
+              format: 5-round Swiss
+              location: Chess Club
+            createdAt: 1778812603531
+            url: https://lichess.org/broadcast/bobbys-tournament/iQ7zCznG
+            communityOwner:
+              name: Bobby
+              id: bobby
+        previousPage: null
+        nextPage: null
+        nbResults: 1
+        nbPages: 1
+    broadcasts-getBroadcastRound.json:
+      value:
+        round:
+          id: 0JjIup0K
+          name: Final Round
+          slug: final-round
+          createdAt: 1778812603116
+          rated: false
+          ongoing: true
+          startsAt: 1778812603116
+          url: https://lichess.org/broadcast/knight-invitational-2/final-round/0JjIup0K
+        tour:
+          id: gJm0i5k1
+          name: Knight Invitational 2
+          slug: knight-invitational-2
+          info: {}
+          createdAt: 1778812602837
+          url: https://lichess.org/broadcast/knight-invitational-2/gJm0i5k1
+          dates:
+          - 1778812603116
+          communityOwner:
+            name: Admin
+            id: admin
+        study:
+          writeable: false
+          features:
+            chat: true
+            computer: true
+            explorer: true
+        games:
+        - id: uHRiHXFM
+          name: Player 1 - Player 2
+          fen: rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2
+          players:
+          - name: Player 1
+            fideId: 123
+          - name: Player 2
+            fideId: 456
+          lastMove: e7e5
+          thinkTime: 0
+          status: '*'
+        - id: ZiN3hBIO
+          name: Player 3 - Player 4
+          fen: rnbqkbnr/ppp1pppp/8/3p4/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 0 2
+          players:
+          - name: Player 3
+          - name: Player 4
+          lastMove: d7d5
+          thinkTime: 0
+          status: '*'
+        photos: {}
+        isSubscribed: false
+    broadcasts-getPaginatedToBroadcastPreviews.json:
+      value:
+        active:
+        - tour:
+            id: gJm0i5k1
+            name: Knight Invitational
+            slug: knight-invitational
+            info: {}
+            createdAt: 1778812602837
+            url: https://lichess.org/broadcast/knight-invitational/gJm0i5k1
+            tier: 5
+            dates:
+            - 1778812603116
+          round:
+            id: 2Ywx30MD
+            name: Round 1
+            slug: round-1
+            createdAt: 1778812602924
+            rated: false
+            ongoing: true
+            startsAt: 1778816202858
+            url: https://lichess.org/broadcast/knight-invitational/round-1/2Ywx30MD
+        upcoming: []
+        past:
+          currentPage: 1
+          maxPerPage: 24
+          currentPageResults: []
+          previousPage: null
+          nextPage: null
+    broadcasts-getBroadcastRoundWithCustomScoring.json:
+      value:
+        round:
+          id: ZpRw34eP
+          name: Round 9 | Armageddon
+          slug: round-9--armageddon
+          createdAt: 1747829403418
+          rated: false
+          finishedAt: 1749146624615
+          finished: true
+          startsAt: 1749142800000
+          customScoring:
+            white:
+              win: 0.5
+              draw: 0
+            black:
+              win: 0.5
+              draw: 0.5
+          url: https://lichess.org/broadcast/norway-chess-2025--open/round-9--armageddon/ZpRw34eP
+        tour:
+          id: PcsMbQ9J
+          name: Norway Chess 2025 | Open
+          slug: norway-chess-2025--open
+          info:
+            format: 6-player double round-robin
+            tc: 120 min + 10 sec / move starting 41
+            fideTC: standard
+            location: Stavanger, Norway
+            timeZone: Europe/Oslo
+            players: Carlsen, Gukesh, Caruana, Nakamura
+            website: https://norwaychess.no/en/
+            standings: https://stats.norwaychess.no/2025/standings
+          createdAt: 1747826541812
+          url: https://lichess.org/broadcast/norway-chess-2025--open/PcsMbQ9J
+          tier: 5
+          dates:
+          - 1748271600000
+          - 1749229200000
+          image: https://image.lichess1.org/display?fmt=webp&h=400&op=thumbnail&path=relay:PcsMbQ9J:QeUfDaHh.webp&w=800&sig=4d7317641091543a721d77baafff804fb15bf107
+          description: "**Points**\r\n\r\n- Win in the classical game: 3 points\r\n- Loss in the classical game: 0 points\r\n- Draw in the classical game & win Armageddon: 1½ points\r\n- Draw in the classical game & loss Armageddon: 1 point\r\n\r\n\r\n**Armageddon**\r\n\r\n- Time control: White has 10 minutes, Black has 7 minutes\r\n- Colors: The player with white will continue with white in Armageddon"
+        study:
+          writeable: false
+          features:
+            chat: true
+            computer: true
+            explorer: true
+        games:
+        - id: Zc8WTto3
+          name: Nakamura, Hikaru - Erigaisi Arjun
+          fen: 1nR5/1P1n1pp1/6kp/4P3/6P1/7P/5PK1/8 b - - 0 48
+          players:
+          - name: Nakamura, Hikaru
+            title: GM
+            rating: 2804
+            fideId: 2016192
+            fed: USA
+            clock: 19700
+          - name: Erigaisi Arjun
+            title: GM
+            rating: 2782
+            fideId: 35009192
+            fed: IND
+            clock: 10000
+          lastMove: g3g4
+          status: 1-0
+        photos:
+          '1503014':
+            small: https://image.lichess1.org/display?fmt=webp&h=100&op=thumbnail&path=v6JPXmWyYhTI.webp&w=100&sig=78e9187109f632629c22b5e5b6997976e06a1cf9
+            medium: https://image.lichess1.org/display?fmt=webp&h=500&op=thumbnail&path=v6JPXmWyYhTI.webp&w=500&sig=4b2b5199cfc1d9ff87810d7c10af8a74fe85256e
+            credit: Brigham Aldrich
+          '2016192':
+            small: https://image.lichess1.org/display?fmt=webp&h=100&op=thumbnail&path=DKk7D4U9ivZb.webp&w=100&sig=44d30eb428b70d1058ceec0333fa227c1da60581
+            medium: https://image.lichess1.org/display?fmt=webp&h=500&op=thumbnail&path=DKk7D4U9ivZb.webp&w=500&sig=5e2c2edb1347cfa053951ea481886c21e0c4f676
+            credit: Andreas Kontokanis, CC BY-SA 2.0 <https://creativecommons.org/licenses/by-sa/2.0>, via Wikimedia Commons
+          '2020009':
+            small: https://image.lichess1.org/display?fmt=webp&h=100&op=thumbnail&path=Hif5ohoGiHPZ.webp&w=100&sig=13ea5db011e7e45a97ec1a4164a355ef6b1db8f9
+            medium: https://image.lichess1.org/display?fmt=webp&h=500&op=thumbnail&path=Hif5ohoGiHPZ.webp&w=500&sig=fa71f0594833a61290626f11ab67459349a29f3c
+            credit: Brigham Aldrich
+          '8603405':
+            small: https://image.lichess1.org/display?fmt=webp&h=100&op=thumbnail&path=rDGOWW82iYK9.webp&w=100&sig=7c8ece3893b331835185347a890831ee07a1489e
+            medium: https://image.lichess1.org/display?fmt=webp&h=500&op=thumbnail&path=rDGOWW82iYK9.webp&w=500&sig=dbae7080a8bd3ce8b153a2c7a24429f107dabf1c
+            credit: Frans Peeters, CC BY-SA 2.0 <https://creativecommons.org/licenses/by-sa/2.0>, via Wikimedia Commons
+          '35009192':
+            small: https://image.lichess1.org/display?fmt=webp&h=100&op=thumbnail&path=ZtNkAl1_0MHT.webp&w=100&sig=8a2122f91eab6c3f0528bce8ea5854fd561bbcde
+            medium: https://image.lichess1.org/display?fmt=webp&h=500&op=thumbnail&path=ZtNkAl1_0MHT.webp&w=500&sig=f2faf575e19147ee8b1d2b573f1fd2e18fab88e7
+            credit: Brigham Aldrich
+          '46616543':
+            small: https://image.lichess1.org/display?fmt=webp&h=100&op=thumbnail&path=km_a_02cL0cP.webp&w=100&sig=6427d1a5397f5396ab5246125aae60a672ac5e4a
+            medium: https://image.lichess1.org/display?fmt=webp&h=500&op=thumbnail&path=km_a_02cL0cP.webp&w=500&sig=a12e9409dfb43c0e6e2eb40f29908a55ee455770
+            credit: Frans Peeters, CC BY-SA 2.0 <https://creativecommons.org/licenses/by-sa/2.0>, via Wikimedia Commons
+        group:
+          id: I7IIijJO
+          slug: norway-chess-2025
+          name: Norway Chess 2025
+          tours:
+          - id: PcsMbQ9J
+            name: Open
+            active: false
+            live: false
+          - id: lrKI0bSz
+            name: Women
+            active: false
+            live: false
+    broadcasts-getPlayer.json:
+      value:
+        name: Player 1
+        fideId: 123
+        played: 0
+        games:
+        - round: 0JjIup0K
+          id: uHRiHXFM
+          opponent:
+            name: Player 2
+            fideId: 456
+          color: white
+          fideTC: standard
+          ongoing: true
+    broadcasts-createBroadcastTournament.json:
+      value:
+        tour:
+          id: gJm0i5k1
+          name: Knight Invitational
+          slug: knight-invitational
+          info: {}
+          createdAt: 1778812602837
+          url: https://lichess.org/broadcast/knight-invitational/gJm0i5k1
+          tier: 5
+        rounds: []
+    broadcasts-resetBroadcastRound.json:
+      value:
+        ok: true
+    broadcasts-updateBroadcastRound.json:
+      value:
+        round:
+          id: 0JjIup0K
+          name: Final Round 2
+          slug: final-round-2
+          createdAt: 1778812603116
+          rated: false
+          ongoing: true
+          startsAt: 1778812603116
+          url: https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K
+        tour:
+          id: gJm0i5k1
+          name: Knight Invitational 2
+          slug: knight-invitational-2
+          info: {}
+          createdAt: 1778812602837
+          url: https://lichess.org/broadcast/knight-invitational-2/gJm0i5k1
+          dates:
+          - 1778812603116
+          communityOwner:
+            name: Admin
+            id: admin
+        study:
+          writeable: true
+          features:
+            chat: true
+            computer: true
+            explorer: true
+        games:
+        - id: uHRiHXFM
+          name: Player 1 - Player 2
+          fen: rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2
+          players:
+          - name: Player 1
+            fideId: 123
+          - name: Player 2
+            fideId: 456
+          lastMove: e7e5
+          thinkTime: 0
+          status: '*'
+        - id: ZiN3hBIO
+          name: Player 3 - Player 4
+          fen: rnbqkbnr/ppp1pppp/8/3p4/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 0 2
+          players:
+          - name: Player 3
+          - name: Player 4
+          lastMove: d7d5
+          thinkTime: 0
+          status: '*'
+        photos: {}
+        isSubscribed: false
+    broadcasts-searchBroadcasts.json:
+      value:
+        currentPage: 1
+        maxPerPage: 24
+        currentPageResults:
+        - tour:
+            id: gJm0i5k1
+            name: Knight Invitational
+            slug: knight-invitational
+            info: {}
+            createdAt: 1778812602837
+            url: https://lichess.org/broadcast/knight-invitational/gJm0i5k1
+            tier: 5
+            dates:
+            - 1778812603116
+          round:
+            id: 0JjIup0K
+            name: Final Round
+            slug: final-round
+            createdAt: 1778812603116
+            rated: false
+            ongoing: true
+            startsAt: 1778812603116
+            url: https://lichess.org/broadcast/knight-invitational/final-round/0JjIup0K
+        previousPage: null
+        nextPage: null
+    broadcasts-getPlayersOfBroadcastTournament.json:
+      value:
+      - name: Player 1
+        fideId: 123
+        played: 0
+      - name: Player 2
+        fideId: 456
+        played: 0
+      - name: Player 3
+        played: 0
+      - name: Player 4
+        played: 0
+    broadcasts-createBroadcastRound.json:
+      value:
+        round:
+          id: 0JjIup0K
+          name: Final Round
+          slug: final-round
+          createdAt: 1778812603116
+          rated: false
+          ongoing: true
+          startsAt: 1778812603116
+          url: https://lichess.org/broadcast/knight-invitational/final-round/0JjIup0K
+        tour:
+          id: gJm0i5k1
+          name: Knight Invitational
+          slug: knight-invitational
+          info: {}
+          createdAt: 1778812602837
+          url: https://lichess.org/broadcast/knight-invitational/gJm0i5k1
+          tier: 5
+          dates:
+          - 1778816202858
+        study:
+          writeable: true
+          features:
+            chat: true
+            computer: true
+            explorer: true
+  parameters:
+    PatchQuery:
+      in: query
+      name: patch
+      description: Only update the provided fields, leaving others unchanged
+      required: false
+      schema:
+        type: boolean
+      example: true
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: 'Read [the introduction for how to make authenticated requests](#description/authentication).
+
+        '
+      flows:
+        authorizationCode:
+          authorizationUrl: https://lichess.org/oauth
+          tokenUrl: https://lichess.org/api/token
+          scopes:
+            preference:read: Read your preferences
+            preference:write: Write your preferences
+            email:read: Read your email address
+            engine:read: Read your external engines
+            engine:write: Create, update, delete your external engines
+            challenge:read: Read incoming challenges
+            challenge:write: Create, accept, decline challenges
+            challenge:bulk: Create, delete, query bulk pairings
+            study:read: Read private studies and broadcasts
+            study:write: Create, update, delete studies and broadcasts
+            tournament:write: Create tournaments
+            racer:write: Create and join puzzle races
+            puzzle:read: Read puzzle activity
+            puzzle:write: Write puzzle activity
+            team:read: Read private team information
+            team:write: Join, leave teams
+            team:lead: Manage teams (kick members, send PMs)
+            follow:read: Read followed players
+            follow:write: Follow and unfollow other players
+            msg:write: Send private messages to other players
+            board:play: Play with the Board API
+            bot:play: Play with the Bot API. Only for [Bot accounts](#tag/bot/POST/api/bot/account/upgrade)
+            web:mod: Use moderator tools (within the bounds of your permissions)

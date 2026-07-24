@@ -1,0 +1,1728 @@
+openapi: 3.1.0
+info:
+  version: 2.0.144
+  title: Lichess.org API reference Account Tournaments (Swiss) API
+  contact:
+    name: Lichess.org API
+    url: https://lichess.org/api
+    email: contact@lichess.org
+  x-logo:
+    url: https://lichess1.org/assets/logo/lichess-pad12.svg
+  license:
+    name: AGPL-3.0-or-later
+    url: https://www.gnu.org/licenses/agpl-3.0.txt
+  description: '# Introduction
+
+    Welcome to the reference for the Lichess API! Lichess is free/libre,
+
+    open-source chess server powered by volunteers and donations.
+
+    - Get help in the [Lichess Discord channel](https://discord.gg/lichess)
+
+    - API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)
+
+    - API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)
+
+    - [Contribute to this documentation on Github](https://github.com/lichess-org/api)
+
+    - Check out [Lichess widgets to embed in your website](https://lichess.org/developers)
+
+    - [Download all Lichess rated games](https://database.lichess.org/)
+
+    - [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)
+
+    - [Download all evaluated positions](https://database.lichess.org/#evals)
+
+
+    ## Endpoint
+
+    All requests go to `https://lichess.org` (unless otherwise specified).
+
+
+    ## Clients
+
+    - [Python general API](https://github.com/lichess-org/berserk)
+
+    - [MicroPython general API](https://github.com/mkomon/uberserk)
+
+    - [Python general API - async](https://pypi.org/project/async-lichess-sdk)
+
+    - [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)
+
+    - [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)
+
+    - [Java general API](https://github.com/tors42/chariot)
+
+    - [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)
+
+    - [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)
+
+    - [.NET general API](https://github.com/Dblike/LichessSharp)
+
+
+    ## Rate limiting
+
+    All requests are rate limited using various strategies,
+
+    to ensure the API remains responsive for everyone.
+
+    Only make one request at a time.
+
+    If you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),
+
+    you have exceded one of the rate limits.
+
+    In most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.
+
+    Reduce your request frequency before retrying.
+
+
+    ## Streaming with ND-JSON
+
+    Some API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.
+
+
+    Here''s a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.
+
+
+    ## Authentication
+
+    ### Which authentication method is right for me?
+
+    [Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)
+
+
+    ### Personal Access Token
+
+    Personal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.
+
+    - [Generate a personal access token](https://lichess.org/account/oauth/token)
+
+    - `curl https://lichess.org/api/account -H "Authorization: Bearer {token}"`
+
+    - [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)
+
+
+    ### Token Security
+
+    - Keep your tokens secret. Do not share them in public repositories or public forums.
+
+    - Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens'' scope). You remain responsible for all activities on your account.
+
+    - Do not hardcode tokens in your application''s code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.
+
+    - If you suspect a token has been compromised, revoke it immediately.
+
+
+    To see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).
+
+
+    ### Authorization Code Flow with PKCE
+
+    The authorization code flow with PKCE allows your users to **login with Lichess**.
+
+    Lichess supports unregistered and public clients (no client authentication, choose any unique client id).
+
+    The only accepted code challenge method is `S256`.
+
+    Access tokens are long-lived (expect one year), unless they are revoked.
+
+    Refresh tokens are not supported.
+
+
+    See the [documentation for the OAuth endpoints](#tag/OAuth) or
+
+    the [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.
+
+
+    - [Demo app](https://lichess-org.github.io/api-demo/)
+
+    - [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)
+
+    - [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)
+
+    - [Java example](https://github.com/tors42/lichess-oauth-pkce-app)
+
+    - [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)
+
+
+    #### Real life examples
+
+    - [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))
+
+    - [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))
+
+    - [English Chess Federation](https://ecf.octoknight.com/)
+
+    - [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)
+
+
+    ### Token format
+
+    Access tokens and authorization codes match `^[A-Za-z0-9_]+$`.
+
+    The length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.
+
+    By convention tokens have a recognizable prefix, but do not rely on this.
+
+    '
+servers:
+- url: https://lichess.org
+- url: https://lichess.dev
+- url: http://localhost:{port}
+  variables:
+    port:
+      default: '8080'
+- url: http://l.org
+tags:
+- name: Tournaments (Swiss)
+  description: 'Access Swiss tournaments played on Lichess.
+
+    [Read more about Swiss tournaments.](https://lichess.org/swiss).
+
+    '
+paths:
+  /api/swiss/new/{teamId}:
+    post:
+      operationId: apiSwissNew
+      summary: Create a new Swiss tournament
+      description: "Create a Swiss tournament for your team.\nThis endpoint mirrors the Swiss tournament form from your team pagee.\nYou can create up to 12 tournaments per day.\nAdditional restrictions:\n  - clock.limit + clock.increment > 0\n  - 15s and 0+1 variant tournaments cannot be rated\n"
+      tags:
+      - Tournaments (Swiss)
+      security:
+      - OAuth2:
+        - tournament:write
+      parameters:
+      - in: path
+        name: teamId
+        description: ID of the team
+        schema:
+          type: string
+        required: true
+      requestBody:
+        description: Parameters of the tournament
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The tournament name. Leave empty to get a random Grandmaster name
+                  minLength: 2
+                  maxLength: 30
+                clock.limit:
+                  type: integer
+                  description: Clock initial time in seconds
+                  example: 300
+                  enum:
+                  - 0
+                  - 15
+                  - 30
+                  - 45
+                  - 60
+                  - 90
+                  - 120
+                  - 180
+                  - 240
+                  - 300
+                  - 360
+                  - 420
+                  - 480
+                  - 600
+                  - 900
+                  - 1200
+                  - 1500
+                  - 1800
+                  - 2400
+                  - 3000
+                  - 3600
+                  - 4200
+                  - 4800
+                  - 5400
+                  - 6000
+                  - 6600
+                  - 7200
+                  - 7800
+                  - 8400
+                  - 9000
+                  - 9600
+                  - 10200
+                  - 10800
+                clock.increment:
+                  type: integer
+                  description: Clock increment in seconds
+                  example: 1
+                  minimum: 0
+                  maximum: 120
+                nbRounds:
+                  type: integer
+                  description: Maximum number of rounds to play
+                  minimum: 3
+                  maximum: 100
+                startsAt:
+                  type: integer
+                  format: int64
+                  description: Timestamp in milliseconds to start the tournament at a given date and time. By default, it starts 10 minutes after creation.
+                roundInterval:
+                  type: integer
+                  description: 'How long to wait between each round, in seconds.
+
+                    Set to 99999999 to manually schedule each round from the tournament UI.
+
+                    If empty or -1, a sensible value is picked automatically.
+
+                    '
+                  enum:
+                  - -1
+                  - 5
+                  - 10
+                  - 20
+                  - 30
+                  - 45
+                  - 60
+                  - 120
+                  - 180
+                  - 300
+                  - 600
+                  - 900
+                  - 1200
+                  - 1800
+                  - 2700
+                  - 3600
+                  - 86400
+                  - 172800
+                  - 604800
+                  - 99999999
+                variant:
+                  $ref: '#/components/schemas/VariantKey'
+                position:
+                  $ref: '#/components/schemas/SwissFromPositionFEN'
+                description:
+                  type: string
+                  description: Anything you want to tell players about the tournament
+                rated:
+                  type: boolean
+                  description: Games are rated and impact players ratings
+                  default: true
+                password:
+                  type: string
+                  description: Make the tournament private and restrict access with a password.
+                forbiddenPairings:
+                  type: string
+                  description: 'Usernames of players that must not play together.
+
+                    Two usernames per line, separated by a space.
+
+                    '
+                manualPairings:
+                  type: string
+                  description: 'Manual pairings for the next round.
+
+                    Two usernames per line, separated by a space. Example:
+
+                    ```
+
+                    PlayerA PlayerB
+
+                    PlayerC PlayerD
+
+                    ```
+
+                    To give a bye (1 point) to a player instead of a pairing, add a line like so:
+
+                    ```
+
+                    PlayerE 1
+
+                    ```
+
+                    Missing players will be considered absent and get zero points.
+
+                    '
+                chatFor:
+                  type: integer
+                  description: 'Who can read and write in the chat.
+
+                    - 0  = No-one
+
+                    - 10 = Only team leaders
+
+                    - 20 = Only team members
+
+                    - 30 = All Lichess players
+
+                    '
+                  default: 20
+                  enum:
+                  - 0
+                  - 10
+                  - 20
+                  - 30
+                conditions.minRating.rating:
+                  type: integer
+                  description: Minimum rating to join. Leave empty to let everyone join the tournament.
+                  enum:
+                  - 1000
+                  - 1100
+                  - 1200
+                  - 1300
+                  - 1400
+                  - 1500
+                  - 1600
+                  - 1700
+                  - 1800
+                  - 1900
+                  - 2000
+                  - 2100
+                  - 2200
+                  - 2300
+                  - 2400
+                  - 2500
+                  - 2600
+                conditions.maxRating.rating:
+                  type: integer
+                  description: Maximum rating to join. Based on best rating reached in the last 7 days. Leave empty to let everyone join the tournament.
+                  enum:
+                  - 2200
+                  - 2100
+                  - 2000
+                  - 1900
+                  - 1800
+                  - 1700
+                  - 1600
+                  - 1500
+                  - 1400
+                  - 1300
+                  - 1200
+                  - 1100
+                  - 1000
+                  - 900
+                  - 800
+                conditions.nbRatedGame.nb:
+                  type: integer
+                  description: Minimum number of rated games required to join.
+                  minimum: 0
+                  maximum: 200
+                conditions.playYourGames:
+                  type: boolean
+                  description: 'Only let players join if they have played their last swiss game.
+
+                    If they failed to show up in a recent swiss event, they won''t be able to enter yours.
+
+                    This results in a better swiss experience for the players who actually show up.
+
+                    '
+                  default: false
+                conditions.allowList:
+                  type: string
+                  description: 'Predefined list of usernames that are allowed to join, separated by commas.
+
+                    If this list is non-empty, then usernames absent from this list will be forbidden to join.
+
+                    Adding `%titled` to the list additionally allows any titled player to join.
+
+                    Example: `thibault,german11,%titled`
+
+                    '
+              required:
+              - clock.limit
+              - clock.increment
+              - nbRounds
+      responses:
+        '200':
+          description: The Swiss tournament was successfully created.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwissTournament'
+        '400':
+          description: The creation of the Swiss tournament failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/swiss/{id}:
+    parameters:
+    - in: path
+      name: id
+      description: The Swiss tournament ID.
+      schema:
+        type: string
+      required: true
+    get:
+      operationId: swiss
+      summary: Get info about a Swiss tournament
+      description: 'Get detailed info about a Swiss tournament.
+
+        '
+      tags:
+      - Tournaments (Swiss)
+      security: []
+      responses:
+        '200':
+          description: The information of the Swiss tournament.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwissTournament'
+  /api/swiss/{id}/edit:
+    post:
+      operationId: apiSwissUpdate
+      summary: Update a Swiss tournament
+      description: "Update a Swiss tournament.\nBe mindful not to make important changes to ongoing tournaments.\nAdditional restrictions:\n  - clock.limit + clock.increment > 0\n  - 15s and 0+1 variant tournaments cannot be rated\n"
+      tags:
+      - Tournaments (Swiss)
+      security:
+      - OAuth2:
+        - tournament:write
+      parameters:
+      - in: path
+        name: id
+        description: The tournament ID.
+        schema:
+          type: string
+          example: hL7vMrFQ
+        required: true
+      requestBody:
+        description: Parameters of the tournament
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The tournament name. Leave empty to get a random Grandmaster name
+                  minLength: 2
+                  maxLength: 30
+                clock.limit:
+                  type: integer
+                  description: Clock initial time in seconds
+                  example: 300
+                  enum:
+                  - 0
+                  - 15
+                  - 30
+                  - 45
+                  - 60
+                  - 90
+                  - 120
+                  - 180
+                  - 240
+                  - 300
+                  - 360
+                  - 420
+                  - 480
+                  - 600
+                  - 900
+                  - 1200
+                  - 1500
+                  - 1800
+                  - 2400
+                  - 3000
+                  - 3600
+                  - 4200
+                  - 4800
+                  - 5400
+                  - 6000
+                  - 6600
+                  - 7200
+                  - 7800
+                  - 8400
+                  - 9000
+                  - 9600
+                  - 10200
+                  - 10800
+                clock.increment:
+                  type: integer
+                  description: Clock increment in seconds
+                  example: 1
+                  minimum: 0
+                  maximum: 120
+                nbRounds:
+                  type: integer
+                  description: Maximum number of rounds to play
+                  minimum: 3
+                  maximum: 100
+                startsAt:
+                  type: integer
+                  format: int64
+                  description: Timestamp in milliseconds to start the tournament at a given date and time. By default, it starts 10 minutes after creation.
+                roundInterval:
+                  type: integer
+                  description: 'How long to wait between each round, in seconds.
+
+                    Set to 99999999 to manually schedule each round from the tournament UI, or [with the API](#tag/tournaments-swiss/POST/api/swiss/{id}/schedule-next-round).
+
+                    If empty or -1, a sensible value is picked automatically.
+
+                    '
+                  enum:
+                  - -1
+                  - 5
+                  - 10
+                  - 20
+                  - 30
+                  - 45
+                  - 60
+                  - 120
+                  - 180
+                  - 300
+                  - 600
+                  - 900
+                  - 1200
+                  - 1800
+                  - 2700
+                  - 3600
+                  - 86400
+                  - 172800
+                  - 604800
+                  - 99999999
+                variant:
+                  $ref: '#/components/schemas/VariantKey'
+                position:
+                  $ref: '#/components/schemas/SwissFromPositionFEN'
+                description:
+                  type: string
+                  description: Anything you want to tell players about the tournament
+                rated:
+                  type: boolean
+                  description: Games are rated and impact players ratings
+                  default: true
+                password:
+                  type: string
+                  description: Make the tournament private and restrict access with a password.
+                forbiddenPairings:
+                  type: string
+                  description: 'Usernames of players that must not play together.
+
+                    Two usernames per line, separated by a space.
+
+                    '
+                manualPairings:
+                  type: string
+                  description: 'Manual pairings for the next round.
+
+                    Two usernames per line, separated by a space.
+
+                    Present players without a valid pairing will be given a bye, which is worth 1 point.
+
+                    Forfeited players will get 0 points.
+
+                    '
+                chatFor:
+                  type: integer
+                  description: 'Who can read and write in the chat.
+
+                    - 0  = No-one
+
+                    - 10 = Only team leaders
+
+                    - 20 = Only team members
+
+                    - 30 = All Lichess players
+
+                    '
+                  default: 20
+                  enum:
+                  - 0
+                  - 10
+                  - 20
+                  - 30
+                conditions.minRating.rating:
+                  type: integer
+                  description: Minimum rating to join. Leave empty to let everyone join the tournament.
+                  enum:
+                  - 1000
+                  - 1100
+                  - 1200
+                  - 1300
+                  - 1400
+                  - 1500
+                  - 1600
+                  - 1700
+                  - 1800
+                  - 1900
+                  - 2000
+                  - 2100
+                  - 2200
+                  - 2300
+                  - 2400
+                  - 2500
+                  - 2600
+                conditions.maxRating.rating:
+                  type: integer
+                  description: Maximum rating to join. Based on best rating reached in the last 7 days. Leave empty to let everyone join the tournament.
+                  enum:
+                  - 2200
+                  - 2100
+                  - 2000
+                  - 1900
+                  - 1800
+                  - 1700
+                  - 1600
+                  - 1500
+                  - 1400
+                  - 1300
+                  - 1200
+                  - 1100
+                  - 1000
+                  - 900
+                  - 800
+                conditions.nbRatedGame.nb:
+                  type: integer
+                  description: Minimum number of rated games required to join.
+                  minimum: 0
+                  maximum: 200
+                conditions.playYourGames:
+                  type: boolean
+                  description: 'Only let players join if they have played their last swiss game.
+
+                    If they failed to show up in a recent swiss event, they won''t be able to enter yours.
+
+                    This results in a better swiss experience for the players who actually show up.
+
+                    '
+                  default: false
+                conditions.allowList:
+                  type: string
+                  description: 'Predefined list of usernames that are allowed to join, separated by commas.
+
+                    If this list is non-empty, then usernames absent from this list will be forbidden to join.
+
+                    Adding `%titled` to the list additionally allows any titled player to join.
+
+                    Example: `thibault,german11,%titled`
+
+                    '
+              required:
+              - clock.limit
+              - clock.increment
+              - nbRounds
+      responses:
+        '200':
+          description: The Swiss tournament was successfully updated.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwissTournament'
+        '400':
+          description: Updating the swiss failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: This user cannot update this Swiss.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwissUnauthorisedEdit'
+  /api/swiss/{id}/schedule-next-round:
+    post:
+      operationId: apiSwissScheduleNextRound
+      summary: Manually schedule the next round
+      description: 'Manually schedule the next round date and time of a Swiss tournament.
+
+        This sets the `roundInterval` field to `99999999`, i.e. manual scheduling.
+
+        All further rounds will need to be manually scheduled, unless the `roundInterval` field is changed back to automatic scheduling.
+
+        '
+      tags:
+      - Tournaments (Swiss)
+      security:
+      - OAuth2:
+        - tournament:write
+      parameters:
+      - in: path
+        name: id
+        description: The tournament ID.
+        schema:
+          type: string
+          example: hL7vMrFQ
+        required: true
+      requestBody:
+        description: Parameters of the tournament
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                date:
+                  type: integer
+                  format: int64
+                  description: Timestamp in milliseconds to start the next round at a given date and time.
+      responses:
+        '204':
+          description: The Swiss tournament was successfully updated.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+        '400':
+          description: Updating the swiss failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: This user cannot update this Swiss.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwissUnauthorisedEdit'
+  /api/swiss/{id}/join:
+    post:
+      operationId: apiSwissJoin
+      summary: Join a Swiss tournament
+      description: 'Join a Swiss tournament, possibly with a password.
+
+        '
+      tags:
+      - Tournaments (Swiss)
+      security:
+      - OAuth2:
+        - tournament:write
+      parameters:
+      - in: path
+        name: id
+        description: The tournament ID.
+        schema:
+          type: string
+          example: hL7vMrFQ
+        required: true
+      requestBody:
+        description: You may need these depending on the tournament to join
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                  description: The tournament password, if one is required
+      responses:
+        '200':
+          description: The tournament was successfully joined.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+        '400':
+          description: Joining the tournament failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/swiss/{id}/withdraw:
+    post:
+      operationId: apiSwissWithdraw
+      summary: Pause or leave a swiss tournament
+      description: 'Leave a future Swiss tournament, or take a break on an ongoing Swiss tournament.
+
+        It''s possible to join again later. Points are preserved.
+
+        '
+      tags:
+      - Tournaments (Swiss)
+      security:
+      - OAuth2:
+        - tournament:write
+      parameters:
+      - in: path
+        name: id
+        description: The tournament ID.
+        schema:
+          type: string
+          example: hL7vMrFQ
+        required: true
+      responses:
+        '200':
+          description: The tournament was successfully paused or left.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+  /api/swiss/{id}/terminate:
+    post:
+      operationId: apiSwissTerminate
+      summary: Terminate a Swiss tournament
+      description: 'Terminate a Swiss tournament
+
+        '
+      tags:
+      - Tournaments (Swiss)
+      security:
+      - OAuth2:
+        - tournament:write
+      parameters:
+      - in: path
+        name: id
+        description: The Swiss tournament ID.
+        schema:
+          type: string
+          example: W5FrxusN
+        required: true
+      responses:
+        '200':
+          description: The Swiss tournament was successfully terminated.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ok'
+        '400':
+          description: Terminating the Swiss tournament failed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /swiss/{id}.trf:
+    get:
+      operationId: swissTrf
+      summary: Export TRF of a Swiss tournament
+      description: 'Download a tournament in the Tournament Report File format, the FIDE standard.
+
+        Documentation: <https://www.fide.com/FIDE/handbook/C04Annex2_TRF16.pdf>
+
+        Example: <https://lichess.org/swiss/j8rtJ5GL.trf>
+
+        '
+      tags:
+      - Tournaments (Swiss)
+      security: []
+      parameters:
+      - in: path
+        name: id
+        description: The tournament ID.
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          description: The TRF representation of a Swiss tournament.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            text/plain:
+              schema:
+                type: string
+  /api/swiss/{id}/games:
+    get:
+      operationId: gamesBySwiss
+      summary: Export games of a Swiss tournament
+      description: "Download games of a swiss tournament in PGN or [ndjson](#description/streaming-with-nd-json) format.\nGames are sorted by chronological order.\nThe game stream is throttled, depending on who is making the request:\n  - Anonymous request: 20 games per second\n  - [OAuth2 authenticated](#description/authentication) request: 30 games per second\n"
+      tags:
+      - Tournaments (Swiss)
+      security: []
+      parameters:
+      - $ref: '#/components/parameters/AcceptPgnOrNdjson'
+      - in: path
+        name: id
+        description: The tournament ID.
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: player
+        description: Only the games played by a given player
+        schema:
+          type: string
+      - in: query
+        name: moves
+        description: Include the PGN moves.
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: pgnInJson
+        description: Include the full PGN within the JSON response, in a `pgn` field.
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: tags
+        description: Include the PGN tags.
+        schema:
+          type: boolean
+          default: true
+      - in: query
+        name: clocks
+        description: 'Include clock status when available.
+
+          Either as PGN comments: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`
+
+          Or in a `clocks` JSON field, as centisecond integers, depending on the response type.
+
+          '
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: evals
+        description: 'Include analysis evaluations and comments, when available.
+
+          Either as PGN comments: `12. Bxf6 { [%eval 0.23] } a3 { [%eval -1.09] }`
+
+          Or in an `analysis` JSON field, depending on the response type.
+
+          '
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: accuracy
+        description: 'Include [accuracy percent](https://lichess.org/page/accuracy) of each player, when available. Only available in JSON.
+
+          '
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: opening
+        description: 'Include the opening name.
+
+          Example: `[Opening "King''s Gambit Accepted, King''s Knight Gambit"]`
+
+          '
+        schema:
+          type: boolean
+          default: false
+      - in: query
+        name: division
+        description: 'Plies which mark the beginning of the middlegame and endgame.
+
+          Only available in JSON
+
+          '
+        schema:
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: The list of games of a Swiss tournament.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/x-chess-pgn:
+              schema:
+                $ref: '#/components/schemas/GamePgn'
+            application/x-ndjson:
+              schema:
+                $ref: '#/components/schemas/GameJson'
+  /api/swiss/{id}/results:
+    get:
+      operationId: resultsBySwiss
+      summary: Get results of a swiss tournament
+      description: 'Players of a swiss tournament, with their score and performance, sorted by rank (best first).
+
+        Players are streamed as [ndjson](#description/streaming-with-nd-json).
+
+        If called on an ongoing tournament, results can be inconsistent
+
+        due to ranking changes while the players are being streamed.
+
+        Use on finished tournaments for guaranteed consistency.
+
+        '
+      tags:
+      - Tournaments (Swiss)
+      security: []
+      parameters:
+      - in: path
+        name: id
+        description: The tournament ID.
+        schema:
+          type: string
+        required: true
+      - in: query
+        name: nb
+        description: Max number of players to fetch
+        schema:
+          type: integer
+          minimum: 1
+      responses:
+        '200':
+          description: The results of a Swiss tournament.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/x-ndjson:
+              schema:
+                type: object
+                required:
+                - rank
+                - points
+                - tieBreak
+                - rating
+                - username
+                - performance
+                properties:
+                  absent:
+                    type: boolean
+                  rank:
+                    type: integer
+                  points:
+                    type: number
+                  tieBreak:
+                    type: integer
+                  rating:
+                    type: integer
+                  username:
+                    type: string
+                  title:
+                    $ref: '#/components/schemas/Title'
+                  performance:
+                    type: integer
+                example:
+                  rank: 4
+                  points: 8.5
+                  tieBreak: 77
+                  rating: 2618
+                  username: opperwezen
+                  title: IM
+                  performance: 2423
+  /api/team/{teamId}/swiss:
+    get:
+      operationId: apiTeamSwiss
+      summary: Get team swiss tournaments
+      description: 'Get all swiss tournaments of a team.
+
+        Tournaments are sorted by reverse chronological order of start date (last starting first).
+
+        Tournaments are streamed as [ndjson](#description/streaming-with-nd-json).
+
+        '
+      tags:
+      - Tournaments (Swiss)
+      security: []
+      parameters:
+      - in: path
+        name: teamId
+        schema:
+          type: string
+        required: true
+        example: coders
+      - in: query
+        name: max
+        description: How many tournaments to download.
+        schema:
+          type: integer
+          minimum: 1
+          default: 100
+      - in: query
+        name: status
+        description: '[Filter] Only swiss tournaments in this current state.
+
+          '
+        schema:
+          $ref: '#/components/schemas/SwissStatus'
+      - in: query
+        name: createdBy
+        description: '[Filter] Only swiss tournaments created by a given user.
+
+          '
+        schema:
+          type: string
+      - in: query
+        name: name
+        description: '[Filter] Only swiss tournaments with a given name.
+
+          '
+        schema:
+          type: string
+      responses:
+        '200':
+          description: The list of Swiss tournaments of a team.
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: string
+                default: '''*'''
+          content:
+            application/x-ndjson:
+              schema:
+                $ref: '#/components/schemas/SwissTournament'
+              examples:
+                default:
+                  $ref: '#/components/examples/teams-getTeamSwissTournaments.json'
+components:
+  schemas:
+    GameJson:
+      type: object
+      properties:
+        id:
+          type: string
+        rated:
+          type: boolean
+        variant:
+          $ref: '#/components/schemas/VariantKey'
+        speed:
+          $ref: '#/components/schemas/Speed'
+        perf:
+          type: string
+        createdAt:
+          type: integer
+          format: int64
+        lastMoveAt:
+          type: integer
+          format: int64
+        status:
+          $ref: '#/components/schemas/GameStatusName'
+        source:
+          type: string
+        players:
+          $ref: '#/components/schemas/GamePlayers'
+        initialFen:
+          type: string
+        winner:
+          $ref: '#/components/schemas/GameColor'
+        opening:
+          $ref: '#/components/schemas/GameOpening'
+        moves:
+          type: string
+        pgn:
+          type: string
+        daysPerTurn:
+          type: integer
+        analysis:
+          type: array
+          items:
+            $ref: '#/components/schemas/GameMoveAnalysis'
+        tournament:
+          type: string
+        swiss:
+          type: string
+        clock:
+          type: object
+          properties:
+            initial:
+              type: integer
+            increment:
+              type: integer
+            totalTime:
+              type: integer
+          required:
+          - initial
+          - increment
+          - totalTime
+        clocks:
+          type: array
+          items:
+            type: integer
+        division:
+          type: object
+          properties:
+            middle:
+              type: integer
+              description: Ply at which the middlegame begins
+            end:
+              type: integer
+              description: Ply at which the endgame begins
+          required: []
+      required:
+      - id
+      - rated
+      - variant
+      - speed
+      - perf
+      - createdAt
+      - lastMoveAt
+      - status
+      - players
+    PatronColor:
+      type: integer
+      description: 'Players can choose a color for their Patron wings.
+
+        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
+
+
+        The presence of this field indicates the player is an active Patron.
+
+        '
+      minimum: 1
+      maximum: 10
+    Verdicts:
+      type: object
+      properties:
+        accepted:
+          type: boolean
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/Verdict'
+      required:
+      - accepted
+      - list
+    SwissFromPositionFEN:
+      type: string
+      description: Custom initial position (in X-FEN). Variant must be standard and the game cannot be rated.
+      default: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+    Patron:
+      type: boolean
+      deprecated: true
+      description: 'Use patronColor value instead to determine if player is a patron.
+
+        '
+    VariantKey:
+      type: string
+      enum:
+      - standard
+      - chess960
+      - crazyhouse
+      - antichess
+      - atomic
+      - horde
+      - kingOfTheHill
+      - racingKings
+      - threeCheck
+      - fromPosition
+      example: standard
+      default: standard
+    GameMoveAnalysis:
+      type: object
+      properties:
+        eval:
+          type: integer
+          description: Evaluation in centipawns
+        mate:
+          type: integer
+          description: Number of moves until forced mate
+        best:
+          type: string
+          example: c2c3
+          description: Best move in UCI notation (only if played move was inaccurate)
+        variation:
+          type: string
+          example: c3 Nc6 d4 Qb6 Be2 Nge7 Na3 cxd4 cxd4 Nf5
+          description: Best variation in SAN notation (only if played move was inaccurate)
+        judgment:
+          type: object
+          description: Judgment annotation (only if played move was inaccurate)
+          properties:
+            name:
+              type: string
+              enum:
+              - Inaccuracy
+              - Mistake
+              - Blunder
+            comment:
+              type: string
+              example: Blunder. Nxg6 was best.
+    GamePgn:
+      type: string
+      example: '[Event "Rated Blitz game"]
+
+        [Site "https://lichess.org/fY44h4OY"]
+
+        [Date "2018.03.29"]
+
+        [Round "-"]
+
+        [White "pveldman"]
+
+        [Black "thibault"]
+
+        [Result "1-0"]
+
+        [UTCDate "2018.03.29"]
+
+        [UTCTime "01:38:15"]
+
+        [WhiteElo "1610"]
+
+        [BlackElo "1601"]
+
+        [WhiteRatingDiff "+10"]
+
+        [BlackRatingDiff "-10"]
+
+        [Variant "Standard"]
+
+        [TimeControl "180+0"]
+
+        [ECO "C62"]
+
+        [Opening "Ruy Lopez: Steinitz Defense"]
+
+        [Termination "Normal"]
+
+
+        1. e4 { [%clk 0:03:00] } e5 { [%clk 0:03:00] } 2. Nf3 { [%clk 0:02:59] } Nc6 { [%clk 0:02:58] } 3. Bb5 { [%clk 0:02:57] } d6 { [%clk 0:02:55] } 4. h3 { [%clk 0:02:54] } Nf6 { [%clk 0:02:52] } 5. Bxc6+ { [%clk 0:02:52] } bxc6 { [%clk 0:02:49] } 6. d3 { [%clk 0:02:51] } Be7 { [%clk 0:02:46] } 7. O-O { [%clk 0:02:47] } O-O { [%clk 0:02:45] } 8. b3 { [%clk 0:02:45] } d5 { [%clk 0:02:45] } 9. exd5 { [%clk 0:02:33] } cxd5 { [%clk 0:02:40] } 10. Nxe5 { [%clk 0:02:31] } Qd6 { [%clk 0:02:38] } 1-0
+
+        '
+    GameColor:
+      type: string
+      enum:
+      - white
+      - black
+    Ok:
+      properties:
+        ok:
+          type: boolean
+      required:
+      - ok
+    GameOpening:
+      type: object
+      properties:
+        eco:
+          type: string
+        name:
+          type: string
+        ply:
+          type: integer
+      required:
+      - eco
+      - name
+      - ply
+    GamePlayers:
+      type: object
+      properties:
+        white:
+          $ref: '#/components/schemas/GamePlayerUser'
+        black:
+          $ref: '#/components/schemas/GamePlayerUser'
+      required:
+      - white
+      - black
+    SwissTournament:
+      type: object
+      properties:
+        id:
+          type: string
+        createdBy:
+          type: string
+        startsAt:
+          type: string
+        name:
+          type: string
+        clock:
+          type: object
+          properties:
+            limit:
+              type: number
+            increment:
+              type: number
+          required:
+          - limit
+          - increment
+        variant:
+          type: string
+        round:
+          type: number
+        nbRounds:
+          type: number
+        nbPlayers:
+          type: number
+        nbOngoing:
+          type: number
+        status:
+          $ref: '#/components/schemas/SwissStatus'
+        stats:
+          type: object
+          properties:
+            games:
+              type: number
+            whiteWins:
+              type: number
+            blackWins:
+              type: number
+            draws:
+              type: number
+            byes:
+              type: number
+            absences:
+              type: number
+            averageRating:
+              type: number
+          required:
+          - games
+          - whiteWins
+          - blackWins
+          - draws
+          - byes
+          - absences
+          - averageRating
+        rated:
+          type: boolean
+        verdicts:
+          $ref: '#/components/schemas/Verdicts'
+        nextRound:
+          type: object
+          properties:
+            at:
+              type: string
+              format: date-time
+            in:
+              type: integer
+              description: The number of seconds until the next round starts.
+      required:
+      - id
+      - createdBy
+      - startsAt
+      - name
+      - clock
+      - variant
+      - round
+      - nbRounds
+      - nbPlayers
+      - nbOngoing
+      - status
+      - rated
+      - verdicts
+    Verdict:
+      type: object
+      properties:
+        condition:
+          type: string
+        verdict:
+          type: string
+      required:
+      - condition
+      - verdict
+    Flair:
+      type: string
+      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The cause of the error.
+      required:
+      - error
+      example:
+        error: This request is invalid because [...]
+    SwissUnauthorisedEdit:
+      properties:
+        error:
+          type: string
+      example:
+        error: This user cannot edit this swiss
+    GameStatusName:
+      type: string
+      enum:
+      - created
+      - started
+      - aborted
+      - mate
+      - resign
+      - stalemate
+      - timeout
+      - draw
+      - outoftime
+      - cheat
+      - noStart
+      - unknownFinish
+      - insufficientMaterialClaim
+      - variantEnd
+    Speed:
+      type: string
+      enum:
+      - ultraBullet
+      - bullet
+      - blitz
+      - rapid
+      - classical
+      - correspondence
+    LightUser:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        flair:
+          $ref: '#/components/schemas/Flair'
+        title:
+          $ref: '#/components/schemas/Title'
+        patron:
+          $ref: '#/components/schemas/Patron'
+        patronColor:
+          $ref: '#/components/schemas/PatronColor'
+      required:
+      - id
+      - name
+    GamePlayerUser:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/LightUser'
+        rating:
+          type: integer
+        ratingDiff:
+          type: integer
+        name:
+          type: string
+        provisional:
+          type: boolean
+        aiLevel:
+          type: integer
+        analysis:
+          type: object
+          properties:
+            inaccuracy:
+              type: integer
+            mistake:
+              type: integer
+            blunder:
+              type: integer
+            acpl:
+              type: integer
+            accuracy:
+              type: integer
+          required:
+          - inaccuracy
+          - mistake
+          - blunder
+          - acpl
+        team:
+          type: string
+      required:
+      - user
+      - rating
+    Title:
+      type: string
+      enum:
+      - GM
+      - WGM
+      - IM
+      - WIM
+      - FM
+      - WFM
+      - NM
+      - CM
+      - WCM
+      - WNM
+      - LM
+      - BOT
+      description: only appears if the user is a titled player or a bot user
+    SwissStatus:
+      type: string
+      description: The current state of the swiss tournament
+      enum:
+      - created
+      - started
+      - finished
+  parameters:
+    AcceptPgnOrNdjson:
+      in: header
+      name: Accept
+      description: 'Specify the desired response format.
+
+        Use `application/x-chess-pgn` to get the games in PGN format.
+
+        Use `application/x-ndjson` to get the games in ndjson format. [Read about ndjson here](#description/streaming-with-nd-json) and how you can parse it in Javascript.
+
+        '
+      schema:
+        type: string
+        enum:
+        - application/x-chess-pgn
+        - application/x-ndjson
+        default: application/x-chess-pgn
+  examples:
+    teams-getTeamSwissTournaments.json:
+      value:
+        id: GWAM5JK9
+        createdBy: lichess
+        startsAt: '2026-05-18T23:30:00Z'
+        name: Rapid Increment
+        clock:
+          limit: 420
+          increment: 2
+        variant: standard
+        round: 0
+        nbRounds: 7
+        nbPlayers: 0
+        nbOngoing: 0
+        status: created
+        nextRound:
+          at: '2026-05-18T23:30:00Z'
+          in: 334377
+        verdicts:
+          list:
+          - condition: ≥ 8 rated Rapid games
+            verdict: ok
+          - condition: Play your games
+            verdict: ok
+          accepted: true
+        rated: true
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      description: 'Read [the introduction for how to make authenticated requests](#description/authentication).
+
+        '
+      flows:
+        authorizationCode:
+          authorizationUrl: https://lichess.org/oauth
+          tokenUrl: https://lichess.org/api/token
+          scopes:
+            preference:read: Read your preferences
+            preference:write: Write your preferences
+            email:read: Read your email address
+            engine:read: Read your external engines
+            engine:write: Create, update, delete your external engines
+            challenge:read: Read incoming challenges
+            challenge:write: Create, accept, decline challenges
+            challenge:bulk: Create, delete, query bulk pairings
+            study:read: Read private studies and broadcasts
+            study:write: Create, update, delete studies and broadcasts
+            tournament:write: Create tournaments
+            racer:write: Create and join puzzle races
+            puzzle:read: Read puzzle activity
+            puzzle:write: Write puzzle activity
+            team:read: Read private team information
+            team:write: Join, leave teams
+            team:lead: Manage teams (kick members, send PMs)
+            follow:read: Read followed players
+            follow:write: Follow and unfollow other players
+            msg:write: Send private messages to other players
+            board:play: Play with the Board API
+            bot:play: Play with the Bot API. Only for [Bot accounts](#tag/bot/POST/api/bot/account/upgrade)
+            web:mod: Use moderator tools (within the bounds of your permissions)
