@@ -1,38 +1,728 @@
 aid: lichess
 url: https://raw.githubusercontent.com/api-evangelist/lichess/refs/heads/main/apis.yml
 apis:
-  - aid: lichess:lichess-api
-    name: Lichess API
-    tags:
-      - Chess
-      - Games
-      - Open Source
-      - REST
-    humanURL: https://lichess.org/api
-    baseURL: https://lichess.org
-    properties:
-      - url: https://lichess.org/api
-        type: Documentation
-      - url: openapi/lichess-openapi.yml
-        type: OpenAPI
-      - url: https://github.com/lichess-org/api/blob/master/doc/specs/lichess-api.yaml
-        type: OpenAPI
-      - url: asyncapi/lichess-asyncapi.yml
-        type: AsyncAPI
-      - url: json-schema/lichess-game-schema.json
-        type: JSONSchema
-      - url: json-schema/lichess-user-schema.json
-        type: JSONSchema
-      - url: json-ld/lichess-context.jsonld
-        type: JSONLD
-      - url: rules/lichess-rules.yml
-        type: SpectralRuleset
-    description: >-
-      The Lichess API is a comprehensive REST and streaming API covering account, users, games, puzzles, teams,
-      challenges, board and bot play, Arena and Swiss tournaments, simuls, studies, broadcasts, messaging, OAuth, FIDE
-      data, opening explorer, tablebase, external engine, and cloud evaluation. The full OpenAPI 3.1 specification is
-      published at github.com/lichess-org/api with 185 operations across 23 tags, and many endpoints stream responses as
-      newline-delimited JSON (ND-JSON).
+- aid: lichess:lichess-account-api
+  name: Lichess Account API
+  description: >-
+    Read and write account information and preferences.
+
+    <https://lichess.org/account/preferences/game-display>
+  humanURL: https://lichess.org/api
+  baseURL: https://lichess.org
+  tags:
+  - Account
+  properties:
+  - type: OpenAPI
+    url: openapi/lichess-account-api-openapi.yml
+  - type: Documentation
+    url: https://lichess.org/api
+  - type: AsyncAPI
+    url: asyncapi/lichess-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/lichess-game-schema.json
+  - type: JSONSchema
+    url: json-schema/lichess-user-schema.json
+  - type: JSONLD
+    url: json-ld/lichess-context.jsonld
+  - type: SpectralRuleset
+    url: rules/lichess-rules.yml
+- aid: lichess:lichess-analysis-api
+  name: Lichess Analysis API
+  description: >-
+    Access Lichess cloud evaluations database.
+
+    <https://lichess.org/analysis>
+  humanURL: https://lichess.org/api
+  baseURL: https://lichess.org
+  tags:
+  - Analysis
+  properties:
+  - type: OpenAPI
+    url: openapi/lichess-analysis-api-openapi.yml
+  - type: Documentation
+    url: https://lichess.org/api
+  - type: AsyncAPI
+    url: asyncapi/lichess-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/lichess-game-schema.json
+  - type: JSONSchema
+    url: json-schema/lichess-user-schema.json
+  - type: JSONLD
+    url: json-ld/lichess-context.jsonld
+  - type: SpectralRuleset
+    url: rules/lichess-rules.yml
+- aid: lichess:lichess-board-api
+  name: Lichess Board API
+  description: >-
+    Play on Lichess with physical boards and third-party clients.
+
+    Works with normal Lichess accounts. Engine play or assistance is [forbidden](https://lichess.org/page/fair-play).
+
+
+    ### Features
+
+    - [Stream incoming chess moves](#tag/board/GET/api/board/game/stream/{gameId})
+
+    - [Play chess moves](#tag/board/POST/api/board/game/{gameId}/move/{move})
+
+    - [Read](#tag/board/GET/api/board/game/stream/{gameId}) and [write](#tag/board/POST/api/board/game/{gameId}/chat)
+    in the player and spectator chats
+
+    - [Receive](#tag/board/GET/api/stream/event), [create](#tag/challenges/POST/api/challenge/{username})
+    and [accept](#tag/challenges/POST/api/challenge/{challengeId}/accept) (or [decline](#tag/challenges/POST/api/challenge/{challengeId}/decline))
+    challenges
+
+    - [Abort](#tag/board/POST/api/board/game/{gameId}/abort) and [resign](#tag/board/POST/api/board/game/{gameId}/resign)
+    games
+
+    - Compatible with normal Lichess accounts
+
+
+    ### Restrictions
+
+    - Engine assistance, or any kind of outside help, is [forbidden](https://lichess.org/page/fair-play)
+
+    - Time controls: [Rapid, Classical and Correspondence](https://lichess.org/faq#time-controls) only.
+      For direct challenges, games vs AI, and bulk pairing, Blitz is also possible.
+
+    ### Links
+
+    - [Announcement](https://lichess.org/blog/XlRW5REAAB8AUJJ-/welcome-lichess-boards)
+
+    - [Implementation example](https://github.com/lichess-org/api-demo) and [live demo](https://lichess-org.github.io/api-demo/)
+
+    - [Certabo support](https://github.com/haklein/certabo-lichess)
+
+    - [Lichs (play from command-line)](https://github.com/Cqsi/lichs)
+
+    - [Lichess discord bot](https://top.gg/bot/707287095911120968)
+
+    - [cli-chess](https://github.com/trevorbayless/cli-chess/)
+
+    - [Blunderly 3D board](https://github.com/maurimo/blunderly)
+
+    - Yours? Please make [an issue or pull request](https://github.com/lichess-org/api).
+  humanURL: https://lichess.org/api
+  baseURL: https://lichess.org
+  tags:
+  - Board
+  properties:
+  - type: OpenAPI
+    url: openapi/lichess-board-api-openapi.yml
+  - type: Documentation
+    url: https://lichess.org/api
+  - type: AsyncAPI
+    url: asyncapi/lichess-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/lichess-game-schema.json
+  - type: JSONSchema
+    url: json-schema/lichess-user-schema.json
+  - type: JSONLD
+    url: json-ld/lichess-context.jsonld
+  - type: SpectralRuleset
+    url: rules/lichess-rules.yml
+- aid: lichess:lichess-bot-api
+  name: Lichess Bot API
+  description: >-
+    Play on Lichess as a bot. Allows engine play.
+
+    Read the [blog post announcement of lichess bots](https://lichess.org/blog/WvDNticAAMu_mHKP/welcome-lichess-bots).
+
+
+    Only works with [Bot accounts](#tag/bot/POST/api/bot/account/upgrade).
+
+
+    ### Features
+
+    - [Stream incoming chess moves](#tag/bot/GET/api/bot/game/stream/{gameId})
+
+    - [Play chess moves](#tag/bot/POST/api/bot/game/{gameId}/move/{move})
+
+    - [Read](#tag/bot/GET/api/bot/game/stream/{gameId}) and [write](#tag/bot/POST/api/bot/game/{gameId}/chat)
+    in the player and spectator chats
+
+    - [Receive](#tag/bot/GET/api/stream/event), [create](#tag/challenges/POST/api/challenge/{username})
+    and [accept](#tag/challenges/POST/api/challenge/{challengeId}/accept) (or [decline](#tag/challenges/POST/api/challenge/{challengeId}/decline))
+    challenges
+
+    - [Abort](#tag/bot/POST/api/bot/game/{gameId}/abort) and [resign](#tag/bot/POST/api/bot/game/{gameId}/resign)
+    games
+
+    - Engine assistance is [allowed](https://lichess.org/page/fair-play)
+
+    ### Restrictions
+
+    - Bots can only play challenge games:  pools and tournaments are off-limits
+
+    - Bots cannot play UltraBullet (¼+0) because it requires making too many requests. But 0+1 and ½+0
+    are allowed.
+
+    - Bots must follow [Lichess TOS](https://lichess.org/terms-of-service) specifically Sandbagging, Constant
+    Aborting, Boosting, etc
+
+    - Bot devs are advised to make their Bots play casual only when testing their Bots logic and to avoid
+    breaking Lichess TOS.
+
+    ### Integrations
+
+    - [Python3 lichess-bot](https://github.com/lichess-bot-devs/lichess-bot) (official)
+
+    - [Python3 lichess UCI bot](https://github.com/Torom/BotLi)
+
+    - [JavaScript bot-o-tron](https://github.com/tailuge/bot-o-tron)
+
+    - [Golang lichess-bot](https://github.com/dolegi/lichess-bot)
+
+    - [Electronic Chessboard](http://www.oliviermercier.com/res/projects/chessboard/)
+
+    - Yours? Please make [an issue or pull request](https://github.com/lichess-org/api).
+
+    ### Links
+
+    - [Announcement](https://lichess.org/blog/WvDNticAAMu_mHKP/welcome-lichess-bots)
+
+    - Join the [Lichess Bots team](https://lichess.org/team/lichess-bots) with your bot account
+
+    - [Get help in the discord channel](https://discord.gg/quwueFd)
+
+    - Watch [Lichess Bot TV](https://lichess.org/tv/bot)
+  humanURL: https://lichess.org/api
+  baseURL: https://lichess.org
+  tags:
+  - Bot
+  properties:
+  - type: OpenAPI
+    url: openapi/lichess-bot-api-openapi.yml
+  - type: Documentation
+    url: https://lichess.org/api
+  - type: AsyncAPI
+    url: asyncapi/lichess-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/lichess-game-schema.json
+  - type: JSONSchema
+    url: json-schema/lichess-user-schema.json
+  - type: JSONLD
+    url: json-ld/lichess-context.jsonld
+  - type: SpectralRuleset
+    url: rules/lichess-rules.yml
+- aid: lichess:lichess-broadcasts-api
+  name: Lichess Broadcasts API
+  description: >-
+    Relay chess events on Lichess.
+
+    [Official broadcasts](https://lichess.org/broadcast) are maintained by Lichess,
+
+    but you can [create your own broadcasts](https://lichess.org/broadcast/new) to cover any live game
+    or chess event.
+
+    You will need to publish PGN on a public URL so that Lichess can pull updates from it.
+
+    Alternatively, you can push PGN updates to Lichess using [this API endpoint](#tag/broadcasts/POST/api/broadcast/round/{broadcastRoundId}/push).
+
+
+    Broadcasts are organized in tournaments, which have several rounds, which have several games.
+
+    You must first create a tournament, then you can add rounds to them.
+  humanURL: https://lichess.org/api
+  baseURL: https://lichess.org
+  tags:
+  - Broadcasts
+  properties:
+  - type: OpenAPI
+    url: openapi/lichess-broadcasts-api-openapi.yml
+  - type: Documentation
+    url: https://lichess.org/api
+  - type: AsyncAPI
+    url: asyncapi/lichess-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/lichess-game-schema.json
+  - type: JSONSchema
+    url: json-schema/lichess-user-schema.json
+  - type: JSONLD
+    url: json-ld/lichess-context.jsonld
+  - type: SpectralRuleset
+    url: rules/lichess-rules.yml
+- aid: lichess:lichess-bulk-pairings-api
+  name: Lichess Bulk pairings API
+  description: >-
+    Create many games for other players.
+
+
+    These endpoints are intended for tournament organisers.
+  humanURL: https://lichess.org/api
+  baseURL: https://lichess.org
+  tags:
+  - Bulk pairings
+  properties:
+  - type: OpenAPI
+    url: openapi/lichess-bulk-pairings-api-openapi.yml
+  - type: Documentation
+    url: https://lichess.org/api
+  - type: AsyncAPI
+    url: asyncapi/lichess-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/lichess-game-schema.json
+  - type: JSONSchema
+    url: json-schema/lichess-user-schema.json
+  - type: JSONLD
+    url: json-ld/lichess-context.jsonld
+  - type: SpectralRuleset
+    url: rules/lichess-rules.yml
+- aid: lichess:lichess-challenges-api
+  name: Lichess Challenges API
+  description: >-
+    Send and receive challenges to play.
+
+
+    To create a lot of challenges, consider [bulk pairing](#tag/bulk-pairings/POST/api/bulk-pairing) instead.
+  humanURL: https://lichess.org/api
+  baseURL: https://lichess.org
+  tags:
+  - Challenges
+  properties:
+  - type: OpenAPI
+    url: openapi/lichess-challenges-api-openapi.yml
+  - type: Documentation
+    url: https://lichess.org/api
+  - type: AsyncAPI
+    url: asyncapi/lichess-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/lichess-game-schema.json
+  - type: JSONSchema
+    url: json-schema/lichess-user-schema.json
+  - type: JSONLD
+    url: json-ld/lichess-context.jsonld
+  - type: SpectralRuleset
+    url: rules/lichess-rules.yml
+- aid: lichess:lichess-external-engine-api
+  name: Lichess External engine API
+  description: >-
+    **This API is in alpha and subject to change.**
+
+
+    Use or provide external engine analysis.
+
+
+    External engines can provide analysis on pages like the
+
+    [analysis board](https://lichess.org/analysis), running as a service
+
+    outside of the browser, or even on a different machine.
+  humanURL: https://lichess.org/api
+  baseURL: https://lichess.org
+  tags:
+  - External engine
+  properties:
+  - type: OpenAPI
+    url: openapi/lichess-external-engine-api-openapi.yml
+  - type: Documentation
+    url: https://lichess.org/api
+  - type: AsyncAPI
+    url: asyncapi/lichess-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/lichess-game-schema.json
+  - type: JSONSchema
+    url: json-schema/lichess-user-schema.json
+  - type: JSONLD
+    url: json-ld/lichess-context.jsonld
+  - type: SpectralRuleset
+    url: rules/lichess-rules.yml
+- aid: lichess:lichess-fide-api
+  name: Lichess FIDE API
+  description: >-
+    FIDE players and federations from [their public download](https://ratings.fide.com/download_lists.phtml).
+
+
+    <https://lichess.org/fide>
+  humanURL: https://lichess.org/api
+  baseURL: https://lichess.org
+  tags:
+  - FIDE
+  properties:
+  - type: OpenAPI
+    url: openapi/lichess-fide-api-openapi.yml
+  - type: Documentation
+    url: https://lichess.org/api
+  - type: AsyncAPI
+    url: asyncapi/lichess-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/lichess-game-schema.json
+  - type: JSONSchema
+    url: json-schema/lichess-user-schema.json
+  - type: JSONLD
+    url: json-ld/lichess-context.jsonld
+  - type: SpectralRuleset
+    url: rules/lichess-rules.yml
+- aid: lichess:lichess-games-api
+  name: Lichess Games API
+  description: >-
+    Access games played on Lichess.
+
+    <https://lichess.org/games>
+  humanURL: https://lichess.org/api
+  baseURL: https://lichess.org
+  tags:
+  - Games
+  properties:
+  - type: OpenAPI
+    url: openapi/lichess-games-api-openapi.yml
+  - type: Documentation
+    url: https://lichess.org/api
+  - type: AsyncAPI
+    url: asyncapi/lichess-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/lichess-game-schema.json
+  - type: JSONSchema
+    url: json-schema/lichess-user-schema.json
+  - type: JSONLD
+    url: json-ld/lichess-context.jsonld
+  - type: SpectralRuleset
+    url: rules/lichess-rules.yml
+- aid: lichess:lichess-messaging-api
+  name: Lichess Messaging API
+  description: >-
+    Private messages with other players.
+
+    <https://lichess.org/inbox>
+  humanURL: https://lichess.org/api
+  baseURL: https://lichess.org
+  tags:
+  - Messaging
+  properties:
+  - type: OpenAPI
+    url: openapi/lichess-messaging-api-openapi.yml
+  - type: Documentation
+    url: https://lichess.org/api
+  - type: AsyncAPI
+    url: asyncapi/lichess-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/lichess-game-schema.json
+  - type: JSONSchema
+    url: json-schema/lichess-user-schema.json
+  - type: JSONLD
+    url: json-ld/lichess-context.jsonld
+  - type: SpectralRuleset
+    url: rules/lichess-rules.yml
+- aid: lichess:lichess-oauth-api
+  name: Lichess OAuth API
+  description: >-
+    Obtaining and revoking OAuth tokens.
+
+
+    [Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md).
+  humanURL: https://lichess.org/api
+  baseURL: https://lichess.org
+  tags:
+  - OAuth
+  properties:
+  - type: OpenAPI
+    url: openapi/lichess-oauth-api-openapi.yml
+  - type: Documentation
+    url: https://lichess.org/api
+  - type: AsyncAPI
+    url: asyncapi/lichess-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/lichess-game-schema.json
+  - type: JSONSchema
+    url: json-schema/lichess-user-schema.json
+  - type: JSONLD
+    url: json-ld/lichess-context.jsonld
+  - type: SpectralRuleset
+    url: rules/lichess-rules.yml
+- aid: lichess:lichess-opening-explorer-api
+  name: Lichess Opening Explorer API
+  description: >-
+    Lookup positions from the [Lichess opening explorer](https://lichess.org/analysis#explorer).
+
+
+    Runs <https://github.com/lichess-org/lila-openingexplorer>.
+
+
+    > [!important]
+
+    > The hostname for these endpoints is `explorer.lichess.org` and not `lichess.org`.
+  humanURL: https://lichess.org/api
+  baseURL: https://lichess.org
+  tags:
+  - Opening Explorer
+  properties:
+  - type: OpenAPI
+    url: openapi/lichess-opening-explorer-api-openapi.yml
+  - type: Documentation
+    url: https://lichess.org/api
+  - type: AsyncAPI
+    url: asyncapi/lichess-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/lichess-game-schema.json
+  - type: JSONSchema
+    url: json-schema/lichess-user-schema.json
+  - type: JSONLD
+    url: json-ld/lichess-context.jsonld
+  - type: SpectralRuleset
+    url: rules/lichess-rules.yml
+- aid: lichess:lichess-puzzles-api
+  name: Lichess Puzzles API
+  description: >-
+    Fetch and solve [puzzles](https://lichess.org/training), view your puzzle history and dashboard.
+
+
+    Our collection of puzzles is in the public domain, you can [download it here](https://database.lichess.org/#puzzles).
+
+    For a list of our [puzzle themes](https://lichess.org/training/themes) with their description, check
+    out the [theme translation file](https://github.com/ornicar/lila/blob/master/translation/source/puzzleTheme.xml).
+  humanURL: https://lichess.org/api
+  baseURL: https://lichess.org
+  tags:
+  - Puzzles
+  properties:
+  - type: OpenAPI
+    url: openapi/lichess-puzzles-api-openapi.yml
+  - type: Documentation
+    url: https://lichess.org/api
+  - type: AsyncAPI
+    url: asyncapi/lichess-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/lichess-game-schema.json
+  - type: JSONSchema
+    url: json-schema/lichess-user-schema.json
+  - type: JSONLD
+    url: json-ld/lichess-context.jsonld
+  - type: SpectralRuleset
+    url: rules/lichess-rules.yml
+- aid: lichess:lichess-relations-api
+  name: Lichess Relations API
+  description: Access relations between users.
+  humanURL: https://lichess.org/api
+  baseURL: https://lichess.org
+  tags:
+  - Relations
+  properties:
+  - type: OpenAPI
+    url: openapi/lichess-relations-api-openapi.yml
+  - type: Documentation
+    url: https://lichess.org/api
+  - type: AsyncAPI
+    url: asyncapi/lichess-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/lichess-game-schema.json
+  - type: JSONSchema
+    url: json-schema/lichess-user-schema.json
+  - type: JSONLD
+    url: json-ld/lichess-context.jsonld
+  - type: SpectralRuleset
+    url: rules/lichess-rules.yml
+- aid: lichess:lichess-simuls-api
+  name: Lichess Simuls API
+  description: >-
+    Access simuls played on Lichess.
+
+    <https://lichess.org/simul>
+  humanURL: https://lichess.org/api
+  baseURL: https://lichess.org
+  tags:
+  - Simuls
+  properties:
+  - type: OpenAPI
+    url: openapi/lichess-simuls-api-openapi.yml
+  - type: Documentation
+    url: https://lichess.org/api
+  - type: AsyncAPI
+    url: asyncapi/lichess-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/lichess-game-schema.json
+  - type: JSONSchema
+    url: json-schema/lichess-user-schema.json
+  - type: JSONLD
+    url: json-ld/lichess-context.jsonld
+  - type: SpectralRuleset
+    url: rules/lichess-rules.yml
+- aid: lichess:lichess-studies-api
+  name: Lichess Studies API
+  description: >-
+    Access Lichess studies.
+
+    <https://lichess.org/study>
+  humanURL: https://lichess.org/api
+  baseURL: https://lichess.org
+  tags:
+  - Studies
+  properties:
+  - type: OpenAPI
+    url: openapi/lichess-studies-api-openapi.yml
+  - type: Documentation
+    url: https://lichess.org/api
+  - type: AsyncAPI
+    url: asyncapi/lichess-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/lichess-game-schema.json
+  - type: JSONSchema
+    url: json-schema/lichess-user-schema.json
+  - type: JSONLD
+    url: json-ld/lichess-context.jsonld
+  - type: SpectralRuleset
+    url: rules/lichess-rules.yml
+- aid: lichess:lichess-tablebase-api
+  name: Lichess Tablebase API
+  description: >-
+    Lookup positions from the [Lichess tablebase server](https://lichess.org/blog/W3WeMyQAACQAdfAL/7-piece-syzygy-tablebases-are-complete).
+
+
+    > [!important]
+
+    > The hostname for these endpoints is `tablebase.lichess.org` and not `lichess.org`.
+  humanURL: https://lichess.org/api
+  baseURL: https://lichess.org
+  tags:
+  - Tablebase
+  properties:
+  - type: OpenAPI
+    url: openapi/lichess-tablebase-api-openapi.yml
+  - type: Documentation
+    url: https://lichess.org/api
+  - type: AsyncAPI
+    url: asyncapi/lichess-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/lichess-game-schema.json
+  - type: JSONSchema
+    url: json-schema/lichess-user-schema.json
+  - type: JSONLD
+    url: json-ld/lichess-context.jsonld
+  - type: SpectralRuleset
+    url: rules/lichess-rules.yml
+- aid: lichess:lichess-teams-api
+  name: Lichess Teams API
+  description: >-
+    Access and manage Lichess teams and their members.
+
+    <https://lichess.org/team>
+  humanURL: https://lichess.org/api
+  baseURL: https://lichess.org
+  tags:
+  - Teams
+  properties:
+  - type: OpenAPI
+    url: openapi/lichess-teams-api-openapi.yml
+  - type: Documentation
+    url: https://lichess.org/api
+  - type: AsyncAPI
+    url: asyncapi/lichess-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/lichess-game-schema.json
+  - type: JSONSchema
+    url: json-schema/lichess-user-schema.json
+  - type: JSONLD
+    url: json-ld/lichess-context.jsonld
+  - type: SpectralRuleset
+    url: rules/lichess-rules.yml
+- aid: lichess:lichess-tournaments-arena-api
+  name: Lichess Tournaments (Arena) API
+  description: >-
+    Access Arena tournaments played on Lichess.
+
+    [Official Arena tournaments](https://lichess.org/tournament) are maintained by Lichess,
+
+    but you can [create your own Arena tournaments](https://lichess.org/tournament/new) as well.
+  humanURL: https://lichess.org/api
+  baseURL: https://lichess.org
+  tags:
+  - Tournaments (Arena)
+  properties:
+  - type: OpenAPI
+    url: openapi/lichess-tournaments-arena-api-openapi.yml
+  - type: Documentation
+    url: https://lichess.org/api
+  - type: AsyncAPI
+    url: asyncapi/lichess-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/lichess-game-schema.json
+  - type: JSONSchema
+    url: json-schema/lichess-user-schema.json
+  - type: JSONLD
+    url: json-ld/lichess-context.jsonld
+  - type: SpectralRuleset
+    url: rules/lichess-rules.yml
+- aid: lichess:lichess-tournaments-swiss-api
+  name: Lichess Tournaments (Swiss) API
+  description: >-
+    Access Swiss tournaments played on Lichess.
+
+    [Read more about Swiss tournaments.](https://lichess.org/swiss).
+  humanURL: https://lichess.org/api
+  baseURL: https://lichess.org
+  tags:
+  - Tournaments (Swiss)
+  properties:
+  - type: OpenAPI
+    url: openapi/lichess-tournaments-swiss-api-openapi.yml
+  - type: Documentation
+    url: https://lichess.org/api
+  - type: AsyncAPI
+    url: asyncapi/lichess-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/lichess-game-schema.json
+  - type: JSONSchema
+    url: json-schema/lichess-user-schema.json
+  - type: JSONLD
+    url: json-ld/lichess-context.jsonld
+  - type: SpectralRuleset
+    url: rules/lichess-rules.yml
+- aid: lichess:lichess-tv-api
+  name: Lichess TV API
+  description: >-
+    Access Lichess TV channels and games.
+
+    <https://lichess.org/tv> & <https://lichess.org/games>
+  humanURL: https://lichess.org/api
+  baseURL: https://lichess.org
+  tags:
+  - TV
+  properties:
+  - type: OpenAPI
+    url: openapi/lichess-tv-api-openapi.yml
+  - type: Documentation
+    url: https://lichess.org/api
+  - type: AsyncAPI
+    url: asyncapi/lichess-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/lichess-game-schema.json
+  - type: JSONSchema
+    url: json-schema/lichess-user-schema.json
+  - type: JSONLD
+    url: json-ld/lichess-context.jsonld
+  - type: SpectralRuleset
+    url: rules/lichess-rules.yml
+- aid: lichess:lichess-users-api
+  name: Lichess Users API
+  description: >-
+    Access registered users on Lichess.
+
+    <https://lichess.org/player>
+
+
+    - Each user blog exposes an atom (RSS) feed, like <https://lichess.org/@/thibault/blog.atom>
+
+    - User blogs mashup feed: https://lichess.org/blog/community.atom
+
+    - User blogs mashup feed for a language: https://lichess.org/blog/community/fr.atom
+  humanURL: https://lichess.org/api
+  baseURL: https://lichess.org
+  tags:
+  - Users
+  properties:
+  - type: OpenAPI
+    url: openapi/lichess-users-api-openapi.yml
+  - type: Documentation
+    url: https://lichess.org/api
+  - type: AsyncAPI
+    url: asyncapi/lichess-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/lichess-game-schema.json
+  - type: JSONSchema
+    url: json-schema/lichess-user-schema.json
+  - type: JSONLD
+    url: json-ld/lichess-context.jsonld
+  - type: SpectralRuleset
+    url: rules/lichess-rules.yml
 name: Lichess
 tags:
   - Chess
@@ -46,9 +736,24 @@ tags:
   - ND-JSON
   - OAuth
 kind: contract
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  generated: '2026-07-22'
+  method: derived
 image: https://lichess1.org/assets/logo/lichess-pad12.svg
 access: 3rd-Party
 common:
+  - type: PostmanWorkspace
+    url: https://www.postman.com/kinlaneapi/lichess/overview
   - type: AgenticAccess
     url: agentic-access/lichess-agentic-access.yml
   - type: VulnerabilityDisclosure
