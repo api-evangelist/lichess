@@ -1,0 +1,2707 @@
+{
+  "info": {
+    "_postman_id": "8573272a-d090-4aa1-8c10-a5a34bb6163a",
+    "name": "Lichess.org API reference Account Tournaments (Swiss) API",
+    "description": "# Introduction\nWelcome to the reference for the Lichess API! Lichess is free/libre,\nopen-source chess server powered by volunteers and donations.\n- Get help in the [Lichess Discord channel](https://discord.gg/lichess)\n- API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)\n- API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)\n- [Contribute to this documentation on Github](https://github.com/lichess-org/api)\n- Check out [Lichess widgets to embed in your website](https://lichess.org/developers)\n- [Download all Lichess rated games](https://database.lichess.org/)\n- [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)\n- [Download all evaluated positions](https://database.lichess.org/#evals)\n\n## Endpoint\nAll requests go to `https://lichess.org` (unless otherwise specified).\n\n## Clients\n- [Python general API](https://github.com/lichess-org/berserk)\n- [MicroPython general API](https://github.com/mkomon/uberserk)\n- [Python general API - async](https://pypi.org/project/async-lichess-sdk)\n- [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)\n- [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)\n- [Java general API](https://github.com/tors42/chariot)\n- [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)\n- [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)\n- [.NET general API](https://github.com/Dblike/LichessSharp)\n\n## Rate limiting\nAll requests are rate limited using various strategies,\nto ensure the API remains responsive for everyone.\nOnly make one request at a time.\nIf you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),\nyou have exceded one of the rate limits.\nIn most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.\nReduce your request frequency before retrying.\n\n## Streaming with ND-JSON\nSome API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.\n\nHere's a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.\n\n## Authentication\n### Which authentication method is right for me?\n[Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)\n\n### Personal Access Token\nPersonal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.\n- [Generate a personal access token](https://lichess.org/account/oauth/token)\n- `curl https://lichess.org/api/account -H \"Authorization: Bearer {token}\"`\n- [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)\n\n### Token Security\n- Keep your tokens secret. Do not share them in public repositories or public forums.\n- Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens' scope). You remain responsible for all activities on your account.\n- Do not hardcode tokens in your application's code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.\n- If you suspect a token has been compromised, revoke it immediately.\n\nTo see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).\n\n### Authorization Code Flow with PKCE\nThe authorization code flow with PKCE allows your users to **login with Lichess**.\nLichess supports unregistered and public clients (no client authentication, choose any unique client id).\nThe only accepted code challenge method is `S256`.\nAccess tokens are long-lived (expect one year), unless they are revoked.\nRefresh tokens are not supported.\n\nSee the [documentation for the OAuth endpoints](#tag/OAuth) or\nthe [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.\n\n- [Demo app](https://lichess-org.github.io/api-demo/)\n- [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)\n- [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)\n- [Java example](https://github.com/tors42/lichess-oauth-pkce-app)\n- [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)\n\n#### Real life examples\n- [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))\n- [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))\n- [English Chess Federation](https://ecf.octoknight.com/)\n- [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)\n\n### Token format\nAccess tokens and authorization codes match `^[A-Za-z0-9_]+$`.\nThe length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.\nBy convention tokens have a recognizable prefix, but do not rely on this.\n\n\nContact Support:\n Name: Lichess.org API\n Email: contact@lichess.org",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:07:01.000Z",
+    "updatedAt": "2026-07-28T02:07:02.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-8573272a-d090-4aa1-8c10-a5a34bb6163a"
+  },
+  "item": [
+    {
+      "name": "api",
+      "item": [
+        {
+          "name": "swiss",
+          "item": [
+            {
+              "name": "new",
+              "item": [
+                {
+                  "name": "{teamId}",
+                  "item": [
+                    {
+                      "name": "Create a new Swiss tournament",
+                      "id": "cce20aba-2469-4245-9497-5bd314e489c5",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://lichess.org/api/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://lichess.org/oauth",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "(Required) Clock initial time in seconds",
+                              "key": "clock.limit",
+                              "value": "300"
+                            },
+                            {
+                              "description": "(Required) Clock increment in seconds",
+                              "key": "clock.increment",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": "(Required) Maximum number of rounds to play",
+                              "key": "nbRounds",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": "The tournament name. Leave empty to get a random Grandmaster name",
+                              "key": "name",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Timestamp in milliseconds to start the tournament at a given date and time. By default, it starts 10 minutes after creation.",
+                              "key": "startsAt",
+                              "value": "<long>"
+                            },
+                            {
+                              "description": "How long to wait between each round, in seconds.\nSet to 99999999 to manually schedule each round from the tournament UI.\nIf empty or -1, a sensible value is picked automatically.\n",
+                              "key": "roundInterval",
+                              "value": "120"
+                            },
+                            {
+                              "key": "variant",
+                              "value": "standard"
+                            },
+                            {
+                              "description": "Custom initial position (in X-FEN). Variant must be standard and the game cannot be rated.",
+                              "key": "position",
+                              "value": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+                            },
+                            {
+                              "description": "Anything you want to tell players about the tournament",
+                              "key": "description",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Games are rated and impact players ratings",
+                              "key": "rated",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Make the tournament private and restrict access with a password.",
+                              "key": "password",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Usernames of players that must not play together.\nTwo usernames per line, separated by a space.\n",
+                              "key": "forbiddenPairings",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Manual pairings for the next round.\nTwo usernames per line, separated by a space. Example:\n```\nPlayerA PlayerB\nPlayerC PlayerD\n```\nTo give a bye (1 point) to a player instead of a pairing, add a line like so:\n```\nPlayerE 1\n```\nMissing players will be considered absent and get zero points.\n",
+                              "key": "manualPairings",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Who can read and write in the chat.\n- 0  = No-one\n- 10 = Only team leaders\n- 20 = Only team members\n- 30 = All Lichess players\n",
+                              "key": "chatFor",
+                              "value": "20"
+                            },
+                            {
+                              "description": "Minimum rating to join. Leave empty to let everyone join the tournament.",
+                              "key": "conditions.minRating.rating",
+                              "value": "1900"
+                            },
+                            {
+                              "description": "Maximum rating to join. Based on best rating reached in the last 7 days. Leave empty to let everyone join the tournament.",
+                              "key": "conditions.maxRating.rating",
+                              "value": "1700"
+                            },
+                            {
+                              "description": "Minimum number of rated games required to join.",
+                              "key": "conditions.nbRatedGame.nb",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": "Only let players join if they have played their last swiss game.\nIf they failed to show up in a recent swiss event, they won't be able to enter yours.\nThis results in a better swiss experience for the players who actually show up.\n",
+                              "key": "conditions.playYourGames",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Predefined list of usernames that are allowed to join, separated by commas.\nIf this list is non-empty, then usernames absent from this list will be forbidden to join.\nAdding `%titled` to the list additionally allows any titled player to join.\nExample: `thibault,german11,%titled`\n",
+                              "key": "conditions.allowList",
+                              "value": "<string>"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/swiss/new/:teamId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "swiss",
+                            "new",
+                            ":teamId"
+                          ],
+                          "variable": [
+                            {
+                              "id": "2a1fe0fc-3e64-42ff-a528-fcccd23a658e",
+                              "key": "teamId",
+                              "value": "<string>",
+                              "description": "(Required) ID of the team"
+                            }
+                          ]
+                        },
+                        "description": "Create a Swiss tournament for your team.\nThis endpoint mirrors the Swiss tournament form from your team pagee.\nYou can create up to 12 tournaments per day.\nAdditional restrictions:\n  - clock.limit + clock.increment > 0\n  - 15s and 0+1 variant tournaments cannot be rated\n"
+                      },
+                      "response": [
+                        {
+                          "id": "4257713d-b3f3-4a87-909a-6a9848323bf1",
+                          "name": "The Swiss tournament was successfully created.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "urlencoded",
+                              "urlencoded": [
+                                {
+                                  "description": "(Required) Clock initial time in seconds",
+                                  "key": "clock.limit",
+                                  "value": "300"
+                                },
+                                {
+                                  "description": "(Required) Clock increment in seconds",
+                                  "key": "clock.increment",
+                                  "value": "<integer>"
+                                },
+                                {
+                                  "description": "(Required) Maximum number of rounds to play",
+                                  "key": "nbRounds",
+                                  "value": "<integer>"
+                                },
+                                {
+                                  "description": "The tournament name. Leave empty to get a random Grandmaster name",
+                                  "key": "name",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Timestamp in milliseconds to start the tournament at a given date and time. By default, it starts 10 minutes after creation.",
+                                  "key": "startsAt",
+                                  "value": "<long>"
+                                },
+                                {
+                                  "description": "How long to wait between each round, in seconds.\nSet to 99999999 to manually schedule each round from the tournament UI.\nIf empty or -1, a sensible value is picked automatically.\n",
+                                  "key": "roundInterval",
+                                  "value": "120"
+                                },
+                                {
+                                  "key": "variant",
+                                  "value": "standard"
+                                },
+                                {
+                                  "description": "Custom initial position (in X-FEN). Variant must be standard and the game cannot be rated.",
+                                  "key": "position",
+                                  "value": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+                                },
+                                {
+                                  "description": "Anything you want to tell players about the tournament",
+                                  "key": "description",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Games are rated and impact players ratings",
+                                  "key": "rated",
+                                  "value": "true"
+                                },
+                                {
+                                  "description": "Make the tournament private and restrict access with a password.",
+                                  "key": "password",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Usernames of players that must not play together.\nTwo usernames per line, separated by a space.\n",
+                                  "key": "forbiddenPairings",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Manual pairings for the next round.\nTwo usernames per line, separated by a space. Example:\n```\nPlayerA PlayerB\nPlayerC PlayerD\n```\nTo give a bye (1 point) to a player instead of a pairing, add a line like so:\n```\nPlayerE 1\n```\nMissing players will be considered absent and get zero points.\n",
+                                  "key": "manualPairings",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Who can read and write in the chat.\n- 0  = No-one\n- 10 = Only team leaders\n- 20 = Only team members\n- 30 = All Lichess players\n",
+                                  "key": "chatFor",
+                                  "value": "20"
+                                },
+                                {
+                                  "description": "Minimum rating to join. Leave empty to let everyone join the tournament.",
+                                  "key": "conditions.minRating.rating",
+                                  "value": "1900"
+                                },
+                                {
+                                  "description": "Maximum rating to join. Based on best rating reached in the last 7 days. Leave empty to let everyone join the tournament.",
+                                  "key": "conditions.maxRating.rating",
+                                  "value": "1700"
+                                },
+                                {
+                                  "description": "Minimum number of rated games required to join.",
+                                  "key": "conditions.nbRatedGame.nb",
+                                  "value": "<integer>"
+                                },
+                                {
+                                  "description": "Only let players join if they have played their last swiss game.\nIf they failed to show up in a recent swiss event, they won't be able to enter yours.\nThis results in a better swiss experience for the players who actually show up.\n",
+                                  "key": "conditions.playYourGames",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Predefined list of usernames that are allowed to join, separated by commas.\nIf this list is non-empty, then usernames absent from this list will be forbidden to join.\nAdding `%titled` to the list additionally allows any titled player to join.\nExample: `thibault,german11,%titled`\n",
+                                  "key": "conditions.allowList",
+                                  "value": "<string>"
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/swiss/new/:teamId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "swiss",
+                                "new",
+                                ":teamId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "teamId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<string>\",\n  \"createdBy\": \"<string>\",\n  \"startsAt\": \"<string>\",\n  \"name\": \"<string>\",\n  \"clock\": {\n    \"limit\": \"<number>\",\n    \"increment\": \"<number>\"\n  },\n  \"variant\": \"<string>\",\n  \"round\": \"<number>\",\n  \"nbRounds\": \"<number>\",\n  \"nbPlayers\": \"<number>\",\n  \"nbOngoing\": \"<number>\",\n  \"status\": \"finished\",\n  \"rated\": \"<boolean>\",\n  \"verdicts\": {\n    \"accepted\": \"<boolean>\",\n    \"list\": [\n      {\n        \"condition\": \"<string>\",\n        \"verdict\": \"<string>\"\n      },\n      {\n        \"condition\": \"<string>\",\n        \"verdict\": \"<string>\"\n      }\n    ]\n  },\n  \"stats\": {\n    \"games\": \"<number>\",\n    \"whiteWins\": \"<number>\",\n    \"blackWins\": \"<number>\",\n    \"draws\": \"<number>\",\n    \"byes\": \"<number>\",\n    \"absences\": \"<number>\",\n    \"averageRating\": \"<number>\"\n  },\n  \"nextRound\": {\n    \"at\": \"<dateTime>\",\n    \"in\": \"<integer>\"\n  }\n}",
+                          "createdAt": "2026-07-28T02:07:02.000Z",
+                          "updatedAt": "2026-07-28T02:07:02.000Z",
+                          "uid": "35240-4257713d-b3f3-4a87-909a-6a9848323bf1"
+                        },
+                        {
+                          "id": "6e529ae0-b29e-4b60-af39-d2e57713b208",
+                          "name": "The creation of the Swiss tournament failed.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "urlencoded",
+                              "urlencoded": [
+                                {
+                                  "description": "(Required) Clock initial time in seconds",
+                                  "key": "clock.limit",
+                                  "value": "300"
+                                },
+                                {
+                                  "description": "(Required) Clock increment in seconds",
+                                  "key": "clock.increment",
+                                  "value": "<integer>"
+                                },
+                                {
+                                  "description": "(Required) Maximum number of rounds to play",
+                                  "key": "nbRounds",
+                                  "value": "<integer>"
+                                },
+                                {
+                                  "description": "The tournament name. Leave empty to get a random Grandmaster name",
+                                  "key": "name",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Timestamp in milliseconds to start the tournament at a given date and time. By default, it starts 10 minutes after creation.",
+                                  "key": "startsAt",
+                                  "value": "<long>"
+                                },
+                                {
+                                  "description": "How long to wait between each round, in seconds.\nSet to 99999999 to manually schedule each round from the tournament UI.\nIf empty or -1, a sensible value is picked automatically.\n",
+                                  "key": "roundInterval",
+                                  "value": "120"
+                                },
+                                {
+                                  "key": "variant",
+                                  "value": "standard"
+                                },
+                                {
+                                  "description": "Custom initial position (in X-FEN). Variant must be standard and the game cannot be rated.",
+                                  "key": "position",
+                                  "value": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+                                },
+                                {
+                                  "description": "Anything you want to tell players about the tournament",
+                                  "key": "description",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Games are rated and impact players ratings",
+                                  "key": "rated",
+                                  "value": "true"
+                                },
+                                {
+                                  "description": "Make the tournament private and restrict access with a password.",
+                                  "key": "password",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Usernames of players that must not play together.\nTwo usernames per line, separated by a space.\n",
+                                  "key": "forbiddenPairings",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Manual pairings for the next round.\nTwo usernames per line, separated by a space. Example:\n```\nPlayerA PlayerB\nPlayerC PlayerD\n```\nTo give a bye (1 point) to a player instead of a pairing, add a line like so:\n```\nPlayerE 1\n```\nMissing players will be considered absent and get zero points.\n",
+                                  "key": "manualPairings",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Who can read and write in the chat.\n- 0  = No-one\n- 10 = Only team leaders\n- 20 = Only team members\n- 30 = All Lichess players\n",
+                                  "key": "chatFor",
+                                  "value": "20"
+                                },
+                                {
+                                  "description": "Minimum rating to join. Leave empty to let everyone join the tournament.",
+                                  "key": "conditions.minRating.rating",
+                                  "value": "1900"
+                                },
+                                {
+                                  "description": "Maximum rating to join. Based on best rating reached in the last 7 days. Leave empty to let everyone join the tournament.",
+                                  "key": "conditions.maxRating.rating",
+                                  "value": "1700"
+                                },
+                                {
+                                  "description": "Minimum number of rated games required to join.",
+                                  "key": "conditions.nbRatedGame.nb",
+                                  "value": "<integer>"
+                                },
+                                {
+                                  "description": "Only let players join if they have played their last swiss game.\nIf they failed to show up in a recent swiss event, they won't be able to enter yours.\nThis results in a better swiss experience for the players who actually show up.\n",
+                                  "key": "conditions.playYourGames",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Predefined list of usernames that are allowed to join, separated by commas.\nIf this list is non-empty, then usernames absent from this list will be forbidden to join.\nAdding `%titled` to the list additionally allows any titled player to join.\nExample: `thibault,german11,%titled`\n",
+                                  "key": "conditions.allowList",
+                                  "value": "<string>"
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/swiss/new/:teamId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "swiss",
+                                "new",
+                                ":teamId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "teamId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"error\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:07:02.000Z",
+                          "updatedAt": "2026-07-28T02:07:02.000Z",
+                          "uid": "35240-6e529ae0-b29e-4b60-af39-d2e57713b208"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:07:02.000Z",
+                      "updatedAt": "2026-07-28T02:07:02.000Z",
+                      "uid": "35240-cce20aba-2469-4245-9497-5bd314e489c5"
+                    }
+                  ],
+                  "id": "467d7db4-e7c4-4339-a8d0-8aed9fa84ad4",
+                  "createdAt": "2026-07-28T02:07:02.000Z",
+                  "updatedAt": "2026-07-28T02:07:02.000Z",
+                  "uid": "35240-467d7db4-e7c4-4339-a8d0-8aed9fa84ad4"
+                }
+              ],
+              "id": "9327ccaa-adfe-480a-8795-4c6b4549d2ef",
+              "createdAt": "2026-07-28T02:07:02.000Z",
+              "updatedAt": "2026-07-28T02:07:02.000Z",
+              "uid": "35240-9327ccaa-adfe-480a-8795-4c6b4549d2ef"
+            },
+            {
+              "name": "{id}",
+              "item": [
+                {
+                  "name": "edit",
+                  "item": [
+                    {
+                      "name": "Update a Swiss tournament",
+                      "id": "d2fbdaf5-5cd7-484d-a4db-85e36929d9e7",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://lichess.org/api/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://lichess.org/oauth",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "(Required) Clock initial time in seconds",
+                              "key": "clock.limit",
+                              "value": "180"
+                            },
+                            {
+                              "description": "(Required) Clock increment in seconds",
+                              "key": "clock.increment",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": "(Required) Maximum number of rounds to play",
+                              "key": "nbRounds",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": "The tournament name. Leave empty to get a random Grandmaster name",
+                              "key": "name",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Timestamp in milliseconds to start the tournament at a given date and time. By default, it starts 10 minutes after creation.",
+                              "key": "startsAt",
+                              "value": "<long>"
+                            },
+                            {
+                              "description": "How long to wait between each round, in seconds.\nSet to 99999999 to manually schedule each round from the tournament UI, or [with the API](#tag/tournaments-swiss/POST/api/swiss/{id}/schedule-next-round).\nIf empty or -1, a sensible value is picked automatically.\n",
+                              "key": "roundInterval",
+                              "value": "1800"
+                            },
+                            {
+                              "key": "variant",
+                              "value": "standard"
+                            },
+                            {
+                              "description": "Custom initial position (in X-FEN). Variant must be standard and the game cannot be rated.",
+                              "key": "position",
+                              "value": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+                            },
+                            {
+                              "description": "Anything you want to tell players about the tournament",
+                              "key": "description",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Games are rated and impact players ratings",
+                              "key": "rated",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Make the tournament private and restrict access with a password.",
+                              "key": "password",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Usernames of players that must not play together.\nTwo usernames per line, separated by a space.\n",
+                              "key": "forbiddenPairings",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Manual pairings for the next round.\nTwo usernames per line, separated by a space.\nPresent players without a valid pairing will be given a bye, which is worth 1 point.\nForfeited players will get 0 points.\n",
+                              "key": "manualPairings",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Who can read and write in the chat.\n- 0  = No-one\n- 10 = Only team leaders\n- 20 = Only team members\n- 30 = All Lichess players\n",
+                              "key": "chatFor",
+                              "value": "20"
+                            },
+                            {
+                              "description": "Minimum rating to join. Leave empty to let everyone join the tournament.",
+                              "key": "conditions.minRating.rating",
+                              "value": "1000"
+                            },
+                            {
+                              "description": "Maximum rating to join. Based on best rating reached in the last 7 days. Leave empty to let everyone join the tournament.",
+                              "key": "conditions.maxRating.rating",
+                              "value": "2000"
+                            },
+                            {
+                              "description": "Minimum number of rated games required to join.",
+                              "key": "conditions.nbRatedGame.nb",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": "Only let players join if they have played their last swiss game.\nIf they failed to show up in a recent swiss event, they won't be able to enter yours.\nThis results in a better swiss experience for the players who actually show up.\n",
+                              "key": "conditions.playYourGames",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Predefined list of usernames that are allowed to join, separated by commas.\nIf this list is non-empty, then usernames absent from this list will be forbidden to join.\nAdding `%titled` to the list additionally allows any titled player to join.\nExample: `thibault,german11,%titled`\n",
+                              "key": "conditions.allowList",
+                              "value": "<string>"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/swiss/:id/edit",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "swiss",
+                            ":id",
+                            "edit"
+                          ],
+                          "variable": [
+                            {
+                              "id": "0112787a-34f4-41cd-bd53-edfd1938d403",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) The tournament ID."
+                            }
+                          ]
+                        },
+                        "description": "Update a Swiss tournament.\nBe mindful not to make important changes to ongoing tournaments.\nAdditional restrictions:\n  - clock.limit + clock.increment > 0\n  - 15s and 0+1 variant tournaments cannot be rated\n"
+                      },
+                      "response": [
+                        {
+                          "id": "79acb88a-0b4c-4a1c-80c4-ea7c19eecc87",
+                          "name": "The Swiss tournament was successfully updated.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "urlencoded",
+                              "urlencoded": [
+                                {
+                                  "description": "(Required) Clock initial time in seconds",
+                                  "key": "clock.limit",
+                                  "value": "180"
+                                },
+                                {
+                                  "description": "(Required) Clock increment in seconds",
+                                  "key": "clock.increment",
+                                  "value": "<integer>"
+                                },
+                                {
+                                  "description": "(Required) Maximum number of rounds to play",
+                                  "key": "nbRounds",
+                                  "value": "<integer>"
+                                },
+                                {
+                                  "description": "The tournament name. Leave empty to get a random Grandmaster name",
+                                  "key": "name",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Timestamp in milliseconds to start the tournament at a given date and time. By default, it starts 10 minutes after creation.",
+                                  "key": "startsAt",
+                                  "value": "<long>"
+                                },
+                                {
+                                  "description": "How long to wait between each round, in seconds.\nSet to 99999999 to manually schedule each round from the tournament UI, or [with the API](#tag/tournaments-swiss/POST/api/swiss/{id}/schedule-next-round).\nIf empty or -1, a sensible value is picked automatically.\n",
+                                  "key": "roundInterval",
+                                  "value": "1800"
+                                },
+                                {
+                                  "key": "variant",
+                                  "value": "standard"
+                                },
+                                {
+                                  "description": "Custom initial position (in X-FEN). Variant must be standard and the game cannot be rated.",
+                                  "key": "position",
+                                  "value": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+                                },
+                                {
+                                  "description": "Anything you want to tell players about the tournament",
+                                  "key": "description",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Games are rated and impact players ratings",
+                                  "key": "rated",
+                                  "value": "true"
+                                },
+                                {
+                                  "description": "Make the tournament private and restrict access with a password.",
+                                  "key": "password",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Usernames of players that must not play together.\nTwo usernames per line, separated by a space.\n",
+                                  "key": "forbiddenPairings",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Manual pairings for the next round.\nTwo usernames per line, separated by a space.\nPresent players without a valid pairing will be given a bye, which is worth 1 point.\nForfeited players will get 0 points.\n",
+                                  "key": "manualPairings",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Who can read and write in the chat.\n- 0  = No-one\n- 10 = Only team leaders\n- 20 = Only team members\n- 30 = All Lichess players\n",
+                                  "key": "chatFor",
+                                  "value": "20"
+                                },
+                                {
+                                  "description": "Minimum rating to join. Leave empty to let everyone join the tournament.",
+                                  "key": "conditions.minRating.rating",
+                                  "value": "1000"
+                                },
+                                {
+                                  "description": "Maximum rating to join. Based on best rating reached in the last 7 days. Leave empty to let everyone join the tournament.",
+                                  "key": "conditions.maxRating.rating",
+                                  "value": "2000"
+                                },
+                                {
+                                  "description": "Minimum number of rated games required to join.",
+                                  "key": "conditions.nbRatedGame.nb",
+                                  "value": "<integer>"
+                                },
+                                {
+                                  "description": "Only let players join if they have played their last swiss game.\nIf they failed to show up in a recent swiss event, they won't be able to enter yours.\nThis results in a better swiss experience for the players who actually show up.\n",
+                                  "key": "conditions.playYourGames",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Predefined list of usernames that are allowed to join, separated by commas.\nIf this list is non-empty, then usernames absent from this list will be forbidden to join.\nAdding `%titled` to the list additionally allows any titled player to join.\nExample: `thibault,german11,%titled`\n",
+                                  "key": "conditions.allowList",
+                                  "value": "<string>"
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/swiss/:id/edit",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "swiss",
+                                ":id",
+                                "edit"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<string>\",\n  \"createdBy\": \"<string>\",\n  \"startsAt\": \"<string>\",\n  \"name\": \"<string>\",\n  \"clock\": {\n    \"limit\": \"<number>\",\n    \"increment\": \"<number>\"\n  },\n  \"variant\": \"<string>\",\n  \"round\": \"<number>\",\n  \"nbRounds\": \"<number>\",\n  \"nbPlayers\": \"<number>\",\n  \"nbOngoing\": \"<number>\",\n  \"status\": \"finished\",\n  \"rated\": \"<boolean>\",\n  \"verdicts\": {\n    \"accepted\": \"<boolean>\",\n    \"list\": [\n      {\n        \"condition\": \"<string>\",\n        \"verdict\": \"<string>\"\n      },\n      {\n        \"condition\": \"<string>\",\n        \"verdict\": \"<string>\"\n      }\n    ]\n  },\n  \"stats\": {\n    \"games\": \"<number>\",\n    \"whiteWins\": \"<number>\",\n    \"blackWins\": \"<number>\",\n    \"draws\": \"<number>\",\n    \"byes\": \"<number>\",\n    \"absences\": \"<number>\",\n    \"averageRating\": \"<number>\"\n  },\n  \"nextRound\": {\n    \"at\": \"<dateTime>\",\n    \"in\": \"<integer>\"\n  }\n}",
+                          "createdAt": "2026-07-28T02:07:02.000Z",
+                          "updatedAt": "2026-07-28T02:07:02.000Z",
+                          "uid": "35240-79acb88a-0b4c-4a1c-80c4-ea7c19eecc87"
+                        },
+                        {
+                          "id": "ea10b4d1-7699-4be5-9b3c-edeeec61ea6b",
+                          "name": "Updating the swiss failed.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "urlencoded",
+                              "urlencoded": [
+                                {
+                                  "description": "(Required) Clock initial time in seconds",
+                                  "key": "clock.limit",
+                                  "value": "180"
+                                },
+                                {
+                                  "description": "(Required) Clock increment in seconds",
+                                  "key": "clock.increment",
+                                  "value": "<integer>"
+                                },
+                                {
+                                  "description": "(Required) Maximum number of rounds to play",
+                                  "key": "nbRounds",
+                                  "value": "<integer>"
+                                },
+                                {
+                                  "description": "The tournament name. Leave empty to get a random Grandmaster name",
+                                  "key": "name",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Timestamp in milliseconds to start the tournament at a given date and time. By default, it starts 10 minutes after creation.",
+                                  "key": "startsAt",
+                                  "value": "<long>"
+                                },
+                                {
+                                  "description": "How long to wait between each round, in seconds.\nSet to 99999999 to manually schedule each round from the tournament UI, or [with the API](#tag/tournaments-swiss/POST/api/swiss/{id}/schedule-next-round).\nIf empty or -1, a sensible value is picked automatically.\n",
+                                  "key": "roundInterval",
+                                  "value": "1800"
+                                },
+                                {
+                                  "key": "variant",
+                                  "value": "standard"
+                                },
+                                {
+                                  "description": "Custom initial position (in X-FEN). Variant must be standard and the game cannot be rated.",
+                                  "key": "position",
+                                  "value": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+                                },
+                                {
+                                  "description": "Anything you want to tell players about the tournament",
+                                  "key": "description",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Games are rated and impact players ratings",
+                                  "key": "rated",
+                                  "value": "true"
+                                },
+                                {
+                                  "description": "Make the tournament private and restrict access with a password.",
+                                  "key": "password",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Usernames of players that must not play together.\nTwo usernames per line, separated by a space.\n",
+                                  "key": "forbiddenPairings",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Manual pairings for the next round.\nTwo usernames per line, separated by a space.\nPresent players without a valid pairing will be given a bye, which is worth 1 point.\nForfeited players will get 0 points.\n",
+                                  "key": "manualPairings",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Who can read and write in the chat.\n- 0  = No-one\n- 10 = Only team leaders\n- 20 = Only team members\n- 30 = All Lichess players\n",
+                                  "key": "chatFor",
+                                  "value": "20"
+                                },
+                                {
+                                  "description": "Minimum rating to join. Leave empty to let everyone join the tournament.",
+                                  "key": "conditions.minRating.rating",
+                                  "value": "1000"
+                                },
+                                {
+                                  "description": "Maximum rating to join. Based on best rating reached in the last 7 days. Leave empty to let everyone join the tournament.",
+                                  "key": "conditions.maxRating.rating",
+                                  "value": "2000"
+                                },
+                                {
+                                  "description": "Minimum number of rated games required to join.",
+                                  "key": "conditions.nbRatedGame.nb",
+                                  "value": "<integer>"
+                                },
+                                {
+                                  "description": "Only let players join if they have played their last swiss game.\nIf they failed to show up in a recent swiss event, they won't be able to enter yours.\nThis results in a better swiss experience for the players who actually show up.\n",
+                                  "key": "conditions.playYourGames",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Predefined list of usernames that are allowed to join, separated by commas.\nIf this list is non-empty, then usernames absent from this list will be forbidden to join.\nAdding `%titled` to the list additionally allows any titled player to join.\nExample: `thibault,german11,%titled`\n",
+                                  "key": "conditions.allowList",
+                                  "value": "<string>"
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/swiss/:id/edit",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "swiss",
+                                ":id",
+                                "edit"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"error\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:07:02.000Z",
+                          "updatedAt": "2026-07-28T02:07:02.000Z",
+                          "uid": "35240-ea10b4d1-7699-4be5-9b3c-edeeec61ea6b"
+                        },
+                        {
+                          "id": "183a788f-40d1-4386-a5e8-9824b8acf77a",
+                          "name": "This user cannot update this Swiss.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "urlencoded",
+                              "urlencoded": [
+                                {
+                                  "description": "(Required) Clock initial time in seconds",
+                                  "key": "clock.limit",
+                                  "value": "180"
+                                },
+                                {
+                                  "description": "(Required) Clock increment in seconds",
+                                  "key": "clock.increment",
+                                  "value": "<integer>"
+                                },
+                                {
+                                  "description": "(Required) Maximum number of rounds to play",
+                                  "key": "nbRounds",
+                                  "value": "<integer>"
+                                },
+                                {
+                                  "description": "The tournament name. Leave empty to get a random Grandmaster name",
+                                  "key": "name",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Timestamp in milliseconds to start the tournament at a given date and time. By default, it starts 10 minutes after creation.",
+                                  "key": "startsAt",
+                                  "value": "<long>"
+                                },
+                                {
+                                  "description": "How long to wait between each round, in seconds.\nSet to 99999999 to manually schedule each round from the tournament UI, or [with the API](#tag/tournaments-swiss/POST/api/swiss/{id}/schedule-next-round).\nIf empty or -1, a sensible value is picked automatically.\n",
+                                  "key": "roundInterval",
+                                  "value": "1800"
+                                },
+                                {
+                                  "key": "variant",
+                                  "value": "standard"
+                                },
+                                {
+                                  "description": "Custom initial position (in X-FEN). Variant must be standard and the game cannot be rated.",
+                                  "key": "position",
+                                  "value": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+                                },
+                                {
+                                  "description": "Anything you want to tell players about the tournament",
+                                  "key": "description",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Games are rated and impact players ratings",
+                                  "key": "rated",
+                                  "value": "true"
+                                },
+                                {
+                                  "description": "Make the tournament private and restrict access with a password.",
+                                  "key": "password",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Usernames of players that must not play together.\nTwo usernames per line, separated by a space.\n",
+                                  "key": "forbiddenPairings",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Manual pairings for the next round.\nTwo usernames per line, separated by a space.\nPresent players without a valid pairing will be given a bye, which is worth 1 point.\nForfeited players will get 0 points.\n",
+                                  "key": "manualPairings",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Who can read and write in the chat.\n- 0  = No-one\n- 10 = Only team leaders\n- 20 = Only team members\n- 30 = All Lichess players\n",
+                                  "key": "chatFor",
+                                  "value": "20"
+                                },
+                                {
+                                  "description": "Minimum rating to join. Leave empty to let everyone join the tournament.",
+                                  "key": "conditions.minRating.rating",
+                                  "value": "1000"
+                                },
+                                {
+                                  "description": "Maximum rating to join. Based on best rating reached in the last 7 days. Leave empty to let everyone join the tournament.",
+                                  "key": "conditions.maxRating.rating",
+                                  "value": "2000"
+                                },
+                                {
+                                  "description": "Minimum number of rated games required to join.",
+                                  "key": "conditions.nbRatedGame.nb",
+                                  "value": "<integer>"
+                                },
+                                {
+                                  "description": "Only let players join if they have played their last swiss game.\nIf they failed to show up in a recent swiss event, they won't be able to enter yours.\nThis results in a better swiss experience for the players who actually show up.\n",
+                                  "key": "conditions.playYourGames",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Predefined list of usernames that are allowed to join, separated by commas.\nIf this list is non-empty, then usernames absent from this list will be forbidden to join.\nAdding `%titled` to the list additionally allows any titled player to join.\nExample: `thibault,german11,%titled`\n",
+                                  "key": "conditions.allowList",
+                                  "value": "<string>"
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/swiss/:id/edit",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "swiss",
+                                ":id",
+                                "edit"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"error\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:07:02.000Z",
+                          "updatedAt": "2026-07-28T02:07:02.000Z",
+                          "uid": "35240-183a788f-40d1-4386-a5e8-9824b8acf77a"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:07:02.000Z",
+                      "updatedAt": "2026-07-28T02:07:02.000Z",
+                      "uid": "35240-d2fbdaf5-5cd7-484d-a4db-85e36929d9e7"
+                    }
+                  ],
+                  "id": "da66a04e-471e-4edf-8142-3782ce175a20",
+                  "createdAt": "2026-07-28T02:07:02.000Z",
+                  "updatedAt": "2026-07-28T02:07:02.000Z",
+                  "uid": "35240-da66a04e-471e-4edf-8142-3782ce175a20"
+                },
+                {
+                  "name": "schedule-next-round",
+                  "item": [
+                    {
+                      "name": "Manually schedule the next round",
+                      "id": "ab64a587-e719-4527-9ea7-6396329afe93",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://lichess.org/api/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://lichess.org/oauth",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "Timestamp in milliseconds to start the next round at a given date and time.",
+                              "key": "date",
+                              "value": "<long>"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/swiss/:id/schedule-next-round",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "swiss",
+                            ":id",
+                            "schedule-next-round"
+                          ],
+                          "variable": [
+                            {
+                              "id": "768909cf-2b2f-4425-b262-dde53026790e",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) The tournament ID."
+                            }
+                          ]
+                        },
+                        "description": "Manually schedule the next round date and time of a Swiss tournament.\nThis sets the `roundInterval` field to `99999999`, i.e. manual scheduling.\nAll further rounds will need to be manually scheduled, unless the `roundInterval` field is changed back to automatic scheduling.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "d0bbc4a1-50b7-4069-a646-906193da2994",
+                          "name": "The Swiss tournament was successfully updated.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "urlencoded",
+                              "urlencoded": [
+                                {
+                                  "description": "Timestamp in milliseconds to start the next round at a given date and time.",
+                                  "key": "date",
+                                  "value": "<long>"
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/swiss/:id/schedule-next-round",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "swiss",
+                                ":id",
+                                "schedule-next-round"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "No Content",
+                          "code": 204,
+                          "_postman_previewlanguage": "text",
+                          "header": [
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T02:07:02.000Z",
+                          "updatedAt": "2026-07-28T02:07:02.000Z",
+                          "uid": "35240-d0bbc4a1-50b7-4069-a646-906193da2994"
+                        },
+                        {
+                          "id": "8169718e-ca91-42fe-b497-b31ae492deec",
+                          "name": "Updating the swiss failed.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "urlencoded",
+                              "urlencoded": [
+                                {
+                                  "description": "Timestamp in milliseconds to start the next round at a given date and time.",
+                                  "key": "date",
+                                  "value": "<long>"
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/swiss/:id/schedule-next-round",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "swiss",
+                                ":id",
+                                "schedule-next-round"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"error\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:07:02.000Z",
+                          "updatedAt": "2026-07-28T02:07:02.000Z",
+                          "uid": "35240-8169718e-ca91-42fe-b497-b31ae492deec"
+                        },
+                        {
+                          "id": "c747c08f-9b15-4779-b232-cd11e7420bbb",
+                          "name": "This user cannot update this Swiss.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "urlencoded",
+                              "urlencoded": [
+                                {
+                                  "description": "Timestamp in milliseconds to start the next round at a given date and time.",
+                                  "key": "date",
+                                  "value": "<long>"
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/swiss/:id/schedule-next-round",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "swiss",
+                                ":id",
+                                "schedule-next-round"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Unauthorized",
+                          "code": 401,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"error\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:07:02.000Z",
+                          "updatedAt": "2026-07-28T02:07:02.000Z",
+                          "uid": "35240-c747c08f-9b15-4779-b232-cd11e7420bbb"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:07:02.000Z",
+                      "updatedAt": "2026-07-28T02:07:02.000Z",
+                      "uid": "35240-ab64a587-e719-4527-9ea7-6396329afe93"
+                    }
+                  ],
+                  "id": "bf2bd3a7-f291-4272-8851-ff71510a81c0",
+                  "createdAt": "2026-07-28T02:07:02.000Z",
+                  "updatedAt": "2026-07-28T02:07:02.000Z",
+                  "uid": "35240-bf2bd3a7-f291-4272-8851-ff71510a81c0"
+                },
+                {
+                  "name": "join",
+                  "item": [
+                    {
+                      "name": "Join a Swiss tournament",
+                      "id": "31de555c-1d96-4922-adf4-a03c93093704",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://lichess.org/api/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://lichess.org/oauth",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "The tournament password, if one is required",
+                              "key": "password",
+                              "value": "<string>"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/swiss/:id/join",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "swiss",
+                            ":id",
+                            "join"
+                          ],
+                          "variable": [
+                            {
+                              "id": "f890ae06-18e8-472a-bdf9-efdd81d77f58",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) The tournament ID."
+                            }
+                          ]
+                        },
+                        "description": "Join a Swiss tournament, possibly with a password.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "caa11f1b-c7ae-470b-b376-cb6d0320a75d",
+                          "name": "The tournament was successfully joined.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "urlencoded",
+                              "urlencoded": [
+                                {
+                                  "description": "The tournament password, if one is required",
+                                  "key": "password",
+                                  "value": "<string>"
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/swiss/:id/join",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "swiss",
+                                ":id",
+                                "join"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"ok\": \"<boolean>\"\n}",
+                          "createdAt": "2026-07-28T02:07:02.000Z",
+                          "updatedAt": "2026-07-28T02:07:02.000Z",
+                          "uid": "35240-caa11f1b-c7ae-470b-b376-cb6d0320a75d"
+                        },
+                        {
+                          "id": "0bc15e49-73a5-42f3-8e29-fe9b1fba5f33",
+                          "name": "Joining the tournament failed.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "urlencoded",
+                              "urlencoded": [
+                                {
+                                  "description": "The tournament password, if one is required",
+                                  "key": "password",
+                                  "value": "<string>"
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/swiss/:id/join",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "swiss",
+                                ":id",
+                                "join"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"error\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:07:02.000Z",
+                          "updatedAt": "2026-07-28T02:07:02.000Z",
+                          "uid": "35240-0bc15e49-73a5-42f3-8e29-fe9b1fba5f33"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:07:02.000Z",
+                      "updatedAt": "2026-07-28T02:07:02.000Z",
+                      "uid": "35240-31de555c-1d96-4922-adf4-a03c93093704"
+                    }
+                  ],
+                  "id": "ab840797-0130-4afb-90f7-374968ba1041",
+                  "createdAt": "2026-07-28T02:07:02.000Z",
+                  "updatedAt": "2026-07-28T02:07:02.000Z",
+                  "uid": "35240-ab840797-0130-4afb-90f7-374968ba1041"
+                },
+                {
+                  "name": "withdraw",
+                  "item": [
+                    {
+                      "name": "Pause or leave a swiss tournament",
+                      "id": "be41f6ec-5ab1-4bef-ae34-b4adff23cf09",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://lichess.org/api/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://lichess.org/oauth",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/swiss/:id/withdraw",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "swiss",
+                            ":id",
+                            "withdraw"
+                          ],
+                          "variable": [
+                            {
+                              "id": "6610f11f-a346-4895-a506-70d1a56ddfea",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) The tournament ID."
+                            }
+                          ]
+                        },
+                        "description": "Leave a future Swiss tournament, or take a break on an ongoing Swiss tournament.\nIt's possible to join again later. Points are preserved.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "3a070f4b-48a2-468b-bd79-8f04bd16eebc",
+                          "name": "The tournament was successfully paused or left.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/swiss/:id/withdraw",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "swiss",
+                                ":id",
+                                "withdraw"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"ok\": \"<boolean>\"\n}",
+                          "createdAt": "2026-07-28T02:07:02.000Z",
+                          "updatedAt": "2026-07-28T02:07:02.000Z",
+                          "uid": "35240-3a070f4b-48a2-468b-bd79-8f04bd16eebc"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:07:02.000Z",
+                      "updatedAt": "2026-07-28T02:07:02.000Z",
+                      "uid": "35240-be41f6ec-5ab1-4bef-ae34-b4adff23cf09"
+                    }
+                  ],
+                  "id": "7802ba54-090d-49f3-8dcd-f498fc17766b",
+                  "createdAt": "2026-07-28T02:07:02.000Z",
+                  "updatedAt": "2026-07-28T02:07:02.000Z",
+                  "uid": "35240-7802ba54-090d-49f3-8dcd-f498fc17766b"
+                },
+                {
+                  "name": "terminate",
+                  "item": [
+                    {
+                      "name": "Terminate a Swiss tournament",
+                      "id": "b71cde84-4627-4a3a-b8c5-5b52db81cfcc",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://lichess.org/api/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://lichess.org/oauth",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/swiss/:id/terminate",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "swiss",
+                            ":id",
+                            "terminate"
+                          ],
+                          "variable": [
+                            {
+                              "id": "9ea1217a-f594-4dd7-811b-3d18e0bb2b61",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) The Swiss tournament ID."
+                            }
+                          ]
+                        },
+                        "description": "Terminate a Swiss tournament\n"
+                      },
+                      "response": [
+                        {
+                          "id": "2a3b9773-9fe2-4385-aba9-ffaaeda01764",
+                          "name": "The Swiss tournament was successfully terminated.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/swiss/:id/terminate",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "swiss",
+                                ":id",
+                                "terminate"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"ok\": \"<boolean>\"\n}",
+                          "createdAt": "2026-07-28T02:07:02.000Z",
+                          "updatedAt": "2026-07-28T02:07:02.000Z",
+                          "uid": "35240-2a3b9773-9fe2-4385-aba9-ffaaeda01764"
+                        },
+                        {
+                          "id": "b514e9be-53d4-4b85-aeaa-02b705693d5e",
+                          "name": "Terminating the Swiss tournament failed.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/swiss/:id/terminate",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "swiss",
+                                ":id",
+                                "terminate"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"error\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:07:02.000Z",
+                          "updatedAt": "2026-07-28T02:07:02.000Z",
+                          "uid": "35240-b514e9be-53d4-4b85-aeaa-02b705693d5e"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:07:02.000Z",
+                      "updatedAt": "2026-07-28T02:07:02.000Z",
+                      "uid": "35240-b71cde84-4627-4a3a-b8c5-5b52db81cfcc"
+                    }
+                  ],
+                  "id": "14ce8872-1b1f-49da-9d8f-8044e4bec4e3",
+                  "createdAt": "2026-07-28T02:07:02.000Z",
+                  "updatedAt": "2026-07-28T02:07:02.000Z",
+                  "uid": "35240-14ce8872-1b1f-49da-9d8f-8044e4bec4e3"
+                },
+                {
+                  "name": "games",
+                  "item": [
+                    {
+                      "name": "Export games of a Swiss tournament",
+                      "id": "8a176b89-e198-4bce-a834-f809157547d6",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/x-chess-pgn"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/swiss/:id/games?player=<string>&moves=true&pgnInJson=false&tags=true&clocks=false&evals=false&accuracy=false&opening=false&division=false",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "swiss",
+                            ":id",
+                            "games"
+                          ],
+                          "query": [
+                            {
+                              "description": "Only the games played by a given player",
+                              "key": "player",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Include the PGN moves.",
+                              "key": "moves",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Include the full PGN within the JSON response, in a `pgn` field.",
+                              "key": "pgnInJson",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include the PGN tags.",
+                              "key": "tags",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Include clock status when available.\nEither as PGN comments: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\nOr in a `clocks` JSON field, as centisecond integers, depending on the response type.\n",
+                              "key": "clocks",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include analysis evaluations and comments, when available.\nEither as PGN comments: `12. Bxf6 { [%eval 0.23] } a3 { [%eval -1.09] }`\nOr in an `analysis` JSON field, depending on the response type.\n",
+                              "key": "evals",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include [accuracy percent](https://lichess.org/page/accuracy) of each player, when available. Only available in JSON.\n",
+                              "key": "accuracy",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include the opening name.\nExample: `[Opening \"King's Gambit Accepted, King's Knight Gambit\"]`\n",
+                              "key": "opening",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Plies which mark the beginning of the middlegame and endgame.\nOnly available in JSON\n",
+                              "key": "division",
+                              "value": "false"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "id": "f5f79162-77d0-4e02-88c4-c30e4b5183aa",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) The tournament ID."
+                            }
+                          ]
+                        },
+                        "description": "Download games of a swiss tournament in PGN or [ndjson](#description/streaming-with-nd-json) format.\nGames are sorted by chronological order.\nThe game stream is throttled, depending on who is making the request:\n  - Anonymous request: 20 games per second\n  - [OAuth2 authenticated](#description/authentication) request: 30 games per second\n"
+                      },
+                      "response": [
+                        {
+                          "id": "d7d88a43-2a20-473a-94e0-abb65915c7da",
+                          "name": "The list of games of a Swiss tournament.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/x-chess-pgn"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/swiss/:id/games?player=<string>&moves=true&pgnInJson=false&tags=true&clocks=false&evals=false&accuracy=false&opening=false&division=false",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "swiss",
+                                ":id",
+                                "games"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Only the games played by a given player",
+                                  "key": "player",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Include the PGN moves.",
+                                  "key": "moves",
+                                  "value": "true"
+                                },
+                                {
+                                  "description": "Include the full PGN within the JSON response, in a `pgn` field.",
+                                  "key": "pgnInJson",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Include the PGN tags.",
+                                  "key": "tags",
+                                  "value": "true"
+                                },
+                                {
+                                  "description": "Include clock status when available.\nEither as PGN comments: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\nOr in a `clocks` JSON field, as centisecond integers, depending on the response type.\n",
+                                  "key": "clocks",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Include analysis evaluations and comments, when available.\nEither as PGN comments: `12. Bxf6 { [%eval 0.23] } a3 { [%eval -1.09] }`\nOr in an `analysis` JSON field, depending on the response type.\n",
+                                  "key": "evals",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Include [accuracy percent](https://lichess.org/page/accuracy) of each player, when available. Only available in JSON.\n",
+                                  "key": "accuracy",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Include the opening name.\nExample: `[Opening \"King's Gambit Accepted, King's Knight Gambit\"]`\n",
+                                  "key": "opening",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Plies which mark the beginning of the middlegame and endgame.\nOnly available in JSON\n",
+                                  "key": "division",
+                                  "value": "false"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/x-chess-pgn"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "<string>",
+                          "createdAt": "2026-07-28T02:07:02.000Z",
+                          "updatedAt": "2026-07-28T02:07:02.000Z",
+                          "uid": "35240-d7d88a43-2a20-473a-94e0-abb65915c7da"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:07:02.000Z",
+                      "updatedAt": "2026-07-28T02:07:02.000Z",
+                      "uid": "35240-8a176b89-e198-4bce-a834-f809157547d6"
+                    }
+                  ],
+                  "id": "6b69f691-a0c7-4e82-be0b-8b115e6d66e5",
+                  "createdAt": "2026-07-28T02:07:02.000Z",
+                  "updatedAt": "2026-07-28T02:07:02.000Z",
+                  "uid": "35240-6b69f691-a0c7-4e82-be0b-8b115e6d66e5"
+                },
+                {
+                  "name": "results",
+                  "item": [
+                    {
+                      "name": "Get results of a swiss tournament",
+                      "id": "5f0a0bdc-338e-4a33-a520-458ec25450a4",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/x-ndjson"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/swiss/:id/results?nb=<integer>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "swiss",
+                            ":id",
+                            "results"
+                          ],
+                          "query": [
+                            {
+                              "description": "Max number of players to fetch",
+                              "key": "nb",
+                              "value": "<integer>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "id": "8812d9ff-1cb6-48f2-aa1a-2884361061af",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) The tournament ID."
+                            }
+                          ]
+                        },
+                        "description": "Players of a swiss tournament, with their score and performance, sorted by rank (best first).\nPlayers are streamed as [ndjson](#description/streaming-with-nd-json).\nIf called on an ongoing tournament, results can be inconsistent\ndue to ranking changes while the players are being streamed.\nUse on finished tournaments for guaranteed consistency.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "5811caf6-171a-44b3-af20-df95706cc8b1",
+                          "name": "The results of a Swiss tournament.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/x-ndjson"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/swiss/:id/results?nb=<integer>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "swiss",
+                                ":id",
+                                "results"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Max number of players to fetch",
+                                  "key": "nb",
+                                  "value": "<integer>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/x-ndjson"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"rank\": \"<integer>\",\n  \"points\": \"<number>\",\n  \"tieBreak\": \"<integer>\",\n  \"rating\": \"<integer>\",\n  \"username\": \"<string>\",\n  \"performance\": \"<integer>\",\n  \"absent\": \"<boolean>\",\n  \"title\": \"WGM\"\n}",
+                          "createdAt": "2026-07-28T02:07:02.000Z",
+                          "updatedAt": "2026-07-28T02:07:02.000Z",
+                          "uid": "35240-5811caf6-171a-44b3-af20-df95706cc8b1"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:07:02.000Z",
+                      "updatedAt": "2026-07-28T02:07:02.000Z",
+                      "uid": "35240-5f0a0bdc-338e-4a33-a520-458ec25450a4"
+                    }
+                  ],
+                  "id": "3d2f4f7b-2a05-4ac9-b457-e25622a42890",
+                  "createdAt": "2026-07-28T02:07:02.000Z",
+                  "updatedAt": "2026-07-28T02:07:02.000Z",
+                  "uid": "35240-3d2f4f7b-2a05-4ac9-b457-e25622a42890"
+                },
+                {
+                  "name": "Get info about a Swiss tournament",
+                  "id": "1abffdc3-5c3b-4fb7-8693-51dd6fa48835",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/swiss/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "swiss",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "30e7fadf-0bec-4c59-8090-a6dc6abe86aa",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) The Swiss tournament ID."
+                        }
+                      ]
+                    },
+                    "description": "Get detailed info about a Swiss tournament.\n"
+                  },
+                  "response": [
+                    {
+                      "id": "4a19d66b-827f-42bc-b86e-677f0376e8ab",
+                      "name": "The information of the Swiss tournament.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/swiss/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "swiss",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Access-Control-Allow-Origin",
+                          "value": "'*'"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"createdBy\": \"<string>\",\n  \"startsAt\": \"<string>\",\n  \"name\": \"<string>\",\n  \"clock\": {\n    \"limit\": \"<number>\",\n    \"increment\": \"<number>\"\n  },\n  \"variant\": \"<string>\",\n  \"round\": \"<number>\",\n  \"nbRounds\": \"<number>\",\n  \"nbPlayers\": \"<number>\",\n  \"nbOngoing\": \"<number>\",\n  \"status\": \"finished\",\n  \"rated\": \"<boolean>\",\n  \"verdicts\": {\n    \"accepted\": \"<boolean>\",\n    \"list\": [\n      {\n        \"condition\": \"<string>\",\n        \"verdict\": \"<string>\"\n      },\n      {\n        \"condition\": \"<string>\",\n        \"verdict\": \"<string>\"\n      }\n    ]\n  },\n  \"stats\": {\n    \"games\": \"<number>\",\n    \"whiteWins\": \"<number>\",\n    \"blackWins\": \"<number>\",\n    \"draws\": \"<number>\",\n    \"byes\": \"<number>\",\n    \"absences\": \"<number>\",\n    \"averageRating\": \"<number>\"\n  },\n  \"nextRound\": {\n    \"at\": \"<dateTime>\",\n    \"in\": \"<integer>\"\n  }\n}",
+                      "createdAt": "2026-07-28T02:07:02.000Z",
+                      "updatedAt": "2026-07-28T02:07:02.000Z",
+                      "uid": "35240-4a19d66b-827f-42bc-b86e-677f0376e8ab"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:07:02.000Z",
+                  "updatedAt": "2026-07-28T02:07:02.000Z",
+                  "uid": "35240-1abffdc3-5c3b-4fb7-8693-51dd6fa48835"
+                }
+              ],
+              "id": "55791284-4464-4725-83f0-47d712105786",
+              "createdAt": "2026-07-28T02:07:02.000Z",
+              "updatedAt": "2026-07-28T02:07:02.000Z",
+              "uid": "35240-55791284-4464-4725-83f0-47d712105786"
+            }
+          ],
+          "id": "bf2fc54c-77e8-4667-b81d-2a4c2a704bd6",
+          "createdAt": "2026-07-28T02:07:02.000Z",
+          "updatedAt": "2026-07-28T02:07:02.000Z",
+          "uid": "35240-bf2fc54c-77e8-4667-b81d-2a4c2a704bd6"
+        },
+        {
+          "name": "team",
+          "item": [
+            {
+              "name": "{teamId}",
+              "item": [
+                {
+                  "name": "swiss",
+                  "item": [
+                    {
+                      "name": "Get team swiss tournaments",
+                      "id": "76a8f251-bbb9-42cd-a351-7b75ffbaace3",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/x-ndjson"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/team/:teamId/swiss?max=100&status=created&createdBy=<string>&name=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "team",
+                            ":teamId",
+                            "swiss"
+                          ],
+                          "query": [
+                            {
+                              "description": "How many tournaments to download.",
+                              "key": "max",
+                              "value": "100"
+                            },
+                            {
+                              "description": "[Filter] Only swiss tournaments in this current state.\n",
+                              "key": "status",
+                              "value": "created"
+                            },
+                            {
+                              "description": "[Filter] Only swiss tournaments created by a given user.\n",
+                              "key": "createdBy",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "[Filter] Only swiss tournaments with a given name.\n",
+                              "key": "name",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "id": "fdcd5d28-ab1d-4869-91f9-515d395d1a3f",
+                              "key": "teamId",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "Get all swiss tournaments of a team.\nTournaments are sorted by reverse chronological order of start date (last starting first).\nTournaments are streamed as [ndjson](#description/streaming-with-nd-json).\n"
+                      },
+                      "response": [
+                        {
+                          "id": "f36b97fe-3307-4e4e-a52e-13376bb6a0c3",
+                          "name": "The list of Swiss tournaments of a team.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/x-ndjson"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/team/:teamId/swiss?max=100&status=created&createdBy=<string>&name=<string>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "team",
+                                ":teamId",
+                                "swiss"
+                              ],
+                              "query": [
+                                {
+                                  "description": "How many tournaments to download.",
+                                  "key": "max",
+                                  "value": "100"
+                                },
+                                {
+                                  "description": "[Filter] Only swiss tournaments in this current state.\n",
+                                  "key": "status",
+                                  "value": "created"
+                                },
+                                {
+                                  "description": "[Filter] Only swiss tournaments created by a given user.\n",
+                                  "key": "createdBy",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "[Filter] Only swiss tournaments with a given name.\n",
+                                  "key": "name",
+                                  "value": "<string>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "teamId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/x-ndjson"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<string>\",\n  \"createdBy\": \"<string>\",\n  \"startsAt\": \"<string>\",\n  \"name\": \"<string>\",\n  \"clock\": {\n    \"limit\": \"<number>\",\n    \"increment\": \"<number>\"\n  },\n  \"variant\": \"<string>\",\n  \"round\": \"<number>\",\n  \"nbRounds\": \"<number>\",\n  \"nbPlayers\": \"<number>\",\n  \"nbOngoing\": \"<number>\",\n  \"status\": \"finished\",\n  \"rated\": \"<boolean>\",\n  \"verdicts\": {\n    \"accepted\": \"<boolean>\",\n    \"list\": [\n      {\n        \"condition\": \"<string>\",\n        \"verdict\": \"<string>\"\n      },\n      {\n        \"condition\": \"<string>\",\n        \"verdict\": \"<string>\"\n      }\n    ]\n  },\n  \"stats\": {\n    \"games\": \"<number>\",\n    \"whiteWins\": \"<number>\",\n    \"blackWins\": \"<number>\",\n    \"draws\": \"<number>\",\n    \"byes\": \"<number>\",\n    \"absences\": \"<number>\",\n    \"averageRating\": \"<number>\"\n  },\n  \"nextRound\": {\n    \"at\": \"<dateTime>\",\n    \"in\": \"<integer>\"\n  }\n}",
+                          "createdAt": "2026-07-28T02:07:02.000Z",
+                          "updatedAt": "2026-07-28T02:07:02.000Z",
+                          "uid": "35240-f36b97fe-3307-4e4e-a52e-13376bb6a0c3"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:07:02.000Z",
+                      "updatedAt": "2026-07-28T02:07:02.000Z",
+                      "uid": "35240-76a8f251-bbb9-42cd-a351-7b75ffbaace3"
+                    }
+                  ],
+                  "id": "524ec2be-912d-4675-8237-152828afeaf4",
+                  "createdAt": "2026-07-28T02:07:02.000Z",
+                  "updatedAt": "2026-07-28T02:07:02.000Z",
+                  "uid": "35240-524ec2be-912d-4675-8237-152828afeaf4"
+                }
+              ],
+              "id": "9ef2e01c-f610-400d-92c1-4f003986d956",
+              "createdAt": "2026-07-28T02:07:02.000Z",
+              "updatedAt": "2026-07-28T02:07:02.000Z",
+              "uid": "35240-9ef2e01c-f610-400d-92c1-4f003986d956"
+            }
+          ],
+          "id": "69eebf44-75fe-4d7e-9a1c-b2e8c58e82ad",
+          "createdAt": "2026-07-28T02:07:02.000Z",
+          "updatedAt": "2026-07-28T02:07:02.000Z",
+          "uid": "35240-69eebf44-75fe-4d7e-9a1c-b2e8c58e82ad"
+        }
+      ],
+      "id": "3762a719-f654-4b8d-b682-88f5c823778e",
+      "createdAt": "2026-07-28T02:07:02.000Z",
+      "updatedAt": "2026-07-28T02:07:02.000Z",
+      "uid": "35240-3762a719-f654-4b8d-b682-88f5c823778e"
+    },
+    {
+      "name": "swiss",
+      "item": [
+        {
+          "name": "{id}.trf",
+          "item": [
+            {
+              "name": "Export TRF of a Swiss tournament",
+              "id": "a312c5d5-0413-42da-ae03-a9e34968f398",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "text/plain"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/swiss/{{id}}.trf",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "swiss",
+                    "{{id}}.trf"
+                  ]
+                },
+                "description": "Download a tournament in the Tournament Report File format, the FIDE standard.\nDocumentation: <https://www.fide.com/FIDE/handbook/C04Annex2_TRF16.pdf>\nExample: <https://lichess.org/swiss/j8rtJ5GL.trf>\n"
+              },
+              "response": [
+                {
+                  "id": "913ef0d6-3949-47ad-8387-beeb418e6ffd",
+                  "name": "The TRF representation of a Swiss tournament.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "text/plain"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/swiss/{{id}}.trf",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "swiss",
+                        "{{id}}.trf"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "text",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "text/plain"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "Access-Control-Allow-Origin",
+                      "value": "'*'"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "<string>",
+                  "createdAt": "2026-07-28T02:07:02.000Z",
+                  "updatedAt": "2026-07-28T02:07:02.000Z",
+                  "uid": "35240-913ef0d6-3949-47ad-8387-beeb418e6ffd"
+                }
+              ],
+              "createdAt": "2026-07-28T02:07:02.000Z",
+              "updatedAt": "2026-07-28T02:07:02.000Z",
+              "uid": "35240-a312c5d5-0413-42da-ae03-a9e34968f398"
+            }
+          ],
+          "id": "9b42b0e5-2ba9-4bb2-b9f6-e922bfa49167",
+          "createdAt": "2026-07-28T02:07:02.000Z",
+          "updatedAt": "2026-07-28T02:07:02.000Z",
+          "uid": "35240-9b42b0e5-2ba9-4bb2-b9f6-e922bfa49167"
+        }
+      ],
+      "id": "902e7b28-7bf0-4b97-b02f-922885fef669",
+      "createdAt": "2026-07-28T02:07:02.000Z",
+      "updatedAt": "2026-07-28T02:07:02.000Z",
+      "uid": "35240-902e7b28-7bf0-4b97-b02f-922885fef669"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://lichess.org"
+    },
+    {
+      "key": "id",
+      "value": "<string>"
+    }
+  ]
+}

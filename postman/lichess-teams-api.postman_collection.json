@@ -1,0 +1,2054 @@
+{
+  "info": {
+    "_postman_id": "73347156-975a-45d3-9fbe-f3bae58b4198",
+    "name": "Lichess.org API reference Account Teams API",
+    "description": "# Introduction\nWelcome to the reference for the Lichess API! Lichess is free/libre,\nopen-source chess server powered by volunteers and donations.\n- Get help in the [Lichess Discord channel](https://discord.gg/lichess)\n- API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)\n- API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)\n- [Contribute to this documentation on Github](https://github.com/lichess-org/api)\n- Check out [Lichess widgets to embed in your website](https://lichess.org/developers)\n- [Download all Lichess rated games](https://database.lichess.org/)\n- [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)\n- [Download all evaluated positions](https://database.lichess.org/#evals)\n\n## Endpoint\nAll requests go to `https://lichess.org` (unless otherwise specified).\n\n## Clients\n- [Python general API](https://github.com/lichess-org/berserk)\n- [MicroPython general API](https://github.com/mkomon/uberserk)\n- [Python general API - async](https://pypi.org/project/async-lichess-sdk)\n- [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)\n- [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)\n- [Java general API](https://github.com/tors42/chariot)\n- [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)\n- [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)\n- [.NET general API](https://github.com/Dblike/LichessSharp)\n\n## Rate limiting\nAll requests are rate limited using various strategies,\nto ensure the API remains responsive for everyone.\nOnly make one request at a time.\nIf you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),\nyou have exceded one of the rate limits.\nIn most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.\nReduce your request frequency before retrying.\n\n## Streaming with ND-JSON\nSome API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.\n\nHere's a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.\n\n## Authentication\n### Which authentication method is right for me?\n[Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)\n\n### Personal Access Token\nPersonal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.\n- [Generate a personal access token](https://lichess.org/account/oauth/token)\n- `curl https://lichess.org/api/account -H \"Authorization: Bearer {token}\"`\n- [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)\n\n### Token Security\n- Keep your tokens secret. Do not share them in public repositories or public forums.\n- Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens' scope). You remain responsible for all activities on your account.\n- Do not hardcode tokens in your application's code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.\n- If you suspect a token has been compromised, revoke it immediately.\n\nTo see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).\n\n### Authorization Code Flow with PKCE\nThe authorization code flow with PKCE allows your users to **login with Lichess**.\nLichess supports unregistered and public clients (no client authentication, choose any unique client id).\nThe only accepted code challenge method is `S256`.\nAccess tokens are long-lived (expect one year), unless they are revoked.\nRefresh tokens are not supported.\n\nSee the [documentation for the OAuth endpoints](#tag/OAuth) or\nthe [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.\n\n- [Demo app](https://lichess-org.github.io/api-demo/)\n- [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)\n- [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)\n- [Java example](https://github.com/tors42/lichess-oauth-pkce-app)\n- [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)\n\n#### Real life examples\n- [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))\n- [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))\n- [English Chess Federation](https://ecf.octoknight.com/)\n- [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)\n\n### Token format\nAccess tokens and authorization codes match `^[A-Za-z0-9_]+$`.\nThe length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.\nBy convention tokens have a recognizable prefix, but do not rely on this.\n\n\nContact Support:\n Name: Lichess.org API\n Email: contact@lichess.org",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:06:57.000Z",
+    "updatedAt": "2026-07-28T02:06:58.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-73347156-975a-45d3-9fbe-f3bae58b4198"
+  },
+  "item": [
+    {
+      "name": "api",
+      "item": [
+        {
+          "name": "team",
+          "item": [
+            {
+              "name": "{teamId}",
+              "item": [
+                {
+                  "name": "swiss",
+                  "item": [
+                    {
+                      "name": "Get team swiss tournaments",
+                      "id": "bf1f6017-d981-43c6-894c-7865ddd0593b",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/x-ndjson"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/team/:teamId/swiss?max=100&status=finished&createdBy=<string>&name=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "team",
+                            ":teamId",
+                            "swiss"
+                          ],
+                          "query": [
+                            {
+                              "description": "How many tournaments to download.",
+                              "key": "max",
+                              "value": "100"
+                            },
+                            {
+                              "description": "[Filter] Only swiss tournaments in this current state.\n",
+                              "key": "status",
+                              "value": "finished"
+                            },
+                            {
+                              "description": "[Filter] Only swiss tournaments created by a given user.\n",
+                              "key": "createdBy",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "[Filter] Only swiss tournaments with a given name.\n",
+                              "key": "name",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "id": "8c0bd9c3-9bb9-4c2c-9761-58ad76858344",
+                              "key": "teamId",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "Get all swiss tournaments of a team.\nTournaments are sorted by reverse chronological order of start date (last starting first).\nTournaments are streamed as [ndjson](#description/streaming-with-nd-json).\n"
+                      },
+                      "response": [
+                        {
+                          "id": "d8739a39-b726-4bb2-a6e5-eccde9410f9e",
+                          "name": "The list of Swiss tournaments of a team.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/x-ndjson"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/team/:teamId/swiss?max=100&status=finished&createdBy=<string>&name=<string>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "team",
+                                ":teamId",
+                                "swiss"
+                              ],
+                              "query": [
+                                {
+                                  "description": "How many tournaments to download.",
+                                  "key": "max",
+                                  "value": "100"
+                                },
+                                {
+                                  "description": "[Filter] Only swiss tournaments in this current state.\n",
+                                  "key": "status",
+                                  "value": "finished"
+                                },
+                                {
+                                  "description": "[Filter] Only swiss tournaments created by a given user.\n",
+                                  "key": "createdBy",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "[Filter] Only swiss tournaments with a given name.\n",
+                                  "key": "name",
+                                  "value": "<string>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "teamId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/x-ndjson"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<string>\",\n  \"createdBy\": \"<string>\",\n  \"startsAt\": \"<string>\",\n  \"name\": \"<string>\",\n  \"clock\": {\n    \"limit\": \"<number>\",\n    \"increment\": \"<number>\"\n  },\n  \"variant\": \"<string>\",\n  \"round\": \"<number>\",\n  \"nbRounds\": \"<number>\",\n  \"nbPlayers\": \"<number>\",\n  \"nbOngoing\": \"<number>\",\n  \"status\": \"started\",\n  \"rated\": \"<boolean>\",\n  \"verdicts\": {\n    \"accepted\": \"<boolean>\",\n    \"list\": [\n      {\n        \"condition\": \"<string>\",\n        \"verdict\": \"<string>\"\n      },\n      {\n        \"condition\": \"<string>\",\n        \"verdict\": \"<string>\"\n      }\n    ]\n  },\n  \"stats\": {\n    \"games\": \"<number>\",\n    \"whiteWins\": \"<number>\",\n    \"blackWins\": \"<number>\",\n    \"draws\": \"<number>\",\n    \"byes\": \"<number>\",\n    \"absences\": \"<number>\",\n    \"averageRating\": \"<number>\"\n  },\n  \"nextRound\": {\n    \"at\": \"<dateTime>\",\n    \"in\": \"<integer>\"\n  }\n}",
+                          "createdAt": "2026-07-28T02:06:58.000Z",
+                          "updatedAt": "2026-07-28T02:06:58.000Z",
+                          "uid": "35240-d8739a39-b726-4bb2-a6e5-eccde9410f9e"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:06:58.000Z",
+                      "updatedAt": "2026-07-28T02:06:58.000Z",
+                      "uid": "35240-bf1f6017-d981-43c6-894c-7865ddd0593b"
+                    }
+                  ],
+                  "id": "b1ae1bd3-0881-4da3-a5e2-d3b8e680fca6",
+                  "createdAt": "2026-07-28T02:06:58.000Z",
+                  "updatedAt": "2026-07-28T02:06:58.000Z",
+                  "uid": "35240-b1ae1bd3-0881-4da3-a5e2-d3b8e680fca6"
+                },
+                {
+                  "name": "users",
+                  "item": [
+                    {
+                      "name": "Get members of a team",
+                      "id": "419062f4-3fdc-40a4-91b8-ed664b322e4c",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://lichess.org/api/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://lichess.org/oauth",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/x-ndjson"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/team/:teamId/users?full=false",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "team",
+                            ":teamId",
+                            "users"
+                          ],
+                          "query": [
+                            {
+                              "description": "Full user documents with performance ratings.\nThis limits the response to 1,000 users.\n",
+                              "key": "full",
+                              "value": "false"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "id": "0721a753-9f86-4ca9-a113-eaed60f9b29a",
+                              "key": "teamId",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "Members are sorted by reverse chronological order of joining the team (most recent first).\nOAuth is only required if the list of members is private.\nUp to 5,000 users are streamed as [ndjson](#description/streaming-with-nd-json).\n"
+                      },
+                      "response": [
+                        {
+                          "id": "93f53540-57c8-453a-a0e1-1ff8553fd72f",
+                          "name": "The list of users in the team.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/x-ndjson"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/team/:teamId/users?full=false",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "team",
+                                ":teamId",
+                                "users"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Full user documents with performance ratings.\nThis limits the response to 1,000 users.\n",
+                                  "key": "full",
+                                  "value": "false"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "teamId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/x-ndjson"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"joinedTeamAt\": \"<long>\",\n  \"title\": \"WIM\",\n  \"patronColor\": \"<integer>\"\n}",
+                          "createdAt": "2026-07-28T02:06:58.000Z",
+                          "updatedAt": "2026-07-28T02:06:58.000Z",
+                          "uid": "35240-93f53540-57c8-453a-a0e1-1ff8553fd72f"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:06:58.000Z",
+                      "updatedAt": "2026-07-28T02:06:58.000Z",
+                      "uid": "35240-419062f4-3fdc-40a4-91b8-ed664b322e4c"
+                    }
+                  ],
+                  "id": "25a8f08e-1e92-4dea-8d54-9cba9147cad1",
+                  "createdAt": "2026-07-28T02:06:58.000Z",
+                  "updatedAt": "2026-07-28T02:06:58.000Z",
+                  "uid": "35240-25a8f08e-1e92-4dea-8d54-9cba9147cad1"
+                },
+                {
+                  "name": "arena",
+                  "item": [
+                    {
+                      "name": "Get team Arena tournaments",
+                      "id": "ba10bb17-3752-4fb6-a883-d9195c08cc48",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/x-ndjson"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/team/:teamId/arena?max=100&status=started&createdBy=<string>&name=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "team",
+                            ":teamId",
+                            "arena"
+                          ],
+                          "query": [
+                            {
+                              "description": "How many tournaments to download.",
+                              "key": "max",
+                              "value": "100"
+                            },
+                            {
+                              "description": "[Filter] Only arena tournaments in this current state.\n",
+                              "key": "status",
+                              "value": "started"
+                            },
+                            {
+                              "description": "[Filter] Only arena tournaments created by a given user.\n",
+                              "key": "createdBy",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "[Filter] Only arena tournaments with a given name.\n",
+                              "key": "name",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "id": "e4a95d97-c452-4427-82c3-fdaf88657da7",
+                              "key": "teamId",
+                              "value": "<string>",
+                              "description": "(Required) ID of the team"
+                            }
+                          ]
+                        },
+                        "description": "Get all Arena tournaments relevant to a team.\nTournaments are sorted by reverse chronological order of start date (last starting first).\nTournaments are streamed as [ndjson](#description/streaming-with-nd-json).\n"
+                      },
+                      "response": [
+                        {
+                          "id": "4664cbc6-192e-4bf9-aa54-08fd1eaf37b8",
+                          "name": "The list of Arena tournaments of a team.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/x-ndjson"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/team/:teamId/arena?max=100&status=started&createdBy=<string>&name=<string>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "team",
+                                ":teamId",
+                                "arena"
+                              ],
+                              "query": [
+                                {
+                                  "description": "How many tournaments to download.",
+                                  "key": "max",
+                                  "value": "100"
+                                },
+                                {
+                                  "description": "[Filter] Only arena tournaments in this current state.\n",
+                                  "key": "status",
+                                  "value": "started"
+                                },
+                                {
+                                  "description": "[Filter] Only arena tournaments created by a given user.\n",
+                                  "key": "createdBy",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "[Filter] Only arena tournaments with a given name.\n",
+                                  "key": "name",
+                                  "value": "<string>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "teamId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/x-ndjson"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<string>\",\n  \"createdBy\": \"<string>\",\n  \"system\": \"<string>\",\n  \"minutes\": \"<integer>\",\n  \"clock\": {\n    \"limit\": \"<integer>\",\n    \"increment\": \"<integer>\"\n  },\n  \"rated\": \"<boolean>\",\n  \"fullName\": \"<string>\",\n  \"nbPlayers\": \"<integer>\",\n  \"variant\": {\n    \"key\": \"standard\",\n    \"name\": \"<string>\",\n    \"short\": \"<string>\"\n  },\n  \"startsAt\": \"<long>\",\n  \"finishesAt\": \"<long>\",\n  \"status\": 20,\n  \"perf\": {\n    \"key\": \"racingKings\",\n    \"name\": \"<string>\",\n    \"position\": \"<integer>\",\n    \"icon\": \"<string>\"\n  },\n  \"secondsToStart\": \"<integer>\",\n  \"hasMaxRating\": \"<boolean>\",\n  \"maxRating\": {\n    \"rating\": \"<integer>\",\n    \"perf\": \"bullet\"\n  },\n  \"minRating\": {\n    \"rating\": \"<integer>\",\n    \"perf\": \"antichess\"\n  },\n  \"minRatedGames\": {\n    \"nb\": \"<integer>\"\n  },\n  \"botsAllowed\": \"<boolean>\",\n  \"minAccountAgeInDays\": \"<integer>\",\n  \"onlyTitled\": \"<boolean>\",\n  \"teamMember\": \"<string>\",\n  \"private\": \"<boolean>\",\n  \"position\": {\n    \"eco\": \"<string>\",\n    \"name\": \"<string>\",\n    \"fen\": \"<string>\",\n    \"url\": \"<uri>\"\n  },\n  \"schedule\": {\n    \"freq\": \"<string>\",\n    \"speed\": \"<string>\"\n  },\n  \"teamBattle\": {\n    \"teams\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"nbLeaders\": \"<integer>\"\n  },\n  \"winner\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"flair\": \"<string>\",\n    \"title\": \"WGM\",\n    \"patron\": \"<boolean>\",\n    \"patronColor\": \"<integer>\"\n  }\n}",
+                          "createdAt": "2026-07-28T02:06:58.000Z",
+                          "updatedAt": "2026-07-28T02:06:58.000Z",
+                          "uid": "35240-4664cbc6-192e-4bf9-aa54-08fd1eaf37b8"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:06:58.000Z",
+                      "updatedAt": "2026-07-28T02:06:58.000Z",
+                      "uid": "35240-ba10bb17-3752-4fb6-a883-d9195c08cc48"
+                    }
+                  ],
+                  "id": "49246542-ab23-4811-a7d1-e06f8cacddf6",
+                  "createdAt": "2026-07-28T02:06:58.000Z",
+                  "updatedAt": "2026-07-28T02:06:58.000Z",
+                  "uid": "35240-49246542-ab23-4811-a7d1-e06f8cacddf6"
+                },
+                {
+                  "name": "requests",
+                  "item": [
+                    {
+                      "name": "Get join requests",
+                      "id": "b2e3a088-11af-4f63-91d3-b18fd6cfb3da",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://lichess.org/api/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://lichess.org/oauth",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/team/:teamId/requests?declined=false",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "team",
+                            ":teamId",
+                            "requests"
+                          ],
+                          "query": [
+                            {
+                              "description": "Get the declined join requests",
+                              "key": "declined",
+                              "value": "false"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "id": "0c5db62b-e938-472b-9056-397e2fe5c69c",
+                              "key": "teamId",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "Get pending join requests of your team"
+                      },
+                      "response": [
+                        {
+                          "id": "09ba1e16-ee25-430d-aa6b-b8bd0af20b4f",
+                          "name": "The list of pending join requests on your team",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/team/:teamId/requests?declined=false",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "team",
+                                ":teamId",
+                                "requests"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Get the declined join requests",
+                                  "key": "declined",
+                                  "value": "false"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "teamId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "[\n  {\n    \"request\": {\n      \"teamId\": \"<string>\",\n      \"userId\": \"<string>\",\n      \"date\": \"<integer>\",\n      \"message\": \"<string>\"\n    },\n    \"user\": {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"chess960\": {\n          \"games\": \"<integer>\",\n          \"rating\": \"<integer>\",\n          \"rd\": \"<integer>\",\n          \"prog\": \"<integer>\",\n          \"prov\": \"<boolean>\",\n          \"rank\": \"<integer>\"\n        },\n        \"atomic\": {\n          \"games\": \"<integer>\",\n          \"rating\": \"<integer>\",\n          \"rd\": \"<integer>\",\n          \"prog\": \"<integer>\",\n          \"prov\": \"<boolean>\",\n          \"rank\": \"<integer>\"\n        },\n        \"racingKings\": {\n          \"games\": \"<integer>\",\n          \"rating\": \"<integer>\",\n          \"rd\": \"<integer>\",\n          \"prog\": \"<integer>\",\n          \"prov\": \"<boolean>\",\n          \"rank\": \"<integer>\"\n        },\n        \"ultraBullet\": {\n          \"games\": \"<integer>\",\n          \"rating\": \"<integer>\",\n          \"rd\": \"<integer>\",\n          \"prog\": \"<integer>\",\n          \"prov\": \"<boolean>\",\n          \"rank\": \"<integer>\"\n        },\n        \"blitz\": {\n          \"games\": \"<integer>\",\n          \"rating\": \"<integer>\",\n          \"rd\": \"<integer>\",\n          \"prog\": \"<integer>\",\n          \"prov\": \"<boolean>\",\n          \"rank\": \"<integer>\"\n        },\n        \"kingOfTheHill\": {\n          \"games\": \"<integer>\",\n          \"rating\": \"<integer>\",\n          \"rd\": \"<integer>\",\n          \"prog\": \"<integer>\",\n          \"prov\": \"<boolean>\",\n          \"rank\": \"<integer>\"\n        },\n        \"threeCheck\": {\n          \"games\": \"<integer>\",\n          \"rating\": \"<integer>\",\n          \"rd\": \"<integer>\",\n          \"prog\": \"<integer>\",\n          \"prov\": \"<boolean>\",\n          \"rank\": \"<integer>\"\n        },\n        \"antichess\": {\n          \"games\": \"<integer>\",\n          \"rating\": \"<integer>\",\n          \"rd\": \"<integer>\",\n          \"prog\": \"<integer>\",\n          \"prov\": \"<boolean>\",\n          \"rank\": \"<integer>\"\n        },\n        \"crazyhouse\": {\n          \"games\": \"<integer>\",\n          \"rating\": \"<integer>\",\n          \"rd\": \"<integer>\",\n          \"prog\": \"<integer>\",\n          \"prov\": \"<boolean>\",\n          \"rank\": \"<integer>\"\n        },\n        \"bullet\": {\n          \"games\": \"<integer>\",\n          \"rating\": \"<integer>\",\n          \"rd\": \"<integer>\",\n          \"prog\": \"<integer>\",\n          \"prov\": \"<boolean>\",\n          \"rank\": \"<integer>\"\n        },\n        \"correspondence\": {\n          \"games\": \"<integer>\",\n          \"rating\": \"<integer>\",\n          \"rd\": \"<integer>\",\n          \"prog\": \"<integer>\",\n          \"prov\": \"<boolean>\",\n          \"rank\": \"<integer>\"\n        },\n        \"horde\": {\n          \"games\": \"<integer>\",\n          \"rating\": \"<integer>\",\n          \"rd\": \"<integer>\",\n          \"prog\": \"<integer>\",\n          \"prov\": \"<boolean>\",\n          \"rank\": \"<integer>\"\n        },\n        \"puzzle\": {\n          \"games\": \"<integer>\",\n          \"rating\": \"<integer>\",\n          \"rd\": \"<integer>\",\n          \"prog\": \"<integer>\",\n          \"prov\": \"<boolean>\",\n          \"rank\": \"<integer>\"\n        },\n        \"classical\": {\n          \"games\": \"<integer>\",\n          \"rating\": \"<integer>\",\n          \"rd\": \"<integer>\",\n          \"prog\": \"<integer>\",\n          \"prov\": \"<boolean>\",\n          \"rank\": \"<integer>\"\n        },\n        \"rapid\": {\n          \"games\": \"<integer>\",\n          \"rating\": \"<integer>\",\n          \"rd\": \"<integer>\",\n          \"prog\": \"<integer>\",\n          \"prov\": \"<boolean>\",\n          \"rank\": \"<integer>\"\n        },\n        \"storm\": {\n          \"runs\": \"<integer>\",\n          \"score\": \"<integer>\"\n        },\n        \"racer\": {\n          \"runs\": \"<integer>\",\n          \"score\": \"<integer>\"\n        },\n        \"streak\": {\n          \"runs\": \"<integer>\",\n          \"score\": \"<integer>\"\n        }\n      },\n      \"title\": \"WGM\",\n      \"flair\": \"<string>\",\n      \"createdAt\": \"<long>\",\n      \"disabled\": \"<boolean>\",\n      \"tosViolation\": \"<boolean>\",\n      \"profile\": {\n        \"flag\": \"<string>\",\n        \"location\": \"<string>\",\n        \"bio\": \"<string>\",\n        \"realName\": \"<string>\",\n        \"fideRating\": \"<integer>\",\n        \"uscfRating\": \"<integer>\",\n        \"ecfRating\": \"<integer>\",\n        \"cfcRating\": \"<integer>\",\n        \"rcfRating\": \"<integer>\",\n        \"dsbRating\": \"<integer>\",\n        \"links\": \"<string>\"\n      },\n      \"seenAt\": \"<long>\",\n      \"playTime\": {\n        \"total\": \"<integer>\",\n        \"tv\": \"<integer>\",\n        \"human\": \"<integer>\"\n      },\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"verified\": \"<boolean>\"\n    }\n  },\n  {\n    \"request\": {\n      \"teamId\": \"<string>\",\n      \"userId\": \"<string>\",\n      \"date\": \"<integer>\",\n      \"message\": \"<string>\"\n    },\n    \"user\": {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"chess960\": {\n          \"games\": \"<integer>\",\n          \"rating\": \"<integer>\",\n          \"rd\": \"<integer>\",\n          \"prog\": \"<integer>\",\n          \"prov\": \"<boolean>\",\n          \"rank\": \"<integer>\"\n        },\n        \"atomic\": {\n          \"games\": \"<integer>\",\n          \"rating\": \"<integer>\",\n          \"rd\": \"<integer>\",\n          \"prog\": \"<integer>\",\n          \"prov\": \"<boolean>\",\n          \"rank\": \"<integer>\"\n        },\n        \"racingKings\": {\n          \"games\": \"<integer>\",\n          \"rating\": \"<integer>\",\n          \"rd\": \"<integer>\",\n          \"prog\": \"<integer>\",\n          \"prov\": \"<boolean>\",\n          \"rank\": \"<integer>\"\n        },\n        \"ultraBullet\": {\n          \"games\": \"<integer>\",\n          \"rating\": \"<integer>\",\n          \"rd\": \"<integer>\",\n          \"prog\": \"<integer>\",\n          \"prov\": \"<boolean>\",\n          \"rank\": \"<integer>\"\n        },\n        \"blitz\": {\n          \"games\": \"<integer>\",\n          \"rating\": \"<integer>\",\n          \"rd\": \"<integer>\",\n          \"prog\": \"<integer>\",\n          \"prov\": \"<boolean>\",\n          \"rank\": \"<integer>\"\n        },\n        \"kingOfTheHill\": {\n          \"games\": \"<integer>\",\n          \"rating\": \"<integer>\",\n          \"rd\": \"<integer>\",\n          \"prog\": \"<integer>\",\n          \"prov\": \"<boolean>\",\n          \"rank\": \"<integer>\"\n        },\n        \"threeCheck\": {\n          \"games\": \"<integer>\",\n          \"rating\": \"<integer>\",\n          \"rd\": \"<integer>\",\n          \"prog\": \"<integer>\",\n          \"prov\": \"<boolean>\",\n          \"rank\": \"<integer>\"\n        },\n        \"antichess\": {\n          \"games\": \"<integer>\",\n          \"rating\": \"<integer>\",\n          \"rd\": \"<integer>\",\n          \"prog\": \"<integer>\",\n          \"prov\": \"<boolean>\",\n          \"rank\": \"<integer>\"\n        },\n        \"crazyhouse\": {\n          \"games\": \"<integer>\",\n          \"rating\": \"<integer>\",\n          \"rd\": \"<integer>\",\n          \"prog\": \"<integer>\",\n          \"prov\": \"<boolean>\",\n          \"rank\": \"<integer>\"\n        },\n        \"bullet\": {\n          \"games\": \"<integer>\",\n          \"rating\": \"<integer>\",\n          \"rd\": \"<integer>\",\n          \"prog\": \"<integer>\",\n          \"prov\": \"<boolean>\",\n          \"rank\": \"<integer>\"\n        },\n        \"correspondence\": {\n          \"games\": \"<integer>\",\n          \"rating\": \"<integer>\",\n          \"rd\": \"<integer>\",\n          \"prog\": \"<integer>\",\n          \"prov\": \"<boolean>\",\n          \"rank\": \"<integer>\"\n        },\n        \"horde\": {\n          \"games\": \"<integer>\",\n          \"rating\": \"<integer>\",\n          \"rd\": \"<integer>\",\n          \"prog\": \"<integer>\",\n          \"prov\": \"<boolean>\",\n          \"rank\": \"<integer>\"\n        },\n        \"puzzle\": {\n          \"games\": \"<integer>\",\n          \"rating\": \"<integer>\",\n          \"rd\": \"<integer>\",\n          \"prog\": \"<integer>\",\n          \"prov\": \"<boolean>\",\n          \"rank\": \"<integer>\"\n        },\n        \"classical\": {\n          \"games\": \"<integer>\",\n          \"rating\": \"<integer>\",\n          \"rd\": \"<integer>\",\n          \"prog\": \"<integer>\",\n          \"prov\": \"<boolean>\",\n          \"rank\": \"<integer>\"\n        },\n        \"rapid\": {\n          \"games\": \"<integer>\",\n          \"rating\": \"<integer>\",\n          \"rd\": \"<integer>\",\n          \"prog\": \"<integer>\",\n          \"prov\": \"<boolean>\",\n          \"rank\": \"<integer>\"\n        },\n        \"storm\": {\n          \"runs\": \"<integer>\",\n          \"score\": \"<integer>\"\n        },\n        \"racer\": {\n          \"runs\": \"<integer>\",\n          \"score\": \"<integer>\"\n        },\n        \"streak\": {\n          \"runs\": \"<integer>\",\n          \"score\": \"<integer>\"\n        }\n      },\n      \"title\": \"CM\",\n      \"flair\": \"<string>\",\n      \"createdAt\": \"<long>\",\n      \"disabled\": \"<boolean>\",\n      \"tosViolation\": \"<boolean>\",\n      \"profile\": {\n        \"flag\": \"<string>\",\n        \"location\": \"<string>\",\n        \"bio\": \"<string>\",\n        \"realName\": \"<string>\",\n        \"fideRating\": \"<integer>\",\n        \"uscfRating\": \"<integer>\",\n        \"ecfRating\": \"<integer>\",\n        \"cfcRating\": \"<integer>\",\n        \"rcfRating\": \"<integer>\",\n        \"dsbRating\": \"<integer>\",\n        \"links\": \"<string>\"\n      },\n      \"seenAt\": \"<long>\",\n      \"playTime\": {\n        \"total\": \"<integer>\",\n        \"tv\": \"<integer>\",\n        \"human\": \"<integer>\"\n      },\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"verified\": \"<boolean>\"\n    }\n  }\n]",
+                          "createdAt": "2026-07-28T02:06:58.000Z",
+                          "updatedAt": "2026-07-28T02:06:58.000Z",
+                          "uid": "35240-09ba1e16-ee25-430d-aa6b-b8bd0af20b4f"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:06:58.000Z",
+                      "updatedAt": "2026-07-28T02:06:58.000Z",
+                      "uid": "35240-b2e3a088-11af-4f63-91d3-b18fd6cfb3da"
+                    }
+                  ],
+                  "id": "164faacb-9f0e-463e-8067-a8d21134d2b8",
+                  "createdAt": "2026-07-28T02:06:58.000Z",
+                  "updatedAt": "2026-07-28T02:06:58.000Z",
+                  "uid": "35240-164faacb-9f0e-463e-8067-a8d21134d2b8"
+                },
+                {
+                  "name": "request",
+                  "item": [
+                    {
+                      "name": "{userId}",
+                      "item": [
+                        {
+                          "name": "accept",
+                          "item": [
+                            {
+                              "name": "Accept join request",
+                              "id": "cfd407c1-87bf-4f38-803b-497c9a33aad3",
+                              "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                              },
+                              "request": {
+                                "auth": {
+                                  "type": "oauth2",
+                                  "oauth2": [
+                                    {
+                                      "key": "scope",
+                                      "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                                      "type": "string"
+                                    },
+                                    {
+                                      "key": "accessTokenUrl",
+                                      "value": "https://lichess.org/api/token",
+                                      "type": "string"
+                                    },
+                                    {
+                                      "key": "authUrl",
+                                      "value": "https://lichess.org/oauth",
+                                      "type": "string"
+                                    },
+                                    {
+                                      "key": "grant_type",
+                                      "value": "authorization_code",
+                                      "type": "string"
+                                    }
+                                  ]
+                                },
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/team/:teamId/request/:userId/accept",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "team",
+                                    ":teamId",
+                                    "request",
+                                    ":userId",
+                                    "accept"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "id": "9334261e-7451-4d79-b3fd-a24873438271",
+                                      "key": "teamId",
+                                      "value": "<string>",
+                                      "description": "(Required) "
+                                    },
+                                    {
+                                      "id": "9d480ff8-6547-4b43-bd69-653f81cd629e",
+                                      "key": "userId",
+                                      "value": "<string>",
+                                      "description": "(Required) "
+                                    }
+                                  ]
+                                },
+                                "description": "Accept someone's request to join your team"
+                              },
+                              "response": [
+                                {
+                                  "id": "aa408efb-68f6-4896-8356-3424ba3a2cff",
+                                  "name": "The member has been added to the team.",
+                                  "originalRequest": {
+                                    "method": "POST",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: oauth2",
+                                        "key": "Authorization",
+                                        "value": "<token>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/api/team/:teamId/request/:userId/accept",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "api",
+                                        "team",
+                                        ":teamId",
+                                        "request",
+                                        ":userId",
+                                        "accept"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "teamId"
+                                        },
+                                        {
+                                          "key": "userId"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "OK",
+                                  "code": 200,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"ok\": \"<boolean>\"\n}",
+                                  "createdAt": "2026-07-28T02:06:58.000Z",
+                                  "updatedAt": "2026-07-28T02:06:58.000Z",
+                                  "uid": "35240-aa408efb-68f6-4896-8356-3424ba3a2cff"
+                                }
+                              ],
+                              "createdAt": "2026-07-28T02:06:58.000Z",
+                              "updatedAt": "2026-07-28T02:06:58.000Z",
+                              "uid": "35240-cfd407c1-87bf-4f38-803b-497c9a33aad3"
+                            }
+                          ],
+                          "id": "c2cf3dc6-12b9-43e4-b771-190f4c28b5ac",
+                          "createdAt": "2026-07-28T02:06:58.000Z",
+                          "updatedAt": "2026-07-28T02:06:58.000Z",
+                          "uid": "35240-c2cf3dc6-12b9-43e4-b771-190f4c28b5ac"
+                        },
+                        {
+                          "name": "decline",
+                          "item": [
+                            {
+                              "name": "Decline join request",
+                              "id": "aa05452f-d431-4c72-ac61-0393b1a6d832",
+                              "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                              },
+                              "request": {
+                                "auth": {
+                                  "type": "oauth2",
+                                  "oauth2": [
+                                    {
+                                      "key": "scope",
+                                      "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                                      "type": "string"
+                                    },
+                                    {
+                                      "key": "accessTokenUrl",
+                                      "value": "https://lichess.org/api/token",
+                                      "type": "string"
+                                    },
+                                    {
+                                      "key": "authUrl",
+                                      "value": "https://lichess.org/oauth",
+                                      "type": "string"
+                                    },
+                                    {
+                                      "key": "grant_type",
+                                      "value": "authorization_code",
+                                      "type": "string"
+                                    }
+                                  ]
+                                },
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/team/:teamId/request/:userId/decline",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "team",
+                                    ":teamId",
+                                    "request",
+                                    ":userId",
+                                    "decline"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "id": "d2e26114-8987-4a62-91c7-55cf4253085f",
+                                      "key": "teamId",
+                                      "value": "<string>",
+                                      "description": "(Required) "
+                                    },
+                                    {
+                                      "id": "7428b9a5-d7a3-47ae-8eb7-0cdce0a2b804",
+                                      "key": "userId",
+                                      "value": "<string>",
+                                      "description": "(Required) "
+                                    }
+                                  ]
+                                },
+                                "description": "Decline someone's request to join your team"
+                              },
+                              "response": [
+                                {
+                                  "id": "323bc08d-2780-437d-8d88-b51c7c373d91",
+                                  "name": "The join request has been declined and is no longer pending.",
+                                  "originalRequest": {
+                                    "method": "POST",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: oauth2",
+                                        "key": "Authorization",
+                                        "value": "<token>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/api/team/:teamId/request/:userId/decline",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "api",
+                                        "team",
+                                        ":teamId",
+                                        "request",
+                                        ":userId",
+                                        "decline"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "teamId"
+                                        },
+                                        {
+                                          "key": "userId"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "OK",
+                                  "code": 200,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"ok\": \"<boolean>\"\n}",
+                                  "createdAt": "2026-07-28T02:06:58.000Z",
+                                  "updatedAt": "2026-07-28T02:06:58.000Z",
+                                  "uid": "35240-323bc08d-2780-437d-8d88-b51c7c373d91"
+                                }
+                              ],
+                              "createdAt": "2026-07-28T02:06:58.000Z",
+                              "updatedAt": "2026-07-28T02:06:58.000Z",
+                              "uid": "35240-aa05452f-d431-4c72-ac61-0393b1a6d832"
+                            }
+                          ],
+                          "id": "41fd9e38-7632-4d2e-8896-66b10d32d5a5",
+                          "createdAt": "2026-07-28T02:06:58.000Z",
+                          "updatedAt": "2026-07-28T02:06:58.000Z",
+                          "uid": "35240-41fd9e38-7632-4d2e-8896-66b10d32d5a5"
+                        }
+                      ],
+                      "id": "610c21b9-411f-4277-976b-08016f39c88d",
+                      "createdAt": "2026-07-28T02:06:58.000Z",
+                      "updatedAt": "2026-07-28T02:06:58.000Z",
+                      "uid": "35240-610c21b9-411f-4277-976b-08016f39c88d"
+                    }
+                  ],
+                  "id": "eec8b020-a4a0-458a-a6c4-b890d5014ff6",
+                  "createdAt": "2026-07-28T02:06:58.000Z",
+                  "updatedAt": "2026-07-28T02:06:58.000Z",
+                  "uid": "35240-eec8b020-a4a0-458a-a6c4-b890d5014ff6"
+                },
+                {
+                  "name": "kick",
+                  "item": [
+                    {
+                      "name": "{userId}",
+                      "item": [
+                        {
+                          "name": "Kick a user from your team",
+                          "id": "681e2dd2-08d4-4eda-8755-a7af960f3fb4",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "auth": {
+                              "type": "oauth2",
+                              "oauth2": [
+                                {
+                                  "key": "scope",
+                                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "accessTokenUrl",
+                                  "value": "https://lichess.org/api/token",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "authUrl",
+                                  "value": "https://lichess.org/oauth",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "grant_type",
+                                  "value": "authorization_code",
+                                  "type": "string"
+                                }
+                              ]
+                            },
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/team/:teamId/kick/:userId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "team",
+                                ":teamId",
+                                "kick",
+                                ":userId"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "0e50cba1-a433-4412-a048-2537858bae69",
+                                  "key": "teamId",
+                                  "value": "<string>",
+                                  "description": "(Required) "
+                                },
+                                {
+                                  "id": "a5c020b9-f26e-4120-b3fa-937d4869886b",
+                                  "key": "userId",
+                                  "value": "<string>",
+                                  "description": "(Required) "
+                                }
+                              ]
+                            },
+                            "description": "Kick a member out of one of your teams.\n- <https://lichess.org/team>\n"
+                          },
+                          "response": [
+                            {
+                              "id": "a2da5f59-42ca-49c6-992a-b7e0a845ca78",
+                              "name": "The member has been kicked from the team.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/team/:teamId/kick/:userId",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "team",
+                                    ":teamId",
+                                    "kick",
+                                    ":userId"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "teamId"
+                                    },
+                                    {
+                                      "key": "userId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"ok\": \"<boolean>\"\n}",
+                              "createdAt": "2026-07-28T02:06:58.000Z",
+                              "updatedAt": "2026-07-28T02:06:58.000Z",
+                              "uid": "35240-a2da5f59-42ca-49c6-992a-b7e0a845ca78"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T02:06:58.000Z",
+                          "updatedAt": "2026-07-28T02:06:58.000Z",
+                          "uid": "35240-681e2dd2-08d4-4eda-8755-a7af960f3fb4"
+                        }
+                      ],
+                      "id": "f30260a6-bae3-4696-8eb6-b6a0647e8fd8",
+                      "createdAt": "2026-07-28T02:06:58.000Z",
+                      "updatedAt": "2026-07-28T02:06:58.000Z",
+                      "uid": "35240-f30260a6-bae3-4696-8eb6-b6a0647e8fd8"
+                    }
+                  ],
+                  "id": "bdcdc0b7-c62a-457a-aa77-2b751d46a063",
+                  "createdAt": "2026-07-28T02:06:58.000Z",
+                  "updatedAt": "2026-07-28T02:06:58.000Z",
+                  "uid": "35240-bdcdc0b7-c62a-457a-aa77-2b751d46a063"
+                },
+                {
+                  "name": "Get a single team",
+                  "id": "ab1014f0-094a-4ae5-9c4e-b32826c0876c",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/team/:teamId",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "team",
+                        ":teamId"
+                      ],
+                      "variable": [
+                        {
+                          "id": "386862a2-c1ff-4b7c-be72-37c11165f129",
+                          "key": "teamId",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Public info about a team. Includes the list of publicly visible leaders."
+                  },
+                  "response": [
+                    {
+                      "id": "7baf1c4f-c0b9-40c6-ae44-26a2587e6b7b",
+                      "name": "The information about the team.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/team/:teamId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "team",
+                            ":teamId"
+                          ],
+                          "variable": [
+                            {
+                              "key": "teamId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Access-Control-Allow-Origin",
+                          "value": "'*'"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"flair\": \"<string>\",\n  \"leader\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"flair\": \"<string>\",\n    \"title\": \"WGM\",\n    \"patron\": \"<boolean>\",\n    \"patronColor\": \"<integer>\"\n  },\n  \"leaders\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"flair\": \"<string>\",\n      \"title\": \"FM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"flair\": \"<string>\",\n      \"title\": \"FM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\"\n    }\n  ],\n  \"nbMembers\": \"<integer>\",\n  \"open\": \"<boolean>\",\n  \"joined\": \"<boolean>\",\n  \"requested\": \"<boolean>\"\n}",
+                      "createdAt": "2026-07-28T02:06:58.000Z",
+                      "updatedAt": "2026-07-28T02:06:58.000Z",
+                      "uid": "35240-7baf1c4f-c0b9-40c6-ae44-26a2587e6b7b"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:06:58.000Z",
+                  "updatedAt": "2026-07-28T02:06:58.000Z",
+                  "uid": "35240-ab1014f0-094a-4ae5-9c4e-b32826c0876c"
+                }
+              ],
+              "id": "06eed15b-60d8-489b-844b-335baa51cc10",
+              "createdAt": "2026-07-28T02:06:58.000Z",
+              "updatedAt": "2026-07-28T02:06:58.000Z",
+              "uid": "35240-06eed15b-60d8-489b-844b-335baa51cc10"
+            },
+            {
+              "name": "all",
+              "item": [
+                {
+                  "name": "Get popular teams",
+                  "id": "54d65cac-0ab4-4c54-9800-947b95531b77",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/team/all?page=1",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "team",
+                        "all"
+                      ],
+                      "query": [
+                        {
+                          "key": "page",
+                          "value": "1"
+                        }
+                      ]
+                    },
+                    "description": "Paginator of the most popular teams.\n"
+                  },
+                  "response": [
+                    {
+                      "id": "c87c9b34-7a2e-4b9d-bffd-d8b5c52e11de",
+                      "name": "A paginated list of the most popular teams.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/team/all?page=1",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "team",
+                            "all"
+                          ],
+                          "query": [
+                            {
+                              "key": "page",
+                              "value": "1"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Access-Control-Allow-Origin",
+                          "value": "'*'"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"currentPage\": \"<integer>\",\n  \"maxPerPage\": \"<integer>\",\n  \"currentPageResults\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"flair\": \"<string>\",\n      \"leader\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"flair\": \"<string>\",\n        \"title\": \"WNM\",\n        \"patron\": \"<boolean>\",\n        \"patronColor\": \"<integer>\"\n      },\n      \"leaders\": [\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"flair\": \"<string>\",\n          \"title\": \"CM\",\n          \"patron\": \"<boolean>\",\n          \"patronColor\": \"<integer>\"\n        },\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"flair\": \"<string>\",\n          \"title\": \"CM\",\n          \"patron\": \"<boolean>\",\n          \"patronColor\": \"<integer>\"\n        }\n      ],\n      \"nbMembers\": \"<integer>\",\n      \"open\": \"<boolean>\",\n      \"joined\": \"<boolean>\",\n      \"requested\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"flair\": \"<string>\",\n      \"leader\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"flair\": \"<string>\",\n        \"title\": \"WCM\",\n        \"patron\": \"<boolean>\",\n        \"patronColor\": \"<integer>\"\n      },\n      \"leaders\": [\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"flair\": \"<string>\",\n          \"title\": \"IM\",\n          \"patron\": \"<boolean>\",\n          \"patronColor\": \"<integer>\"\n        },\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"flair\": \"<string>\",\n          \"title\": \"IM\",\n          \"patron\": \"<boolean>\",\n          \"patronColor\": \"<integer>\"\n        }\n      ],\n      \"nbMembers\": \"<integer>\",\n      \"open\": \"<boolean>\",\n      \"joined\": \"<boolean>\",\n      \"requested\": \"<boolean>\"\n    }\n  ],\n  \"previousPage\": \"<integer,null>\",\n  \"nextPage\": \"<integer,null>\",\n  \"nbResults\": \"<integer>\",\n  \"nbPages\": \"<integer>\"\n}",
+                      "createdAt": "2026-07-28T02:06:58.000Z",
+                      "updatedAt": "2026-07-28T02:06:58.000Z",
+                      "uid": "35240-c87c9b34-7a2e-4b9d-bffd-d8b5c52e11de"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:06:58.000Z",
+                  "updatedAt": "2026-07-28T02:06:58.000Z",
+                  "uid": "35240-54d65cac-0ab4-4c54-9800-947b95531b77"
+                }
+              ],
+              "id": "84e6d8da-1c85-4c44-b96a-50c020f21c40",
+              "createdAt": "2026-07-28T02:06:58.000Z",
+              "updatedAt": "2026-07-28T02:06:58.000Z",
+              "uid": "35240-84e6d8da-1c85-4c44-b96a-50c020f21c40"
+            },
+            {
+              "name": "of",
+              "item": [
+                {
+                  "name": "{username}",
+                  "item": [
+                    {
+                      "name": "Teams of a player",
+                      "id": "d22efa50-870f-44bc-8634-1c540885db7a",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://lichess.org/api/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://lichess.org/oauth",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/team/of/:username",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "team",
+                            "of",
+                            ":username"
+                          ],
+                          "variable": [
+                            {
+                              "id": "b8f82368-990e-400b-ae5f-1d7793fb1fe7",
+                              "key": "username",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "All the teams a player is a member of.\nTeams that hide their player list are only included if you also belong to the team.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "37eb9c9a-d0e9-416b-8dc2-701efb2ccccc",
+                          "name": "The list of teams the player is a member of.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/team/of/:username",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "team",
+                                "of",
+                                ":username"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "username"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "[\n  {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"description\": \"<string>\",\n    \"flair\": \"<string>\",\n    \"leader\": {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"flair\": \"<string>\",\n      \"title\": \"WIM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\"\n    },\n    \"leaders\": [\n      {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"flair\": \"<string>\",\n        \"title\": \"IM\",\n        \"patron\": \"<boolean>\",\n        \"patronColor\": \"<integer>\"\n      },\n      {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"flair\": \"<string>\",\n        \"title\": \"WGM\",\n        \"patron\": \"<boolean>\",\n        \"patronColor\": \"<integer>\"\n      }\n    ],\n    \"nbMembers\": \"<integer>\",\n    \"open\": \"<boolean>\",\n    \"joined\": \"<boolean>\",\n    \"requested\": \"<boolean>\"\n  },\n  {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"description\": \"<string>\",\n    \"flair\": \"<string>\",\n    \"leader\": {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"flair\": \"<string>\",\n      \"title\": \"FM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\"\n    },\n    \"leaders\": [\n      {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"flair\": \"<string>\",\n        \"title\": \"WFM\",\n        \"patron\": \"<boolean>\",\n        \"patronColor\": \"<integer>\"\n      },\n      {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"flair\": \"<string>\",\n        \"title\": \"WGM\",\n        \"patron\": \"<boolean>\",\n        \"patronColor\": \"<integer>\"\n      }\n    ],\n    \"nbMembers\": \"<integer>\",\n    \"open\": \"<boolean>\",\n    \"joined\": \"<boolean>\",\n    \"requested\": \"<boolean>\"\n  }\n]",
+                          "createdAt": "2026-07-28T02:06:58.000Z",
+                          "updatedAt": "2026-07-28T02:06:58.000Z",
+                          "uid": "35240-37eb9c9a-d0e9-416b-8dc2-701efb2ccccc"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:06:58.000Z",
+                      "updatedAt": "2026-07-28T02:06:58.000Z",
+                      "uid": "35240-d22efa50-870f-44bc-8634-1c540885db7a"
+                    }
+                  ],
+                  "id": "8e392ca5-3fd6-48d6-98e9-2e88275e8043",
+                  "createdAt": "2026-07-28T02:06:58.000Z",
+                  "updatedAt": "2026-07-28T02:06:58.000Z",
+                  "uid": "35240-8e392ca5-3fd6-48d6-98e9-2e88275e8043"
+                }
+              ],
+              "id": "dcbd6fc3-d1ea-4dce-98b7-ed2b2ce1c03e",
+              "createdAt": "2026-07-28T02:06:58.000Z",
+              "updatedAt": "2026-07-28T02:06:58.000Z",
+              "uid": "35240-dcbd6fc3-d1ea-4dce-98b7-ed2b2ce1c03e"
+            },
+            {
+              "name": "search",
+              "item": [
+                {
+                  "name": "Search teams",
+                  "id": "9f440dd3-d117-43de-a73c-536c0d85cf7e",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/team/search?text=<string>&page=1",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "team",
+                        "search"
+                      ],
+                      "query": [
+                        {
+                          "key": "text",
+                          "value": "<string>"
+                        },
+                        {
+                          "key": "page",
+                          "value": "1"
+                        }
+                      ]
+                    },
+                    "description": "Paginator of team search results for a keyword.\n"
+                  },
+                  "response": [
+                    {
+                      "id": "f26af1b9-2a84-47b5-8594-c7d0247be5fe",
+                      "name": "The paginated list of teams.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/team/search?text=<string>&page=1",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "team",
+                            "search"
+                          ],
+                          "query": [
+                            {
+                              "key": "text",
+                              "value": "<string>"
+                            },
+                            {
+                              "key": "page",
+                              "value": "1"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Access-Control-Allow-Origin",
+                          "value": "'*'"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"currentPage\": \"<integer>\",\n  \"maxPerPage\": \"<integer>\",\n  \"currentPageResults\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"flair\": \"<string>\",\n      \"leader\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"flair\": \"<string>\",\n        \"title\": \"WNM\",\n        \"patron\": \"<boolean>\",\n        \"patronColor\": \"<integer>\"\n      },\n      \"leaders\": [\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"flair\": \"<string>\",\n          \"title\": \"CM\",\n          \"patron\": \"<boolean>\",\n          \"patronColor\": \"<integer>\"\n        },\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"flair\": \"<string>\",\n          \"title\": \"CM\",\n          \"patron\": \"<boolean>\",\n          \"patronColor\": \"<integer>\"\n        }\n      ],\n      \"nbMembers\": \"<integer>\",\n      \"open\": \"<boolean>\",\n      \"joined\": \"<boolean>\",\n      \"requested\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"flair\": \"<string>\",\n      \"leader\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"flair\": \"<string>\",\n        \"title\": \"WCM\",\n        \"patron\": \"<boolean>\",\n        \"patronColor\": \"<integer>\"\n      },\n      \"leaders\": [\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"flair\": \"<string>\",\n          \"title\": \"IM\",\n          \"patron\": \"<boolean>\",\n          \"patronColor\": \"<integer>\"\n        },\n        {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"flair\": \"<string>\",\n          \"title\": \"IM\",\n          \"patron\": \"<boolean>\",\n          \"patronColor\": \"<integer>\"\n        }\n      ],\n      \"nbMembers\": \"<integer>\",\n      \"open\": \"<boolean>\",\n      \"joined\": \"<boolean>\",\n      \"requested\": \"<boolean>\"\n    }\n  ],\n  \"previousPage\": \"<integer,null>\",\n  \"nextPage\": \"<integer,null>\",\n  \"nbResults\": \"<integer>\",\n  \"nbPages\": \"<integer>\"\n}",
+                      "createdAt": "2026-07-28T02:06:58.000Z",
+                      "updatedAt": "2026-07-28T02:06:58.000Z",
+                      "uid": "35240-f26af1b9-2a84-47b5-8594-c7d0247be5fe"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:06:58.000Z",
+                  "updatedAt": "2026-07-28T02:06:58.000Z",
+                  "uid": "35240-9f440dd3-d117-43de-a73c-536c0d85cf7e"
+                }
+              ],
+              "id": "f7e38ad2-6870-4814-aca6-0a222de70288",
+              "createdAt": "2026-07-28T02:06:58.000Z",
+              "updatedAt": "2026-07-28T02:06:58.000Z",
+              "uid": "35240-f7e38ad2-6870-4814-aca6-0a222de70288"
+            }
+          ],
+          "id": "3389a648-b577-46d7-ba0f-d3c93eb969be",
+          "createdAt": "2026-07-28T02:06:58.000Z",
+          "updatedAt": "2026-07-28T02:06:58.000Z",
+          "uid": "35240-3389a648-b577-46d7-ba0f-d3c93eb969be"
+        }
+      ],
+      "id": "b4271ee9-cac6-4d8c-bdc9-57bba37037e3",
+      "createdAt": "2026-07-28T02:06:58.000Z",
+      "updatedAt": "2026-07-28T02:06:58.000Z",
+      "uid": "35240-b4271ee9-cac6-4d8c-bdc9-57bba37037e3"
+    },
+    {
+      "name": "team",
+      "item": [
+        {
+          "name": "{teamId}",
+          "item": [
+            {
+              "name": "join",
+              "item": [
+                {
+                  "name": "Join a team",
+                  "id": "6c8d25c3-896c-4af2-bd14-af2f92eced4b",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "oauth2",
+                      "oauth2": [
+                        {
+                          "key": "scope",
+                          "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                          "type": "string"
+                        },
+                        {
+                          "key": "accessTokenUrl",
+                          "value": "https://lichess.org/api/token",
+                          "type": "string"
+                        },
+                        {
+                          "key": "authUrl",
+                          "value": "https://lichess.org/oauth",
+                          "type": "string"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "authorization_code",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "Required if team manually reviews admission requests.",
+                          "key": "message",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Optional password, if the team requires one.",
+                          "key": "password",
+                          "value": "<string>"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/team/:teamId/join",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "team",
+                        ":teamId",
+                        "join"
+                      ],
+                      "variable": [
+                        {
+                          "id": "c3f1545f-c86d-45df-a5ad-d4929b19e8d4",
+                          "key": "teamId",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Join a team.\nIf the team requires a password but the `password` field is incorrect,\nthen the call fails with `403 Forbidden`.\nSimilarly, if the team join policy requires a confirmation but the\n`message` parameter is not given, then the call fails with\n`403 Forbidden`.\n"
+                  },
+                  "response": [
+                    {
+                      "id": "ba72f49d-a34e-4a17-a43c-77a0e5d89eff",
+                      "name": "The request to join a team was successfully sent.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "Required if team manually reviews admission requests.",
+                              "key": "message",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Optional password, if the team requires one.",
+                              "key": "password",
+                              "value": "<string>"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/team/:teamId/join",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "team",
+                            ":teamId",
+                            "join"
+                          ],
+                          "variable": [
+                            {
+                              "key": "teamId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"ok\": \"<boolean>\"\n}",
+                      "createdAt": "2026-07-28T02:06:58.000Z",
+                      "updatedAt": "2026-07-28T02:06:58.000Z",
+                      "uid": "35240-ba72f49d-a34e-4a17-a43c-77a0e5d89eff"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:06:58.000Z",
+                  "updatedAt": "2026-07-28T02:06:58.000Z",
+                  "uid": "35240-6c8d25c3-896c-4af2-bd14-af2f92eced4b"
+                }
+              ],
+              "id": "7bac5985-6bda-42ab-9169-c5801ad96896",
+              "createdAt": "2026-07-28T02:06:58.000Z",
+              "updatedAt": "2026-07-28T02:06:58.000Z",
+              "uid": "35240-7bac5985-6bda-42ab-9169-c5801ad96896"
+            },
+            {
+              "name": "quit",
+              "item": [
+                {
+                  "name": "Leave a team",
+                  "id": "64e03e46-331d-4bf6-bc20-792f09ff71c5",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "oauth2",
+                      "oauth2": [
+                        {
+                          "key": "scope",
+                          "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                          "type": "string"
+                        },
+                        {
+                          "key": "accessTokenUrl",
+                          "value": "https://lichess.org/api/token",
+                          "type": "string"
+                        },
+                        {
+                          "key": "authUrl",
+                          "value": "https://lichess.org/oauth",
+                          "type": "string"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "authorization_code",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/team/:teamId/quit",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "team",
+                        ":teamId",
+                        "quit"
+                      ],
+                      "variable": [
+                        {
+                          "id": "8bc848cc-99ae-4a57-9814-8a318b82c42e",
+                          "key": "teamId",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Leave a team.\n- <https://lichess.org/team>\n"
+                  },
+                  "response": [
+                    {
+                      "id": "0a07b3f0-fbdb-47ba-bd10-398b6fe78d80",
+                      "name": "The logged in user has successfully left the team.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/team/:teamId/quit",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "team",
+                            ":teamId",
+                            "quit"
+                          ],
+                          "variable": [
+                            {
+                              "key": "teamId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"ok\": \"<boolean>\"\n}",
+                      "createdAt": "2026-07-28T02:06:58.000Z",
+                      "updatedAt": "2026-07-28T02:06:58.000Z",
+                      "uid": "35240-0a07b3f0-fbdb-47ba-bd10-398b6fe78d80"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:06:58.000Z",
+                  "updatedAt": "2026-07-28T02:06:58.000Z",
+                  "uid": "35240-64e03e46-331d-4bf6-bc20-792f09ff71c5"
+                }
+              ],
+              "id": "bf9e3176-58d3-477a-ad40-da56c1da4bdf",
+              "createdAt": "2026-07-28T02:06:58.000Z",
+              "updatedAt": "2026-07-28T02:06:58.000Z",
+              "uid": "35240-bf9e3176-58d3-477a-ad40-da56c1da4bdf"
+            },
+            {
+              "name": "pm-all",
+              "item": [
+                {
+                  "name": "Message all members",
+                  "id": "6894e193-2521-485a-9a42-c513b9af07fe",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "oauth2",
+                      "oauth2": [
+                        {
+                          "key": "scope",
+                          "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                          "type": "string"
+                        },
+                        {
+                          "key": "accessTokenUrl",
+                          "value": "https://lichess.org/api/token",
+                          "type": "string"
+                        },
+                        {
+                          "key": "authUrl",
+                          "value": "https://lichess.org/oauth",
+                          "type": "string"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "authorization_code",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "The message to send to all your team members.",
+                          "key": "message",
+                          "value": "<string>"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/team/:teamId/pm-all",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "team",
+                        ":teamId",
+                        "pm-all"
+                      ],
+                      "variable": [
+                        {
+                          "id": "cd98a874-0385-4177-bd7c-ae340eea3afb",
+                          "key": "teamId",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Send a private message to all members of a team.\nYou must be a team leader with the \"Messages\" permission.\n"
+                  },
+                  "response": [
+                    {
+                      "id": "6f11ecb4-8abc-411c-ad8c-34c7de5627e5",
+                      "name": "The message has successfully been sent to all team members.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "The message to send to all your team members.",
+                              "key": "message",
+                              "value": "<string>"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/team/:teamId/pm-all",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "team",
+                            ":teamId",
+                            "pm-all"
+                          ],
+                          "variable": [
+                            {
+                              "key": "teamId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Access-Control-Allow-Origin",
+                          "value": "'*'"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"ok\": \"<boolean>\"\n}",
+                      "createdAt": "2026-07-28T02:06:58.000Z",
+                      "updatedAt": "2026-07-28T02:06:58.000Z",
+                      "uid": "35240-6f11ecb4-8abc-411c-ad8c-34c7de5627e5"
+                    },
+                    {
+                      "id": "5ab65a33-4030-4ce0-91dd-d7cf2e53ca99",
+                      "name": "The sending of message to all team members has failed.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "The message to send to all your team members.",
+                              "key": "message",
+                              "value": "<string>"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/team/:teamId/pm-all",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "team",
+                            ":teamId",
+                            "pm-all"
+                          ],
+                          "variable": [
+                            {
+                              "key": "teamId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"error\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:06:58.000Z",
+                      "updatedAt": "2026-07-28T02:06:58.000Z",
+                      "uid": "35240-5ab65a33-4030-4ce0-91dd-d7cf2e53ca99"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:06:58.000Z",
+                  "updatedAt": "2026-07-28T02:06:58.000Z",
+                  "uid": "35240-6894e193-2521-485a-9a42-c513b9af07fe"
+                }
+              ],
+              "id": "4ae0ae46-70e4-4364-beca-87c308562137",
+              "createdAt": "2026-07-28T02:06:58.000Z",
+              "updatedAt": "2026-07-28T02:06:58.000Z",
+              "uid": "35240-4ae0ae46-70e4-4364-beca-87c308562137"
+            }
+          ],
+          "id": "2e98051b-2836-49db-9aa0-5f27eb085f41",
+          "createdAt": "2026-07-28T02:06:58.000Z",
+          "updatedAt": "2026-07-28T02:06:58.000Z",
+          "uid": "35240-2e98051b-2836-49db-9aa0-5f27eb085f41"
+        }
+      ],
+      "id": "0059e68b-2a12-4cd4-9ad3-90a3e9a261ac",
+      "createdAt": "2026-07-28T02:06:58.000Z",
+      "updatedAt": "2026-07-28T02:06:58.000Z",
+      "uid": "35240-0059e68b-2a12-4cd4-9ad3-90a3e9a261ac"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://lichess.org"
+    }
+  ]
+}

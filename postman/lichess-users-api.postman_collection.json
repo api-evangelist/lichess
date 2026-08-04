@@ -1,0 +1,1746 @@
+{
+  "info": {
+    "_postman_id": "e468e953-8d95-4057-bda6-515564470790",
+    "name": "Lichess.org API reference Account Users API",
+    "description": "# Introduction\nWelcome to the reference for the Lichess API! Lichess is free/libre,\nopen-source chess server powered by volunteers and donations.\n- Get help in the [Lichess Discord channel](https://discord.gg/lichess)\n- API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)\n- API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)\n- [Contribute to this documentation on Github](https://github.com/lichess-org/api)\n- Check out [Lichess widgets to embed in your website](https://lichess.org/developers)\n- [Download all Lichess rated games](https://database.lichess.org/)\n- [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)\n- [Download all evaluated positions](https://database.lichess.org/#evals)\n\n## Endpoint\nAll requests go to `https://lichess.org` (unless otherwise specified).\n\n## Clients\n- [Python general API](https://github.com/lichess-org/berserk)\n- [MicroPython general API](https://github.com/mkomon/uberserk)\n- [Python general API - async](https://pypi.org/project/async-lichess-sdk)\n- [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)\n- [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)\n- [Java general API](https://github.com/tors42/chariot)\n- [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)\n- [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)\n- [.NET general API](https://github.com/Dblike/LichessSharp)\n\n## Rate limiting\nAll requests are rate limited using various strategies,\nto ensure the API remains responsive for everyone.\nOnly make one request at a time.\nIf you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),\nyou have exceded one of the rate limits.\nIn most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.\nReduce your request frequency before retrying.\n\n## Streaming with ND-JSON\nSome API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.\n\nHere's a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.\n\n## Authentication\n### Which authentication method is right for me?\n[Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)\n\n### Personal Access Token\nPersonal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.\n- [Generate a personal access token](https://lichess.org/account/oauth/token)\n- `curl https://lichess.org/api/account -H \"Authorization: Bearer {token}\"`\n- [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)\n\n### Token Security\n- Keep your tokens secret. Do not share them in public repositories or public forums.\n- Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens' scope). You remain responsible for all activities on your account.\n- Do not hardcode tokens in your application's code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.\n- If you suspect a token has been compromised, revoke it immediately.\n\nTo see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).\n\n### Authorization Code Flow with PKCE\nThe authorization code flow with PKCE allows your users to **login with Lichess**.\nLichess supports unregistered and public clients (no client authentication, choose any unique client id).\nThe only accepted code challenge method is `S256`.\nAccess tokens are long-lived (expect one year), unless they are revoked.\nRefresh tokens are not supported.\n\nSee the [documentation for the OAuth endpoints](#tag/OAuth) or\nthe [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.\n\n- [Demo app](https://lichess-org.github.io/api-demo/)\n- [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)\n- [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)\n- [Java example](https://github.com/tors42/lichess-oauth-pkce-app)\n- [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)\n\n#### Real life examples\n- [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))\n- [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))\n- [English Chess Federation](https://ecf.octoknight.com/)\n- [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)\n\n### Token format\nAccess tokens and authorization codes match `^[A-Za-z0-9_]+$`.\nThe length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.\nBy convention tokens have a recognizable prefix, but do not rely on this.\n\n\nContact Support:\n Name: Lichess.org API\n Email: contact@lichess.org",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:07:27.000Z",
+    "updatedAt": "2026-07-28T02:07:27.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-e468e953-8d95-4057-bda6-515564470790"
+  },
+  "item": [
+    {
+      "name": "api",
+      "item": [
+        {
+          "name": "users",
+          "item": [
+            {
+              "name": "status",
+              "item": [
+                {
+                  "name": "Get real-time users status",
+                  "id": "723cc1d8-3b93-4117-8e71-0364c7b75237",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/users/status?ids=<string>&withSignal=<boolean>&withGameIds=<boolean>&withGameMetas=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "users",
+                        "status"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) User IDs separated by commas. Up to 100 IDs.",
+                          "key": "ids",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Also return the network signal of the player, when available.\nIt ranges from 1 (poor connection, lag > 500ms) to 4 (great connection, lag < 150ms)\nDefaults to `false` to preserve server resources.\n",
+                          "key": "withSignal",
+                          "value": "<boolean>"
+                        },
+                        {
+                          "description": "Also return the ID of the game being played, if any, for each player, in a `playingId` field.\nDefaults to `false` to preserve server resources.\n",
+                          "key": "withGameIds",
+                          "value": "<boolean>"
+                        },
+                        {
+                          "description": "Also return the id, time control and variant of the game being played, if any, for each player, in a `playing` field.\nDefaults to `false` to preserve server resources. Disables `withGameIds`.\n",
+                          "key": "withGameMetas",
+                          "value": "<boolean>"
+                        }
+                      ]
+                    },
+                    "description": "Read the `online`, `playing` and `streaming` flags of several users.\nThis API is very fast and cheap on lichess side.\nSo you can call it quite often (like once every 5 seconds).\nUse it to track players and know when they're connected on lichess and playing games.\n"
+                  },
+                  "response": [
+                    {
+                      "id": "9b606689-e8ba-4592-ab47-114e13745866",
+                      "name": "The list of users and their respective statuses.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/users/status?ids=<string>&withSignal=<boolean>&withGameIds=<boolean>&withGameMetas=<boolean>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "users",
+                            "status"
+                          ],
+                          "query": [
+                            {
+                              "description": "(Required) User IDs separated by commas. Up to 100 IDs.",
+                              "key": "ids",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Also return the network signal of the player, when available.\nIt ranges from 1 (poor connection, lag > 500ms) to 4 (great connection, lag < 150ms)\nDefaults to `false` to preserve server resources.\n",
+                              "key": "withSignal",
+                              "value": "<boolean>"
+                            },
+                            {
+                              "description": "Also return the ID of the game being played, if any, for each player, in a `playingId` field.\nDefaults to `false` to preserve server resources.\n",
+                              "key": "withGameIds",
+                              "value": "<boolean>"
+                            },
+                            {
+                              "description": "Also return the id, time control and variant of the game being played, if any, for each player, in a `playing` field.\nDefaults to `false` to preserve server resources. Disables `withGameIds`.\n",
+                              "key": "withGameMetas",
+                              "value": "<boolean>"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Access-Control-Allow-Origin",
+                          "value": "'*'"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "[\n  {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"flair\": \"<string>\",\n    \"title\": \"WFM\",\n    \"online\": \"<boolean>\",\n    \"playing\": \"<boolean>\",\n    \"streaming\": \"<boolean>\",\n    \"patron\": \"<boolean>\",\n    \"patronColor\": \"<integer>\"\n  },\n  {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"flair\": \"<string>\",\n    \"title\": \"WCM\",\n    \"online\": \"<boolean>\",\n    \"playing\": \"<boolean>\",\n    \"streaming\": \"<boolean>\",\n    \"patron\": \"<boolean>\",\n    \"patronColor\": \"<integer>\"\n  }\n]",
+                      "createdAt": "2026-07-28T02:07:27.000Z",
+                      "updatedAt": "2026-07-28T02:07:27.000Z",
+                      "uid": "35240-9b606689-e8ba-4592-ab47-114e13745866"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:07:27.000Z",
+                  "updatedAt": "2026-07-28T02:07:27.000Z",
+                  "uid": "35240-723cc1d8-3b93-4117-8e71-0364c7b75237"
+                }
+              ],
+              "id": "04bc7b78-cf02-4db9-b876-81dbdfffa4cc",
+              "createdAt": "2026-07-28T02:07:27.000Z",
+              "updatedAt": "2026-07-28T02:07:27.000Z",
+              "uid": "35240-04bc7b78-cf02-4db9-b876-81dbdfffa4cc"
+            },
+            {
+              "name": "Get users by ID",
+              "id": "53e58e56-880a-4728-89ff-8022ddf9a389",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "text/plain"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "<string>"
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/users?profile=true&rank=false",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "users"
+                  ],
+                  "query": [
+                    {
+                      "description": "Include user profile data",
+                      "key": "profile",
+                      "value": "true"
+                    },
+                    {
+                      "description": "Include global lichess ranking for each perf",
+                      "key": "rank",
+                      "value": "false"
+                    }
+                  ]
+                },
+                "description": "Get up to 300 users by their IDs. Users are returned in the same order as the IDs.\nThe method is `POST` to allow a longer list of IDs to be sent in the request body.\nPlease do not try to download all the Lichess users with this endpoint, or any other endpoint.\nAn API is not a way to fully export a website. We do not provide a full download of the Lichess users.\nThis endpoint is limited to 8,000 users every 10 minutes, and 120,000 every day.\n"
+              },
+              "response": [
+                {
+                  "id": "6671aee8-2bb0-44fc-b4bd-4e53eac3c38c",
+                  "name": "The list of users.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "text/plain"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "<string>"
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/api/users?profile=true&rank=false",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "users"
+                      ],
+                      "query": [
+                        {
+                          "description": "Include user profile data",
+                          "key": "profile",
+                          "value": "true"
+                        },
+                        {
+                          "description": "Include global lichess ranking for each perf",
+                          "key": "rank",
+                          "value": "false"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "Access-Control-Allow-Origin",
+                      "value": "'*'"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "[\n  {\n    \"id\": \"<string>\",\n    \"username\": \"<string>\",\n    \"perfs\": {\n      \"chess960\": {\n        \"games\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"rd\": \"<integer>\",\n        \"prog\": \"<integer>\",\n        \"prov\": \"<boolean>\",\n        \"rank\": \"<integer>\"\n      },\n      \"atomic\": {\n        \"games\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"rd\": \"<integer>\",\n        \"prog\": \"<integer>\",\n        \"prov\": \"<boolean>\",\n        \"rank\": \"<integer>\"\n      },\n      \"racingKings\": {\n        \"games\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"rd\": \"<integer>\",\n        \"prog\": \"<integer>\",\n        \"prov\": \"<boolean>\",\n        \"rank\": \"<integer>\"\n      },\n      \"ultraBullet\": {\n        \"games\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"rd\": \"<integer>\",\n        \"prog\": \"<integer>\",\n        \"prov\": \"<boolean>\",\n        \"rank\": \"<integer>\"\n      },\n      \"blitz\": {\n        \"games\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"rd\": \"<integer>\",\n        \"prog\": \"<integer>\",\n        \"prov\": \"<boolean>\",\n        \"rank\": \"<integer>\"\n      },\n      \"kingOfTheHill\": {\n        \"games\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"rd\": \"<integer>\",\n        \"prog\": \"<integer>\",\n        \"prov\": \"<boolean>\",\n        \"rank\": \"<integer>\"\n      },\n      \"threeCheck\": {\n        \"games\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"rd\": \"<integer>\",\n        \"prog\": \"<integer>\",\n        \"prov\": \"<boolean>\",\n        \"rank\": \"<integer>\"\n      },\n      \"antichess\": {\n        \"games\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"rd\": \"<integer>\",\n        \"prog\": \"<integer>\",\n        \"prov\": \"<boolean>\",\n        \"rank\": \"<integer>\"\n      },\n      \"crazyhouse\": {\n        \"games\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"rd\": \"<integer>\",\n        \"prog\": \"<integer>\",\n        \"prov\": \"<boolean>\",\n        \"rank\": \"<integer>\"\n      },\n      \"bullet\": {\n        \"games\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"rd\": \"<integer>\",\n        \"prog\": \"<integer>\",\n        \"prov\": \"<boolean>\",\n        \"rank\": \"<integer>\"\n      },\n      \"correspondence\": {\n        \"games\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"rd\": \"<integer>\",\n        \"prog\": \"<integer>\",\n        \"prov\": \"<boolean>\",\n        \"rank\": \"<integer>\"\n      },\n      \"horde\": {\n        \"games\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"rd\": \"<integer>\",\n        \"prog\": \"<integer>\",\n        \"prov\": \"<boolean>\",\n        \"rank\": \"<integer>\"\n      },\n      \"puzzle\": {\n        \"games\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"rd\": \"<integer>\",\n        \"prog\": \"<integer>\",\n        \"prov\": \"<boolean>\",\n        \"rank\": \"<integer>\"\n      },\n      \"classical\": {\n        \"games\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"rd\": \"<integer>\",\n        \"prog\": \"<integer>\",\n        \"prov\": \"<boolean>\",\n        \"rank\": \"<integer>\"\n      },\n      \"rapid\": {\n        \"games\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"rd\": \"<integer>\",\n        \"prog\": \"<integer>\",\n        \"prov\": \"<boolean>\",\n        \"rank\": \"<integer>\"\n      },\n      \"storm\": {\n        \"runs\": \"<integer>\",\n        \"score\": \"<integer>\"\n      },\n      \"racer\": {\n        \"runs\": \"<integer>\",\n        \"score\": \"<integer>\"\n      },\n      \"streak\": {\n        \"runs\": \"<integer>\",\n        \"score\": \"<integer>\"\n      }\n    },\n    \"title\": \"WFM\",\n    \"flair\": \"<string>\",\n    \"createdAt\": \"<long>\",\n    \"disabled\": \"<boolean>\",\n    \"tosViolation\": \"<boolean>\",\n    \"profile\": {\n      \"flag\": \"<string>\",\n      \"location\": \"<string>\",\n      \"bio\": \"<string>\",\n      \"realName\": \"<string>\",\n      \"fideRating\": \"<integer>\",\n      \"uscfRating\": \"<integer>\",\n      \"ecfRating\": \"<integer>\",\n      \"cfcRating\": \"<integer>\",\n      \"rcfRating\": \"<integer>\",\n      \"dsbRating\": \"<integer>\",\n      \"links\": \"<string>\"\n    },\n    \"seenAt\": \"<long>\",\n    \"playTime\": {\n      \"total\": \"<integer>\",\n      \"tv\": \"<integer>\",\n      \"human\": \"<integer>\"\n    },\n    \"patron\": \"<boolean>\",\n    \"patronColor\": \"<integer>\",\n    \"verified\": \"<boolean>\"\n  },\n  {\n    \"id\": \"<string>\",\n    \"username\": \"<string>\",\n    \"perfs\": {\n      \"chess960\": {\n        \"games\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"rd\": \"<integer>\",\n        \"prog\": \"<integer>\",\n        \"prov\": \"<boolean>\",\n        \"rank\": \"<integer>\"\n      },\n      \"atomic\": {\n        \"games\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"rd\": \"<integer>\",\n        \"prog\": \"<integer>\",\n        \"prov\": \"<boolean>\",\n        \"rank\": \"<integer>\"\n      },\n      \"racingKings\": {\n        \"games\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"rd\": \"<integer>\",\n        \"prog\": \"<integer>\",\n        \"prov\": \"<boolean>\",\n        \"rank\": \"<integer>\"\n      },\n      \"ultraBullet\": {\n        \"games\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"rd\": \"<integer>\",\n        \"prog\": \"<integer>\",\n        \"prov\": \"<boolean>\",\n        \"rank\": \"<integer>\"\n      },\n      \"blitz\": {\n        \"games\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"rd\": \"<integer>\",\n        \"prog\": \"<integer>\",\n        \"prov\": \"<boolean>\",\n        \"rank\": \"<integer>\"\n      },\n      \"kingOfTheHill\": {\n        \"games\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"rd\": \"<integer>\",\n        \"prog\": \"<integer>\",\n        \"prov\": \"<boolean>\",\n        \"rank\": \"<integer>\"\n      },\n      \"threeCheck\": {\n        \"games\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"rd\": \"<integer>\",\n        \"prog\": \"<integer>\",\n        \"prov\": \"<boolean>\",\n        \"rank\": \"<integer>\"\n      },\n      \"antichess\": {\n        \"games\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"rd\": \"<integer>\",\n        \"prog\": \"<integer>\",\n        \"prov\": \"<boolean>\",\n        \"rank\": \"<integer>\"\n      },\n      \"crazyhouse\": {\n        \"games\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"rd\": \"<integer>\",\n        \"prog\": \"<integer>\",\n        \"prov\": \"<boolean>\",\n        \"rank\": \"<integer>\"\n      },\n      \"bullet\": {\n        \"games\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"rd\": \"<integer>\",\n        \"prog\": \"<integer>\",\n        \"prov\": \"<boolean>\",\n        \"rank\": \"<integer>\"\n      },\n      \"correspondence\": {\n        \"games\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"rd\": \"<integer>\",\n        \"prog\": \"<integer>\",\n        \"prov\": \"<boolean>\",\n        \"rank\": \"<integer>\"\n      },\n      \"horde\": {\n        \"games\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"rd\": \"<integer>\",\n        \"prog\": \"<integer>\",\n        \"prov\": \"<boolean>\",\n        \"rank\": \"<integer>\"\n      },\n      \"puzzle\": {\n        \"games\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"rd\": \"<integer>\",\n        \"prog\": \"<integer>\",\n        \"prov\": \"<boolean>\",\n        \"rank\": \"<integer>\"\n      },\n      \"classical\": {\n        \"games\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"rd\": \"<integer>\",\n        \"prog\": \"<integer>\",\n        \"prov\": \"<boolean>\",\n        \"rank\": \"<integer>\"\n      },\n      \"rapid\": {\n        \"games\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"rd\": \"<integer>\",\n        \"prog\": \"<integer>\",\n        \"prov\": \"<boolean>\",\n        \"rank\": \"<integer>\"\n      },\n      \"storm\": {\n        \"runs\": \"<integer>\",\n        \"score\": \"<integer>\"\n      },\n      \"racer\": {\n        \"runs\": \"<integer>\",\n        \"score\": \"<integer>\"\n      },\n      \"streak\": {\n        \"runs\": \"<integer>\",\n        \"score\": \"<integer>\"\n      }\n    },\n    \"title\": \"WFM\",\n    \"flair\": \"<string>\",\n    \"createdAt\": \"<long>\",\n    \"disabled\": \"<boolean>\",\n    \"tosViolation\": \"<boolean>\",\n    \"profile\": {\n      \"flag\": \"<string>\",\n      \"location\": \"<string>\",\n      \"bio\": \"<string>\",\n      \"realName\": \"<string>\",\n      \"fideRating\": \"<integer>\",\n      \"uscfRating\": \"<integer>\",\n      \"ecfRating\": \"<integer>\",\n      \"cfcRating\": \"<integer>\",\n      \"rcfRating\": \"<integer>\",\n      \"dsbRating\": \"<integer>\",\n      \"links\": \"<string>\"\n    },\n    \"seenAt\": \"<long>\",\n    \"playTime\": {\n      \"total\": \"<integer>\",\n      \"tv\": \"<integer>\",\n      \"human\": \"<integer>\"\n    },\n    \"patron\": \"<boolean>\",\n    \"patronColor\": \"<integer>\",\n    \"verified\": \"<boolean>\"\n  }\n]",
+                  "createdAt": "2026-07-28T02:07:27.000Z",
+                  "updatedAt": "2026-07-28T02:07:27.000Z",
+                  "uid": "35240-6671aee8-2bb0-44fc-b4bd-4e53eac3c38c"
+                }
+              ],
+              "createdAt": "2026-07-28T02:07:27.000Z",
+              "updatedAt": "2026-07-28T02:07:27.000Z",
+              "uid": "35240-53e58e56-880a-4728-89ff-8022ddf9a389"
+            }
+          ],
+          "id": "784ad872-32ac-4955-b720-d346df37bb22",
+          "createdAt": "2026-07-28T02:07:27.000Z",
+          "updatedAt": "2026-07-28T02:07:27.000Z",
+          "uid": "35240-784ad872-32ac-4955-b720-d346df37bb22"
+        },
+        {
+          "name": "player",
+          "item": [
+            {
+              "name": "top",
+              "item": [
+                {
+                  "name": "{nb}",
+                  "item": [
+                    {
+                      "name": "{perfType}",
+                      "item": [
+                        {
+                          "name": "Get one leaderboard",
+                          "id": "3674d129-6c48-4bab-bdb6-d1d2c941d303",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/vnd.lichess.v3+json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/player/top/:nb/:perfType",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "player",
+                                "top",
+                                ":nb",
+                                ":perfType"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "dc0a9ede-f6c6-4191-a083-4510a5b0d889",
+                                  "key": "nb",
+                                  "value": "<integer>",
+                                  "description": "(Required) How many users to fetch"
+                                },
+                                {
+                                  "id": "e82da6e2-0b04-4919-bf30-01457a25b4c5",
+                                  "key": "perfType",
+                                  "value": "atomic",
+                                  "description": "(Required) The speed or variant"
+                                }
+                              ]
+                            },
+                            "description": "Get the leaderboard for a single speed or variant (a.k.a. `perfType`).\nThere is no leaderboard for correspondence or puzzles.\nSee <https://lichess.org/player/top/100/bullet>.\n"
+                          },
+                          "response": [
+                            {
+                              "id": "03583858-84e9-4aeb-8296-42920f33a5dd",
+                              "name": "The list of top players for the variant.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/vnd.lichess.v3+json"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/player/top/:nb/:perfType",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "player",
+                                    "top",
+                                    ":nb",
+                                    ":perfType"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "nb"
+                                    },
+                                    {
+                                      "key": "perfType"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/vnd.lichess.v3+json"
+                                },
+                                {
+                                  "disabled": false,
+                                  "description": {
+                                    "content": "",
+                                    "type": "text/plain"
+                                  },
+                                  "key": "Access-Control-Allow-Origin",
+                                  "value": "'*'"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"users\": [\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"dolor_a\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"et_8ed\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"cupidatatdd\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WGM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"veniam_c3\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WFM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    }\n  ]\n}",
+                              "createdAt": "2026-07-28T02:07:27.000Z",
+                              "updatedAt": "2026-07-28T02:07:27.000Z",
+                              "uid": "35240-03583858-84e9-4aeb-8296-42920f33a5dd"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T02:07:27.000Z",
+                          "updatedAt": "2026-07-28T02:07:27.000Z",
+                          "uid": "35240-3674d129-6c48-4bab-bdb6-d1d2c941d303"
+                        }
+                      ],
+                      "id": "c368b430-5621-42a0-84bd-b181e08e9356",
+                      "createdAt": "2026-07-28T02:07:27.000Z",
+                      "updatedAt": "2026-07-28T02:07:27.000Z",
+                      "uid": "35240-c368b430-5621-42a0-84bd-b181e08e9356"
+                    }
+                  ],
+                  "id": "c7d908e4-04a7-4c61-a4f5-525cf2452990",
+                  "createdAt": "2026-07-28T02:07:27.000Z",
+                  "updatedAt": "2026-07-28T02:07:27.000Z",
+                  "uid": "35240-c7d908e4-04a7-4c61-a4f5-525cf2452990"
+                }
+              ],
+              "id": "7a53561d-e1a7-4043-b374-8aca29f3470f",
+              "createdAt": "2026-07-28T02:07:27.000Z",
+              "updatedAt": "2026-07-28T02:07:27.000Z",
+              "uid": "35240-7a53561d-e1a7-4043-b374-8aca29f3470f"
+            },
+            {
+              "name": "autocomplete",
+              "item": [
+                {
+                  "name": "Autocomplete usernames",
+                  "id": "cec5b100-4789-41aa-a60e-7767d7504923",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "noauth"
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/player/autocomplete?term=<string>&exists=false&object=false&names=false&friend=<boolean>&team=<string>&tour=<string>&swiss=<string>&teacher=false",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "player",
+                        "autocomplete"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) The beginning of a username",
+                          "key": "term",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "If `true`, only checks if the user exists.\n",
+                          "key": "exists",
+                          "value": "false"
+                        },
+                        {
+                          "description": "- `false` returns an array of usernames\n- `true` returns an object with matching users\n",
+                          "key": "object",
+                          "value": "false"
+                        },
+                        {
+                          "description": "- `false` returns an array of usernames\n- `true` returns an array of usernames with preferred casing\n",
+                          "key": "names",
+                          "value": "false"
+                        },
+                        {
+                          "description": "Returns followed players matching `term` if any, else returns other players.\nRequires [OAuth](#tag/OAuth).\n",
+                          "key": "friend",
+                          "value": "<boolean>"
+                        },
+                        {
+                          "description": "Search within a team.\nUse team ID/slug.\n",
+                          "key": "team",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Search within a arena tournament.\nUse tournament ID.\n",
+                          "key": "tour",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Search within a Swiss tournament.\n",
+                          "key": "swiss",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Only search for players who also have a teacher role.\n",
+                          "key": "teacher",
+                          "value": "false"
+                        }
+                      ]
+                    },
+                    "description": "Provides autocompletion options for an incomplete username.\n"
+                  },
+                  "response": [
+                    {
+                      "id": "34266671-bdde-400f-8e03-673cd7ac91bb",
+                      "name": "An array of players which usernames start with the provided term.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/player/autocomplete?term=<string>&exists=false&object=false&names=false&friend=<boolean>&team=<string>&tour=<string>&swiss=<string>&teacher=false",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "player",
+                            "autocomplete"
+                          ],
+                          "query": [
+                            {
+                              "description": "(Required) The beginning of a username",
+                              "key": "term",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "If `true`, only checks if the user exists.\n",
+                              "key": "exists",
+                              "value": "false"
+                            },
+                            {
+                              "description": "- `false` returns an array of usernames\n- `true` returns an object with matching users\n",
+                              "key": "object",
+                              "value": "false"
+                            },
+                            {
+                              "description": "- `false` returns an array of usernames\n- `true` returns an array of usernames with preferred casing\n",
+                              "key": "names",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Returns followed players matching `term` if any, else returns other players.\nRequires [OAuth](#tag/OAuth).\n",
+                              "key": "friend",
+                              "value": "<boolean>"
+                            },
+                            {
+                              "description": "Search within a team.\nUse team ID/slug.\n",
+                              "key": "team",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Search within a arena tournament.\nUse tournament ID.\n",
+                              "key": "tour",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Search within a Swiss tournament.\n",
+                              "key": "swiss",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Only search for players who also have a teacher role.\n",
+                              "key": "teacher",
+                              "value": "false"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Access-Control-Allow-Origin",
+                          "value": "'*'"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "[\n  \"<string>\",\n  \"<string>\"\n]",
+                      "createdAt": "2026-07-28T02:07:27.000Z",
+                      "updatedAt": "2026-07-28T02:07:27.000Z",
+                      "uid": "35240-34266671-bdde-400f-8e03-673cd7ac91bb"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:07:27.000Z",
+                  "updatedAt": "2026-07-28T02:07:27.000Z",
+                  "uid": "35240-cec5b100-4789-41aa-a60e-7767d7504923"
+                }
+              ],
+              "id": "896a59e2-f160-459f-ad32-4efd1b7adc53",
+              "createdAt": "2026-07-28T02:07:27.000Z",
+              "updatedAt": "2026-07-28T02:07:27.000Z",
+              "uid": "35240-896a59e2-f160-459f-ad32-4efd1b7adc53"
+            },
+            {
+              "name": "Get all top 10",
+              "id": "6306efe8-30b0-49b6-a547-25ca49226934",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/player",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "player"
+                  ]
+                },
+                "description": "Get the top 10 players for each speed and variant.\nSee <https://lichess.org/player>.\n"
+              },
+              "response": [
+                {
+                  "id": "759ac597-f173-4710-a6e7-ca738b402ffa",
+                  "name": "The list of variants with their respective top players.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/player",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "player"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "Access-Control-Allow-Origin",
+                      "value": "'*'"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"bullet\": [\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"veniam_f9\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"GM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"aute58f\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"ad_ca9\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"CM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"mollit6\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"IM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"non_5dc\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"LM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"esse_d\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"CM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"commodo70\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WCM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"sunt_b96\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"tempor1a2\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WNM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"laborum6\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"pariatur3\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"nond\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WFM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"mollit_6\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"Ut_5\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"Lorem__44\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WCM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"laborum_5b\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"sunt_b4\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"elit82\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WIM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    }\n  ],\n  \"blitz\": [\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"iruree3_\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"FM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"occaecat603\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"GM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"veniam_6\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"labore_\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WIM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"Ut3_f\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"CM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"incididunt4b\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"exercitation4\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WFM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"ex_b16\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"occaecat92\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"ut_c\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WFM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"consectetur_3df\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"irure_6\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"LM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"nulla_3b7\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"FM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"inb\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"quisdf\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"incididunt_e\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"NM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"in_4_\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WCM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    }\n  ],\n  \"rapid\": [\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"in65\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"anim_ad\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WNM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"deserunt_f\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"sitc1\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WFM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"auteb16\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"cillum_1d\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"ut_23\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"LM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"et_bd\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"tempor__be\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"ullamcoe5\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"in_8\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WIM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"labore__89\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"do4\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WIM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"ea3ed\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"CM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"eiusmod_b_\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"CM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"pariatur_475\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"cillum_f6b\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"laborumf\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WFM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"ut_6\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"proidentf2_\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"Lorem__8e\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"minim_8\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"do5ee\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"GM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"sunt7a3\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WNM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    }\n  ],\n  \"classical\": [\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"ina_\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WCM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"deserunt71\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"sint_ae\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"ipsum_a76\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"laboreb1\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WNM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"dolore21\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"Excepteur_bb4\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"Duis_87\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WFM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"sit988\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"GM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"incididunt690\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"esse4\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WNM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"incididunt_4fd\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"IM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"Duis_cd_\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"reprehenderit_\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"ipsum361\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WNM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"adipisicing_ba\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"fugiat_71\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"proident5_2\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"FM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"dolore7\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"sit_885\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"et_2\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WGM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"nostrud1d\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WFM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    }\n  ],\n  \"ultraBullet\": [\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"aliquip36\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WNM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"dolore__49\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"FM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"labore_f\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"NM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"consequat_4\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"veniama\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"irurea\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"laborum_a89\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"sed_7ae\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"BOT\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"Excepteur246\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WGM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"nonaa\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"eiusmod_\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"nulla7\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"FM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"Duis1b\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"id_c5a\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"consectetur_e\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WFM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"ead0e\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"reprehenderit656\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"id5\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"CM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"dolor4\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"in_b\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"incididunt_3b\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"NM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"culpa_5\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"LM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    }\n  ],\n  \"crazyhouse\": [\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"sunt_1\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"BOT\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"ut_0\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"ete\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"qui83_\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"BOT\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"esse_4e\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WCM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"enim_53\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WCM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"dolor_1b\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"nisi_d_2\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WFM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"sedf3c\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"CM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"occaecat56\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"GM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"Duis_f\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"irure_a0a\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"FM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"aliquipea\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"sit8b\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"aliqua_8e\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"in__\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WNM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"id__fc\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WFM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    }\n  ],\n  \"chess960\": [\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"autec_0\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"anim_2d\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"nostruddd2\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"GM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"proident_76b\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"proident__4\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"LM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"id12\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"cillum9\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"NM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"deserunt_97\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"NM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"dolore_831\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"dolor2\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"consequat_9\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"adipisicing26\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"GM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"iruref3\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"et73b\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"ea0\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WGM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"Duis7\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"IM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"dolor_95\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"Ut_4\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"do_a6d\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"IM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"dolor71\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"LM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"Duisa4\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"sed_b0a\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"id3f8\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"dolor927\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WGM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    }\n  ],\n  \"kingOfTheHill\": [\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"anim_0a\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WNM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"ut3_6\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"velit_5\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"nulla_993\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WNM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"enim6\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"voluptate83a\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"et_e\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WNM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"deserunt_4\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"Lorem5f\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"pariatur_76f\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"qui8a\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"GM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"elit_05\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"NM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"aliqua_a\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"officiaeac\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"dolora90\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"ea_5\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WNM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"enim4\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"qui_1\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"Excepteur6a4\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"LM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"Loremd2\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"adipisicing_c1f\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WCM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"occaecate1\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"BOT\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"pariatur6\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WGM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    }\n  ],\n  \"threeCheck\": [\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"quis3\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"sint_c60\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"GM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"dolore_9e\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"NM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"adipisicing_8f8\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"id1a2\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"nisi_2d\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"LM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"Loremb2\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"enimcb\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"IM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"sunt25\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"quis6a\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"GM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"pariatur_09\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"FM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"proident_d\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"elitfc5\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"adipisicing_9_\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WNM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"id_071\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"ea02\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"esse_8\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"in_bae\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"GM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"ipsum74f\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"elit2_\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"FM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"dolore5\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"nullaffd\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"FM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    }\n  ],\n  \"antichess\": [\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"ea_f8\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"reprehenderit2\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WFM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"fugiat_b74\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WNM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"dolore7d\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"Duisb03\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"anim_f5b\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WFM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"est2\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"adfa\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"ex_48\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"GM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"quis7\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WCM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"pariaturbd\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WFM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"adipisicingf_\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"veniam__ef\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"dolor5\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"enim_d8\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"NM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"inbba\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"tempor22\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"labore_339\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"IM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"laboris66b\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"dolor_fa\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"pariatur_d\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"sunt_c\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WGM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"pariatur_6d\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"in_c7\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"CM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    }\n  ],\n  \"atomic\": [\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"consequat_5_c\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"in6d_\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WCM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"sitb8\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"sint93_\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"BOT\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"sunt_af\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WIM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"exff\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"Duisb50\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"laborum3\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"IM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"irure3c8\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"velit_98_\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"ex_87\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"LM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"occaecat142\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WCM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"in81\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"amet12\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WIM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"officia50\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"nostrud_0\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"animdcd\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"cillumdf\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WNM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"irure_05f\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"FM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"nostrudf8\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"quis_251\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"in04\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"FM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    }\n  ],\n  \"horde\": [\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"incididunt_6\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"GM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"qui_bd3\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WCM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"aliquipf\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"LM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"elit4\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WCM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"voluptate733\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"elit68\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"IM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"labore43\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"Duis_4b\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"reprehenderit_5\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"deserunt__0_\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"CM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"Excepteur_727\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"et_9f\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"BOT\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"sed_7\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"magnab04\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"eu_2\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WIM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"consequat5\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WGM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"dolor25\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"esse_4f\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"NM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    }\n  ],\n  \"racingKings\": [\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"mollit_c9\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"minim_b\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"FM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"ex_f4\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"LM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"sit_3b1\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"ullamco62\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"WCM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"quis_1\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"LM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"consequat_7b\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"GM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"aliquipb\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"FM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"et_e5\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"Lorem_0\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"CM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"tempor182\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        },\n        \"Ut0df\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"BOT\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"ut_9_4\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"NM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"perfs\": {\n        \"sed4\": {\n          \"rating\": \"<integer>\",\n          \"progress\": \"<integer>\"\n        }\n      },\n      \"title\": \"CM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"online\": \"<boolean>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T02:07:27.000Z",
+                  "updatedAt": "2026-07-28T02:07:27.000Z",
+                  "uid": "35240-759ac597-f173-4710-a6e7-ca738b402ffa"
+                }
+              ],
+              "createdAt": "2026-07-28T02:07:27.000Z",
+              "updatedAt": "2026-07-28T02:07:27.000Z",
+              "uid": "35240-6306efe8-30b0-49b6-a547-25ca49226934"
+            }
+          ],
+          "id": "297fbc15-78a7-438b-a855-e0d0d6cb3f53",
+          "createdAt": "2026-07-28T02:07:27.000Z",
+          "updatedAt": "2026-07-28T02:07:27.000Z",
+          "uid": "35240-297fbc15-78a7-438b-a855-e0d0d6cb3f53"
+        },
+        {
+          "name": "user",
+          "item": [
+            {
+              "name": "{username}",
+              "item": [
+                {
+                  "name": "rating-history",
+                  "item": [
+                    {
+                      "name": "Get rating history of a user",
+                      "id": "0eead859-4ca4-47e5-bfd4-c6e914623df0",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/user/:username/rating-history",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "user",
+                            ":username",
+                            "rating-history"
+                          ],
+                          "variable": [
+                            {
+                              "id": "a5bd833b-0b5e-460d-b4cb-bfb893b2bfd4",
+                              "key": "username",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "Read rating history of a user, for all perf types.\nThere is at most one entry per day.\nFormat of an entry is `[year, month, day, rating]`.\n`month` starts at zero (January).\n"
+                      },
+                      "response": [
+                        {
+                          "id": "a9864f5a-21fa-464e-85f6-8e2b74d9d890",
+                          "name": "The rating history of the user.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/user/:username/rating-history",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "user",
+                                ":username",
+                                "rating-history"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "username"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "[\n  {\n    \"name\": \"<string>\",\n    \"points\": [\n      [\n        \"<integer>\",\n        \"<integer>\",\n        \"<integer>\",\n        \"<integer>\"\n      ],\n      [\n        \"<integer>\",\n        \"<integer>\",\n        \"<integer>\",\n        \"<integer>\"\n      ]\n    ]\n  },\n  {\n    \"name\": \"<string>\",\n    \"points\": [\n      [\n        \"<integer>\",\n        \"<integer>\",\n        \"<integer>\",\n        \"<integer>\"\n      ],\n      [\n        \"<integer>\",\n        \"<integer>\",\n        \"<integer>\",\n        \"<integer>\"\n      ]\n    ]\n  }\n]",
+                          "createdAt": "2026-07-28T02:07:27.000Z",
+                          "updatedAt": "2026-07-28T02:07:27.000Z",
+                          "uid": "35240-a9864f5a-21fa-464e-85f6-8e2b74d9d890"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:07:27.000Z",
+                      "updatedAt": "2026-07-28T02:07:27.000Z",
+                      "uid": "35240-0eead859-4ca4-47e5-bfd4-c6e914623df0"
+                    }
+                  ],
+                  "id": "4a703e4e-2069-4730-8acc-cbbb5e337169",
+                  "createdAt": "2026-07-28T02:07:27.000Z",
+                  "updatedAt": "2026-07-28T02:07:27.000Z",
+                  "uid": "35240-4a703e4e-2069-4730-8acc-cbbb5e337169"
+                },
+                {
+                  "name": "perf",
+                  "item": [
+                    {
+                      "name": "{perf}",
+                      "item": [
+                        {
+                          "name": "Get performance statistics of a user",
+                          "id": "63963fc8-91dc-49ce-a42d-44d09801e1bf",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/user/:username/perf/:perf",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "user",
+                                ":username",
+                                "perf",
+                                ":perf"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "2486807a-0a43-4233-a859-a500429daba3",
+                                  "key": "username",
+                                  "value": "<string>",
+                                  "description": "(Required) "
+                                },
+                                {
+                                  "id": "570de7fb-9104-4898-bb75-545e86acde0f",
+                                  "key": "perf",
+                                  "value": "classical",
+                                  "description": "(Required) "
+                                }
+                              ]
+                            },
+                            "description": "Read performance statistics of a user, for a single performance.\nSimilar to the [performance pages on the website](https://lichess.org/@/thibault/perf/bullet).\n"
+                          },
+                          "response": [
+                            {
+                              "id": "3bb08bab-781d-43d5-ae2d-4ddece7fd822",
+                              "name": "The performance statistics of the user",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/user/:username/perf/:perf",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "user",
+                                    ":username",
+                                    "perf",
+                                    ":perf"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "username"
+                                    },
+                                    {
+                                      "key": "perf"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                },
+                                {
+                                  "disabled": false,
+                                  "description": {
+                                    "content": "",
+                                    "type": "text/plain"
+                                  },
+                                  "key": "Access-Control-Allow-Origin",
+                                  "value": "'*'"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"user\": {\n    \"name\": \"<string>\"\n  },\n  \"perf\": {\n    \"glicko\": {\n      \"rating\": \"<number>\",\n      \"deviation\": \"<number>\",\n      \"provisional\": \"<boolean>\"\n    },\n    \"nb\": \"<integer>\",\n    \"progress\": \"<integer>\"\n  },\n  \"rank\": \"<integer,null>\",\n  \"percentile\": \"<number>\",\n  \"stat\": {\n    \"bestWins\": {\n      \"results\": [\n        {\n          \"opRating\": \"<integer>\",\n          \"opId\": {\n            \"id\": \"<string>\",\n            \"name\": \"<string>\",\n            \"flair\": \"<string>\",\n            \"title\": \"WNM\",\n            \"patron\": \"<boolean>\",\n            \"patronColor\": \"<integer>\"\n          },\n          \"at\": \"<dateTime>\",\n          \"gameId\": \"<string>\"\n        },\n        {\n          \"opRating\": \"<integer>\",\n          \"opId\": {\n            \"id\": \"<string>\",\n            \"name\": \"<string>\",\n            \"flair\": \"<string>\",\n            \"title\": \"FM\",\n            \"patron\": \"<boolean>\",\n            \"patronColor\": \"<integer>\"\n          },\n          \"at\": \"<dateTime>\",\n          \"gameId\": \"<string>\"\n        }\n      ]\n    },\n    \"worstLosses\": {\n      \"results\": [\n        {\n          \"opRating\": \"<integer>\",\n          \"opId\": {\n            \"id\": \"<string>\",\n            \"name\": \"<string>\",\n            \"flair\": \"<string>\",\n            \"title\": \"WIM\",\n            \"patron\": \"<boolean>\",\n            \"patronColor\": \"<integer>\"\n          },\n          \"at\": \"<dateTime>\",\n          \"gameId\": \"<string>\"\n        },\n        {\n          \"opRating\": \"<integer>\",\n          \"opId\": {\n            \"id\": \"<string>\",\n            \"name\": \"<string>\",\n            \"flair\": \"<string>\",\n            \"title\": \"IM\",\n            \"patron\": \"<boolean>\",\n            \"patronColor\": \"<integer>\"\n          },\n          \"at\": \"<dateTime>\",\n          \"gameId\": \"<string>\"\n        }\n      ]\n    },\n    \"count\": {\n      \"all\": \"<integer>\",\n      \"rated\": \"<integer>\",\n      \"win\": \"<integer>\",\n      \"loss\": \"<integer>\",\n      \"draw\": \"<integer>\",\n      \"tour\": \"<integer>\",\n      \"berserk\": \"<integer>\",\n      \"opAvg\": \"<number>\",\n      \"seconds\": \"<integer>\",\n      \"disconnects\": \"<integer>\"\n    },\n    \"resultStreak\": {\n      \"win\": {\n        \"cur\": {\n          \"v\": \"<integer>\",\n          \"from\": {\n            \"at\": \"<dateTime>\",\n            \"gameId\": \"<string>\"\n          },\n          \"to\": {\n            \"at\": \"<dateTime>\",\n            \"gameId\": \"<string>\"\n          }\n        },\n        \"max\": {\n          \"v\": \"<integer>\",\n          \"from\": {\n            \"at\": \"<dateTime>\",\n            \"gameId\": \"<string>\"\n          },\n          \"to\": {\n            \"at\": \"<dateTime>\",\n            \"gameId\": \"<string>\"\n          }\n        }\n      },\n      \"loss\": {\n        \"cur\": {\n          \"v\": \"<integer>\",\n          \"from\": {\n            \"at\": \"<dateTime>\",\n            \"gameId\": \"<string>\"\n          },\n          \"to\": {\n            \"at\": \"<dateTime>\",\n            \"gameId\": \"<string>\"\n          }\n        },\n        \"max\": {\n          \"v\": \"<integer>\",\n          \"from\": {\n            \"at\": \"<string>\",\n            \"gameId\": \"<string>\"\n          },\n          \"to\": {\n            \"at\": \"<string>\",\n            \"gameId\": \"<string>\"\n          }\n        }\n      }\n    },\n    \"playStreak\": {\n      \"nb\": {\n        \"cur\": {\n          \"v\": \"<integer>\"\n        },\n        \"max\": {\n          \"v\": \"<integer>\",\n          \"from\": {\n            \"at\": \"<dateTime>\",\n            \"gameId\": \"<string>\"\n          },\n          \"to\": {\n            \"at\": \"<dateTime>\",\n            \"gameId\": \"<string>\"\n          }\n        }\n      },\n      \"time\": {\n        \"cur\": {\n          \"v\": \"<integer>\"\n        },\n        \"max\": {\n          \"v\": \"<integer>\",\n          \"from\": {\n            \"at\": \"<dateTime>\",\n            \"gameId\": \"<string>\"\n          },\n          \"to\": {\n            \"at\": \"<dateTime>\",\n            \"gameId\": \"<string>\"\n          }\n        }\n      },\n      \"lastDate\": \"<dateTime>\"\n    },\n    \"highest\": {\n      \"int\": \"<integer>\",\n      \"at\": \"<dateTime>\",\n      \"gameId\": \"<string>\"\n    },\n    \"lowest\": {\n      \"int\": \"<integer>\",\n      \"at\": \"<dateTime>\",\n      \"gameId\": \"<string>\"\n    }\n  }\n}",
+                              "createdAt": "2026-07-28T02:07:27.000Z",
+                              "updatedAt": "2026-07-28T02:07:27.000Z",
+                              "uid": "35240-3bb08bab-781d-43d5-ae2d-4ddece7fd822"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T02:07:27.000Z",
+                          "updatedAt": "2026-07-28T02:07:27.000Z",
+                          "uid": "35240-63963fc8-91dc-49ce-a42d-44d09801e1bf"
+                        }
+                      ],
+                      "id": "f46879ab-a4e3-44f8-8924-d996f3e12d4b",
+                      "createdAt": "2026-07-28T02:07:27.000Z",
+                      "updatedAt": "2026-07-28T02:07:27.000Z",
+                      "uid": "35240-f46879ab-a4e3-44f8-8924-d996f3e12d4b"
+                    }
+                  ],
+                  "id": "a3cdb6a5-f764-476d-9e67-7df4f6e70661",
+                  "createdAt": "2026-07-28T02:07:27.000Z",
+                  "updatedAt": "2026-07-28T02:07:27.000Z",
+                  "uid": "35240-a3cdb6a5-f764-476d-9e67-7df4f6e70661"
+                },
+                {
+                  "name": "activity",
+                  "item": [
+                    {
+                      "name": "Get user activity",
+                      "id": "1963bea6-3269-4683-a416-49d5c7896368",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/user/:username/activity",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "user",
+                            ":username",
+                            "activity"
+                          ],
+                          "variable": [
+                            {
+                              "id": "5207edb4-269d-4238-bd95-be591b3d8737",
+                              "key": "username",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "Read data to generate the activity feed of a user.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "c20163f6-f912-449b-b0ac-a9d30130eb7e",
+                          "name": "The activity feed of the user.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/user/:username/activity",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "user",
+                                ":username",
+                                "activity"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "username"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "[\n  {\n    \"interval\": {\n      \"start\": \"<integer>\",\n      \"end\": \"<integer>\"\n    },\n    \"games\": {\n      \"chess960\": {\n        \"win\": \"<integer>\",\n        \"loss\": \"<integer>\",\n        \"draw\": \"<integer>\",\n        \"rp\": {\n          \"before\": \"<integer>\",\n          \"after\": \"<integer>\"\n        }\n      },\n      \"atomic\": {\n        \"win\": \"<integer>\",\n        \"loss\": \"<integer>\",\n        \"draw\": \"<integer>\",\n        \"rp\": {\n          \"before\": \"<integer>\",\n          \"after\": \"<integer>\"\n        }\n      },\n      \"racingKings\": {\n        \"win\": \"<integer>\",\n        \"loss\": \"<integer>\",\n        \"draw\": \"<integer>\",\n        \"rp\": {\n          \"before\": \"<integer>\",\n          \"after\": \"<integer>\"\n        }\n      },\n      \"ultraBullet\": {\n        \"win\": \"<integer>\",\n        \"loss\": \"<integer>\",\n        \"draw\": \"<integer>\",\n        \"rp\": {\n          \"before\": \"<integer>\",\n          \"after\": \"<integer>\"\n        }\n      },\n      \"blitz\": {\n        \"win\": \"<integer>\",\n        \"loss\": \"<integer>\",\n        \"draw\": \"<integer>\",\n        \"rp\": {\n          \"before\": \"<integer>\",\n          \"after\": \"<integer>\"\n        }\n      },\n      \"kingOfTheHill\": {\n        \"win\": \"<integer>\",\n        \"loss\": \"<integer>\",\n        \"draw\": \"<integer>\",\n        \"rp\": {\n          \"before\": \"<integer>\",\n          \"after\": \"<integer>\"\n        }\n      },\n      \"bullet\": {\n        \"win\": \"<integer>\",\n        \"loss\": \"<integer>\",\n        \"draw\": \"<integer>\",\n        \"rp\": {\n          \"before\": \"<integer>\",\n          \"after\": \"<integer>\"\n        }\n      },\n      \"correspondence\": {\n        \"win\": \"<integer>\",\n        \"loss\": \"<integer>\",\n        \"draw\": \"<integer>\",\n        \"rp\": {\n          \"before\": \"<integer>\",\n          \"after\": \"<integer>\"\n        }\n      },\n      \"horde\": {\n        \"win\": \"<integer>\",\n        \"loss\": \"<integer>\",\n        \"draw\": \"<integer>\",\n        \"rp\": {\n          \"before\": \"<integer>\",\n          \"after\": \"<integer>\"\n        }\n      },\n      \"puzzle\": {\n        \"win\": \"<integer>\",\n        \"loss\": \"<integer>\",\n        \"draw\": \"<integer>\",\n        \"rp\": {\n          \"before\": \"<integer>\",\n          \"after\": \"<integer>\"\n        }\n      },\n      \"classical\": {\n        \"win\": \"<integer>\",\n        \"loss\": \"<integer>\",\n        \"draw\": \"<integer>\",\n        \"rp\": {\n          \"before\": \"<integer>\",\n          \"after\": \"<integer>\"\n        }\n      },\n      \"rapid\": {\n        \"win\": \"<integer>\",\n        \"loss\": \"<integer>\",\n        \"draw\": \"<integer>\",\n        \"rp\": {\n          \"before\": \"<integer>\",\n          \"after\": \"<integer>\"\n        }\n      }\n    },\n    \"puzzles\": {\n      \"score\": {\n        \"win\": \"<integer>\",\n        \"loss\": \"<integer>\",\n        \"draw\": \"<integer>\",\n        \"rp\": {\n          \"before\": \"<integer>\",\n          \"after\": \"<integer>\"\n        }\n      }\n    },\n    \"storm\": {\n      \"runs\": \"<integer>\",\n      \"score\": \"<integer>\"\n    },\n    \"racer\": {\n      \"runs\": \"<integer>\",\n      \"score\": \"<integer>\"\n    },\n    \"streak\": {\n      \"runs\": \"<integer>\",\n      \"score\": \"<integer>\"\n    },\n    \"tournaments\": {\n      \"nb\": \"<integer>\",\n      \"best\": [\n        {\n          \"tournament\": {\n            \"id\": \"<string>\",\n            \"name\": \"<string>\"\n          },\n          \"nbGames\": \"<integer>\",\n          \"score\": \"<integer>\",\n          \"rank\": \"<integer>\",\n          \"rankPercent\": \"<integer>\"\n        },\n        {\n          \"tournament\": {\n            \"id\": \"<string>\",\n            \"name\": \"<string>\"\n          },\n          \"nbGames\": \"<integer>\",\n          \"score\": \"<integer>\",\n          \"rank\": \"<integer>\",\n          \"rankPercent\": \"<integer>\"\n        }\n      ]\n    },\n    \"practice\": [\n      {\n        \"url\": \"<string>\",\n        \"name\": \"<string>\",\n        \"nbPositions\": \"<integer>\"\n      },\n      {\n        \"url\": \"<string>\",\n        \"name\": \"<string>\",\n        \"nbPositions\": \"<integer>\"\n      }\n    ],\n    \"simuls\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"correspondenceMoves\": {\n      \"nb\": \"<integer>\",\n      \"games\": [\n        {\n          \"id\": \"<string>\",\n          \"color\": \"black\",\n          \"url\": \"<uri>\",\n          \"opponent\": {\n            \"aiLevel\": \"<integer>\"\n          },\n          \"variant\": \"standard\",\n          \"speed\": \"<string>\",\n          \"perf\": \"<string>\",\n          \"rated\": \"<boolean>\"\n        },\n        {\n          \"id\": \"<string>\",\n          \"color\": \"black\",\n          \"url\": \"<uri>\",\n          \"opponent\": {\n            \"aiLevel\": \"<integer>\"\n          },\n          \"variant\": \"standard\",\n          \"speed\": \"<string>\",\n          \"perf\": \"<string>\",\n          \"rated\": \"<boolean>\"\n        }\n      ]\n    },\n    \"correspondenceEnds\": {\n      \"correspondence\": {\n        \"score\": {\n          \"win\": \"<integer>\",\n          \"loss\": \"<integer>\",\n          \"draw\": \"<integer>\",\n          \"rp\": {\n            \"before\": \"<integer>\",\n            \"after\": \"<integer>\"\n          }\n        },\n        \"games\": [\n          {\n            \"id\": \"<string>\",\n            \"color\": \"black\",\n            \"url\": \"<uri>\",\n            \"opponent\": {\n              \"aiLevel\": \"<integer>\"\n            },\n            \"variant\": \"standard\",\n            \"speed\": \"<string>\",\n            \"perf\": \"<string>\",\n            \"rated\": \"<boolean>\"\n          },\n          {\n            \"id\": \"<string>\",\n            \"color\": \"black\",\n            \"url\": \"<uri>\",\n            \"opponent\": {\n              \"aiLevel\": \"<integer>\"\n            },\n            \"variant\": \"standard\",\n            \"speed\": \"<string>\",\n            \"perf\": \"<string>\",\n            \"rated\": \"<boolean>\"\n          }\n        ]\n      }\n    },\n    \"follows\": {\n      \"in\": {\n        \"ids\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"nb\": \"<integer>\"\n      },\n      \"out\": {\n        \"ids\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"nb\": \"<integer>\"\n      }\n    },\n    \"studies\": [\n      {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ],\n    \"teams\": [\n      {\n        \"url\": \"<uri>\",\n        \"name\": \"<string>\",\n        \"flair\": \"<string>\"\n      },\n      {\n        \"url\": \"<uri>\",\n        \"name\": \"<string>\",\n        \"flair\": \"<string>\"\n      }\n    ],\n    \"posts\": [\n      {\n        \"topicUrl\": \"<string>\",\n        \"topicName\": \"<string>\",\n        \"posts\": [\n          {\n            \"url\": \"<string>\",\n            \"text\": \"<string>\"\n          },\n          {\n            \"url\": \"<string>\",\n            \"text\": \"<string>\"\n          }\n        ]\n      },\n      {\n        \"topicUrl\": \"<string>\",\n        \"topicName\": \"<string>\",\n        \"posts\": [\n          {\n            \"url\": \"<string>\",\n            \"text\": \"<string>\"\n          },\n          {\n            \"url\": \"<string>\",\n            \"text\": \"<string>\"\n          }\n        ]\n      }\n    ],\n    \"patron\": {\n      \"months\": \"<integer>\"\n    },\n    \"stream\": \"<boolean>\"\n  },\n  {\n    \"interval\": {\n      \"start\": \"<integer>\",\n      \"end\": \"<integer>\"\n    },\n    \"games\": {\n      \"chess960\": {\n        \"win\": \"<integer>\",\n        \"loss\": \"<integer>\",\n        \"draw\": \"<integer>\",\n        \"rp\": {\n          \"before\": \"<integer>\",\n          \"after\": \"<integer>\"\n        }\n      },\n      \"atomic\": {\n        \"win\": \"<integer>\",\n        \"loss\": \"<integer>\",\n        \"draw\": \"<integer>\",\n        \"rp\": {\n          \"before\": \"<integer>\",\n          \"after\": \"<integer>\"\n        }\n      },\n      \"racingKings\": {\n        \"win\": \"<integer>\",\n        \"loss\": \"<integer>\",\n        \"draw\": \"<integer>\",\n        \"rp\": {\n          \"before\": \"<integer>\",\n          \"after\": \"<integer>\"\n        }\n      },\n      \"ultraBullet\": {\n        \"win\": \"<integer>\",\n        \"loss\": \"<integer>\",\n        \"draw\": \"<integer>\",\n        \"rp\": {\n          \"before\": \"<integer>\",\n          \"after\": \"<integer>\"\n        }\n      },\n      \"blitz\": {\n        \"win\": \"<integer>\",\n        \"loss\": \"<integer>\",\n        \"draw\": \"<integer>\",\n        \"rp\": {\n          \"before\": \"<integer>\",\n          \"after\": \"<integer>\"\n        }\n      },\n      \"kingOfTheHill\": {\n        \"win\": \"<integer>\",\n        \"loss\": \"<integer>\",\n        \"draw\": \"<integer>\",\n        \"rp\": {\n          \"before\": \"<integer>\",\n          \"after\": \"<integer>\"\n        }\n      },\n      \"bullet\": {\n        \"win\": \"<integer>\",\n        \"loss\": \"<integer>\",\n        \"draw\": \"<integer>\",\n        \"rp\": {\n          \"before\": \"<integer>\",\n          \"after\": \"<integer>\"\n        }\n      },\n      \"correspondence\": {\n        \"win\": \"<integer>\",\n        \"loss\": \"<integer>\",\n        \"draw\": \"<integer>\",\n        \"rp\": {\n          \"before\": \"<integer>\",\n          \"after\": \"<integer>\"\n        }\n      },\n      \"horde\": {\n        \"win\": \"<integer>\",\n        \"loss\": \"<integer>\",\n        \"draw\": \"<integer>\",\n        \"rp\": {\n          \"before\": \"<integer>\",\n          \"after\": \"<integer>\"\n        }\n      },\n      \"puzzle\": {\n        \"win\": \"<integer>\",\n        \"loss\": \"<integer>\",\n        \"draw\": \"<integer>\",\n        \"rp\": {\n          \"before\": \"<integer>\",\n          \"after\": \"<integer>\"\n        }\n      },\n      \"classical\": {\n        \"win\": \"<integer>\",\n        \"loss\": \"<integer>\",\n        \"draw\": \"<integer>\",\n        \"rp\": {\n          \"before\": \"<integer>\",\n          \"after\": \"<integer>\"\n        }\n      },\n      \"rapid\": {\n        \"win\": \"<integer>\",\n        \"loss\": \"<integer>\",\n        \"draw\": \"<integer>\",\n        \"rp\": {\n          \"before\": \"<integer>\",\n          \"after\": \"<integer>\"\n        }\n      }\n    },\n    \"puzzles\": {\n      \"score\": {\n        \"win\": \"<integer>\",\n        \"loss\": \"<integer>\",\n        \"draw\": \"<integer>\",\n        \"rp\": {\n          \"before\": \"<integer>\",\n          \"after\": \"<integer>\"\n        }\n      }\n    },\n    \"storm\": {\n      \"runs\": \"<integer>\",\n      \"score\": \"<integer>\"\n    },\n    \"racer\": {\n      \"runs\": \"<integer>\",\n      \"score\": \"<integer>\"\n    },\n    \"streak\": {\n      \"runs\": \"<integer>\",\n      \"score\": \"<integer>\"\n    },\n    \"tournaments\": {\n      \"nb\": \"<integer>\",\n      \"best\": [\n        {\n          \"tournament\": {\n            \"id\": \"<string>\",\n            \"name\": \"<string>\"\n          },\n          \"nbGames\": \"<integer>\",\n          \"score\": \"<integer>\",\n          \"rank\": \"<integer>\",\n          \"rankPercent\": \"<integer>\"\n        },\n        {\n          \"tournament\": {\n            \"id\": \"<string>\",\n            \"name\": \"<string>\"\n          },\n          \"nbGames\": \"<integer>\",\n          \"score\": \"<integer>\",\n          \"rank\": \"<integer>\",\n          \"rankPercent\": \"<integer>\"\n        }\n      ]\n    },\n    \"practice\": [\n      {\n        \"url\": \"<string>\",\n        \"name\": \"<string>\",\n        \"nbPositions\": \"<integer>\"\n      },\n      {\n        \"url\": \"<string>\",\n        \"name\": \"<string>\",\n        \"nbPositions\": \"<integer>\"\n      }\n    ],\n    \"simuls\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"correspondenceMoves\": {\n      \"nb\": \"<integer>\",\n      \"games\": [\n        {\n          \"id\": \"<string>\",\n          \"color\": \"white\",\n          \"url\": \"<uri>\",\n          \"opponent\": {\n            \"aiLevel\": \"<integer>\"\n          },\n          \"variant\": \"standard\",\n          \"speed\": \"<string>\",\n          \"perf\": \"<string>\",\n          \"rated\": \"<boolean>\"\n        },\n        {\n          \"id\": \"<string>\",\n          \"color\": \"white\",\n          \"url\": \"<uri>\",\n          \"opponent\": {\n            \"aiLevel\": \"<integer>\"\n          },\n          \"variant\": \"standard\",\n          \"speed\": \"<string>\",\n          \"perf\": \"<string>\",\n          \"rated\": \"<boolean>\"\n        }\n      ]\n    },\n    \"correspondenceEnds\": {\n      \"correspondence\": {\n        \"score\": {\n          \"win\": \"<integer>\",\n          \"loss\": \"<integer>\",\n          \"draw\": \"<integer>\",\n          \"rp\": {\n            \"before\": \"<integer>\",\n            \"after\": \"<integer>\"\n          }\n        },\n        \"games\": [\n          {\n            \"id\": \"<string>\",\n            \"color\": \"white\",\n            \"url\": \"<uri>\",\n            \"opponent\": {\n              \"aiLevel\": \"<integer>\"\n            },\n            \"variant\": \"standard\",\n            \"speed\": \"<string>\",\n            \"perf\": \"<string>\",\n            \"rated\": \"<boolean>\"\n          },\n          {\n            \"id\": \"<string>\",\n            \"color\": \"black\",\n            \"url\": \"<uri>\",\n            \"opponent\": {\n              \"aiLevel\": \"<integer>\"\n            },\n            \"variant\": \"standard\",\n            \"speed\": \"<string>\",\n            \"perf\": \"<string>\",\n            \"rated\": \"<boolean>\"\n          }\n        ]\n      }\n    },\n    \"follows\": {\n      \"in\": {\n        \"ids\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"nb\": \"<integer>\"\n      },\n      \"out\": {\n        \"ids\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"nb\": \"<integer>\"\n      }\n    },\n    \"studies\": [\n      {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    ],\n    \"teams\": [\n      {\n        \"url\": \"<uri>\",\n        \"name\": \"<string>\",\n        \"flair\": \"<string>\"\n      },\n      {\n        \"url\": \"<uri>\",\n        \"name\": \"<string>\",\n        \"flair\": \"<string>\"\n      }\n    ],\n    \"posts\": [\n      {\n        \"topicUrl\": \"<string>\",\n        \"topicName\": \"<string>\",\n        \"posts\": [\n          {\n            \"url\": \"<string>\",\n            \"text\": \"<string>\"\n          },\n          {\n            \"url\": \"<string>\",\n            \"text\": \"<string>\"\n          }\n        ]\n      },\n      {\n        \"topicUrl\": \"<string>\",\n        \"topicName\": \"<string>\",\n        \"posts\": [\n          {\n            \"url\": \"<string>\",\n            \"text\": \"<string>\"\n          },\n          {\n            \"url\": \"<string>\",\n            \"text\": \"<string>\"\n          }\n        ]\n      }\n    ],\n    \"patron\": {\n      \"months\": \"<integer>\"\n    },\n    \"stream\": \"<boolean>\"\n  }\n]",
+                          "createdAt": "2026-07-28T02:07:27.000Z",
+                          "updatedAt": "2026-07-28T02:07:27.000Z",
+                          "uid": "35240-c20163f6-f912-449b-b0ac-a9d30130eb7e"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:07:27.000Z",
+                      "updatedAt": "2026-07-28T02:07:27.000Z",
+                      "uid": "35240-1963bea6-3269-4683-a416-49d5c7896368"
+                    }
+                  ],
+                  "id": "80bd193e-c825-4cdd-829b-9daf90451cfb",
+                  "createdAt": "2026-07-28T02:07:27.000Z",
+                  "updatedAt": "2026-07-28T02:07:27.000Z",
+                  "uid": "35240-80bd193e-c825-4cdd-829b-9daf90451cfb"
+                },
+                {
+                  "name": "note",
+                  "item": [
+                    {
+                      "name": "Add a note for a user",
+                      "id": "5cd08949-b4df-4ce7-8c92-593cdc12ddcc",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://lichess.org/api/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://lichess.org/oauth",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "(Required) The contents of the note",
+                              "key": "text",
+                              "value": "<string>"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/user/:username/note",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "user",
+                            ":username",
+                            "note"
+                          ],
+                          "variable": [
+                            {
+                              "id": "9fba53d2-43b6-4e48-a3a0-c5ef8d4ab3cf",
+                              "key": "username",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "Add a private note available only to you about this account.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "da305c73-b8ea-4705-be59-c128c1178718",
+                          "name": "The note was successfully added.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "urlencoded",
+                              "urlencoded": [
+                                {
+                                  "description": "(Required) The contents of the note",
+                                  "key": "text",
+                                  "value": "<string>"
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/user/:username/note",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "user",
+                                ":username",
+                                "note"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "username"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"ok\": \"<boolean>\"\n}",
+                          "createdAt": "2026-07-28T02:07:27.000Z",
+                          "updatedAt": "2026-07-28T02:07:27.000Z",
+                          "uid": "35240-da305c73-b8ea-4705-be59-c128c1178718"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:07:27.000Z",
+                      "updatedAt": "2026-07-28T02:07:27.000Z",
+                      "uid": "35240-5cd08949-b4df-4ce7-8c92-593cdc12ddcc"
+                    },
+                    {
+                      "name": "Get notes for a user",
+                      "id": "f956e4ad-f306-4b36-8a5d-a02910f1b386",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://lichess.org/api/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://lichess.org/oauth",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/user/:username/note",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "user",
+                            ":username",
+                            "note"
+                          ],
+                          "variable": [
+                            {
+                              "id": "14d37ba5-bbbd-4130-bc36-63abb0b0551a",
+                              "key": "username",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "Get the private notes that you have added for a user.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "e372e573-d1c3-4744-a66c-9e6e854bca01",
+                          "name": "The list of notes you have added for this user",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/user/:username/note",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "user",
+                                ":username",
+                                "note"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "username"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "[\n  {\n    \"from\": {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"flair\": \"<string>\",\n      \"title\": \"WFM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\"\n    },\n    \"to\": {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"flair\": \"<string>\",\n      \"title\": \"BOT\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\"\n    },\n    \"text\": \"<string>\",\n    \"date\": \"<long>\"\n  },\n  {\n    \"from\": {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"flair\": \"<string>\",\n      \"title\": \"GM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\"\n    },\n    \"to\": {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"flair\": \"<string>\",\n      \"title\": \"BOT\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\"\n    },\n    \"text\": \"<string>\",\n    \"date\": \"<long>\"\n  }\n]",
+                          "createdAt": "2026-07-28T02:07:27.000Z",
+                          "updatedAt": "2026-07-28T02:07:27.000Z",
+                          "uid": "35240-e372e573-d1c3-4744-a66c-9e6e854bca01"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:07:27.000Z",
+                      "updatedAt": "2026-07-28T02:07:27.000Z",
+                      "uid": "35240-f956e4ad-f306-4b36-8a5d-a02910f1b386"
+                    }
+                  ],
+                  "id": "11333796-7300-4721-8783-ae2d8414e987",
+                  "createdAt": "2026-07-28T02:07:27.000Z",
+                  "updatedAt": "2026-07-28T02:07:27.000Z",
+                  "uid": "35240-11333796-7300-4721-8783-ae2d8414e987"
+                },
+                {
+                  "name": "Get user public data",
+                  "id": "82a15d3a-d049-4300-a537-eac63440da18",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "oauth2",
+                      "oauth2": [
+                        {
+                          "key": "scope",
+                          "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                          "type": "string"
+                        },
+                        {
+                          "key": "accessTokenUrl",
+                          "value": "https://lichess.org/api/token",
+                          "type": "string"
+                        },
+                        {
+                          "key": "authUrl",
+                          "value": "https://lichess.org/oauth",
+                          "type": "string"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "authorization_code",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/user/:username?trophies=false&profile=true&rank=false&fideId=false",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "user",
+                        ":username"
+                      ],
+                      "query": [
+                        {
+                          "description": "Include user trophies",
+                          "key": "trophies",
+                          "value": "false"
+                        },
+                        {
+                          "description": "Include user profile data",
+                          "key": "profile",
+                          "value": "true"
+                        },
+                        {
+                          "description": "Include global lichess ranking for each perf",
+                          "key": "rank",
+                          "value": "false"
+                        },
+                        {
+                          "description": "Include public FIDE ID if any",
+                          "key": "fideId",
+                          "value": "false"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "c3aadb9f-2739-410d-b4ba-e15337463a34",
+                          "key": "username",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Read public data of a user.\n"
+                  },
+                  "response": [
+                    {
+                      "id": "b145edaf-398f-4c94-a2bb-d0efcc8be3fa",
+                      "name": "The information of the user.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/user/:username?trophies=false&profile=true&rank=false&fideId=false",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "user",
+                            ":username"
+                          ],
+                          "query": [
+                            {
+                              "description": "Include user trophies",
+                              "key": "trophies",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include user profile data",
+                              "key": "profile",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Include global lichess ranking for each perf",
+                              "key": "rank",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include public FIDE ID if any",
+                              "key": "fideId",
+                              "value": "false"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "username"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Access-Control-Allow-Origin",
+                          "value": "'*'"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"url\": \"<uri>\",\n  \"username\": \"<string>\",\n  \"perfs\": {\n    \"chess960\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"atomic\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"racingKings\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"ultraBullet\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"blitz\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"kingOfTheHill\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"threeCheck\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"antichess\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"crazyhouse\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"bullet\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"correspondence\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"horde\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"puzzle\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"classical\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"rapid\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"storm\": {\n      \"runs\": \"<integer>\",\n      \"score\": \"<integer>\"\n    },\n    \"racer\": {\n      \"runs\": \"<integer>\",\n      \"score\": \"<integer>\"\n    },\n    \"streak\": {\n      \"runs\": \"<integer>\",\n      \"score\": \"<integer>\"\n    }\n  },\n  \"title\": \"WGM\",\n  \"flair\": \"<string>\",\n  \"createdAt\": \"<long>\",\n  \"disabled\": \"<boolean>\",\n  \"tosViolation\": \"<boolean>\",\n  \"profile\": {\n    \"flag\": \"<string>\",\n    \"location\": \"<string>\",\n    \"bio\": \"<string>\",\n    \"realName\": \"<string>\",\n    \"fideRating\": \"<integer>\",\n    \"uscfRating\": \"<integer>\",\n    \"ecfRating\": \"<integer>\",\n    \"cfcRating\": \"<integer>\",\n    \"rcfRating\": \"<integer>\",\n    \"dsbRating\": \"<integer>\",\n    \"links\": \"<string>\"\n  },\n  \"seenAt\": \"<long>\",\n  \"playTime\": {\n    \"total\": \"<integer>\",\n    \"tv\": \"<integer>\",\n    \"human\": \"<integer>\"\n  },\n  \"patron\": \"<boolean>\",\n  \"patronColor\": \"<integer>\",\n  \"verified\": \"<boolean>\",\n  \"playing\": \"<uri>\",\n  \"count\": {\n    \"all\": \"<integer>\",\n    \"rated\": \"<integer>\",\n    \"draw\": \"<integer>\",\n    \"loss\": \"<integer>\",\n    \"win\": \"<integer>\",\n    \"bookmark\": \"<integer>\",\n    \"playing\": \"<integer>\",\n    \"import\": \"<integer>\",\n    \"me\": \"<integer>\",\n    \"ai\": \"<integer>\",\n    \"drawH\": \"<integer>\",\n    \"lossH\": \"<integer>\",\n    \"winH\": \"<integer>\"\n  },\n  \"streaming\": \"<boolean>\",\n  \"streamer\": {\n    \"twitch\": {\n      \"channel\": \"<uri>\"\n    },\n    \"youtube\": {\n      \"channel\": \"<uri>\"\n    }\n  },\n  \"followable\": \"<boolean>\",\n  \"following\": \"<boolean>\",\n  \"blocking\": \"<boolean>\",\n  \"fideId\": \"<number>\"\n}",
+                      "createdAt": "2026-07-28T02:07:27.000Z",
+                      "updatedAt": "2026-07-28T02:07:27.000Z",
+                      "uid": "35240-b145edaf-398f-4c94-a2bb-d0efcc8be3fa"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:07:27.000Z",
+                  "updatedAt": "2026-07-28T02:07:27.000Z",
+                  "uid": "35240-82a15d3a-d049-4300-a537-eac63440da18"
+                }
+              ],
+              "id": "bbab4f0b-1587-4fb3-9b9f-9d2dce0fd7d9",
+              "createdAt": "2026-07-28T02:07:27.000Z",
+              "updatedAt": "2026-07-28T02:07:27.000Z",
+              "uid": "35240-bbab4f0b-1587-4fb3-9b9f-9d2dce0fd7d9"
+            }
+          ],
+          "id": "c2666b4e-90fb-4441-9915-317ac2e33088",
+          "createdAt": "2026-07-28T02:07:27.000Z",
+          "updatedAt": "2026-07-28T02:07:27.000Z",
+          "uid": "35240-c2666b4e-90fb-4441-9915-317ac2e33088"
+        },
+        {
+          "name": "streamer",
+          "item": [
+            {
+              "name": "live",
+              "item": [
+                {
+                  "name": "Get live streamers",
+                  "id": "9dafb9f9-7dbe-40d8-a9cd-3aed0d7f2991",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/streamer/live",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "streamer",
+                        "live"
+                      ]
+                    },
+                    "description": "Get basic info about currently streaming users.\nThis API is very fast and cheap on lichess side.\nSo you can call it quite often (like once every 5 seconds).\n"
+                  },
+                  "response": [
+                    {
+                      "id": "020afb15-b17f-4ab9-bc39-8efeabc5beb1",
+                      "name": "The list of live streamers and their respective information.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/streamer/live",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "streamer",
+                            "live"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Access-Control-Allow-Origin",
+                          "value": "'*'"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "[\n  {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"flair\": \"<string>\",\n    \"title\": \"WFM\",\n    \"patron\": \"<boolean>\",\n    \"patronColor\": \"<integer>\",\n    \"stream\": {\n      \"service\": \"youtube\",\n      \"status\": \"<string>\",\n      \"lang\": \"<string>\"\n    },\n    \"streamer\": {\n      \"name\": \"<string>\",\n      \"headline\": \"<string>\",\n      \"description\": \"<string>\",\n      \"twitch\": \"<uri>\",\n      \"youtube\": \"<uri>\",\n      \"image\": \"<uri>\"\n    }\n  },\n  {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"flair\": \"<string>\",\n    \"title\": \"WGM\",\n    \"patron\": \"<boolean>\",\n    \"patronColor\": \"<integer>\",\n    \"stream\": {\n      \"service\": \"youtube\",\n      \"status\": \"<string>\",\n      \"lang\": \"<string>\"\n    },\n    \"streamer\": {\n      \"name\": \"<string>\",\n      \"headline\": \"<string>\",\n      \"description\": \"<string>\",\n      \"twitch\": \"<uri>\",\n      \"youtube\": \"<uri>\",\n      \"image\": \"<uri>\"\n    }\n  }\n]",
+                      "createdAt": "2026-07-28T02:07:27.000Z",
+                      "updatedAt": "2026-07-28T02:07:27.000Z",
+                      "uid": "35240-020afb15-b17f-4ab9-bc39-8efeabc5beb1"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:07:27.000Z",
+                  "updatedAt": "2026-07-28T02:07:27.000Z",
+                  "uid": "35240-9dafb9f9-7dbe-40d8-a9cd-3aed0d7f2991"
+                }
+              ],
+              "id": "1729faee-c2ba-4c5f-9741-c9dd817ad8db",
+              "createdAt": "2026-07-28T02:07:27.000Z",
+              "updatedAt": "2026-07-28T02:07:27.000Z",
+              "uid": "35240-1729faee-c2ba-4c5f-9741-c9dd817ad8db"
+            }
+          ],
+          "id": "307cfa5d-69d2-41e3-8a00-495836975f15",
+          "createdAt": "2026-07-28T02:07:27.000Z",
+          "updatedAt": "2026-07-28T02:07:27.000Z",
+          "uid": "35240-307cfa5d-69d2-41e3-8a00-495836975f15"
+        },
+        {
+          "name": "crosstable",
+          "item": [
+            {
+              "name": "{user1}",
+              "item": [
+                {
+                  "name": "{user2}",
+                  "item": [
+                    {
+                      "name": "Get crosstable",
+                      "id": "e45f5f10-6ae3-457c-9cd7-d48fea45a86a",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/crosstable/:user1/:user2?matchup=<boolean>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "crosstable",
+                            ":user1",
+                            ":user2"
+                          ],
+                          "query": [
+                            {
+                              "description": "Whether to get the current match data, if any",
+                              "key": "matchup",
+                              "value": "<boolean>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "id": "37da1919-dfb7-401f-9afb-b74d15da1986",
+                              "key": "user1",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            },
+                            {
+                              "id": "71c81807-1546-46e0-9a19-3ba988e82194",
+                              "key": "user2",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "Get total number of games, and current score, of any two users.\nIf the `matchup` flag is provided, and the users are currently playing, also gets the current match game number and scores.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "80eebc2d-f1be-4401-8980-13418fab14ec",
+                          "name": "The crosstable of the two users.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/crosstable/:user1/:user2?matchup=<boolean>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "crosstable",
+                                ":user1",
+                                ":user2"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Whether to get the current match data, if any",
+                                  "key": "matchup",
+                                  "value": "<boolean>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "user1"
+                                },
+                                {
+                                  "key": "user2"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"users\": {\n    \"sit_e\": \"<number>\"\n  },\n  \"nbGames\": \"<integer>\"\n}",
+                          "createdAt": "2026-07-28T02:07:27.000Z",
+                          "updatedAt": "2026-07-28T02:07:27.000Z",
+                          "uid": "35240-80eebc2d-f1be-4401-8980-13418fab14ec"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:07:27.000Z",
+                      "updatedAt": "2026-07-28T02:07:27.000Z",
+                      "uid": "35240-e45f5f10-6ae3-457c-9cd7-d48fea45a86a"
+                    }
+                  ],
+                  "id": "168d981a-9726-4a2c-bc76-f7e6109544c5",
+                  "createdAt": "2026-07-28T02:07:27.000Z",
+                  "updatedAt": "2026-07-28T02:07:27.000Z",
+                  "uid": "35240-168d981a-9726-4a2c-bc76-f7e6109544c5"
+                }
+              ],
+              "id": "4bd9000a-6ae0-4f1f-970d-88e0b0e021ab",
+              "createdAt": "2026-07-28T02:07:27.000Z",
+              "updatedAt": "2026-07-28T02:07:27.000Z",
+              "uid": "35240-4bd9000a-6ae0-4f1f-970d-88e0b0e021ab"
+            }
+          ],
+          "id": "46157f08-0a0f-4553-aa0d-1efa5af6d959",
+          "createdAt": "2026-07-28T02:07:27.000Z",
+          "updatedAt": "2026-07-28T02:07:27.000Z",
+          "uid": "35240-46157f08-0a0f-4553-aa0d-1efa5af6d959"
+        }
+      ],
+      "id": "4afefca0-54e6-468a-8145-83fdb327544f",
+      "createdAt": "2026-07-28T02:07:27.000Z",
+      "updatedAt": "2026-07-28T02:07:27.000Z",
+      "uid": "35240-4afefca0-54e6-468a-8145-83fdb327544f"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://lichess.org"
+    }
+  ]
+}

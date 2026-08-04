@@ -1,0 +1,336 @@
+{
+  "info": {
+    "_postman_id": "26683f78-a68e-4ab0-9a54-e556b3e63910",
+    "name": "Lichess.org API reference Account FIDE API",
+    "description": "# Introduction\nWelcome to the reference for the Lichess API! Lichess is free/libre,\nopen-source chess server powered by volunteers and donations.\n- Get help in the [Lichess Discord channel](https://discord.gg/lichess)\n- API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)\n- API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)\n- [Contribute to this documentation on Github](https://github.com/lichess-org/api)\n- Check out [Lichess widgets to embed in your website](https://lichess.org/developers)\n- [Download all Lichess rated games](https://database.lichess.org/)\n- [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)\n- [Download all evaluated positions](https://database.lichess.org/#evals)\n\n## Endpoint\nAll requests go to `https://lichess.org` (unless otherwise specified).\n\n## Clients\n- [Python general API](https://github.com/lichess-org/berserk)\n- [MicroPython general API](https://github.com/mkomon/uberserk)\n- [Python general API - async](https://pypi.org/project/async-lichess-sdk)\n- [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)\n- [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)\n- [Java general API](https://github.com/tors42/chariot)\n- [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)\n- [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)\n- [.NET general API](https://github.com/Dblike/LichessSharp)\n\n## Rate limiting\nAll requests are rate limited using various strategies,\nto ensure the API remains responsive for everyone.\nOnly make one request at a time.\nIf you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),\nyou have exceded one of the rate limits.\nIn most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.\nReduce your request frequency before retrying.\n\n## Streaming with ND-JSON\nSome API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.\n\nHere's a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.\n\n## Authentication\n### Which authentication method is right for me?\n[Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)\n\n### Personal Access Token\nPersonal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.\n- [Generate a personal access token](https://lichess.org/account/oauth/token)\n- `curl https://lichess.org/api/account -H \"Authorization: Bearer {token}\"`\n- [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)\n\n### Token Security\n- Keep your tokens secret. Do not share them in public repositories or public forums.\n- Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens' scope). You remain responsible for all activities on your account.\n- Do not hardcode tokens in your application's code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.\n- If you suspect a token has been compromised, revoke it immediately.\n\nTo see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).\n\n### Authorization Code Flow with PKCE\nThe authorization code flow with PKCE allows your users to **login with Lichess**.\nLichess supports unregistered and public clients (no client authentication, choose any unique client id).\nThe only accepted code challenge method is `S256`.\nAccess tokens are long-lived (expect one year), unless they are revoked.\nRefresh tokens are not supported.\n\nSee the [documentation for the OAuth endpoints](#tag/OAuth) or\nthe [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.\n\n- [Demo app](https://lichess-org.github.io/api-demo/)\n- [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)\n- [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)\n- [Java example](https://github.com/tors42/lichess-oauth-pkce-app)\n- [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)\n\n#### Real life examples\n- [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))\n- [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))\n- [English Chess Federation](https://ecf.octoknight.com/)\n- [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)\n\n### Token format\nAccess tokens and authorization codes match `^[A-Za-z0-9_]+$`.\nThe length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.\nBy convention tokens have a recognizable prefix, but do not rely on this.\n\n\nContact Support:\n Name: Lichess.org API\n Email: contact@lichess.org",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:06:43.000Z",
+    "updatedAt": "2026-07-28T02:06:43.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-26683f78-a68e-4ab0-9a54-e556b3e63910"
+  },
+  "item": [
+    {
+      "name": "api",
+      "item": [
+        {
+          "name": "fide",
+          "item": [
+            {
+              "name": "player",
+              "item": [
+                {
+                  "name": "{playerId}",
+                  "item": [
+                    {
+                      "name": "ratings",
+                      "item": [
+                        {
+                          "name": "Get ratings history of a FIDE player",
+                          "id": "b153904f-12e1-4688-b28c-0724449cc224",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/fide/player/:playerId/ratings",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "fide",
+                                "player",
+                                ":playerId",
+                                "ratings"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "3e80046d-57da-40ea-a8a2-d3ebd1de6f73",
+                                  "key": "playerId",
+                                  "value": "<integer>",
+                                  "description": "(Required) The FIDE player ID."
+                                }
+                              ]
+                            },
+                            "description": "Historical standard, rapid and blitz ratings of a FIDE player\n"
+                          },
+                          "response": [
+                            {
+                              "id": "f5f17c7d-7d7f-4efe-8db6-93703605a474",
+                              "name": "The rating histories",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/fide/player/:playerId/ratings",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "fide",
+                                    "player",
+                                    ":playerId",
+                                    "ratings"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "playerId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"standard\": [\n    \"<number>\",\n    \"<number>\"\n  ],\n  \"rapid\": [\n    \"<number>\",\n    \"<number>\"\n  ],\n  \"blitz\": [\n    \"<number>\",\n    \"<number>\"\n  ]\n}",
+                              "createdAt": "2026-07-28T02:06:44.000Z",
+                              "updatedAt": "2026-07-28T02:06:44.000Z",
+                              "uid": "35240-f5f17c7d-7d7f-4efe-8db6-93703605a474"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T02:06:44.000Z",
+                          "updatedAt": "2026-07-28T02:06:44.000Z",
+                          "uid": "35240-b153904f-12e1-4688-b28c-0724449cc224"
+                        }
+                      ],
+                      "id": "57d38d2f-41a5-4cde-aef5-7fc639bf600a",
+                      "createdAt": "2026-07-28T02:06:44.000Z",
+                      "updatedAt": "2026-07-28T02:06:44.000Z",
+                      "uid": "35240-57d38d2f-41a5-4cde-aef5-7fc639bf600a"
+                    },
+                    {
+                      "name": "Get a FIDE player",
+                      "id": "b0c14403-c434-4603-847a-820fc163c66d",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/fide/player/:playerId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "fide",
+                            "player",
+                            ":playerId"
+                          ],
+                          "variable": [
+                            {
+                              "id": "ffdbf71b-d3d7-4b0a-87f5-b93486380ffc",
+                              "key": "playerId",
+                              "value": "<integer>",
+                              "description": "(Required) The FIDE player ID."
+                            }
+                          ]
+                        },
+                        "description": "Get information about a FIDE player.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "e3a72434-791e-4383-ba1a-d85ad54444f9",
+                          "name": "The information about the FIDE player.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/fide/player/:playerId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "fide",
+                                "player",
+                                ":playerId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "playerId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<integer>\",\n  \"name\": \"<string>\",\n  \"federation\": \"<string>\",\n  \"title\": \"IM\",\n  \"year\": \"<integer,null>\",\n  \"inactive\": \"<integer>\",\n  \"standard\": \"<integer>\",\n  \"rapid\": \"<integer>\",\n  \"blitz\": \"<integer>\",\n  \"gender\": \"F\",\n  \"photo\": {\n    \"small\": \"<string>\",\n    \"medium\": \"<string>\",\n    \"credit\": \"<string>\"\n  }\n}",
+                          "createdAt": "2026-07-28T02:06:44.000Z",
+                          "updatedAt": "2026-07-28T02:06:44.000Z",
+                          "uid": "35240-e3a72434-791e-4383-ba1a-d85ad54444f9"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:06:44.000Z",
+                      "updatedAt": "2026-07-28T02:06:44.000Z",
+                      "uid": "35240-b0c14403-c434-4603-847a-820fc163c66d"
+                    }
+                  ],
+                  "id": "ecd86d9c-a249-4bf4-ac0c-cef5bdffd2f6",
+                  "createdAt": "2026-07-28T02:06:44.000Z",
+                  "updatedAt": "2026-07-28T02:06:44.000Z",
+                  "uid": "35240-ecd86d9c-a249-4bf4-ac0c-cef5bdffd2f6"
+                },
+                {
+                  "name": "Search FIDE players",
+                  "id": "d9a082c3-778c-497c-a1e6-8d01a93b9740",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/fide/player?q=<string>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "fide",
+                        "player"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) The search query.",
+                          "key": "q",
+                          "value": "<string>"
+                        }
+                      ]
+                    },
+                    "description": "List of FIDE players search results for a query.\n"
+                  },
+                  "response": [
+                    {
+                      "id": "799afb40-c74a-4380-9835-64e920d184b7",
+                      "name": "The list of FIDE players.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/fide/player?q=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "fide",
+                            "player"
+                          ],
+                          "query": [
+                            {
+                              "description": "(Required) The search query.",
+                              "key": "q",
+                              "value": "<string>"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Access-Control-Allow-Origin",
+                          "value": "'*'"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "[\n  {\n    \"id\": \"<integer>\",\n    \"name\": \"<string>\",\n    \"federation\": \"<string>\",\n    \"title\": \"BOT\",\n    \"year\": \"<integer,null>\",\n    \"inactive\": \"<integer>\",\n    \"standard\": \"<integer>\",\n    \"rapid\": \"<integer>\",\n    \"blitz\": \"<integer>\",\n    \"gender\": \"M\",\n    \"photo\": {\n      \"small\": \"<string>\",\n      \"medium\": \"<string>\",\n      \"credit\": \"<string>\"\n    }\n  },\n  {\n    \"id\": \"<integer>\",\n    \"name\": \"<string>\",\n    \"federation\": \"<string>\",\n    \"title\": \"NM\",\n    \"year\": \"<integer,null>\",\n    \"inactive\": \"<integer>\",\n    \"standard\": \"<integer>\",\n    \"rapid\": \"<integer>\",\n    \"blitz\": \"<integer>\",\n    \"gender\": \"M\",\n    \"photo\": {\n      \"small\": \"<string>\",\n      \"medium\": \"<string>\",\n      \"credit\": \"<string>\"\n    }\n  }\n]",
+                      "createdAt": "2026-07-28T02:06:44.000Z",
+                      "updatedAt": "2026-07-28T02:06:44.000Z",
+                      "uid": "35240-799afb40-c74a-4380-9835-64e920d184b7"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:06:44.000Z",
+                  "updatedAt": "2026-07-28T02:06:44.000Z",
+                  "uid": "35240-d9a082c3-778c-497c-a1e6-8d01a93b9740"
+                }
+              ],
+              "id": "449daa58-2e3d-4b88-a4d7-a4e705039cc6",
+              "createdAt": "2026-07-28T02:06:44.000Z",
+              "updatedAt": "2026-07-28T02:06:44.000Z",
+              "uid": "35240-449daa58-2e3d-4b88-a4d7-a4e705039cc6"
+            }
+          ],
+          "id": "1b0b7041-b2f5-4c3f-ae12-45a34a994c47",
+          "createdAt": "2026-07-28T02:06:44.000Z",
+          "updatedAt": "2026-07-28T02:06:44.000Z",
+          "uid": "35240-1b0b7041-b2f5-4c3f-ae12-45a34a994c47"
+        }
+      ],
+      "id": "63668c83-4c9f-45ba-96cc-d4bb65b654ef",
+      "createdAt": "2026-07-28T02:06:44.000Z",
+      "updatedAt": "2026-07-28T02:06:44.000Z",
+      "uid": "35240-63668c83-4c9f-45ba-96cc-d4bb65b654ef"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://lichess.org"
+    }
+  ]
+}

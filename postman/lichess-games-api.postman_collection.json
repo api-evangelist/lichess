@@ -1,0 +1,2380 @@
+{
+  "info": {
+    "_postman_id": "029802f3-0036-4bde-b186-b479d9097945",
+    "name": "Lichess.org API reference Account Games API",
+    "description": "# Introduction\nWelcome to the reference for the Lichess API! Lichess is free/libre,\nopen-source chess server powered by volunteers and donations.\n- Get help in the [Lichess Discord channel](https://discord.gg/lichess)\n- API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)\n- API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)\n- [Contribute to this documentation on Github](https://github.com/lichess-org/api)\n- Check out [Lichess widgets to embed in your website](https://lichess.org/developers)\n- [Download all Lichess rated games](https://database.lichess.org/)\n- [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)\n- [Download all evaluated positions](https://database.lichess.org/#evals)\n\n## Endpoint\nAll requests go to `https://lichess.org` (unless otherwise specified).\n\n## Clients\n- [Python general API](https://github.com/lichess-org/berserk)\n- [MicroPython general API](https://github.com/mkomon/uberserk)\n- [Python general API - async](https://pypi.org/project/async-lichess-sdk)\n- [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)\n- [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)\n- [Java general API](https://github.com/tors42/chariot)\n- [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)\n- [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)\n- [.NET general API](https://github.com/Dblike/LichessSharp)\n\n## Rate limiting\nAll requests are rate limited using various strategies,\nto ensure the API remains responsive for everyone.\nOnly make one request at a time.\nIf you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),\nyou have exceded one of the rate limits.\nIn most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.\nReduce your request frequency before retrying.\n\n## Streaming with ND-JSON\nSome API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.\n\nHere's a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.\n\n## Authentication\n### Which authentication method is right for me?\n[Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)\n\n### Personal Access Token\nPersonal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.\n- [Generate a personal access token](https://lichess.org/account/oauth/token)\n- `curl https://lichess.org/api/account -H \"Authorization: Bearer {token}\"`\n- [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)\n\n### Token Security\n- Keep your tokens secret. Do not share them in public repositories or public forums.\n- Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens' scope). You remain responsible for all activities on your account.\n- Do not hardcode tokens in your application's code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.\n- If you suspect a token has been compromised, revoke it immediately.\n\nTo see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).\n\n### Authorization Code Flow with PKCE\nThe authorization code flow with PKCE allows your users to **login with Lichess**.\nLichess supports unregistered and public clients (no client authentication, choose any unique client id).\nThe only accepted code challenge method is `S256`.\nAccess tokens are long-lived (expect one year), unless they are revoked.\nRefresh tokens are not supported.\n\nSee the [documentation for the OAuth endpoints](#tag/OAuth) or\nthe [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.\n\n- [Demo app](https://lichess-org.github.io/api-demo/)\n- [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)\n- [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)\n- [Java example](https://github.com/tors42/lichess-oauth-pkce-app)\n- [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)\n\n#### Real life examples\n- [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))\n- [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))\n- [English Chess Federation](https://ecf.octoknight.com/)\n- [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)\n\n### Token format\nAccess tokens and authorization codes match `^[A-Za-z0-9_]+$`.\nThe length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.\nBy convention tokens have a recognizable prefix, but do not rely on this.\n\n\nContact Support:\n Name: Lichess.org API\n Email: contact@lichess.org",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:06:47.000Z",
+    "updatedAt": "2026-07-28T02:06:47.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-029802f3-0036-4bde-b186-b479d9097945"
+  },
+  "item": [
+    {
+      "name": "game",
+      "item": [
+        {
+          "name": "export",
+          "item": [
+            {
+              "name": "{gameId}",
+              "item": [
+                {
+                  "name": "Export one game",
+                  "id": "77dba57d-4861-4b40-acbf-e60635009f97",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/game/export/:gameId?moves=true&pgnInJson=false&tags=true&clocks=true&evals=true&accuracy=false&opening=true&division=true&literate=false&withBookmarked=false",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "game",
+                        "export",
+                        ":gameId"
+                      ],
+                      "query": [
+                        {
+                          "description": "Include the PGN moves.",
+                          "key": "moves",
+                          "value": "true"
+                        },
+                        {
+                          "description": "Include the full PGN within the JSON response, in a `pgn` field.",
+                          "key": "pgnInJson",
+                          "value": "false"
+                        },
+                        {
+                          "description": "Include the PGN tags.",
+                          "key": "tags",
+                          "value": "true"
+                        },
+                        {
+                          "description": "Include clock status when available.\nEither as PGN comments: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\nOr in a `clocks` JSON field, as centisecond integers, depending on the response type.\n",
+                          "key": "clocks",
+                          "value": "true"
+                        },
+                        {
+                          "description": "Include analysis evaluations and comments, when available.\nEither as PGN comments: `12. Bxf6 { [%eval 0.23] } a3 { [%eval -1.09] }`\nOr in an `analysis` JSON field, depending on the response type.\n",
+                          "key": "evals",
+                          "value": "true"
+                        },
+                        {
+                          "description": "Include [accuracy percent](https://lichess.org/page/accuracy) of each player, when available. Only available in JSON.\n",
+                          "key": "accuracy",
+                          "value": "false"
+                        },
+                        {
+                          "description": "Include the opening name.\nExample: `[Opening \"King's Gambit Accepted, King's Knight Gambit\"]`\n",
+                          "key": "opening",
+                          "value": "true"
+                        },
+                        {
+                          "description": "Plies which mark the beginning of the middlegame and endgame.\nOnly available in JSON\n",
+                          "key": "division",
+                          "value": "true"
+                        },
+                        {
+                          "description": "Insert textual annotations in the PGN about the opening, analysis variations, mistakes, and game termination.\nExample: `5... g4? { (-0.98 \u2192 0.60) Mistake. Best move was h6. } (5... h6 6. d4 Ne7 7. g3 d5 8. exd5 fxg3 9. hxg3 c6 10. dxc6)`\n",
+                          "key": "literate",
+                          "value": "false"
+                        },
+                        {
+                          "description": "Add a `bookmarked: true` JSON field when the logged in user has bookmarked the game.\nThe response type must be set to `application/x-ndjson` by the request `Accept` header.\n",
+                          "key": "withBookmarked",
+                          "value": "false"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "4d00533d-7ff7-4988-b561-4662375f81ca",
+                          "key": "gameId",
+                          "value": "<string>",
+                          "description": "(Required) The game ID"
+                        }
+                      ]
+                    },
+                    "description": "Download one game in either PGN or JSON format.\nOngoing games are delayed by 3 moves, as to prevent cheat bots from using this API.\n"
+                  },
+                  "response": [
+                    {
+                      "id": "ae5e47fb-a5ab-4ebc-a5ff-2964df590023",
+                      "name": "The game representation.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/game/export/:gameId?moves=true&pgnInJson=false&tags=true&clocks=true&evals=true&accuracy=false&opening=true&division=true&literate=false&withBookmarked=false",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "game",
+                            "export",
+                            ":gameId"
+                          ],
+                          "query": [
+                            {
+                              "description": "Include the PGN moves.",
+                              "key": "moves",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Include the full PGN within the JSON response, in a `pgn` field.",
+                              "key": "pgnInJson",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include the PGN tags.",
+                              "key": "tags",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Include clock status when available.\nEither as PGN comments: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\nOr in a `clocks` JSON field, as centisecond integers, depending on the response type.\n",
+                              "key": "clocks",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Include analysis evaluations and comments, when available.\nEither as PGN comments: `12. Bxf6 { [%eval 0.23] } a3 { [%eval -1.09] }`\nOr in an `analysis` JSON field, depending on the response type.\n",
+                              "key": "evals",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Include [accuracy percent](https://lichess.org/page/accuracy) of each player, when available. Only available in JSON.\n",
+                              "key": "accuracy",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include the opening name.\nExample: `[Opening \"King's Gambit Accepted, King's Knight Gambit\"]`\n",
+                              "key": "opening",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Plies which mark the beginning of the middlegame and endgame.\nOnly available in JSON\n",
+                              "key": "division",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Insert textual annotations in the PGN about the opening, analysis variations, mistakes, and game termination.\nExample: `5... g4? { (-0.98 \u2192 0.60) Mistake. Best move was h6. } (5... h6 6. d4 Ne7 7. g3 d5 8. exd5 fxg3 9. hxg3 c6 10. dxc6)`\n",
+                              "key": "literate",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Add a `bookmarked: true` JSON field when the logged in user has bookmarked the game.\nThe response type must be set to `application/x-ndjson` by the request `Accept` header.\n",
+                              "key": "withBookmarked",
+                              "value": "false"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "gameId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Access-Control-Allow-Origin",
+                          "value": "'*'"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "<string>",
+                      "createdAt": "2026-07-28T02:06:47.000Z",
+                      "updatedAt": "2026-07-28T02:06:47.000Z",
+                      "uid": "35240-ae5e47fb-a5ab-4ebc-a5ff-2964df590023"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:06:47.000Z",
+                  "updatedAt": "2026-07-28T02:06:47.000Z",
+                  "uid": "35240-77dba57d-4861-4b40-acbf-e60635009f97"
+                }
+              ],
+              "id": "4ca3b732-9c6c-4999-a098-a0bd598e142f",
+              "createdAt": "2026-07-28T02:06:47.000Z",
+              "updatedAt": "2026-07-28T02:06:47.000Z",
+              "uid": "35240-4ca3b732-9c6c-4999-a098-a0bd598e142f"
+            }
+          ],
+          "id": "fc8c8226-2b8b-474b-82cf-ac92a6507b62",
+          "createdAt": "2026-07-28T02:06:47.000Z",
+          "updatedAt": "2026-07-28T02:06:47.000Z",
+          "uid": "35240-fc8c8226-2b8b-474b-82cf-ac92a6507b62"
+        },
+        {
+          "name": "{gameId}",
+          "item": [
+            {
+              "name": "chat",
+              "item": [
+                {
+                  "name": "Fetch the spectator game chat",
+                  "id": "79225c1b-a9da-48be-9fbb-1336a597ded6",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/x-ndjson"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/game/:gameId/chat",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "game",
+                        ":gameId",
+                        "chat"
+                      ],
+                      "variable": [
+                        {
+                          "id": "aa6e4966-5d73-44cc-b0b2-fbedaeeb6647",
+                          "key": "gameId",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Get the messages posted in the public spectator chat of a game.\n\nGames also have a private players chat, which only the 2 players can see.\n"
+                  },
+                  "response": [
+                    {
+                      "id": "c7e0bd30-46d2-48c9-ad4e-3baf4093c58d",
+                      "name": "The messages posted in the chat.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/x-ndjson"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/game/:gameId/chat",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "game",
+                            ":gameId",
+                            "chat"
+                          ],
+                          "variable": [
+                            {
+                              "key": "gameId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/x-ndjson"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Access-Control-Allow-Origin",
+                          "value": "'*'"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "[\n  {\n    \"text\": \"<string>\",\n    \"user\": \"<string>\"\n  },\n  {\n    \"text\": \"<string>\",\n    \"user\": \"<string>\"\n  }\n]",
+                      "createdAt": "2026-07-28T02:06:47.000Z",
+                      "updatedAt": "2026-07-28T02:06:47.000Z",
+                      "uid": "35240-c7e0bd30-46d2-48c9-ad4e-3baf4093c58d"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:06:47.000Z",
+                  "updatedAt": "2026-07-28T02:06:47.000Z",
+                  "uid": "35240-79225c1b-a9da-48be-9fbb-1336a597ded6"
+                }
+              ],
+              "id": "42688c7c-2ee7-4829-8e0a-f77bfee13929",
+              "createdAt": "2026-07-28T02:06:47.000Z",
+              "updatedAt": "2026-07-28T02:06:47.000Z",
+              "uid": "35240-42688c7c-2ee7-4829-8e0a-f77bfee13929"
+            }
+          ],
+          "id": "378eaa36-df6f-49a9-a07c-6ab1ca4b4889",
+          "createdAt": "2026-07-28T02:06:47.000Z",
+          "updatedAt": "2026-07-28T02:06:47.000Z",
+          "uid": "35240-378eaa36-df6f-49a9-a07c-6ab1ca4b4889"
+        }
+      ],
+      "id": "621ebffc-4793-4520-875f-45c2be1fcf60",
+      "createdAt": "2026-07-28T02:06:47.000Z",
+      "updatedAt": "2026-07-28T02:06:47.000Z",
+      "uid": "35240-621ebffc-4793-4520-875f-45c2be1fcf60"
+    },
+    {
+      "name": "api",
+      "item": [
+        {
+          "name": "user",
+          "item": [
+            {
+              "name": "{username}",
+              "item": [
+                {
+                  "name": "current-game",
+                  "item": [
+                    {
+                      "name": "Export ongoing game of a user",
+                      "id": "96512f1c-c7b2-46e1-94eb-33a1fefb2b83",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/user/:username/current-game?moves=true&pgnInJson=false&tags=true&clocks=true&evals=true&accuracy=false&opening=true&division=false&literate=false",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "user",
+                            ":username",
+                            "current-game"
+                          ],
+                          "query": [
+                            {
+                              "description": "Include the PGN moves.",
+                              "key": "moves",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Include the full PGN within the JSON response, in a `pgn` field.",
+                              "key": "pgnInJson",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include the PGN tags.",
+                              "key": "tags",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Include clock status when available.\nEither as PGN comments: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\nOr in a `clocks` JSON field, as centisecond integers, depending on the response type.\n",
+                              "key": "clocks",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Include analysis evaluations and comments, when available.\nEither as PGN comments: `12. Bxf6 { [%eval 0.23] } a3 { [%eval -1.09] }`\nOr in an `analysis` JSON field, depending on the response type.\n",
+                              "key": "evals",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Include [accuracy percent](https://lichess.org/page/accuracy) of each player, when available. Only available in JSON.\n",
+                              "key": "accuracy",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include the opening name.\nExample: `[Opening \"King's Gambit Accepted, King's Knight Gambit\"]`\n",
+                              "key": "opening",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Plies which mark the beginning of the middlegame and endgame.\nOnly available in JSON\n",
+                              "key": "division",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Insert textual annotations in the PGN about the opening, analysis variations, mistakes, and game termination.\nExample: `5... g4? { (-0.98 \u2192 0.60) Mistake. Best move was h6. } (5... h6 6. d4 Ne7 7. g3 d5 8. exd5 fxg3 9. hxg3 c6 10. dxc6)`\n",
+                              "key": "literate",
+                              "value": "false"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "id": "4b9612a5-4d44-467c-b981-9feaf63eae2c",
+                              "key": "username",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "Download the ongoing game, or the last game played, of a user.\nAvailable in either PGN or JSON format.\nOngoing games are delayed by 3 moves, as to prevent cheat bots from using this API.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "e15659e0-cf2f-427a-8bc5-fdbd0ca58ac1",
+                          "name": "The ongoing (or last) game of a user.\nThis may be in either PGN or JSON format, depending on the `Accept` header of your request.\n",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/user/:username/current-game?moves=true&pgnInJson=false&tags=true&clocks=true&evals=true&accuracy=false&opening=true&division=false&literate=false",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "user",
+                                ":username",
+                                "current-game"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Include the PGN moves.",
+                                  "key": "moves",
+                                  "value": "true"
+                                },
+                                {
+                                  "description": "Include the full PGN within the JSON response, in a `pgn` field.",
+                                  "key": "pgnInJson",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Include the PGN tags.",
+                                  "key": "tags",
+                                  "value": "true"
+                                },
+                                {
+                                  "description": "Include clock status when available.\nEither as PGN comments: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\nOr in a `clocks` JSON field, as centisecond integers, depending on the response type.\n",
+                                  "key": "clocks",
+                                  "value": "true"
+                                },
+                                {
+                                  "description": "Include analysis evaluations and comments, when available.\nEither as PGN comments: `12. Bxf6 { [%eval 0.23] } a3 { [%eval -1.09] }`\nOr in an `analysis` JSON field, depending on the response type.\n",
+                                  "key": "evals",
+                                  "value": "true"
+                                },
+                                {
+                                  "description": "Include [accuracy percent](https://lichess.org/page/accuracy) of each player, when available. Only available in JSON.\n",
+                                  "key": "accuracy",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Include the opening name.\nExample: `[Opening \"King's Gambit Accepted, King's Knight Gambit\"]`\n",
+                                  "key": "opening",
+                                  "value": "true"
+                                },
+                                {
+                                  "description": "Plies which mark the beginning of the middlegame and endgame.\nOnly available in JSON\n",
+                                  "key": "division",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Insert textual annotations in the PGN about the opening, analysis variations, mistakes, and game termination.\nExample: `5... g4? { (-0.98 \u2192 0.60) Mistake. Best move was h6. } (5... h6 6. d4 Ne7 7. g3 d5 8. exd5 fxg3 9. hxg3 c6 10. dxc6)`\n",
+                                  "key": "literate",
+                                  "value": "false"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "username"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "<string>",
+                          "createdAt": "2026-07-28T02:06:47.000Z",
+                          "updatedAt": "2026-07-28T02:06:47.000Z",
+                          "uid": "35240-e15659e0-cf2f-427a-8bc5-fdbd0ca58ac1"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:06:47.000Z",
+                      "updatedAt": "2026-07-28T02:06:47.000Z",
+                      "uid": "35240-96512f1c-c7b2-46e1-94eb-33a1fefb2b83"
+                    }
+                  ],
+                  "id": "8ef2ad80-334f-4a88-9ff8-d96911eb01fe",
+                  "createdAt": "2026-07-28T02:06:47.000Z",
+                  "updatedAt": "2026-07-28T02:06:47.000Z",
+                  "uid": "35240-8ef2ad80-334f-4a88-9ff8-d96911eb01fe"
+                }
+              ],
+              "id": "a8b17dd0-7d45-4529-96d8-ab60573d09ac",
+              "createdAt": "2026-07-28T02:06:47.000Z",
+              "updatedAt": "2026-07-28T02:06:47.000Z",
+              "uid": "35240-a8b17dd0-7d45-4529-96d8-ab60573d09ac"
+            }
+          ],
+          "id": "8a74d71b-e514-40c2-a7f7-9f54dd92669a",
+          "createdAt": "2026-07-28T02:06:47.000Z",
+          "updatedAt": "2026-07-28T02:06:47.000Z",
+          "uid": "35240-8a74d71b-e514-40c2-a7f7-9f54dd92669a"
+        },
+        {
+          "name": "games",
+          "item": [
+            {
+              "name": "user",
+              "item": [
+                {
+                  "name": "{username}",
+                  "item": [
+                    {
+                      "name": "Export games of a user",
+                      "id": "9aec1ce9-6abe-4c0c-87d2-79e719cba7bf",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://lichess.org/api/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://lichess.org/oauth",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/x-ndjson"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/games/user/:username?since=<integer>&until=<integer>&max=<integer>&vs=<string>&rated=<boolean>&perfType=atomic&color=black&analysed=<boolean>&moves=true&pgnInJson=false&tags=true&clocks=false&evals=false&accuracy=false&opening=false&division=false&ongoing=false&finished=true&literate=false&lastFen=false&withBookmarked=false&sort=dateDesc",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "games",
+                            "user",
+                            ":username"
+                          ],
+                          "query": [
+                            {
+                              "description": "Download games played since this timestamp. Defaults to account creation date.",
+                              "key": "since",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": "Download games played until this timestamp. Defaults to now.",
+                              "key": "until",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": "How many games to download. Leave empty to download all games.",
+                              "key": "max",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": "[Filter] Only games played against this opponent",
+                              "key": "vs",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "[Filter] Only rated (`true`) or casual (`false`) games",
+                              "key": "rated",
+                              "value": "<boolean>"
+                            },
+                            {
+                              "description": "[Filter] Only games in these speeds or variants.\nMultiple perf types can be specified, separated by a comma.\nExample: blitz,rapid,classical\n",
+                              "key": "perfType",
+                              "value": "atomic"
+                            },
+                            {
+                              "description": "[Filter] Only games played as this color.",
+                              "key": "color",
+                              "value": "black"
+                            },
+                            {
+                              "description": "[Filter] Only games with or without a computer analysis available",
+                              "key": "analysed",
+                              "value": "<boolean>"
+                            },
+                            {
+                              "description": "Include the PGN moves.",
+                              "key": "moves",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Include the full PGN within the JSON response, in a `pgn` field. The response type must be set to `application/x-ndjson` by the request `Accept` header.",
+                              "key": "pgnInJson",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include the PGN tags.",
+                              "key": "tags",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Include clock status when available.\nEither as PGN comments: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\nOr in a `clocks` JSON field, as centisecond integers, depending on the response type.\n",
+                              "key": "clocks",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include analysis evaluations and comments, when available.\nEither as PGN comments: `12. Bxf6 { [%eval 0.23] } a3 { [%eval -1.09] }`\nOr in an `analysis` JSON field, depending on the response type.\n",
+                              "key": "evals",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include [accuracy percent](https://lichess.org/page/accuracy) of each player, when available. Only available in JSON.\n",
+                              "key": "accuracy",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include the opening name.\nExample: `[Opening \"King's Gambit Accepted, King's Knight Gambit\"]`\n",
+                              "key": "opening",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Plies which mark the beginning of the middlegame and endgame.\nOnly available in JSON\n",
+                              "key": "division",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Ongoing games are delayed by a few seconds ranging from 3 to 60 depending on the time control, as to prevent cheat bots from using this API.",
+                              "key": "ongoing",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include finished games. Set to `false` to only get ongoing games.",
+                              "key": "finished",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Insert textual annotations in the PGN about the opening, analysis variations, mistakes, and game termination.\nExample: `5... g4? { (-0.98 \u2192 0.60) Mistake. Best move was h6. } (5... h6 6. d4 Ne7 7. g3 d5 8. exd5 fxg3 9. hxg3 c6 10. dxc6)`\n",
+                              "key": "literate",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include the X-FEN notation of the last position of the game.\nThe response type must be set to `application/x-ndjson` by the request `Accept` header.\n",
+                              "key": "lastFen",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Add a `bookmarked: true` JSON field when the logged in user has bookmarked the game.\nThe response type must be set to `application/x-ndjson` by the request `Accept` header.\n",
+                              "key": "withBookmarked",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Sort order of the games.",
+                              "key": "sort",
+                              "value": "dateDesc"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "id": "d4b57442-634d-40b1-b23e-5a856499588c",
+                              "key": "username",
+                              "value": "<string>",
+                              "description": "(Required) The user name."
+                            }
+                          ]
+                        },
+                        "description": "Download all games of any user in PGN or [ndjson](#description/streaming-with-nd-json) format.\nGames are sorted by reverse chronological order (most recent first).\nWe recommend streaming the response, for it can be very long.\n<https://lichess.org/@/german11> for instance has more than 500,000 games.\nThe game stream is throttled, depending on who is making the request:\n  - Anonymous request: 20 games per second\n  - [OAuth2 authenticated](#description/authentication) request: 30 games per second\n  - Authenticated, downloading your own games: 60 games per second\n"
+                      },
+                      "response": [
+                        {
+                          "id": "aca10efa-dddb-4894-b9e4-8e86ab353582",
+                          "name": "The games of the user.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/x-ndjson"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/games/user/:username?since=<integer>&until=<integer>&max=<integer>&vs=<string>&rated=<boolean>&perfType=atomic&color=black&analysed=<boolean>&moves=true&pgnInJson=false&tags=true&clocks=false&evals=false&accuracy=false&opening=false&division=false&ongoing=false&finished=true&literate=false&lastFen=false&withBookmarked=false&sort=dateDesc",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "games",
+                                "user",
+                                ":username"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Download games played since this timestamp. Defaults to account creation date.",
+                                  "key": "since",
+                                  "value": "<integer>"
+                                },
+                                {
+                                  "description": "Download games played until this timestamp. Defaults to now.",
+                                  "key": "until",
+                                  "value": "<integer>"
+                                },
+                                {
+                                  "description": "How many games to download. Leave empty to download all games.",
+                                  "key": "max",
+                                  "value": "<integer>"
+                                },
+                                {
+                                  "description": "[Filter] Only games played against this opponent",
+                                  "key": "vs",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "[Filter] Only rated (`true`) or casual (`false`) games",
+                                  "key": "rated",
+                                  "value": "<boolean>"
+                                },
+                                {
+                                  "description": "[Filter] Only games in these speeds or variants.\nMultiple perf types can be specified, separated by a comma.\nExample: blitz,rapid,classical\n",
+                                  "key": "perfType",
+                                  "value": "atomic"
+                                },
+                                {
+                                  "description": "[Filter] Only games played as this color.",
+                                  "key": "color",
+                                  "value": "black"
+                                },
+                                {
+                                  "description": "[Filter] Only games with or without a computer analysis available",
+                                  "key": "analysed",
+                                  "value": "<boolean>"
+                                },
+                                {
+                                  "description": "Include the PGN moves.",
+                                  "key": "moves",
+                                  "value": "true"
+                                },
+                                {
+                                  "description": "Include the full PGN within the JSON response, in a `pgn` field. The response type must be set to `application/x-ndjson` by the request `Accept` header.",
+                                  "key": "pgnInJson",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Include the PGN tags.",
+                                  "key": "tags",
+                                  "value": "true"
+                                },
+                                {
+                                  "description": "Include clock status when available.\nEither as PGN comments: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\nOr in a `clocks` JSON field, as centisecond integers, depending on the response type.\n",
+                                  "key": "clocks",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Include analysis evaluations and comments, when available.\nEither as PGN comments: `12. Bxf6 { [%eval 0.23] } a3 { [%eval -1.09] }`\nOr in an `analysis` JSON field, depending on the response type.\n",
+                                  "key": "evals",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Include [accuracy percent](https://lichess.org/page/accuracy) of each player, when available. Only available in JSON.\n",
+                                  "key": "accuracy",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Include the opening name.\nExample: `[Opening \"King's Gambit Accepted, King's Knight Gambit\"]`\n",
+                                  "key": "opening",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Plies which mark the beginning of the middlegame and endgame.\nOnly available in JSON\n",
+                                  "key": "division",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Ongoing games are delayed by a few seconds ranging from 3 to 60 depending on the time control, as to prevent cheat bots from using this API.",
+                                  "key": "ongoing",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Include finished games. Set to `false` to only get ongoing games.",
+                                  "key": "finished",
+                                  "value": "true"
+                                },
+                                {
+                                  "description": "Insert textual annotations in the PGN about the opening, analysis variations, mistakes, and game termination.\nExample: `5... g4? { (-0.98 \u2192 0.60) Mistake. Best move was h6. } (5... h6 6. d4 Ne7 7. g3 d5 8. exd5 fxg3 9. hxg3 c6 10. dxc6)`\n",
+                                  "key": "literate",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Include the X-FEN notation of the last position of the game.\nThe response type must be set to `application/x-ndjson` by the request `Accept` header.\n",
+                                  "key": "lastFen",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Add a `bookmarked: true` JSON field when the logged in user has bookmarked the game.\nThe response type must be set to `application/x-ndjson` by the request `Accept` header.\n",
+                                  "key": "withBookmarked",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Sort order of the games.",
+                                  "key": "sort",
+                                  "value": "dateDesc"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "username"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/x-ndjson"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "<string>",
+                          "createdAt": "2026-07-28T02:06:47.000Z",
+                          "updatedAt": "2026-07-28T02:06:47.000Z",
+                          "uid": "35240-aca10efa-dddb-4894-b9e4-8e86ab353582"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:06:47.000Z",
+                      "updatedAt": "2026-07-28T02:06:47.000Z",
+                      "uid": "35240-9aec1ce9-6abe-4c0c-87d2-79e719cba7bf"
+                    }
+                  ],
+                  "id": "b1ce2d52-12e9-4d03-a03b-9c016846c733",
+                  "createdAt": "2026-07-28T02:06:47.000Z",
+                  "updatedAt": "2026-07-28T02:06:47.000Z",
+                  "uid": "35240-b1ce2d52-12e9-4d03-a03b-9c016846c733"
+                }
+              ],
+              "id": "43d47f50-a684-4428-b292-7f9a1418ab22",
+              "createdAt": "2026-07-28T02:06:47.000Z",
+              "updatedAt": "2026-07-28T02:06:47.000Z",
+              "uid": "35240-43d47f50-a684-4428-b292-7f9a1418ab22"
+            },
+            {
+              "name": "export",
+              "item": [
+                {
+                  "name": "_ids",
+                  "item": [
+                    {
+                      "name": "Export games by IDs",
+                      "id": "b377ee05-63b5-4321-b95a-22e1fe6258b2",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "text/plain"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "<string>"
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/games/export/_ids?moves=true&pgnInJson=false&tags=true&clocks=false&evals=false&accuracy=false&opening=false&division=false&literate=false",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "games",
+                            "export",
+                            "_ids"
+                          ],
+                          "query": [
+                            {
+                              "description": "Include the PGN moves.",
+                              "key": "moves",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Include the full PGN within the JSON response, in a `pgn` field.",
+                              "key": "pgnInJson",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include the PGN tags.",
+                              "key": "tags",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Include clock status when available.\nEither as PGN comments: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\nOr in a `clocks` JSON field, as centisecond integers, depending on the response type.\n",
+                              "key": "clocks",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include analysis evaluations and comments, when available.\nEither as PGN comments: `12. Bxf6 { [%eval 0.23] } a3 { [%eval -1.09] }`\nOr in an `analysis` JSON field, depending on the response type.\n",
+                              "key": "evals",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include [accuracy percent](https://lichess.org/page/accuracy) of each player, when available. Only available in JSON.\n",
+                              "key": "accuracy",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include the opening name.\nExample: `[Opening \"King's Gambit Accepted, King's Knight Gambit\"]`\n",
+                              "key": "opening",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Plies which mark the beginning of the middlegame and endgame.\nOnly available in JSON\n",
+                              "key": "division",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Insert textual annotations in the PGN about the opening, analysis variations, mistakes, and game termination.\nExample: `5... g4? { (-0.98 \u2192 0.60) Mistake. Best move was h6. } (5... h6 6. d4 Ne7 7. g3 d5 8. exd5 fxg3 9. hxg3 c6 10. dxc6)`\n",
+                              "key": "literate",
+                              "value": "false"
+                            }
+                          ]
+                        },
+                        "description": "Download games by IDs in PGN or [ndjson](#description/streaming-with-nd-json) format, depending on the request `Accept` header.\nGames are sorted by reverse chronological order (most recent first)\nThe method is `POST` so a longer list of IDs can be sent in the request body.\n300 IDs can be submitted.\nOngoing games are delayed by 3 moves, as to prevent cheat bots from using this API.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "5c840a52-2a54-4416-b2c1-b56c8c91ef69",
+                          "name": "The representation of the games.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "text/plain"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "<string>"
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/games/export/_ids?moves=true&pgnInJson=false&tags=true&clocks=false&evals=false&accuracy=false&opening=false&division=false&literate=false",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "games",
+                                "export",
+                                "_ids"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Include the PGN moves.",
+                                  "key": "moves",
+                                  "value": "true"
+                                },
+                                {
+                                  "description": "Include the full PGN within the JSON response, in a `pgn` field.",
+                                  "key": "pgnInJson",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Include the PGN tags.",
+                                  "key": "tags",
+                                  "value": "true"
+                                },
+                                {
+                                  "description": "Include clock status when available.\nEither as PGN comments: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\nOr in a `clocks` JSON field, as centisecond integers, depending on the response type.\n",
+                                  "key": "clocks",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Include analysis evaluations and comments, when available.\nEither as PGN comments: `12. Bxf6 { [%eval 0.23] } a3 { [%eval -1.09] }`\nOr in an `analysis` JSON field, depending on the response type.\n",
+                                  "key": "evals",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Include [accuracy percent](https://lichess.org/page/accuracy) of each player, when available. Only available in JSON.\n",
+                                  "key": "accuracy",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Include the opening name.\nExample: `[Opening \"King's Gambit Accepted, King's Knight Gambit\"]`\n",
+                                  "key": "opening",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Plies which mark the beginning of the middlegame and endgame.\nOnly available in JSON\n",
+                                  "key": "division",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Insert textual annotations in the PGN about the opening, analysis variations, mistakes, and game termination.\nExample: `5... g4? { (-0.98 \u2192 0.60) Mistake. Best move was h6. } (5... h6 6. d4 Ne7 7. g3 d5 8. exd5 fxg3 9. hxg3 c6 10. dxc6)`\n",
+                                  "key": "literate",
+                                  "value": "false"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "<string>",
+                          "createdAt": "2026-07-28T02:06:47.000Z",
+                          "updatedAt": "2026-07-28T02:06:47.000Z",
+                          "uid": "35240-5c840a52-2a54-4416-b2c1-b56c8c91ef69"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:06:47.000Z",
+                      "updatedAt": "2026-07-28T02:06:47.000Z",
+                      "uid": "35240-b377ee05-63b5-4321-b95a-22e1fe6258b2"
+                    }
+                  ],
+                  "id": "37315399-e220-420e-8d50-891f2acdea22",
+                  "createdAt": "2026-07-28T02:06:47.000Z",
+                  "updatedAt": "2026-07-28T02:06:47.000Z",
+                  "uid": "35240-37315399-e220-420e-8d50-891f2acdea22"
+                },
+                {
+                  "name": "imports",
+                  "item": [
+                    {
+                      "name": "Export your imported games",
+                      "id": "fff8e89a-2cf6-46af-9cad-d6370ee9854a",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://lichess.org/api/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://lichess.org/oauth",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/x-chess-pgn"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/games/export/imports",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "games",
+                            "export",
+                            "imports"
+                          ]
+                        },
+                        "description": "Download all games imported by you. Games are exported in PGN format."
+                      },
+                      "response": [
+                        {
+                          "id": "ee8d1aaf-41b0-4f35-bbea-56ad1bd6a540",
+                          "name": "Imported games in PGN format",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/x-chess-pgn"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/games/export/imports",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "games",
+                                "export",
+                                "imports"
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/x-chess-pgn"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "<string>",
+                          "createdAt": "2026-07-28T02:06:47.000Z",
+                          "updatedAt": "2026-07-28T02:06:47.000Z",
+                          "uid": "35240-ee8d1aaf-41b0-4f35-bbea-56ad1bd6a540"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:06:47.000Z",
+                      "updatedAt": "2026-07-28T02:06:47.000Z",
+                      "uid": "35240-fff8e89a-2cf6-46af-9cad-d6370ee9854a"
+                    }
+                  ],
+                  "id": "48018d67-ae19-4ddc-ab0a-ed7fe77593c8",
+                  "createdAt": "2026-07-28T02:06:47.000Z",
+                  "updatedAt": "2026-07-28T02:06:47.000Z",
+                  "uid": "35240-48018d67-ae19-4ddc-ab0a-ed7fe77593c8"
+                },
+                {
+                  "name": "bookmarks",
+                  "item": [
+                    {
+                      "name": "Export your bookmarked games",
+                      "id": "2258a60b-9f28-40a9-a9ef-ad0c12354b70",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://lichess.org/api/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://lichess.org/oauth",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/games/export/bookmarks?since=<integer>&until=<integer>&max=<integer>&moves=true&pgnInJson=false&tags=true&clocks=false&evals=false&accuracy=false&opening=false&division=false&literate=false&lastFen=false&sort=dateDesc",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "games",
+                            "export",
+                            "bookmarks"
+                          ],
+                          "query": [
+                            {
+                              "description": "Download games bookmarked since this timestamp. Defaults to account creation date.",
+                              "key": "since",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": "Download games bookmarked until this timestamp. Defaults to now.",
+                              "key": "until",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": "How many bookmarked games to download. Leave empty to download all bookmarked games.",
+                              "key": "max",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": "Include the PGN moves.",
+                              "key": "moves",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Include the full PGN within the JSON response, in a `pgn` field. The response type must be set to `application/x-ndjson` by the request `Accept` header.",
+                              "key": "pgnInJson",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include the PGN tags.",
+                              "key": "tags",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Include clock status when available.\nEither as PGN comments: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\nOr in a `clocks` JSON field, as centisecond integers, depending on the response type.\n",
+                              "key": "clocks",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include analysis evaluations and comments, when available.\nEither as PGN comments: `12. Bxf6 { [%eval 0.23] } a3 { [%eval -1.09] }`\nOr in an `analysis` JSON field, depending on the response type.\n",
+                              "key": "evals",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include [accuracy percent](https://lichess.org/page/accuracy) of each player, when available. Only available in JSON.\n",
+                              "key": "accuracy",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include the opening name.\nExample: `[Opening \"King's Gambit Accepted, King's Knight Gambit\"]`\n",
+                              "key": "opening",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Plies which mark the beginning of the middlegame and endgame.\nOnly available in JSON\n",
+                              "key": "division",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Insert textual annotations in the PGN about the opening, analysis variations, mistakes, and game termination.\nExample: `5... g4? { (-0.98 \u2192 0.60) Mistake. Best move was h6. } (5... h6 6. d4 Ne7 7. g3 d5 8. exd5 fxg3 9. hxg3 c6 10. dxc6)`\n",
+                              "key": "literate",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include the X-FEN notation of the last position of the game.\nThe response type must be set to `application/x-ndjson` by the request `Accept` header.\n",
+                              "key": "lastFen",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Sort order of the bookmarks.",
+                              "key": "sort",
+                              "value": "dateDesc"
+                            }
+                          ]
+                        },
+                        "description": "Download all games bookmarked by you, in PGN or [ndjson](#description/streaming-with-nd-json) format.\nGames are sorted by reverse chronological order (most recent first).\nWe recommend streaming the response, for it can be very long.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "e0526a7d-b7a3-40bb-9e1c-d77166fd2afa",
+                          "name": "The bookmarked games of the user.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/games/export/bookmarks?since=<integer>&until=<integer>&max=<integer>&moves=true&pgnInJson=false&tags=true&clocks=false&evals=false&accuracy=false&opening=false&division=false&literate=false&lastFen=false&sort=dateDesc",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "games",
+                                "export",
+                                "bookmarks"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Download games bookmarked since this timestamp. Defaults to account creation date.",
+                                  "key": "since",
+                                  "value": "<integer>"
+                                },
+                                {
+                                  "description": "Download games bookmarked until this timestamp. Defaults to now.",
+                                  "key": "until",
+                                  "value": "<integer>"
+                                },
+                                {
+                                  "description": "How many bookmarked games to download. Leave empty to download all bookmarked games.",
+                                  "key": "max",
+                                  "value": "<integer>"
+                                },
+                                {
+                                  "description": "Include the PGN moves.",
+                                  "key": "moves",
+                                  "value": "true"
+                                },
+                                {
+                                  "description": "Include the full PGN within the JSON response, in a `pgn` field. The response type must be set to `application/x-ndjson` by the request `Accept` header.",
+                                  "key": "pgnInJson",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Include the PGN tags.",
+                                  "key": "tags",
+                                  "value": "true"
+                                },
+                                {
+                                  "description": "Include clock status when available.\nEither as PGN comments: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\nOr in a `clocks` JSON field, as centisecond integers, depending on the response type.\n",
+                                  "key": "clocks",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Include analysis evaluations and comments, when available.\nEither as PGN comments: `12. Bxf6 { [%eval 0.23] } a3 { [%eval -1.09] }`\nOr in an `analysis` JSON field, depending on the response type.\n",
+                                  "key": "evals",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Include [accuracy percent](https://lichess.org/page/accuracy) of each player, when available. Only available in JSON.\n",
+                                  "key": "accuracy",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Include the opening name.\nExample: `[Opening \"King's Gambit Accepted, King's Knight Gambit\"]`\n",
+                                  "key": "opening",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Plies which mark the beginning of the middlegame and endgame.\nOnly available in JSON\n",
+                                  "key": "division",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Insert textual annotations in the PGN about the opening, analysis variations, mistakes, and game termination.\nExample: `5... g4? { (-0.98 \u2192 0.60) Mistake. Best move was h6. } (5... h6 6. d4 Ne7 7. g3 d5 8. exd5 fxg3 9. hxg3 c6 10. dxc6)`\n",
+                                  "key": "literate",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Include the X-FEN notation of the last position of the game.\nThe response type must be set to `application/x-ndjson` by the request `Accept` header.\n",
+                                  "key": "lastFen",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Sort order of the bookmarks.",
+                                  "key": "sort",
+                                  "value": "dateDesc"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "<string>",
+                          "createdAt": "2026-07-28T02:06:47.000Z",
+                          "updatedAt": "2026-07-28T02:06:47.000Z",
+                          "uid": "35240-e0526a7d-b7a3-40bb-9e1c-d77166fd2afa"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:06:47.000Z",
+                      "updatedAt": "2026-07-28T02:06:47.000Z",
+                      "uid": "35240-2258a60b-9f28-40a9-a9ef-ad0c12354b70"
+                    }
+                  ],
+                  "id": "d5740028-9cc0-44d7-8e74-a9d0700f15b9",
+                  "createdAt": "2026-07-28T02:06:47.000Z",
+                  "updatedAt": "2026-07-28T02:06:47.000Z",
+                  "uid": "35240-d5740028-9cc0-44d7-8e74-a9d0700f15b9"
+                }
+              ],
+              "id": "91304d6e-adb2-4625-be7e-b2c66fdcb944",
+              "createdAt": "2026-07-28T02:06:47.000Z",
+              "updatedAt": "2026-07-28T02:06:47.000Z",
+              "uid": "35240-91304d6e-adb2-4625-be7e-b2c66fdcb944"
+            }
+          ],
+          "id": "472a9be8-cedf-40a7-b5da-20beea78b218",
+          "createdAt": "2026-07-28T02:06:47.000Z",
+          "updatedAt": "2026-07-28T02:06:47.000Z",
+          "uid": "35240-472a9be8-cedf-40a7-b5da-20beea78b218"
+        },
+        {
+          "name": "stream",
+          "item": [
+            {
+              "name": "games-by-users",
+              "item": [
+                {
+                  "name": "Stream games of users",
+                  "id": "ece35005-5ddc-409c-b990-99950b03a90b",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "text/plain"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/x-ndjson"
+                      }
+                    ],
+                    "body": {
+                      "mode": "raw",
+                      "raw": "<string>"
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/api/stream/games-by-users?withCurrentGames=false",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "stream",
+                        "games-by-users"
+                      ],
+                      "query": [
+                        {
+                          "description": "Include the already started games at the beginning of the stream.",
+                          "key": "withCurrentGames",
+                          "value": "false"
+                        }
+                      ]
+                    },
+                    "description": "Stream the games played between a list of users, in real time.\nOnly games where **both players** are part of the list are included.\nThe stream emits an event each time a game is started or finished.\nTo also get all current ongoing games at the beginning of the stream, use the `withCurrentGames` flag.\nGames are streamed as [ndjson](#description/streaming-with-nd-json).\nMaximum number of users: 300.\nThe method is `POST` so a longer list of IDs can be sent in the request body.\n"
+                  },
+                  "response": [
+                    {
+                      "id": "31965760-e4c6-4dc7-9e8a-6494b69165ad",
+                      "name": "The stream of the games played between the users.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "text/plain"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/x-ndjson"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "<string>"
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/stream/games-by-users?withCurrentGames=false",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "stream",
+                            "games-by-users"
+                          ],
+                          "query": [
+                            {
+                              "description": "Include the already started games at the beginning of the stream.",
+                              "key": "withCurrentGames",
+                              "value": "false"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/x-ndjson"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Access-Control-Allow-Origin",
+                          "value": "'*'"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "[\n  {\n    \"id\": \"<string>\",\n    \"rated\": \"<boolean>\",\n    \"variant\": \"standard\",\n    \"speed\": \"ultraBullet\",\n    \"perf\": \"threeCheck\",\n    \"createdAt\": \"<integer>\",\n    \"status\": 10,\n    \"statusName\": \"insufficientMaterialClaim\",\n    \"clock\": {\n      \"initial\": \"<integer>\",\n      \"increment\": \"<integer>\",\n      \"totalTime\": \"<integer>\"\n    },\n    \"players\": {\n      \"white\": {\n        \"userId\": \"<string>\",\n        \"rating\": \"<integer>\"\n      },\n      \"black\": {\n        \"userId\": \"<string>\",\n        \"rating\": \"<integer>\"\n      }\n    },\n    \"winner\": \"black\"\n  },\n  {\n    \"id\": \"<string>\",\n    \"rated\": \"<boolean>\",\n    \"variant\": \"standard\",\n    \"speed\": \"correspondence\",\n    \"perf\": \"kingOfTheHill\",\n    \"createdAt\": \"<integer>\",\n    \"status\": 35,\n    \"statusName\": \"outoftime\",\n    \"clock\": {\n      \"initial\": \"<integer>\",\n      \"increment\": \"<integer>\",\n      \"totalTime\": \"<integer>\"\n    },\n    \"players\": {\n      \"white\": {\n        \"userId\": \"<string>\",\n        \"rating\": \"<integer>\"\n      },\n      \"black\": {\n        \"userId\": \"<string>\",\n        \"rating\": \"<integer>\"\n      }\n    },\n    \"winner\": \"black\"\n  }\n]",
+                      "createdAt": "2026-07-28T02:06:47.000Z",
+                      "updatedAt": "2026-07-28T02:06:47.000Z",
+                      "uid": "35240-31965760-e4c6-4dc7-9e8a-6494b69165ad"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:06:47.000Z",
+                  "updatedAt": "2026-07-28T02:06:47.000Z",
+                  "uid": "35240-ece35005-5ddc-409c-b990-99950b03a90b"
+                }
+              ],
+              "id": "aa72deba-4e3f-4d04-a1cd-2ff287602bce",
+              "createdAt": "2026-07-28T02:06:47.000Z",
+              "updatedAt": "2026-07-28T02:06:47.000Z",
+              "uid": "35240-aa72deba-4e3f-4d04-a1cd-2ff287602bce"
+            },
+            {
+              "name": "games",
+              "item": [
+                {
+                  "name": "{streamId}",
+                  "item": [
+                    {
+                      "name": "add",
+                      "item": [
+                        {
+                          "name": "Add game IDs to stream",
+                          "id": "56a0d9bb-22fe-4c50-ab6b-346f36e3d0bc",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "text/plain"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "<string>"
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/stream/games/:streamId/add",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "stream",
+                                "games",
+                                ":streamId",
+                                "add"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "f6b0e1b2-b5aa-4e29-88c1-bcf72555e633",
+                                  "key": "streamId",
+                                  "value": "<string>",
+                                  "description": "(Required) "
+                                }
+                              ]
+                            },
+                            "description": "Add new game IDs for [an existing stream](#tag/games/POST/api/stream/games/{streamId}) to watch.\nThe stream will immediately outputs the games that already exists, then emit an event each time a game is started or finished.\n"
+                          },
+                          "response": [
+                            {
+                              "id": "b9fe16c2-03da-4f74-bc7e-8d8683ed8024",
+                              "name": "The game IDs have been added to the stream.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "text/plain"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "raw",
+                                  "raw": "<string>"
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/stream/games/:streamId/add",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "stream",
+                                    "games",
+                                    ":streamId",
+                                    "add"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "streamId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                },
+                                {
+                                  "disabled": false,
+                                  "description": {
+                                    "content": "",
+                                    "type": "text/plain"
+                                  },
+                                  "key": "Access-Control-Allow-Origin",
+                                  "value": "'*'"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"ok\": \"<boolean>\"\n}",
+                              "createdAt": "2026-07-28T02:06:47.000Z",
+                              "updatedAt": "2026-07-28T02:06:47.000Z",
+                              "uid": "35240-b9fe16c2-03da-4f74-bc7e-8d8683ed8024"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T02:06:47.000Z",
+                          "updatedAt": "2026-07-28T02:06:47.000Z",
+                          "uid": "35240-56a0d9bb-22fe-4c50-ab6b-346f36e3d0bc"
+                        }
+                      ],
+                      "id": "b6171698-ccaa-4a3d-bb27-402ec0a4bf00",
+                      "createdAt": "2026-07-28T02:06:47.000Z",
+                      "updatedAt": "2026-07-28T02:06:47.000Z",
+                      "uid": "35240-b6171698-ccaa-4a3d-bb27-402ec0a4bf00"
+                    },
+                    {
+                      "name": "Stream games by IDs",
+                      "id": "a538d8d5-e584-4812-be2d-9c444ee875da",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "text/plain"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/x-ndjson"
+                          }
+                        ],
+                        "body": {
+                          "mode": "raw",
+                          "raw": "<string>"
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/stream/games/:streamId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "stream",
+                            "games",
+                            ":streamId"
+                          ],
+                          "variable": [
+                            {
+                              "id": "1d3de7f2-48ae-4984-ad1b-d896a78eefd4",
+                              "key": "streamId",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "Creates a stream of games from an arbitrary streamId, and a list of game IDs.\nThe stream first outputs the games that already exists, then emits an event each time a game is started or finished.\nGames are streamed as [ndjson](#description/streaming-with-nd-json).\nMaximum number of games: 500 for anonymous requests, or 1000 for [OAuth2 authenticated](#description/authentication) requests.\nWhile the stream is open, it is possible to [add new game IDs to watch](#tag/games/POST/api/stream/games/{streamId}/add).\n"
+                      },
+                      "response": [
+                        {
+                          "id": "ee3e79c4-b3a7-4069-bbf8-9d4e94f3bf67",
+                          "name": "The stream of the games matching the requested IDs.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "text/plain"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/x-ndjson"
+                              }
+                            ],
+                            "body": {
+                              "mode": "raw",
+                              "raw": "<string>"
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/stream/games/:streamId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "stream",
+                                "games",
+                                ":streamId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "streamId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/x-ndjson"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "[\n  {\n    \"id\": \"<string>\",\n    \"rated\": \"<boolean>\",\n    \"variant\": \"standard\",\n    \"speed\": \"ultraBullet\",\n    \"perf\": \"threeCheck\",\n    \"createdAt\": \"<integer>\",\n    \"status\": 10,\n    \"statusName\": \"insufficientMaterialClaim\",\n    \"clock\": {\n      \"initial\": \"<integer>\",\n      \"increment\": \"<integer>\",\n      \"totalTime\": \"<integer>\"\n    },\n    \"players\": {\n      \"white\": {\n        \"userId\": \"<string>\",\n        \"rating\": \"<integer>\"\n      },\n      \"black\": {\n        \"userId\": \"<string>\",\n        \"rating\": \"<integer>\"\n      }\n    },\n    \"winner\": \"black\"\n  },\n  {\n    \"id\": \"<string>\",\n    \"rated\": \"<boolean>\",\n    \"variant\": \"standard\",\n    \"speed\": \"correspondence\",\n    \"perf\": \"kingOfTheHill\",\n    \"createdAt\": \"<integer>\",\n    \"status\": 35,\n    \"statusName\": \"outoftime\",\n    \"clock\": {\n      \"initial\": \"<integer>\",\n      \"increment\": \"<integer>\",\n      \"totalTime\": \"<integer>\"\n    },\n    \"players\": {\n      \"white\": {\n        \"userId\": \"<string>\",\n        \"rating\": \"<integer>\"\n      },\n      \"black\": {\n        \"userId\": \"<string>\",\n        \"rating\": \"<integer>\"\n      }\n    },\n    \"winner\": \"black\"\n  }\n]",
+                          "createdAt": "2026-07-28T02:06:47.000Z",
+                          "updatedAt": "2026-07-28T02:06:47.000Z",
+                          "uid": "35240-ee3e79c4-b3a7-4069-bbf8-9d4e94f3bf67"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:06:47.000Z",
+                      "updatedAt": "2026-07-28T02:06:47.000Z",
+                      "uid": "35240-a538d8d5-e584-4812-be2d-9c444ee875da"
+                    }
+                  ],
+                  "id": "9ba5f949-95a6-4126-b7df-1117829f7662",
+                  "createdAt": "2026-07-28T02:06:47.000Z",
+                  "updatedAt": "2026-07-28T02:06:47.000Z",
+                  "uid": "35240-9ba5f949-95a6-4126-b7df-1117829f7662"
+                }
+              ],
+              "id": "8a155c1a-1370-492d-a3e0-18dee99a1d5a",
+              "createdAt": "2026-07-28T02:06:47.000Z",
+              "updatedAt": "2026-07-28T02:06:47.000Z",
+              "uid": "35240-8a155c1a-1370-492d-a3e0-18dee99a1d5a"
+            },
+            {
+              "name": "game",
+              "item": [
+                {
+                  "name": "{id}",
+                  "item": [
+                    {
+                      "name": "Stream moves of a game",
+                      "id": "2be6bf36-048b-4737-9a2b-1f12fb89460b",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/x-ndjson"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/stream/game/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "stream",
+                            "game",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "id": "41bb8a53-eb80-4cb7-87fa-cf6a2abedb6d",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "Stream positions and moves of any ongoing game, in [ndjson](#description/streaming-with-nd-json).\nA description of the game is sent as a first message.\nThen a message is sent each time a move is played.\nFinally, a description of the game is sent when it finishes, and the stream is closed.\nOngoing games are delayed by 3 moves, as to prevent cheat bots from using this API.\nNo more than 8 game streams can be opened at the same time from the same IP address.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "3c825d96-2ab0-4a76-b0f5-1a9919c7f85c",
+                          "name": "The stream of the game moves.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/x-ndjson"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/stream/game/:id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "stream",
+                                "game",
+                                ":id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/x-ndjson"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "[\n  {\n    \"id\": \"<string>\",\n    \"variant\": {\n      \"key\": \"standard\",\n      \"name\": \"<string>\",\n      \"short\": \"<string>\"\n    },\n    \"speed\": \"rapid\",\n    \"perf\": \"blitz\",\n    \"rated\": \"<boolean>\",\n    \"initialFen\": \"<string>\",\n    \"fen\": \"<string>\",\n    \"player\": \"white\",\n    \"turns\": \"<integer>\",\n    \"startedAtTurn\": \"<integer>\",\n    \"source\": \"swiss\",\n    \"status\": {\n      \"id\": 30,\n      \"name\": \"draw\"\n    },\n    \"createdAt\": \"<integer>\",\n    \"lastMove\": \"<string>\",\n    \"players\": {\n      \"white\": {\n        \"user\": {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"flair\": \"<string>\",\n          \"title\": \"CM\",\n          \"patron\": \"<boolean>\",\n          \"patronColor\": \"<integer>\"\n        },\n        \"rating\": \"<integer>\",\n        \"ratingDiff\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"provisional\": \"<boolean>\",\n        \"aiLevel\": \"<integer>\",\n        \"analysis\": {\n          \"inaccuracy\": \"<integer>\",\n          \"mistake\": \"<integer>\",\n          \"blunder\": \"<integer>\",\n          \"acpl\": \"<integer>\",\n          \"accuracy\": \"<integer>\"\n        },\n        \"team\": \"<string>\"\n      },\n      \"black\": {\n        \"user\": {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"flair\": \"<string>\",\n          \"title\": \"NM\",\n          \"patron\": \"<boolean>\",\n          \"patronColor\": \"<integer>\"\n        },\n        \"rating\": \"<integer>\",\n        \"ratingDiff\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"provisional\": \"<boolean>\",\n        \"aiLevel\": \"<integer>\",\n        \"analysis\": {\n          \"inaccuracy\": \"<integer>\",\n          \"mistake\": \"<integer>\",\n          \"blunder\": \"<integer>\",\n          \"acpl\": \"<integer>\",\n          \"accuracy\": \"<integer>\"\n        },\n        \"team\": \"<string>\"\n      }\n    }\n  },\n  {\n    \"id\": \"<string>\",\n    \"variant\": {\n      \"key\": \"standard\",\n      \"name\": \"<string>\",\n      \"short\": \"<string>\"\n    },\n    \"speed\": \"rapid\",\n    \"perf\": \"correspondence\",\n    \"rated\": \"<boolean>\",\n    \"initialFen\": \"<string>\",\n    \"fen\": \"<string>\",\n    \"player\": \"white\",\n    \"turns\": \"<integer>\",\n    \"startedAtTurn\": \"<integer>\",\n    \"source\": \"lobby\",\n    \"status\": {\n      \"id\": 25,\n      \"name\": \"timeout\"\n    },\n    \"createdAt\": \"<integer>\",\n    \"lastMove\": \"<string>\",\n    \"players\": {\n      \"white\": {\n        \"user\": {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"flair\": \"<string>\",\n          \"title\": \"WCM\",\n          \"patron\": \"<boolean>\",\n          \"patronColor\": \"<integer>\"\n        },\n        \"rating\": \"<integer>\",\n        \"ratingDiff\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"provisional\": \"<boolean>\",\n        \"aiLevel\": \"<integer>\",\n        \"analysis\": {\n          \"inaccuracy\": \"<integer>\",\n          \"mistake\": \"<integer>\",\n          \"blunder\": \"<integer>\",\n          \"acpl\": \"<integer>\",\n          \"accuracy\": \"<integer>\"\n        },\n        \"team\": \"<string>\"\n      },\n      \"black\": {\n        \"user\": {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"flair\": \"<string>\",\n          \"title\": \"NM\",\n          \"patron\": \"<boolean>\",\n          \"patronColor\": \"<integer>\"\n        },\n        \"rating\": \"<integer>\",\n        \"ratingDiff\": \"<integer>\",\n        \"name\": \"<string>\",\n        \"provisional\": \"<boolean>\",\n        \"aiLevel\": \"<integer>\",\n        \"analysis\": {\n          \"inaccuracy\": \"<integer>\",\n          \"mistake\": \"<integer>\",\n          \"blunder\": \"<integer>\",\n          \"acpl\": \"<integer>\",\n          \"accuracy\": \"<integer>\"\n        },\n        \"team\": \"<string>\"\n      }\n    }\n  }\n]",
+                          "createdAt": "2026-07-28T02:06:47.000Z",
+                          "updatedAt": "2026-07-28T02:06:47.000Z",
+                          "uid": "35240-3c825d96-2ab0-4a76-b0f5-1a9919c7f85c"
+                        },
+                        {
+                          "id": "77b4b5c0-e9b5-4360-9190-44106d24fff4",
+                          "name": "Too many streams opened at the same time from this IP.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/stream/game/:id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "stream",
+                                "game",
+                                ":id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Too Many Requests",
+                          "code": 429,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"error\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:06:47.000Z",
+                          "updatedAt": "2026-07-28T02:06:47.000Z",
+                          "uid": "35240-77b4b5c0-e9b5-4360-9190-44106d24fff4"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:06:47.000Z",
+                      "updatedAt": "2026-07-28T02:06:47.000Z",
+                      "uid": "35240-2be6bf36-048b-4737-9a2b-1f12fb89460b"
+                    }
+                  ],
+                  "id": "523e651a-28fa-4757-b31c-906acf4da7ea",
+                  "createdAt": "2026-07-28T02:06:47.000Z",
+                  "updatedAt": "2026-07-28T02:06:47.000Z",
+                  "uid": "35240-523e651a-28fa-4757-b31c-906acf4da7ea"
+                }
+              ],
+              "id": "46910860-38c9-4282-9359-c5c052e4beac",
+              "createdAt": "2026-07-28T02:06:47.000Z",
+              "updatedAt": "2026-07-28T02:06:47.000Z",
+              "uid": "35240-46910860-38c9-4282-9359-c5c052e4beac"
+            }
+          ],
+          "id": "282d1438-06e5-42d6-8b1b-ba316f52c176",
+          "createdAt": "2026-07-28T02:06:47.000Z",
+          "updatedAt": "2026-07-28T02:06:47.000Z",
+          "uid": "35240-282d1438-06e5-42d6-8b1b-ba316f52c176"
+        },
+        {
+          "name": "account",
+          "item": [
+            {
+              "name": "playing",
+              "item": [
+                {
+                  "name": "Get my ongoing games",
+                  "id": "1e0fd17c-5d8c-4503-899b-383b9e17dbf6",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "oauth2",
+                      "oauth2": [
+                        {
+                          "key": "scope",
+                          "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                          "type": "string"
+                        },
+                        {
+                          "key": "accessTokenUrl",
+                          "value": "https://lichess.org/api/token",
+                          "type": "string"
+                        },
+                        {
+                          "key": "authUrl",
+                          "value": "https://lichess.org/oauth",
+                          "type": "string"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "authorization_code",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/account/playing?nb=9",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "account",
+                        "playing"
+                      ],
+                      "query": [
+                        {
+                          "description": "Max number of games to fetch",
+                          "key": "nb",
+                          "value": "9"
+                        }
+                      ]
+                    },
+                    "description": "Get the ongoing games of the current user.\nReal-time and correspondence games are included.\nThe most urgent games are listed first.\n"
+                  },
+                  "response": [
+                    {
+                      "id": "b5e954cc-63d8-4ea5-8f95-a4aa504357db",
+                      "name": "The ongoing games of the logged in user.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/account/playing?nb=9",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "account",
+                            "playing"
+                          ],
+                          "query": [
+                            {
+                              "description": "Max number of games to fetch",
+                              "key": "nb",
+                              "value": "9"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Access-Control-Allow-Origin",
+                          "value": "'*'"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"nowPlaying\": [\n    {\n      \"gameId\": \"<string>\",\n      \"fullId\": \"<string>\",\n      \"color\": \"black\",\n      \"fen\": \"<string>\",\n      \"hasMoved\": \"<boolean>\",\n      \"isMyTurn\": \"<boolean>\",\n      \"lastMove\": \"<string>\",\n      \"opponent\": {\n        \"id\": \"<string>\",\n        \"username\": \"<string>\",\n        \"rating\": \"<integer>\",\n        \"ratingDiff\": \"<integer>\",\n        \"ai\": \"<integer>\"\n      },\n      \"perf\": \"threeCheck\",\n      \"rated\": \"<boolean>\",\n      \"secondsLeft\": \"<integer>\",\n      \"source\": \"import\",\n      \"speed\": \"ultraBullet\",\n      \"variant\": {\n        \"key\": \"standard\",\n        \"name\": \"<string>\",\n        \"short\": \"<string>\"\n      },\n      \"status\": \"unknownFinish\",\n      \"tournamentId\": \"<string>\",\n      \"swissId\": \"<string>\",\n      \"winner\": \"white\",\n      \"ratingDiff\": \"<integer>\"\n    },\n    {\n      \"gameId\": \"<string>\",\n      \"fullId\": \"<string>\",\n      \"color\": \"white\",\n      \"fen\": \"<string>\",\n      \"hasMoved\": \"<boolean>\",\n      \"isMyTurn\": \"<boolean>\",\n      \"lastMove\": \"<string>\",\n      \"opponent\": {\n        \"id\": \"<string>\",\n        \"username\": \"<string>\",\n        \"rating\": \"<integer>\",\n        \"ratingDiff\": \"<integer>\",\n        \"ai\": \"<integer>\"\n      },\n      \"perf\": \"correspondence\",\n      \"rated\": \"<boolean>\",\n      \"secondsLeft\": \"<integer>\",\n      \"source\": \"arena\",\n      \"speed\": \"rapid\",\n      \"variant\": {\n        \"key\": \"standard\",\n        \"name\": \"<string>\",\n        \"short\": \"<string>\"\n      },\n      \"status\": \"noStart\",\n      \"tournamentId\": \"<string>\",\n      \"swissId\": \"<string>\",\n      \"winner\": \"black\",\n      \"ratingDiff\": \"<integer>\"\n    }\n  ]\n}",
+                      "createdAt": "2026-07-28T02:06:47.000Z",
+                      "updatedAt": "2026-07-28T02:06:47.000Z",
+                      "uid": "35240-b5e954cc-63d8-4ea5-8f95-a4aa504357db"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:06:47.000Z",
+                  "updatedAt": "2026-07-28T02:06:47.000Z",
+                  "uid": "35240-1e0fd17c-5d8c-4503-899b-383b9e17dbf6"
+                }
+              ],
+              "id": "20f971f9-06aa-4092-91a3-e2ce762284f8",
+              "createdAt": "2026-07-28T02:06:47.000Z",
+              "updatedAt": "2026-07-28T02:06:47.000Z",
+              "uid": "35240-20f971f9-06aa-4092-91a3-e2ce762284f8"
+            }
+          ],
+          "id": "75d28e24-887a-44b4-9871-40f543fe803f",
+          "createdAt": "2026-07-28T02:06:47.000Z",
+          "updatedAt": "2026-07-28T02:06:47.000Z",
+          "uid": "35240-75d28e24-887a-44b4-9871-40f543fe803f"
+        },
+        {
+          "name": "import",
+          "item": [
+            {
+              "name": "Import one game",
+              "id": "0ad96e5e-6b5c-4023-bf8d-8553bd18601e",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "scope",
+                      "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                      "type": "string"
+                    },
+                    {
+                      "key": "accessTokenUrl",
+                      "value": "https://lichess.org/api/token",
+                      "type": "string"
+                    },
+                    {
+                      "key": "authUrl",
+                      "value": "https://lichess.org/oauth",
+                      "type": "string"
+                    },
+                    {
+                      "key": "grant_type",
+                      "value": "authorization_code",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/x-www-form-urlencoded"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "description": "The PGN. It can contain only one game. Most standard tags are supported.",
+                      "key": "pgn",
+                      "value": "<string>"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/import",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "import"
+                  ]
+                },
+                "description": "Import a game from PGN. See <https://lichess.org/paste>.\nRate limiting: 200 games per hour for OAuth requests, 100 games per hour for anonymous requests.\nTo broadcast ongoing games, consider [pushing to a broadcast instead](#tag/broadcasts/POST/api/broadcast/round/{broadcastRoundId}/push).\nTo analyse a position or a line, just construct an analysis board URL (most standard tags supported if URL-encoded):\n[https://lichess.org/analysis/pgn/e4_e5_Nf3_Nc6_Bc4_Bc5_Bxf7+](https://lichess.org/analysis/pgn/e4_e5_Nf3_Nc6_Bc4_Bc5_Bxf7+)\n"
+              },
+              "response": [
+                {
+                  "id": "775127e3-d5d7-4493-9256-3b9d293fca20",
+                  "name": "The game was successfully imported.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "The PGN. It can contain only one game. Most standard tags are supported.",
+                          "key": "pgn",
+                          "value": "<string>"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/api/import",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "import"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "Access-Control-Allow-Origin",
+                      "value": "'*'"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"url\": \"<uri>\"\n}",
+                  "createdAt": "2026-07-28T02:06:47.000Z",
+                  "updatedAt": "2026-07-28T02:06:47.000Z",
+                  "uid": "35240-775127e3-d5d7-4493-9256-3b9d293fca20"
+                }
+              ],
+              "createdAt": "2026-07-28T02:06:47.000Z",
+              "updatedAt": "2026-07-28T02:06:47.000Z",
+              "uid": "35240-0ad96e5e-6b5c-4023-bf8d-8553bd18601e"
+            }
+          ],
+          "id": "b36438f3-4666-4b09-9221-f3714e755a79",
+          "createdAt": "2026-07-28T02:06:47.000Z",
+          "updatedAt": "2026-07-28T02:06:47.000Z",
+          "uid": "35240-b36438f3-4666-4b09-9221-f3714e755a79"
+        }
+      ],
+      "id": "71889000-ebb5-4661-9f1d-5db35a090a4b",
+      "createdAt": "2026-07-28T02:06:47.000Z",
+      "updatedAt": "2026-07-28T02:06:47.000Z",
+      "uid": "35240-71889000-ebb5-4661-9f1d-5db35a090a4b"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://lichess.org"
+    }
+  ]
+}

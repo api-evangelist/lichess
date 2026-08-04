@@ -1,0 +1,3064 @@
+{
+  "info": {
+    "_postman_id": "6e9296b4-6d61-4521-babe-19c51b2a456b",
+    "name": "Lichess.org API reference Account Tournaments (Arena) API",
+    "description": "# Introduction\nWelcome to the reference for the Lichess API! Lichess is free/libre,\nopen-source chess server powered by volunteers and donations.\n- Get help in the [Lichess Discord channel](https://discord.gg/lichess)\n- API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)\n- API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)\n- [Contribute to this documentation on Github](https://github.com/lichess-org/api)\n- Check out [Lichess widgets to embed in your website](https://lichess.org/developers)\n- [Download all Lichess rated games](https://database.lichess.org/)\n- [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)\n- [Download all evaluated positions](https://database.lichess.org/#evals)\n\n## Endpoint\nAll requests go to `https://lichess.org` (unless otherwise specified).\n\n## Clients\n- [Python general API](https://github.com/lichess-org/berserk)\n- [MicroPython general API](https://github.com/mkomon/uberserk)\n- [Python general API - async](https://pypi.org/project/async-lichess-sdk)\n- [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)\n- [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)\n- [Java general API](https://github.com/tors42/chariot)\n- [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)\n- [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)\n- [.NET general API](https://github.com/Dblike/LichessSharp)\n\n## Rate limiting\nAll requests are rate limited using various strategies,\nto ensure the API remains responsive for everyone.\nOnly make one request at a time.\nIf you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),\nyou have exceded one of the rate limits.\nIn most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.\nReduce your request frequency before retrying.\n\n## Streaming with ND-JSON\nSome API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.\n\nHere's a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.\n\n## Authentication\n### Which authentication method is right for me?\n[Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)\n\n### Personal Access Token\nPersonal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.\n- [Generate a personal access token](https://lichess.org/account/oauth/token)\n- `curl https://lichess.org/api/account -H \"Authorization: Bearer {token}\"`\n- [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)\n\n### Token Security\n- Keep your tokens secret. Do not share them in public repositories or public forums.\n- Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens' scope). You remain responsible for all activities on your account.\n- Do not hardcode tokens in your application's code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.\n- If you suspect a token has been compromised, revoke it immediately.\n\nTo see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).\n\n### Authorization Code Flow with PKCE\nThe authorization code flow with PKCE allows your users to **login with Lichess**.\nLichess supports unregistered and public clients (no client authentication, choose any unique client id).\nThe only accepted code challenge method is `S256`.\nAccess tokens are long-lived (expect one year), unless they are revoked.\nRefresh tokens are not supported.\n\nSee the [documentation for the OAuth endpoints](#tag/OAuth) or\nthe [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.\n\n- [Demo app](https://lichess-org.github.io/api-demo/)\n- [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)\n- [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)\n- [Java example](https://github.com/tors42/lichess-oauth-pkce-app)\n- [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)\n\n#### Real life examples\n- [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))\n- [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))\n- [English Chess Federation](https://ecf.octoknight.com/)\n- [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)\n\n### Token format\nAccess tokens and authorization codes match `^[A-Za-z0-9_]+$`.\nThe length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.\nBy convention tokens have a recognizable prefix, but do not rely on this.\n\n\nContact Support:\n Name: Lichess.org API\n Email: contact@lichess.org",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:07:00.000Z",
+    "updatedAt": "2026-07-28T02:07:00.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-6e9296b4-6d61-4521-babe-19c51b2a456b"
+  },
+  "item": [
+    {
+      "name": "api",
+      "item": [
+        {
+          "name": "tournament",
+          "item": [
+            {
+              "name": "{id}",
+              "item": [
+                {
+                  "name": "join",
+                  "item": [
+                    {
+                      "name": "Join an Arena tournament",
+                      "id": "1c8570bb-4677-45b1-9ee1-1d91fb0a694a",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://lichess.org/api/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://lichess.org/oauth",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "The tournament password, if one is required.\nCan also be a [user-specific entry code](https://github.com/lichess-org/api/tree/master/example/tournament-entry-code)\ngenerated and shared by the organizer.\n",
+                              "key": "password",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "The team to join the tournament with, for team battle tournaments",
+                              "key": "team",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "If the tournament is started, attempt to pair the user,\neven if they are not connected to the tournament page.\nThis expires after one minute, to avoid pairing a user who is long gone.\nYou may call \"join\" again to extend the waiting.\n",
+                              "key": "pairMeAsap",
+                              "value": "false"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/tournament/:id/join",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "tournament",
+                            ":id",
+                            "join"
+                          ],
+                          "variable": [
+                            {
+                              "id": "7e0ec876-e4fd-4fd3-9575-78abae983c77",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) The tournament ID."
+                            }
+                          ]
+                        },
+                        "description": "Join an Arena tournament, possibly with a password and/or a team.\nAlso unpauses if you had previously [paused](#tag/arena-tournaments/POST/api/tournament/{id}/withdraw) the tournament.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "c52653e6-2d2b-404d-9c7d-f3478eda2297",
+                          "name": "The tournament was successfully joined.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "urlencoded",
+                              "urlencoded": [
+                                {
+                                  "description": "The tournament password, if one is required.\nCan also be a [user-specific entry code](https://github.com/lichess-org/api/tree/master/example/tournament-entry-code)\ngenerated and shared by the organizer.\n",
+                                  "key": "password",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "The team to join the tournament with, for team battle tournaments",
+                                  "key": "team",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "If the tournament is started, attempt to pair the user,\neven if they are not connected to the tournament page.\nThis expires after one minute, to avoid pairing a user who is long gone.\nYou may call \"join\" again to extend the waiting.\n",
+                                  "key": "pairMeAsap",
+                                  "value": "false"
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/tournament/:id/join",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "tournament",
+                                ":id",
+                                "join"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"ok\": \"<boolean>\"\n}",
+                          "createdAt": "2026-07-28T02:07:01.000Z",
+                          "updatedAt": "2026-07-28T02:07:01.000Z",
+                          "uid": "35240-c52653e6-2d2b-404d-9c7d-f3478eda2297"
+                        },
+                        {
+                          "id": "729c9f60-31f8-4312-8f33-a886493a826a",
+                          "name": "Joining the tournament failed.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "urlencoded",
+                              "urlencoded": [
+                                {
+                                  "description": "The tournament password, if one is required.\nCan also be a [user-specific entry code](https://github.com/lichess-org/api/tree/master/example/tournament-entry-code)\ngenerated and shared by the organizer.\n",
+                                  "key": "password",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "The team to join the tournament with, for team battle tournaments",
+                                  "key": "team",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "If the tournament is started, attempt to pair the user,\neven if they are not connected to the tournament page.\nThis expires after one minute, to avoid pairing a user who is long gone.\nYou may call \"join\" again to extend the waiting.\n",
+                                  "key": "pairMeAsap",
+                                  "value": "false"
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/tournament/:id/join",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "tournament",
+                                ":id",
+                                "join"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"error\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:07:01.000Z",
+                          "updatedAt": "2026-07-28T02:07:01.000Z",
+                          "uid": "35240-729c9f60-31f8-4312-8f33-a886493a826a"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:07:00.000Z",
+                      "updatedAt": "2026-07-28T02:07:00.000Z",
+                      "uid": "35240-1c8570bb-4677-45b1-9ee1-1d91fb0a694a"
+                    }
+                  ],
+                  "id": "532f5350-9f71-4ffa-99fc-e07514f82007",
+                  "createdAt": "2026-07-28T02:07:00.000Z",
+                  "updatedAt": "2026-07-28T02:07:00.000Z",
+                  "uid": "35240-532f5350-9f71-4ffa-99fc-e07514f82007"
+                },
+                {
+                  "name": "withdraw",
+                  "item": [
+                    {
+                      "name": "Pause or leave an Arena tournament",
+                      "id": "9fcb207e-f71c-468e-b268-a5c2722c1581",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://lichess.org/api/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://lichess.org/oauth",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/tournament/:id/withdraw",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "tournament",
+                            ":id",
+                            "withdraw"
+                          ],
+                          "variable": [
+                            {
+                              "id": "743005b3-636e-4c5e-9a48-4245dfe42d94",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) The tournament ID."
+                            }
+                          ]
+                        },
+                        "description": "Leave a future Arena tournament, or take a break on an ongoing Arena tournament.\nIt's possible to join again later. Points and streaks are preserved.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "26304618-3d96-4780-a04d-450d8795c3bc",
+                          "name": "The tournament was successfully paused or left.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/tournament/:id/withdraw",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "tournament",
+                                ":id",
+                                "withdraw"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"ok\": \"<boolean>\"\n}",
+                          "createdAt": "2026-07-28T02:07:01.000Z",
+                          "updatedAt": "2026-07-28T02:07:01.000Z",
+                          "uid": "35240-26304618-3d96-4780-a04d-450d8795c3bc"
+                        },
+                        {
+                          "id": "8191ba7f-d4b2-4eaa-a636-e4e67b2637ae",
+                          "name": "Pausing/leaving the tournament failed.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/tournament/:id/withdraw",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "tournament",
+                                ":id",
+                                "withdraw"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"error\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:07:01.000Z",
+                          "updatedAt": "2026-07-28T02:07:01.000Z",
+                          "uid": "35240-8191ba7f-d4b2-4eaa-a636-e4e67b2637ae"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:07:00.000Z",
+                      "updatedAt": "2026-07-28T02:07:00.000Z",
+                      "uid": "35240-9fcb207e-f71c-468e-b268-a5c2722c1581"
+                    }
+                  ],
+                  "id": "0902c6ae-1f88-49cd-94a5-92280d5d5ff8",
+                  "createdAt": "2026-07-28T02:07:00.000Z",
+                  "updatedAt": "2026-07-28T02:07:00.000Z",
+                  "uid": "35240-0902c6ae-1f88-49cd-94a5-92280d5d5ff8"
+                },
+                {
+                  "name": "terminate",
+                  "item": [
+                    {
+                      "name": "Terminate an Arena tournament",
+                      "id": "3ca3ca4f-260c-4d3b-8096-b507bfce1df4",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://lichess.org/api/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://lichess.org/oauth",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/tournament/:id/terminate",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "tournament",
+                            ":id",
+                            "terminate"
+                          ],
+                          "variable": [
+                            {
+                              "id": "8e518233-58ab-4e30-ade4-bc8da9df1ea6",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) The tournament ID."
+                            }
+                          ]
+                        },
+                        "description": "Terminate an Arena tournament\n"
+                      },
+                      "response": [
+                        {
+                          "id": "0cf8b9be-8404-41eb-8771-45e3a9b63a68",
+                          "name": "The tournament was successfully terminated.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/tournament/:id/terminate",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "tournament",
+                                ":id",
+                                "terminate"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"ok\": \"<boolean>\"\n}",
+                          "createdAt": "2026-07-28T02:07:01.000Z",
+                          "updatedAt": "2026-07-28T02:07:01.000Z",
+                          "uid": "35240-0cf8b9be-8404-41eb-8771-45e3a9b63a68"
+                        },
+                        {
+                          "id": "2dfc1594-a0e5-47da-af80-0a63840e7087",
+                          "name": "Terminating the tournament failed.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/tournament/:id/terminate",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "tournament",
+                                ":id",
+                                "terminate"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"error\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:07:01.000Z",
+                          "updatedAt": "2026-07-28T02:07:01.000Z",
+                          "uid": "35240-2dfc1594-a0e5-47da-af80-0a63840e7087"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:07:00.000Z",
+                      "updatedAt": "2026-07-28T02:07:00.000Z",
+                      "uid": "35240-3ca3ca4f-260c-4d3b-8096-b507bfce1df4"
+                    }
+                  ],
+                  "id": "a2eb81f0-d9f5-4d0e-afa1-b4b61fb4bc9e",
+                  "createdAt": "2026-07-28T02:07:00.000Z",
+                  "updatedAt": "2026-07-28T02:07:00.000Z",
+                  "uid": "35240-a2eb81f0-d9f5-4d0e-afa1-b4b61fb4bc9e"
+                },
+                {
+                  "name": "games",
+                  "item": [
+                    {
+                      "name": "Export games of an Arena tournament",
+                      "id": "bb545105-e289-4799-a100-63082d46281d",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/x-chess-pgn"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/tournament/:id/games?player=<string>&moves=true&pgnInJson=false&tags=true&clocks=false&evals=false&accuracy=false&opening=false&division=false",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "tournament",
+                            ":id",
+                            "games"
+                          ],
+                          "query": [
+                            {
+                              "description": "Only games of a particular player. Leave empty to fetch games of all players.",
+                              "key": "player",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Include the PGN moves.",
+                              "key": "moves",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Include the full PGN within the JSON response, in a `pgn` field.",
+                              "key": "pgnInJson",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include the PGN tags.",
+                              "key": "tags",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Include clock status when available.\nEither as PGN comments: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\nOr in a `clocks` JSON field, as centisecond integers, depending on the response type.\n",
+                              "key": "clocks",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include analysis evaluations and comments, when available.\nEither as PGN comments: `12. Bxf6 { [%eval 0.23] } a3 { [%eval -1.09] }`\nOr in an `analysis` JSON field, depending on the response type.\n",
+                              "key": "evals",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include [accuracy percent](https://lichess.org/page/accuracy) of each player, when available. Only available in JSON.\n",
+                              "key": "accuracy",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include the opening name.\nExample: `[Opening \"King's Gambit Accepted, King's Knight Gambit\"]`\n",
+                              "key": "opening",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Plies which mark the beginning of the middlegame and endgame.\nOnly available in JSON\n",
+                              "key": "division",
+                              "value": "false"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "id": "a7363895-db8c-469c-bfed-717b6f2f1002",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) The tournament ID."
+                            }
+                          ]
+                        },
+                        "description": "Download games of a tournament in PGN or [ndjson](#description/streaming-with-nd-json) format.\nGames are sorted by reverse chronological order (most recent first).\nThe game stream is throttled, depending on who is making the request:\n  - Anonymous request: 20 games per second\n  - [OAuth2 authenticated](#description/authentication) request: 30 games per second\n"
+                      },
+                      "response": [
+                        {
+                          "id": "af8fc8e5-4a4c-4459-8a11-3f079216e386",
+                          "name": "The list of games of an Arena tournament.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/x-chess-pgn"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/tournament/:id/games?player=<string>&moves=true&pgnInJson=false&tags=true&clocks=false&evals=false&accuracy=false&opening=false&division=false",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "tournament",
+                                ":id",
+                                "games"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Only games of a particular player. Leave empty to fetch games of all players.",
+                                  "key": "player",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Include the PGN moves.",
+                                  "key": "moves",
+                                  "value": "true"
+                                },
+                                {
+                                  "description": "Include the full PGN within the JSON response, in a `pgn` field.",
+                                  "key": "pgnInJson",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Include the PGN tags.",
+                                  "key": "tags",
+                                  "value": "true"
+                                },
+                                {
+                                  "description": "Include clock status when available.\nEither as PGN comments: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\nOr in a `clocks` JSON field, as centisecond integers, depending on the response type.\n",
+                                  "key": "clocks",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Include analysis evaluations and comments, when available.\nEither as PGN comments: `12. Bxf6 { [%eval 0.23] } a3 { [%eval -1.09] }`\nOr in an `analysis` JSON field, depending on the response type.\n",
+                                  "key": "evals",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Include [accuracy percent](https://lichess.org/page/accuracy) of each player, when available. Only available in JSON.\n",
+                                  "key": "accuracy",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Include the opening name.\nExample: `[Opening \"King's Gambit Accepted, King's Knight Gambit\"]`\n",
+                                  "key": "opening",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Plies which mark the beginning of the middlegame and endgame.\nOnly available in JSON\n",
+                                  "key": "division",
+                                  "value": "false"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/x-chess-pgn"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "<string>",
+                          "createdAt": "2026-07-28T02:07:01.000Z",
+                          "updatedAt": "2026-07-28T02:07:01.000Z",
+                          "uid": "35240-af8fc8e5-4a4c-4459-8a11-3f079216e386"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:07:00.000Z",
+                      "updatedAt": "2026-07-28T02:07:00.000Z",
+                      "uid": "35240-bb545105-e289-4799-a100-63082d46281d"
+                    }
+                  ],
+                  "id": "55df49ec-b29c-4ec3-903d-687a16e55030",
+                  "createdAt": "2026-07-28T02:07:00.000Z",
+                  "updatedAt": "2026-07-28T02:07:00.000Z",
+                  "uid": "35240-55df49ec-b29c-4ec3-903d-687a16e55030"
+                },
+                {
+                  "name": "results",
+                  "item": [
+                    {
+                      "name": "Get results of an Arena tournament",
+                      "id": "f99d6837-10c7-467a-8609-c6ff4989b733",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/x-ndjson"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/tournament/:id/results?nb=<integer>&sheet=false",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "tournament",
+                            ":id",
+                            "results"
+                          ],
+                          "query": [
+                            {
+                              "description": "Max number of players to fetch",
+                              "key": "nb",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": "Add a `sheet` field to the player document.\nIt's an expensive server computation that slows down the stream.\n",
+                              "key": "sheet",
+                              "value": "false"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "id": "bcbeef54-1f8c-40db-8083-297ba10db9c4",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) The tournament ID."
+                            }
+                          ]
+                        },
+                        "description": "Players of an Arena tournament, with their score and performance, sorted by rank (best first).\n**Players are streamed as [ndjson](#description/streaming-with-nd-json)**, i.e. one JSON object per line.\nIf called on an ongoing tournament, results can be inconsistent\ndue to ranking changes while the players are being streamed.\nUse on finished tournaments for guaranteed consistency.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "01ad3705-af4a-473d-84a4-139d9afb61dd",
+                          "name": "The results of the Arena tournament.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/x-ndjson"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/tournament/:id/results?nb=<integer>&sheet=false",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "tournament",
+                                ":id",
+                                "results"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Max number of players to fetch",
+                                  "key": "nb",
+                                  "value": "<integer>"
+                                },
+                                {
+                                  "description": "Add a `sheet` field to the player document.\nIt's an expensive server computation that slows down the stream.\n",
+                                  "key": "sheet",
+                                  "value": "false"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/x-ndjson"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"rank\": \"<integer>\",\n  \"score\": \"<integer>\",\n  \"rating\": \"<integer>\",\n  \"username\": \"<string>\",\n  \"performance\": \"<integer>\",\n  \"title\": \"WFM\",\n  \"team\": \"<string>\",\n  \"flair\": \"<string>\",\n  \"patronColor\": \"<integer>\",\n  \"sheet\": {\n    \"scores\": \"<string>\",\n    \"fire\": \"<boolean>\"\n  }\n}",
+                          "createdAt": "2026-07-28T02:07:01.000Z",
+                          "updatedAt": "2026-07-28T02:07:01.000Z",
+                          "uid": "35240-01ad3705-af4a-473d-84a4-139d9afb61dd"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:07:00.000Z",
+                      "updatedAt": "2026-07-28T02:07:00.000Z",
+                      "uid": "35240-f99d6837-10c7-467a-8609-c6ff4989b733"
+                    }
+                  ],
+                  "id": "cce2d888-c16b-4b96-bf4e-fe1291cc119b",
+                  "createdAt": "2026-07-28T02:07:00.000Z",
+                  "updatedAt": "2026-07-28T02:07:00.000Z",
+                  "uid": "35240-cce2d888-c16b-4b96-bf4e-fe1291cc119b"
+                },
+                {
+                  "name": "teams",
+                  "item": [
+                    {
+                      "name": "Get team standing of a team battle",
+                      "id": "f59c1987-7bee-4b19-98d3-a4517c29f3a8",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/tournament/:id/teams",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "tournament",
+                            ":id",
+                            "teams"
+                          ],
+                          "variable": [
+                            {
+                              "id": "9b389a92-8c28-4c39-8e39-f0bbf4717d11",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) The tournament ID."
+                            }
+                          ]
+                        },
+                        "description": "Teams of a team battle tournament, with top players, sorted by rank (best first).\n"
+                      },
+                      "response": [
+                        {
+                          "id": "a5bb9f4f-65fa-411b-b0c3-930a8ae6629a",
+                          "name": "The list of teams of a team battle tournament, with their respective top players.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/tournament/:id/teams",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "tournament",
+                                ":id",
+                                "teams"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<string>\",\n  \"teams\": [\n    {\n      \"rank\": \"<integer>\",\n      \"id\": \"<string>\",\n      \"score\": \"<integer>\",\n      \"players\": [\n        {\n          \"user\": {\n            \"id\": \"<string>\",\n            \"name\": \"<string>\",\n            \"flair\": \"<string>\",\n            \"title\": \"WCM\",\n            \"patron\": \"<boolean>\",\n            \"patronColor\": \"<integer>\"\n          },\n          \"score\": \"<integer>\"\n        },\n        {\n          \"user\": {\n            \"id\": \"<string>\",\n            \"name\": \"<string>\",\n            \"flair\": \"<string>\",\n            \"title\": \"NM\",\n            \"patron\": \"<boolean>\",\n            \"patronColor\": \"<integer>\"\n          },\n          \"score\": \"<integer>\"\n        }\n      ]\n    },\n    {\n      \"rank\": \"<integer>\",\n      \"id\": \"<string>\",\n      \"score\": \"<integer>\",\n      \"players\": [\n        {\n          \"user\": {\n            \"id\": \"<string>\",\n            \"name\": \"<string>\",\n            \"flair\": \"<string>\",\n            \"title\": \"NM\",\n            \"patron\": \"<boolean>\",\n            \"patronColor\": \"<integer>\"\n          },\n          \"score\": \"<integer>\"\n        },\n        {\n          \"user\": {\n            \"id\": \"<string>\",\n            \"name\": \"<string>\",\n            \"flair\": \"<string>\",\n            \"title\": \"WNM\",\n            \"patron\": \"<boolean>\",\n            \"patronColor\": \"<integer>\"\n          },\n          \"score\": \"<integer>\"\n        }\n      ]\n    }\n  ]\n}",
+                          "createdAt": "2026-07-28T02:07:01.000Z",
+                          "updatedAt": "2026-07-28T02:07:01.000Z",
+                          "uid": "35240-a5bb9f4f-65fa-411b-b0c3-930a8ae6629a"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:07:00.000Z",
+                      "updatedAt": "2026-07-28T02:07:00.000Z",
+                      "uid": "35240-f59c1987-7bee-4b19-98d3-a4517c29f3a8"
+                    }
+                  ],
+                  "id": "4a086f2d-62db-40f6-93f1-1b588aa483f4",
+                  "createdAt": "2026-07-28T02:07:00.000Z",
+                  "updatedAt": "2026-07-28T02:07:00.000Z",
+                  "uid": "35240-4a086f2d-62db-40f6-93f1-1b588aa483f4"
+                },
+                {
+                  "name": "Get info about an Arena tournament",
+                  "id": "297e68d6-405a-4cdf-9adc-ae6b846f412f",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/tournament/:id?page=1",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "tournament",
+                        ":id"
+                      ],
+                      "query": [
+                        {
+                          "description": "Specify which page of player standings to view.",
+                          "key": "page",
+                          "value": "1"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "3baf5efd-0196-462b-bf49-b539f9870c08",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) The tournament ID."
+                        }
+                      ]
+                    },
+                    "description": "Get detailed info about recently finished, current, or upcoming tournament's duels, player standings, and other info.\n"
+                  },
+                  "response": [
+                    {
+                      "id": "6bf54ea2-5d5b-4a92-bd0a-e88bc773a518",
+                      "name": "The information of the Arena tournament.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/tournament/:id?page=1",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "tournament",
+                            ":id"
+                          ],
+                          "query": [
+                            {
+                              "description": "Specify which page of player standings to view.",
+                              "key": "page",
+                              "value": "1"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Access-Control-Allow-Origin",
+                          "value": "'*'"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"fullName\": \"<string>\",\n  \"clock\": {\n    \"limit\": \"<integer>\",\n    \"increment\": \"<integer>\"\n  },\n  \"nbPlayers\": \"<integer>\",\n  \"rated\": \"<boolean>\",\n  \"spotlight\": {\n    \"headline\": \"<string>\"\n  },\n  \"berserkable\": \"<boolean>\",\n  \"onlyTitled\": \"<boolean>\",\n  \"minutes\": \"<integer>\",\n  \"createdBy\": \"<string>\",\n  \"system\": \"<string>\",\n  \"secondsToStart\": \"<integer>\",\n  \"secondsToFinish\": \"<integer>\",\n  \"isFinished\": \"<boolean>\",\n  \"isRecentlyFinished\": \"<boolean>\",\n  \"pairingsClosed\": \"<boolean>\",\n  \"startsAt\": \"<int64>\",\n  \"verdicts\": {\n    \"accepted\": \"<boolean>\",\n    \"list\": [\n      {\n        \"condition\": \"<string>\",\n        \"verdict\": \"<string>\"\n      },\n      {\n        \"condition\": \"<string>\",\n        \"verdict\": \"<string>\"\n      }\n    ]\n  },\n  \"quote\": {\n    \"text\": \"<string>\",\n    \"author\": \"<string>\"\n  },\n  \"greatPlayer\": {\n    \"name\": \"<string>\",\n    \"url\": \"<uri>\"\n  },\n  \"allowList\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"hasMaxRating\": \"<boolean>\",\n  \"maxRating\": {\n    \"rating\": \"<integer>\",\n    \"perf\": \"bullet\"\n  },\n  \"minRating\": {\n    \"rating\": \"<integer>\",\n    \"perf\": \"racingKings\"\n  },\n  \"minRatedGames\": {\n    \"nb\": \"<integer>\"\n  },\n  \"botsAllowed\": \"<boolean>\",\n  \"minAccountAgeInDays\": \"<integer>\",\n  \"perf\": {\n    \"icon\": \"<string>\",\n    \"key\": \"<string>\",\n    \"name\": \"<string>\"\n  },\n  \"schedule\": {\n    \"freq\": \"<string>\",\n    \"speed\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"variant\": \"<string>\",\n  \"duels\": [\n    {\n      \"id\": \"<string>\",\n      \"p\": [\n        {\n          \"n\": \"<string>\",\n          \"r\": \"<integer>\",\n          \"k\": \"<integer>\"\n        },\n        {\n          \"n\": \"<string>\",\n          \"r\": \"<integer>\",\n          \"k\": \"<integer>\"\n        }\n      ]\n    },\n    {\n      \"id\": \"<string>\",\n      \"p\": [\n        {\n          \"n\": \"<string>\",\n          \"r\": \"<integer>\",\n          \"k\": \"<integer>\"\n        },\n        {\n          \"n\": \"<string>\",\n          \"r\": \"<integer>\",\n          \"k\": \"<integer>\"\n        }\n      ]\n    }\n  ],\n  \"standing\": {\n    \"page\": \"<integer>\",\n    \"players\": [\n      {\n        \"name\": \"<string>\",\n        \"title\": \"WFM\",\n        \"patron\": \"<boolean>\",\n        \"patronColor\": \"<integer>\",\n        \"flair\": \"<string>\",\n        \"rank\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"score\": \"<integer>\",\n        \"sheet\": {\n          \"scores\": \"<string>\",\n          \"fire\": \"<boolean>\"\n        }\n      },\n      {\n        \"name\": \"<string>\",\n        \"title\": \"WFM\",\n        \"patron\": \"<boolean>\",\n        \"patronColor\": \"<integer>\",\n        \"flair\": \"<string>\",\n        \"rank\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"score\": \"<integer>\",\n        \"sheet\": {\n          \"scores\": \"<string>\",\n          \"fire\": \"<boolean>\"\n        }\n      }\n    ]\n  },\n  \"featured\": {\n    \"id\": \"<string>\",\n    \"fen\": \"<string>\",\n    \"orientation\": \"<string>\",\n    \"color\": \"<string>\",\n    \"lastMove\": \"<string>\",\n    \"white\": {\n      \"name\": \"<string>\",\n      \"id\": \"<string>\",\n      \"rank\": \"<integer>\",\n      \"rating\": \"<integer>\"\n    },\n    \"black\": {\n      \"name\": \"<string>\",\n      \"id\": \"<string>\",\n      \"rank\": \"<integer>\",\n      \"rating\": \"<integer>\"\n    },\n    \"c\": {\n      \"white\": \"<integer>\",\n      \"black\": \"<integer>\"\n    }\n  },\n  \"podium\": [\n    {\n      \"name\": \"<string>\",\n      \"title\": \"GM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"flair\": \"<string>\",\n      \"rank\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"score\": \"<integer>\",\n      \"nb\": {\n        \"game\": \"<integer>\",\n        \"berserk\": \"<integer>\",\n        \"win\": \"<integer>\"\n      },\n      \"performance\": \"<integer>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"title\": \"IM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"flair\": \"<string>\",\n      \"rank\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"score\": \"<integer>\",\n      \"nb\": {\n        \"game\": \"<integer>\",\n        \"berserk\": \"<integer>\",\n        \"win\": \"<integer>\"\n      },\n      \"performance\": \"<integer>\"\n    }\n  ],\n  \"stats\": {\n    \"games\": \"<integer>\",\n    \"moves\": \"<integer>\",\n    \"whiteWins\": \"<integer>\",\n    \"blackWins\": \"<integer>\",\n    \"draws\": \"<integer>\",\n    \"berserks\": \"<integer>\",\n    \"averageRating\": \"<integer>\"\n  },\n  \"myUsername\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:07:01.000Z",
+                      "updatedAt": "2026-07-28T02:07:01.000Z",
+                      "uid": "35240-6bf54ea2-5d5b-4a92-bd0a-e88bc773a518"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:07:00.000Z",
+                  "updatedAt": "2026-07-28T02:07:00.000Z",
+                  "uid": "35240-297e68d6-405a-4cdf-9adc-ae6b846f412f"
+                },
+                {
+                  "name": "Update an Arena tournament",
+                  "id": "e3ff3237-fc1b-456d-994b-a4a2a0b68ab1",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "oauth2",
+                      "oauth2": [
+                        {
+                          "key": "scope",
+                          "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                          "type": "string"
+                        },
+                        {
+                          "key": "accessTokenUrl",
+                          "value": "https://lichess.org/api/token",
+                          "type": "string"
+                        },
+                        {
+                          "key": "authUrl",
+                          "value": "https://lichess.org/oauth",
+                          "type": "string"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "authorization_code",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "(Required) Clock initial time in minutes",
+                          "key": "clockTime",
+                          "value": "6"
+                        },
+                        {
+                          "description": "(Required) Clock increment in seconds",
+                          "key": "clockIncrement",
+                          "value": "15"
+                        },
+                        {
+                          "description": "(Required) How long the tournament lasts, in minutes",
+                          "key": "minutes",
+                          "value": "360"
+                        },
+                        {
+                          "description": "The tournament name. Leave empty to get a random Grandmaster name",
+                          "key": "name",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "How long to wait before starting the tournament, from now, in minutes",
+                          "key": "waitMinutes",
+                          "value": "5"
+                        },
+                        {
+                          "description": "Timestamp (in milliseconds) to start the tournament at a given date and time. Overrides the `waitMinutes` setting",
+                          "key": "startDate",
+                          "value": "<long>"
+                        },
+                        {
+                          "key": "variant",
+                          "value": "standard"
+                        },
+                        {
+                          "description": "Games are rated and impact players ratings",
+                          "key": "rated",
+                          "value": "true"
+                        },
+                        {
+                          "description": "Custom initial position (in X-FEN). Variant must be standard, fromPosition, or chess960 (if a valid 960 starting position), and the game cannot be rated.",
+                          "key": "position",
+                          "value": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+                        },
+                        {
+                          "description": "Whether the players can use berserk. Only allowed if clockIncrement <= clockTime * 2",
+                          "key": "berserkable",
+                          "value": "true"
+                        },
+                        {
+                          "description": "After 2 wins, consecutive wins grant 4 points instead of 2.",
+                          "key": "streakable",
+                          "value": "true"
+                        },
+                        {
+                          "description": "Whether the players can discuss in a chat",
+                          "key": "hasChat",
+                          "value": "true"
+                        },
+                        {
+                          "description": "Anything you want to tell players about the tournament",
+                          "key": "description",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Make the tournament private, and restrict access with a password",
+                          "key": "password",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Minimum rating to join. Leave empty to let everyone join the tournament.",
+                          "key": "conditions.minRating.rating",
+                          "value": "2400"
+                        },
+                        {
+                          "description": "Maximum rating to join. Based on best rating reached in the last 7 days. Leave empty to let everyone join the tournament.",
+                          "key": "conditions.maxRating.rating",
+                          "value": "1900"
+                        },
+                        {
+                          "description": "Minimum number of rated games required to join.",
+                          "key": "conditions.nbRatedGame.nb",
+                          "value": "50"
+                        },
+                        {
+                          "description": "Predefined list of usernames that are allowed to join, separated by commas.\nIf this list is non-empty, then usernames absent from this list will be forbidden to join.\nAdding `%titled` to the list additionally allows any titled player to join.\nExample: `thibault,german11,%titled`\n",
+                          "key": "conditions.allowList",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Whether bots are allowed to join the tournament.",
+                          "key": "conditions.bots",
+                          "value": "false"
+                        },
+                        {
+                          "description": "Minium account age in days required to join.",
+                          "key": "conditions.accountAge",
+                          "value": "1095"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/api/tournament/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "tournament",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "81e76569-05c1-4c56-a992-fc1a4fd209f3",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) The tournament ID."
+                        }
+                      ]
+                    },
+                    "description": "Update an Arena tournament.\nBe mindful not to make important changes to ongoing tournaments.\nCan be used to update a team battle.\nAdditional restrictions:\n  - clockTime + clockIncrement > 0\n  - 15s and 0+1 variant tournaments cannot be rated\n  - Clock time in comparison to tournament length must be reasonable: 3 <= (minutes * 60) / (96 * clockTime + 48 * clockIncrement + 15) <= 150\n"
+                  },
+                  "response": [
+                    {
+                      "id": "25c840b4-c43a-4d5f-903c-cc8057517d60",
+                      "name": "The Arena tournament was successfully updated.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "(Required) Clock initial time in minutes",
+                              "key": "clockTime",
+                              "value": "6"
+                            },
+                            {
+                              "description": "(Required) Clock increment in seconds",
+                              "key": "clockIncrement",
+                              "value": "15"
+                            },
+                            {
+                              "description": "(Required) How long the tournament lasts, in minutes",
+                              "key": "minutes",
+                              "value": "360"
+                            },
+                            {
+                              "description": "The tournament name. Leave empty to get a random Grandmaster name",
+                              "key": "name",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "How long to wait before starting the tournament, from now, in minutes",
+                              "key": "waitMinutes",
+                              "value": "5"
+                            },
+                            {
+                              "description": "Timestamp (in milliseconds) to start the tournament at a given date and time. Overrides the `waitMinutes` setting",
+                              "key": "startDate",
+                              "value": "<long>"
+                            },
+                            {
+                              "key": "variant",
+                              "value": "standard"
+                            },
+                            {
+                              "description": "Games are rated and impact players ratings",
+                              "key": "rated",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Custom initial position (in X-FEN). Variant must be standard, fromPosition, or chess960 (if a valid 960 starting position), and the game cannot be rated.",
+                              "key": "position",
+                              "value": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+                            },
+                            {
+                              "description": "Whether the players can use berserk. Only allowed if clockIncrement <= clockTime * 2",
+                              "key": "berserkable",
+                              "value": "true"
+                            },
+                            {
+                              "description": "After 2 wins, consecutive wins grant 4 points instead of 2.",
+                              "key": "streakable",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Whether the players can discuss in a chat",
+                              "key": "hasChat",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Anything you want to tell players about the tournament",
+                              "key": "description",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Make the tournament private, and restrict access with a password",
+                              "key": "password",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Minimum rating to join. Leave empty to let everyone join the tournament.",
+                              "key": "conditions.minRating.rating",
+                              "value": "2400"
+                            },
+                            {
+                              "description": "Maximum rating to join. Based on best rating reached in the last 7 days. Leave empty to let everyone join the tournament.",
+                              "key": "conditions.maxRating.rating",
+                              "value": "1900"
+                            },
+                            {
+                              "description": "Minimum number of rated games required to join.",
+                              "key": "conditions.nbRatedGame.nb",
+                              "value": "50"
+                            },
+                            {
+                              "description": "Predefined list of usernames that are allowed to join, separated by commas.\nIf this list is non-empty, then usernames absent from this list will be forbidden to join.\nAdding `%titled` to the list additionally allows any titled player to join.\nExample: `thibault,german11,%titled`\n",
+                              "key": "conditions.allowList",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Whether bots are allowed to join the tournament.",
+                              "key": "conditions.bots",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Minium account age in days required to join.",
+                              "key": "conditions.accountAge",
+                              "value": "1095"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/tournament/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "tournament",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Access-Control-Allow-Origin",
+                          "value": "'*'"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"fullName\": \"<string>\",\n  \"clock\": {\n    \"limit\": \"<integer>\",\n    \"increment\": \"<integer>\"\n  },\n  \"nbPlayers\": \"<integer>\",\n  \"rated\": \"<boolean>\",\n  \"spotlight\": {\n    \"headline\": \"<string>\"\n  },\n  \"berserkable\": \"<boolean>\",\n  \"onlyTitled\": \"<boolean>\",\n  \"minutes\": \"<integer>\",\n  \"createdBy\": \"<string>\",\n  \"system\": \"<string>\",\n  \"secondsToStart\": \"<integer>\",\n  \"secondsToFinish\": \"<integer>\",\n  \"isFinished\": \"<boolean>\",\n  \"isRecentlyFinished\": \"<boolean>\",\n  \"pairingsClosed\": \"<boolean>\",\n  \"startsAt\": \"<int64>\",\n  \"verdicts\": {\n    \"accepted\": \"<boolean>\",\n    \"list\": [\n      {\n        \"condition\": \"<string>\",\n        \"verdict\": \"<string>\"\n      },\n      {\n        \"condition\": \"<string>\",\n        \"verdict\": \"<string>\"\n      }\n    ]\n  },\n  \"quote\": {\n    \"text\": \"<string>\",\n    \"author\": \"<string>\"\n  },\n  \"greatPlayer\": {\n    \"name\": \"<string>\",\n    \"url\": \"<uri>\"\n  },\n  \"allowList\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"hasMaxRating\": \"<boolean>\",\n  \"maxRating\": {\n    \"rating\": \"<integer>\",\n    \"perf\": \"bullet\"\n  },\n  \"minRating\": {\n    \"rating\": \"<integer>\",\n    \"perf\": \"racingKings\"\n  },\n  \"minRatedGames\": {\n    \"nb\": \"<integer>\"\n  },\n  \"botsAllowed\": \"<boolean>\",\n  \"minAccountAgeInDays\": \"<integer>\",\n  \"perf\": {\n    \"icon\": \"<string>\",\n    \"key\": \"<string>\",\n    \"name\": \"<string>\"\n  },\n  \"schedule\": {\n    \"freq\": \"<string>\",\n    \"speed\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"variant\": \"<string>\",\n  \"duels\": [\n    {\n      \"id\": \"<string>\",\n      \"p\": [\n        {\n          \"n\": \"<string>\",\n          \"r\": \"<integer>\",\n          \"k\": \"<integer>\"\n        },\n        {\n          \"n\": \"<string>\",\n          \"r\": \"<integer>\",\n          \"k\": \"<integer>\"\n        }\n      ]\n    },\n    {\n      \"id\": \"<string>\",\n      \"p\": [\n        {\n          \"n\": \"<string>\",\n          \"r\": \"<integer>\",\n          \"k\": \"<integer>\"\n        },\n        {\n          \"n\": \"<string>\",\n          \"r\": \"<integer>\",\n          \"k\": \"<integer>\"\n        }\n      ]\n    }\n  ],\n  \"standing\": {\n    \"page\": \"<integer>\",\n    \"players\": [\n      {\n        \"name\": \"<string>\",\n        \"title\": \"WFM\",\n        \"patron\": \"<boolean>\",\n        \"patronColor\": \"<integer>\",\n        \"flair\": \"<string>\",\n        \"rank\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"score\": \"<integer>\",\n        \"sheet\": {\n          \"scores\": \"<string>\",\n          \"fire\": \"<boolean>\"\n        }\n      },\n      {\n        \"name\": \"<string>\",\n        \"title\": \"WFM\",\n        \"patron\": \"<boolean>\",\n        \"patronColor\": \"<integer>\",\n        \"flair\": \"<string>\",\n        \"rank\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"score\": \"<integer>\",\n        \"sheet\": {\n          \"scores\": \"<string>\",\n          \"fire\": \"<boolean>\"\n        }\n      }\n    ]\n  },\n  \"featured\": {\n    \"id\": \"<string>\",\n    \"fen\": \"<string>\",\n    \"orientation\": \"<string>\",\n    \"color\": \"<string>\",\n    \"lastMove\": \"<string>\",\n    \"white\": {\n      \"name\": \"<string>\",\n      \"id\": \"<string>\",\n      \"rank\": \"<integer>\",\n      \"rating\": \"<integer>\"\n    },\n    \"black\": {\n      \"name\": \"<string>\",\n      \"id\": \"<string>\",\n      \"rank\": \"<integer>\",\n      \"rating\": \"<integer>\"\n    },\n    \"c\": {\n      \"white\": \"<integer>\",\n      \"black\": \"<integer>\"\n    }\n  },\n  \"podium\": [\n    {\n      \"name\": \"<string>\",\n      \"title\": \"GM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"flair\": \"<string>\",\n      \"rank\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"score\": \"<integer>\",\n      \"nb\": {\n        \"game\": \"<integer>\",\n        \"berserk\": \"<integer>\",\n        \"win\": \"<integer>\"\n      },\n      \"performance\": \"<integer>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"title\": \"IM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"flair\": \"<string>\",\n      \"rank\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"score\": \"<integer>\",\n      \"nb\": {\n        \"game\": \"<integer>\",\n        \"berserk\": \"<integer>\",\n        \"win\": \"<integer>\"\n      },\n      \"performance\": \"<integer>\"\n    }\n  ],\n  \"stats\": {\n    \"games\": \"<integer>\",\n    \"moves\": \"<integer>\",\n    \"whiteWins\": \"<integer>\",\n    \"blackWins\": \"<integer>\",\n    \"draws\": \"<integer>\",\n    \"berserks\": \"<integer>\",\n    \"averageRating\": \"<integer>\"\n  },\n  \"myUsername\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:07:01.000Z",
+                      "updatedAt": "2026-07-28T02:07:01.000Z",
+                      "uid": "35240-25c840b4-c43a-4d5f-903c-cc8057517d60"
+                    },
+                    {
+                      "id": "e3633e50-a0ac-4b72-a153-a084c6408dd4",
+                      "name": "The update of the Arena tournament failed.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "(Required) Clock initial time in minutes",
+                              "key": "clockTime",
+                              "value": "6"
+                            },
+                            {
+                              "description": "(Required) Clock increment in seconds",
+                              "key": "clockIncrement",
+                              "value": "15"
+                            },
+                            {
+                              "description": "(Required) How long the tournament lasts, in minutes",
+                              "key": "minutes",
+                              "value": "360"
+                            },
+                            {
+                              "description": "The tournament name. Leave empty to get a random Grandmaster name",
+                              "key": "name",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "How long to wait before starting the tournament, from now, in minutes",
+                              "key": "waitMinutes",
+                              "value": "5"
+                            },
+                            {
+                              "description": "Timestamp (in milliseconds) to start the tournament at a given date and time. Overrides the `waitMinutes` setting",
+                              "key": "startDate",
+                              "value": "<long>"
+                            },
+                            {
+                              "key": "variant",
+                              "value": "standard"
+                            },
+                            {
+                              "description": "Games are rated and impact players ratings",
+                              "key": "rated",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Custom initial position (in X-FEN). Variant must be standard, fromPosition, or chess960 (if a valid 960 starting position), and the game cannot be rated.",
+                              "key": "position",
+                              "value": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+                            },
+                            {
+                              "description": "Whether the players can use berserk. Only allowed if clockIncrement <= clockTime * 2",
+                              "key": "berserkable",
+                              "value": "true"
+                            },
+                            {
+                              "description": "After 2 wins, consecutive wins grant 4 points instead of 2.",
+                              "key": "streakable",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Whether the players can discuss in a chat",
+                              "key": "hasChat",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Anything you want to tell players about the tournament",
+                              "key": "description",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Make the tournament private, and restrict access with a password",
+                              "key": "password",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Minimum rating to join. Leave empty to let everyone join the tournament.",
+                              "key": "conditions.minRating.rating",
+                              "value": "2400"
+                            },
+                            {
+                              "description": "Maximum rating to join. Based on best rating reached in the last 7 days. Leave empty to let everyone join the tournament.",
+                              "key": "conditions.maxRating.rating",
+                              "value": "1900"
+                            },
+                            {
+                              "description": "Minimum number of rated games required to join.",
+                              "key": "conditions.nbRatedGame.nb",
+                              "value": "50"
+                            },
+                            {
+                              "description": "Predefined list of usernames that are allowed to join, separated by commas.\nIf this list is non-empty, then usernames absent from this list will be forbidden to join.\nAdding `%titled` to the list additionally allows any titled player to join.\nExample: `thibault,german11,%titled`\n",
+                              "key": "conditions.allowList",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Whether bots are allowed to join the tournament.",
+                              "key": "conditions.bots",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Minium account age in days required to join.",
+                              "key": "conditions.accountAge",
+                              "value": "1095"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/tournament/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "tournament",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"error\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:07:01.000Z",
+                      "updatedAt": "2026-07-28T02:07:01.000Z",
+                      "uid": "35240-e3633e50-a0ac-4b72-a153-a084c6408dd4"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:07:00.000Z",
+                  "updatedAt": "2026-07-28T02:07:00.000Z",
+                  "uid": "35240-e3ff3237-fc1b-456d-994b-a4a2a0b68ab1"
+                }
+              ],
+              "id": "2982d235-87bb-4c43-92ec-d2fcfc3f66e4",
+              "createdAt": "2026-07-28T02:07:00.000Z",
+              "updatedAt": "2026-07-28T02:07:00.000Z",
+              "uid": "35240-2982d235-87bb-4c43-92ec-d2fcfc3f66e4"
+            },
+            {
+              "name": "team-battle",
+              "item": [
+                {
+                  "name": "{id}",
+                  "item": [
+                    {
+                      "name": "Update a team battle",
+                      "id": "16bdf54f-5020-4673-b85e-6936220bf335",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://lichess.org/api/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://lichess.org/oauth",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "(Required) All team IDs of the team battle, separated by commas.\nMake sure to always send the full list.\nTeams that are not in the list will be removed from the team battle.\nExample: `coders,zhigalko_sergei-fan-club,hhSwTKZv`\n",
+                              "key": "teams",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "(Required) Number team leaders per team.",
+                              "key": "nbLeaders",
+                              "value": "<integer>"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/tournament/team-battle/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "tournament",
+                            "team-battle",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "id": "0f840c5a-4fd3-4cdb-ace3-9e32d3c7d07c",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) The tournament ID"
+                            }
+                          ]
+                        },
+                        "description": "Set the teams and number of leaders of a team battle.\nTo update the other attributes of a team battle, use the [tournament update endpoint](#tag/arena-tournaments/POST/api/tournament/{id}).\n"
+                      },
+                      "response": [
+                        {
+                          "id": "6f6b5ccb-6c70-4c8d-aa99-1420d84d6f08",
+                          "name": "The team battle tournament was successfully updated.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "urlencoded",
+                              "urlencoded": [
+                                {
+                                  "description": "(Required) All team IDs of the team battle, separated by commas.\nMake sure to always send the full list.\nTeams that are not in the list will be removed from the team battle.\nExample: `coders,zhigalko_sergei-fan-club,hhSwTKZv`\n",
+                                  "key": "teams",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "(Required) Number team leaders per team.",
+                                  "key": "nbLeaders",
+                                  "value": "<integer>"
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/tournament/team-battle/:id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "tournament",
+                                "team-battle",
+                                ":id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<string>\",\n  \"fullName\": \"<string>\",\n  \"clock\": {\n    \"limit\": \"<integer>\",\n    \"increment\": \"<integer>\"\n  },\n  \"nbPlayers\": \"<integer>\",\n  \"rated\": \"<boolean>\",\n  \"spotlight\": {\n    \"headline\": \"<string>\"\n  },\n  \"berserkable\": \"<boolean>\",\n  \"onlyTitled\": \"<boolean>\",\n  \"minutes\": \"<integer>\",\n  \"createdBy\": \"<string>\",\n  \"system\": \"<string>\",\n  \"secondsToStart\": \"<integer>\",\n  \"secondsToFinish\": \"<integer>\",\n  \"isFinished\": \"<boolean>\",\n  \"isRecentlyFinished\": \"<boolean>\",\n  \"pairingsClosed\": \"<boolean>\",\n  \"startsAt\": \"<int64>\",\n  \"verdicts\": {\n    \"accepted\": \"<boolean>\",\n    \"list\": [\n      {\n        \"condition\": \"<string>\",\n        \"verdict\": \"<string>\"\n      },\n      {\n        \"condition\": \"<string>\",\n        \"verdict\": \"<string>\"\n      }\n    ]\n  },\n  \"quote\": {\n    \"text\": \"<string>\",\n    \"author\": \"<string>\"\n  },\n  \"greatPlayer\": {\n    \"name\": \"<string>\",\n    \"url\": \"<uri>\"\n  },\n  \"allowList\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"hasMaxRating\": \"<boolean>\",\n  \"maxRating\": {\n    \"rating\": \"<integer>\",\n    \"perf\": \"bullet\"\n  },\n  \"minRating\": {\n    \"rating\": \"<integer>\",\n    \"perf\": \"racingKings\"\n  },\n  \"minRatedGames\": {\n    \"nb\": \"<integer>\"\n  },\n  \"botsAllowed\": \"<boolean>\",\n  \"minAccountAgeInDays\": \"<integer>\",\n  \"perf\": {\n    \"icon\": \"<string>\",\n    \"key\": \"<string>\",\n    \"name\": \"<string>\"\n  },\n  \"schedule\": {\n    \"freq\": \"<string>\",\n    \"speed\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"variant\": \"<string>\",\n  \"duels\": [\n    {\n      \"id\": \"<string>\",\n      \"p\": [\n        {\n          \"n\": \"<string>\",\n          \"r\": \"<integer>\",\n          \"k\": \"<integer>\"\n        },\n        {\n          \"n\": \"<string>\",\n          \"r\": \"<integer>\",\n          \"k\": \"<integer>\"\n        }\n      ]\n    },\n    {\n      \"id\": \"<string>\",\n      \"p\": [\n        {\n          \"n\": \"<string>\",\n          \"r\": \"<integer>\",\n          \"k\": \"<integer>\"\n        },\n        {\n          \"n\": \"<string>\",\n          \"r\": \"<integer>\",\n          \"k\": \"<integer>\"\n        }\n      ]\n    }\n  ],\n  \"standing\": {\n    \"page\": \"<integer>\",\n    \"players\": [\n      {\n        \"name\": \"<string>\",\n        \"title\": \"WFM\",\n        \"patron\": \"<boolean>\",\n        \"patronColor\": \"<integer>\",\n        \"flair\": \"<string>\",\n        \"rank\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"score\": \"<integer>\",\n        \"sheet\": {\n          \"scores\": \"<string>\",\n          \"fire\": \"<boolean>\"\n        }\n      },\n      {\n        \"name\": \"<string>\",\n        \"title\": \"WFM\",\n        \"patron\": \"<boolean>\",\n        \"patronColor\": \"<integer>\",\n        \"flair\": \"<string>\",\n        \"rank\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"score\": \"<integer>\",\n        \"sheet\": {\n          \"scores\": \"<string>\",\n          \"fire\": \"<boolean>\"\n        }\n      }\n    ]\n  },\n  \"featured\": {\n    \"id\": \"<string>\",\n    \"fen\": \"<string>\",\n    \"orientation\": \"<string>\",\n    \"color\": \"<string>\",\n    \"lastMove\": \"<string>\",\n    \"white\": {\n      \"name\": \"<string>\",\n      \"id\": \"<string>\",\n      \"rank\": \"<integer>\",\n      \"rating\": \"<integer>\"\n    },\n    \"black\": {\n      \"name\": \"<string>\",\n      \"id\": \"<string>\",\n      \"rank\": \"<integer>\",\n      \"rating\": \"<integer>\"\n    },\n    \"c\": {\n      \"white\": \"<integer>\",\n      \"black\": \"<integer>\"\n    }\n  },\n  \"podium\": [\n    {\n      \"name\": \"<string>\",\n      \"title\": \"GM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"flair\": \"<string>\",\n      \"rank\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"score\": \"<integer>\",\n      \"nb\": {\n        \"game\": \"<integer>\",\n        \"berserk\": \"<integer>\",\n        \"win\": \"<integer>\"\n      },\n      \"performance\": \"<integer>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"title\": \"IM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"flair\": \"<string>\",\n      \"rank\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"score\": \"<integer>\",\n      \"nb\": {\n        \"game\": \"<integer>\",\n        \"berserk\": \"<integer>\",\n        \"win\": \"<integer>\"\n      },\n      \"performance\": \"<integer>\"\n    }\n  ],\n  \"stats\": {\n    \"games\": \"<integer>\",\n    \"moves\": \"<integer>\",\n    \"whiteWins\": \"<integer>\",\n    \"blackWins\": \"<integer>\",\n    \"draws\": \"<integer>\",\n    \"berserks\": \"<integer>\",\n    \"averageRating\": \"<integer>\"\n  },\n  \"myUsername\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:07:01.000Z",
+                          "updatedAt": "2026-07-28T02:07:01.000Z",
+                          "uid": "35240-6f6b5ccb-6c70-4c8d-aa99-1420d84d6f08"
+                        },
+                        {
+                          "id": "4b69aec1-95f6-476e-9608-6fe3131afbc7",
+                          "name": "The update of the team battle tournament failed.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "urlencoded",
+                              "urlencoded": [
+                                {
+                                  "description": "(Required) All team IDs of the team battle, separated by commas.\nMake sure to always send the full list.\nTeams that are not in the list will be removed from the team battle.\nExample: `coders,zhigalko_sergei-fan-club,hhSwTKZv`\n",
+                                  "key": "teams",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "(Required) Number team leaders per team.",
+                                  "key": "nbLeaders",
+                                  "value": "<integer>"
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/tournament/team-battle/:id",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "tournament",
+                                "team-battle",
+                                ":id"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"error\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:07:01.000Z",
+                          "updatedAt": "2026-07-28T02:07:01.000Z",
+                          "uid": "35240-4b69aec1-95f6-476e-9608-6fe3131afbc7"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:07:00.000Z",
+                      "updatedAt": "2026-07-28T02:07:00.000Z",
+                      "uid": "35240-16bdf54f-5020-4673-b85e-6936220bf335"
+                    }
+                  ],
+                  "id": "1f140049-65ed-43cd-8400-7c3788b3651a",
+                  "createdAt": "2026-07-28T02:07:00.000Z",
+                  "updatedAt": "2026-07-28T02:07:00.000Z",
+                  "uid": "35240-1f140049-65ed-43cd-8400-7c3788b3651a"
+                }
+              ],
+              "id": "937c91fb-f78d-485c-a461-31025dcec01c",
+              "createdAt": "2026-07-28T02:07:00.000Z",
+              "updatedAt": "2026-07-28T02:07:00.000Z",
+              "uid": "35240-937c91fb-f78d-485c-a461-31025dcec01c"
+            },
+            {
+              "name": "Get current tournaments",
+              "id": "4e4ee8a5-4e46-4a4a-a19e-6aea7be8b877",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/tournament",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "tournament"
+                  ]
+                },
+                "description": "Get recently active and finished tournaments.\nThis API is used to display the [Lichess tournament schedule](https://lichess.org/tournament).\n"
+              },
+              "response": [
+                {
+                  "id": "b280962a-a63b-43a9-a140-5bc27af9f72e",
+                  "name": "The list of current tournaments.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/tournament",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "tournament"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "Access-Control-Allow-Origin",
+                      "value": "'*'"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"created\": [\n    {\n      \"id\": \"<string>\",\n      \"createdBy\": \"<string>\",\n      \"system\": \"<string>\",\n      \"minutes\": \"<integer>\",\n      \"clock\": {\n        \"limit\": \"<integer>\",\n        \"increment\": \"<integer>\"\n      },\n      \"rated\": \"<boolean>\",\n      \"fullName\": \"<string>\",\n      \"nbPlayers\": \"<integer>\",\n      \"variant\": {\n        \"key\": \"standard\",\n        \"name\": \"<string>\",\n        \"short\": \"<string>\"\n      },\n      \"startsAt\": \"<long>\",\n      \"finishesAt\": \"<long>\",\n      \"status\": 30,\n      \"perf\": {\n        \"key\": \"rapid\",\n        \"name\": \"<string>\",\n        \"position\": \"<integer>\",\n        \"icon\": \"<string>\"\n      },\n      \"secondsToStart\": \"<integer>\",\n      \"hasMaxRating\": \"<boolean>\",\n      \"maxRating\": {\n        \"rating\": \"<integer>\",\n        \"perf\": \"classical\"\n      },\n      \"minRating\": {\n        \"rating\": \"<integer>\",\n        \"perf\": \"ultraBullet\"\n      },\n      \"minRatedGames\": {\n        \"nb\": \"<integer>\"\n      },\n      \"botsAllowed\": \"<boolean>\",\n      \"minAccountAgeInDays\": \"<integer>\",\n      \"onlyTitled\": \"<boolean>\",\n      \"teamMember\": \"<string>\",\n      \"private\": \"<boolean>\",\n      \"position\": {\n        \"eco\": \"<string>\",\n        \"name\": \"<string>\",\n        \"fen\": \"<string>\",\n        \"url\": \"<uri>\"\n      },\n      \"schedule\": {\n        \"freq\": \"<string>\",\n        \"speed\": \"<string>\"\n      },\n      \"teamBattle\": {\n        \"teams\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"nbLeaders\": \"<integer>\"\n      },\n      \"winner\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"flair\": \"<string>\",\n        \"title\": \"WGM\",\n        \"patron\": \"<boolean>\",\n        \"patronColor\": \"<integer>\"\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"createdBy\": \"<string>\",\n      \"system\": \"<string>\",\n      \"minutes\": \"<integer>\",\n      \"clock\": {\n        \"limit\": \"<integer>\",\n        \"increment\": \"<integer>\"\n      },\n      \"rated\": \"<boolean>\",\n      \"fullName\": \"<string>\",\n      \"nbPlayers\": \"<integer>\",\n      \"variant\": {\n        \"key\": \"standard\",\n        \"name\": \"<string>\",\n        \"short\": \"<string>\"\n      },\n      \"startsAt\": \"<long>\",\n      \"finishesAt\": \"<long>\",\n      \"status\": 20,\n      \"perf\": {\n        \"key\": \"atomic\",\n        \"name\": \"<string>\",\n        \"position\": \"<integer>\",\n        \"icon\": \"<string>\"\n      },\n      \"secondsToStart\": \"<integer>\",\n      \"hasMaxRating\": \"<boolean>\",\n      \"maxRating\": {\n        \"rating\": \"<integer>\",\n        \"perf\": \"racingKings\"\n      },\n      \"minRating\": {\n        \"rating\": \"<integer>\",\n        \"perf\": \"bullet\"\n      },\n      \"minRatedGames\": {\n        \"nb\": \"<integer>\"\n      },\n      \"botsAllowed\": \"<boolean>\",\n      \"minAccountAgeInDays\": \"<integer>\",\n      \"onlyTitled\": \"<boolean>\",\n      \"teamMember\": \"<string>\",\n      \"private\": \"<boolean>\",\n      \"position\": {\n        \"eco\": \"<string>\",\n        \"name\": \"<string>\",\n        \"fen\": \"<string>\",\n        \"url\": \"<uri>\"\n      },\n      \"schedule\": {\n        \"freq\": \"<string>\",\n        \"speed\": \"<string>\"\n      },\n      \"teamBattle\": {\n        \"teams\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"nbLeaders\": \"<integer>\"\n      },\n      \"winner\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"flair\": \"<string>\",\n        \"title\": \"LM\",\n        \"patron\": \"<boolean>\",\n        \"patronColor\": \"<integer>\"\n      }\n    }\n  ],\n  \"started\": [\n    {\n      \"id\": \"<string>\",\n      \"createdBy\": \"<string>\",\n      \"system\": \"<string>\",\n      \"minutes\": \"<integer>\",\n      \"clock\": {\n        \"limit\": \"<integer>\",\n        \"increment\": \"<integer>\"\n      },\n      \"rated\": \"<boolean>\",\n      \"fullName\": \"<string>\",\n      \"nbPlayers\": \"<integer>\",\n      \"variant\": {\n        \"key\": \"standard\",\n        \"name\": \"<string>\",\n        \"short\": \"<string>\"\n      },\n      \"startsAt\": \"<long>\",\n      \"finishesAt\": \"<long>\",\n      \"status\": 20,\n      \"perf\": {\n        \"key\": \"blitz\",\n        \"name\": \"<string>\",\n        \"position\": \"<integer>\",\n        \"icon\": \"<string>\"\n      },\n      \"secondsToStart\": \"<integer>\",\n      \"hasMaxRating\": \"<boolean>\",\n      \"maxRating\": {\n        \"rating\": \"<integer>\",\n        \"perf\": \"chess960\"\n      },\n      \"minRating\": {\n        \"rating\": \"<integer>\",\n        \"perf\": \"antichess\"\n      },\n      \"minRatedGames\": {\n        \"nb\": \"<integer>\"\n      },\n      \"botsAllowed\": \"<boolean>\",\n      \"minAccountAgeInDays\": \"<integer>\",\n      \"onlyTitled\": \"<boolean>\",\n      \"teamMember\": \"<string>\",\n      \"private\": \"<boolean>\",\n      \"position\": {\n        \"eco\": \"<string>\",\n        \"name\": \"<string>\",\n        \"fen\": \"<string>\",\n        \"url\": \"<uri>\"\n      },\n      \"schedule\": {\n        \"freq\": \"<string>\",\n        \"speed\": \"<string>\"\n      },\n      \"teamBattle\": {\n        \"teams\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"nbLeaders\": \"<integer>\"\n      },\n      \"winner\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"flair\": \"<string>\",\n        \"title\": \"WFM\",\n        \"patron\": \"<boolean>\",\n        \"patronColor\": \"<integer>\"\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"createdBy\": \"<string>\",\n      \"system\": \"<string>\",\n      \"minutes\": \"<integer>\",\n      \"clock\": {\n        \"limit\": \"<integer>\",\n        \"increment\": \"<integer>\"\n      },\n      \"rated\": \"<boolean>\",\n      \"fullName\": \"<string>\",\n      \"nbPlayers\": \"<integer>\",\n      \"variant\": {\n        \"key\": \"standard\",\n        \"name\": \"<string>\",\n        \"short\": \"<string>\"\n      },\n      \"startsAt\": \"<long>\",\n      \"finishesAt\": \"<long>\",\n      \"status\": 20,\n      \"perf\": {\n        \"key\": \"atomic\",\n        \"name\": \"<string>\",\n        \"position\": \"<integer>\",\n        \"icon\": \"<string>\"\n      },\n      \"secondsToStart\": \"<integer>\",\n      \"hasMaxRating\": \"<boolean>\",\n      \"maxRating\": {\n        \"rating\": \"<integer>\",\n        \"perf\": \"correspondence\"\n      },\n      \"minRating\": {\n        \"rating\": \"<integer>\",\n        \"perf\": \"crazyhouse\"\n      },\n      \"minRatedGames\": {\n        \"nb\": \"<integer>\"\n      },\n      \"botsAllowed\": \"<boolean>\",\n      \"minAccountAgeInDays\": \"<integer>\",\n      \"onlyTitled\": \"<boolean>\",\n      \"teamMember\": \"<string>\",\n      \"private\": \"<boolean>\",\n      \"position\": {\n        \"eco\": \"<string>\",\n        \"name\": \"<string>\",\n        \"fen\": \"<string>\",\n        \"url\": \"<uri>\"\n      },\n      \"schedule\": {\n        \"freq\": \"<string>\",\n        \"speed\": \"<string>\"\n      },\n      \"teamBattle\": {\n        \"teams\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"nbLeaders\": \"<integer>\"\n      },\n      \"winner\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"flair\": \"<string>\",\n        \"title\": \"LM\",\n        \"patron\": \"<boolean>\",\n        \"patronColor\": \"<integer>\"\n      }\n    }\n  ],\n  \"finished\": [\n    {\n      \"id\": \"<string>\",\n      \"createdBy\": \"<string>\",\n      \"system\": \"<string>\",\n      \"minutes\": \"<integer>\",\n      \"clock\": {\n        \"limit\": \"<integer>\",\n        \"increment\": \"<integer>\"\n      },\n      \"rated\": \"<boolean>\",\n      \"fullName\": \"<string>\",\n      \"nbPlayers\": \"<integer>\",\n      \"variant\": {\n        \"key\": \"standard\",\n        \"name\": \"<string>\",\n        \"short\": \"<string>\"\n      },\n      \"startsAt\": \"<long>\",\n      \"finishesAt\": \"<long>\",\n      \"status\": 20,\n      \"perf\": {\n        \"key\": \"bullet\",\n        \"name\": \"<string>\",\n        \"position\": \"<integer>\",\n        \"icon\": \"<string>\"\n      },\n      \"secondsToStart\": \"<integer>\",\n      \"hasMaxRating\": \"<boolean>\",\n      \"maxRating\": {\n        \"rating\": \"<integer>\",\n        \"perf\": \"correspondence\"\n      },\n      \"minRating\": {\n        \"rating\": \"<integer>\",\n        \"perf\": \"ultraBullet\"\n      },\n      \"minRatedGames\": {\n        \"nb\": \"<integer>\"\n      },\n      \"botsAllowed\": \"<boolean>\",\n      \"minAccountAgeInDays\": \"<integer>\",\n      \"onlyTitled\": \"<boolean>\",\n      \"teamMember\": \"<string>\",\n      \"private\": \"<boolean>\",\n      \"position\": {\n        \"eco\": \"<string>\",\n        \"name\": \"<string>\",\n        \"fen\": \"<string>\",\n        \"url\": \"<uri>\"\n      },\n      \"schedule\": {\n        \"freq\": \"<string>\",\n        \"speed\": \"<string>\"\n      },\n      \"teamBattle\": {\n        \"teams\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"nbLeaders\": \"<integer>\"\n      },\n      \"winner\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"flair\": \"<string>\",\n        \"title\": \"WGM\",\n        \"patron\": \"<boolean>\",\n        \"patronColor\": \"<integer>\"\n      }\n    },\n    {\n      \"id\": \"<string>\",\n      \"createdBy\": \"<string>\",\n      \"system\": \"<string>\",\n      \"minutes\": \"<integer>\",\n      \"clock\": {\n        \"limit\": \"<integer>\",\n        \"increment\": \"<integer>\"\n      },\n      \"rated\": \"<boolean>\",\n      \"fullName\": \"<string>\",\n      \"nbPlayers\": \"<integer>\",\n      \"variant\": {\n        \"key\": \"standard\",\n        \"name\": \"<string>\",\n        \"short\": \"<string>\"\n      },\n      \"startsAt\": \"<long>\",\n      \"finishesAt\": \"<long>\",\n      \"status\": 10,\n      \"perf\": {\n        \"key\": \"correspondence\",\n        \"name\": \"<string>\",\n        \"position\": \"<integer>\",\n        \"icon\": \"<string>\"\n      },\n      \"secondsToStart\": \"<integer>\",\n      \"hasMaxRating\": \"<boolean>\",\n      \"maxRating\": {\n        \"rating\": \"<integer>\",\n        \"perf\": \"chess960\"\n      },\n      \"minRating\": {\n        \"rating\": \"<integer>\",\n        \"perf\": \"kingOfTheHill\"\n      },\n      \"minRatedGames\": {\n        \"nb\": \"<integer>\"\n      },\n      \"botsAllowed\": \"<boolean>\",\n      \"minAccountAgeInDays\": \"<integer>\",\n      \"onlyTitled\": \"<boolean>\",\n      \"teamMember\": \"<string>\",\n      \"private\": \"<boolean>\",\n      \"position\": {\n        \"eco\": \"<string>\",\n        \"name\": \"<string>\",\n        \"fen\": \"<string>\",\n        \"url\": \"<uri>\"\n      },\n      \"schedule\": {\n        \"freq\": \"<string>\",\n        \"speed\": \"<string>\"\n      },\n      \"teamBattle\": {\n        \"teams\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"nbLeaders\": \"<integer>\"\n      },\n      \"winner\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"flair\": \"<string>\",\n        \"title\": \"WFM\",\n        \"patron\": \"<boolean>\",\n        \"patronColor\": \"<integer>\"\n      }\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T02:07:01.000Z",
+                  "updatedAt": "2026-07-28T02:07:01.000Z",
+                  "uid": "35240-b280962a-a63b-43a9-a140-5bc27af9f72e"
+                }
+              ],
+              "createdAt": "2026-07-28T02:07:00.000Z",
+              "updatedAt": "2026-07-28T02:07:00.000Z",
+              "uid": "35240-4e4ee8a5-4e46-4a4a-a19e-6aea7be8b877"
+            },
+            {
+              "name": "Create a new Arena tournament",
+              "id": "a547ddfe-05aa-427e-8920-1741daee734d",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "scope",
+                      "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                      "type": "string"
+                    },
+                    {
+                      "key": "accessTokenUrl",
+                      "value": "https://lichess.org/api/token",
+                      "type": "string"
+                    },
+                    {
+                      "key": "authUrl",
+                      "value": "https://lichess.org/oauth",
+                      "type": "string"
+                    },
+                    {
+                      "key": "grant_type",
+                      "value": "authorization_code",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/x-www-form-urlencoded"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "description": "(Required) Clock initial time in minutes",
+                      "key": "clockTime",
+                      "value": "30"
+                    },
+                    {
+                      "description": "(Required) Clock increment in seconds",
+                      "key": "clockIncrement",
+                      "value": "30"
+                    },
+                    {
+                      "description": "(Required) How long the tournament lasts, in minutes",
+                      "key": "minutes",
+                      "value": "330"
+                    },
+                    {
+                      "description": "The tournament name. Leave empty to get a random Grandmaster name",
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "How long to wait before starting the tournament, from now, in minutes",
+                      "key": "waitMinutes",
+                      "value": "5"
+                    },
+                    {
+                      "description": "Timestamp (in milliseconds) to start the tournament at a given date and time. Overrides the `waitMinutes` setting",
+                      "key": "startDate",
+                      "value": "<long>"
+                    },
+                    {
+                      "key": "variant",
+                      "value": "standard"
+                    },
+                    {
+                      "description": "Games are rated and impact players ratings",
+                      "key": "rated",
+                      "value": "true"
+                    },
+                    {
+                      "description": "Custom initial position (in X-FEN). Variant must be standard, fromPosition, or chess960 (if a valid 960 starting position), and the game cannot be rated.",
+                      "key": "position",
+                      "value": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+                    },
+                    {
+                      "description": "Whether the players can use berserk. Only allowed if clockIncrement <= clockTime * 2",
+                      "key": "berserkable",
+                      "value": "true"
+                    },
+                    {
+                      "description": "After 2 wins, consecutive wins grant 4 points instead of 2.",
+                      "key": "streakable",
+                      "value": "true"
+                    },
+                    {
+                      "description": "Whether the players can discuss in a chat",
+                      "key": "hasChat",
+                      "value": "true"
+                    },
+                    {
+                      "description": "Anything you want to tell players about the tournament",
+                      "key": "description",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Make the tournament private, and restrict access with a password.\nYou can also [generate user-specific entry codes](https://github.com/lichess-org/api/tree/master/example/tournament-entry-code)\nbased on this password.\n",
+                      "key": "password",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Set the ID of a team you lead to create a team battle.\nThe other teams can be added using the [team battle edit endpoint](#tag/arena-tournaments/POST/api/tournament/team-battle/{id}).\n",
+                      "key": "teamBattleByTeam",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Restrict entry to members of a team.\nThe teamId is the last part of a team URL, e.g. `https://lichess.org/team/coders` has teamId = `coders`.\nLeave empty to let everyone join the tournament.\nDo not use this to create team battles, use `teamBattleByTeam` instead.\n",
+                      "key": "conditions.teamMember.teamId",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Minimum rating to join. Leave empty to let everyone join the tournament.",
+                      "key": "conditions.minRating.rating",
+                      "value": "2100"
+                    },
+                    {
+                      "description": "Maximum rating to join. Based on best rating reached in the last 7 days. Leave empty to let everyone join the tournament.",
+                      "key": "conditions.maxRating.rating",
+                      "value": "1400"
+                    },
+                    {
+                      "description": "Minimum number of rated games required to join.",
+                      "key": "conditions.nbRatedGame.nb",
+                      "value": "0"
+                    },
+                    {
+                      "description": "Predefined list of usernames that are allowed to join, separated by commas.\nIf this list is non-empty, then usernames absent from this list will be forbidden to join.\nAdding `%titled` to the list additionally allows any titled player to join.\nExample: `thibault,german11,%titled`\n",
+                      "key": "conditions.allowList",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Whether bots are allowed to join the tournament.",
+                      "key": "conditions.bots",
+                      "value": "false"
+                    },
+                    {
+                      "description": "Minium account age in days required to join.",
+                      "key": "conditions.accountAge",
+                      "value": "90"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/tournament",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "tournament"
+                  ]
+                },
+                "description": "Create a public or private Arena tournament.\nThis endpoint mirrors the form on <https://lichess.org/tournament/new>.\nYou can create up to 12 public tournaments per day, or 24 private tournaments.\nA team battle can be created by specifying the `teamBattleByTeam` argument.\nAdditional restrictions:\n  - clockTime + clockIncrement > 0\n  - 15s and 0+1 variant tournaments cannot be rated\n  - Clock time in comparison to tournament length must be reasonable: 3 <= (minutes * 60) / (96 * clockTime + 48 * clockIncrement + 15) <= 150\n"
+              },
+              "response": [
+                {
+                  "id": "781de589-5aa5-449f-b992-6e8a67d24608",
+                  "name": "The Arena tournament has been successfully created.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "(Required) Clock initial time in minutes",
+                          "key": "clockTime",
+                          "value": "30"
+                        },
+                        {
+                          "description": "(Required) Clock increment in seconds",
+                          "key": "clockIncrement",
+                          "value": "30"
+                        },
+                        {
+                          "description": "(Required) How long the tournament lasts, in minutes",
+                          "key": "minutes",
+                          "value": "330"
+                        },
+                        {
+                          "description": "The tournament name. Leave empty to get a random Grandmaster name",
+                          "key": "name",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "How long to wait before starting the tournament, from now, in minutes",
+                          "key": "waitMinutes",
+                          "value": "5"
+                        },
+                        {
+                          "description": "Timestamp (in milliseconds) to start the tournament at a given date and time. Overrides the `waitMinutes` setting",
+                          "key": "startDate",
+                          "value": "<long>"
+                        },
+                        {
+                          "key": "variant",
+                          "value": "standard"
+                        },
+                        {
+                          "description": "Games are rated and impact players ratings",
+                          "key": "rated",
+                          "value": "true"
+                        },
+                        {
+                          "description": "Custom initial position (in X-FEN). Variant must be standard, fromPosition, or chess960 (if a valid 960 starting position), and the game cannot be rated.",
+                          "key": "position",
+                          "value": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+                        },
+                        {
+                          "description": "Whether the players can use berserk. Only allowed if clockIncrement <= clockTime * 2",
+                          "key": "berserkable",
+                          "value": "true"
+                        },
+                        {
+                          "description": "After 2 wins, consecutive wins grant 4 points instead of 2.",
+                          "key": "streakable",
+                          "value": "true"
+                        },
+                        {
+                          "description": "Whether the players can discuss in a chat",
+                          "key": "hasChat",
+                          "value": "true"
+                        },
+                        {
+                          "description": "Anything you want to tell players about the tournament",
+                          "key": "description",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Make the tournament private, and restrict access with a password.\nYou can also [generate user-specific entry codes](https://github.com/lichess-org/api/tree/master/example/tournament-entry-code)\nbased on this password.\n",
+                          "key": "password",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Set the ID of a team you lead to create a team battle.\nThe other teams can be added using the [team battle edit endpoint](#tag/arena-tournaments/POST/api/tournament/team-battle/{id}).\n",
+                          "key": "teamBattleByTeam",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Restrict entry to members of a team.\nThe teamId is the last part of a team URL, e.g. `https://lichess.org/team/coders` has teamId = `coders`.\nLeave empty to let everyone join the tournament.\nDo not use this to create team battles, use `teamBattleByTeam` instead.\n",
+                          "key": "conditions.teamMember.teamId",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Minimum rating to join. Leave empty to let everyone join the tournament.",
+                          "key": "conditions.minRating.rating",
+                          "value": "2100"
+                        },
+                        {
+                          "description": "Maximum rating to join. Based on best rating reached in the last 7 days. Leave empty to let everyone join the tournament.",
+                          "key": "conditions.maxRating.rating",
+                          "value": "1400"
+                        },
+                        {
+                          "description": "Minimum number of rated games required to join.",
+                          "key": "conditions.nbRatedGame.nb",
+                          "value": "0"
+                        },
+                        {
+                          "description": "Predefined list of usernames that are allowed to join, separated by commas.\nIf this list is non-empty, then usernames absent from this list will be forbidden to join.\nAdding `%titled` to the list additionally allows any titled player to join.\nExample: `thibault,german11,%titled`\n",
+                          "key": "conditions.allowList",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Whether bots are allowed to join the tournament.",
+                          "key": "conditions.bots",
+                          "value": "false"
+                        },
+                        {
+                          "description": "Minium account age in days required to join.",
+                          "key": "conditions.accountAge",
+                          "value": "90"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/api/tournament",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "tournament"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "Access-Control-Allow-Origin",
+                      "value": "'*'"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"fullName\": \"<string>\",\n  \"clock\": {\n    \"limit\": \"<integer>\",\n    \"increment\": \"<integer>\"\n  },\n  \"nbPlayers\": \"<integer>\",\n  \"rated\": \"<boolean>\",\n  \"spotlight\": {\n    \"headline\": \"<string>\"\n  },\n  \"berserkable\": \"<boolean>\",\n  \"onlyTitled\": \"<boolean>\",\n  \"minutes\": \"<integer>\",\n  \"createdBy\": \"<string>\",\n  \"system\": \"<string>\",\n  \"secondsToStart\": \"<integer>\",\n  \"secondsToFinish\": \"<integer>\",\n  \"isFinished\": \"<boolean>\",\n  \"isRecentlyFinished\": \"<boolean>\",\n  \"pairingsClosed\": \"<boolean>\",\n  \"startsAt\": \"<int64>\",\n  \"verdicts\": {\n    \"accepted\": \"<boolean>\",\n    \"list\": [\n      {\n        \"condition\": \"<string>\",\n        \"verdict\": \"<string>\"\n      },\n      {\n        \"condition\": \"<string>\",\n        \"verdict\": \"<string>\"\n      }\n    ]\n  },\n  \"quote\": {\n    \"text\": \"<string>\",\n    \"author\": \"<string>\"\n  },\n  \"greatPlayer\": {\n    \"name\": \"<string>\",\n    \"url\": \"<uri>\"\n  },\n  \"allowList\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"hasMaxRating\": \"<boolean>\",\n  \"maxRating\": {\n    \"rating\": \"<integer>\",\n    \"perf\": \"bullet\"\n  },\n  \"minRating\": {\n    \"rating\": \"<integer>\",\n    \"perf\": \"racingKings\"\n  },\n  \"minRatedGames\": {\n    \"nb\": \"<integer>\"\n  },\n  \"botsAllowed\": \"<boolean>\",\n  \"minAccountAgeInDays\": \"<integer>\",\n  \"perf\": {\n    \"icon\": \"<string>\",\n    \"key\": \"<string>\",\n    \"name\": \"<string>\"\n  },\n  \"schedule\": {\n    \"freq\": \"<string>\",\n    \"speed\": \"<string>\"\n  },\n  \"description\": \"<string>\",\n  \"variant\": \"<string>\",\n  \"duels\": [\n    {\n      \"id\": \"<string>\",\n      \"p\": [\n        {\n          \"n\": \"<string>\",\n          \"r\": \"<integer>\",\n          \"k\": \"<integer>\"\n        },\n        {\n          \"n\": \"<string>\",\n          \"r\": \"<integer>\",\n          \"k\": \"<integer>\"\n        }\n      ]\n    },\n    {\n      \"id\": \"<string>\",\n      \"p\": [\n        {\n          \"n\": \"<string>\",\n          \"r\": \"<integer>\",\n          \"k\": \"<integer>\"\n        },\n        {\n          \"n\": \"<string>\",\n          \"r\": \"<integer>\",\n          \"k\": \"<integer>\"\n        }\n      ]\n    }\n  ],\n  \"standing\": {\n    \"page\": \"<integer>\",\n    \"players\": [\n      {\n        \"name\": \"<string>\",\n        \"title\": \"WFM\",\n        \"patron\": \"<boolean>\",\n        \"patronColor\": \"<integer>\",\n        \"flair\": \"<string>\",\n        \"rank\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"score\": \"<integer>\",\n        \"sheet\": {\n          \"scores\": \"<string>\",\n          \"fire\": \"<boolean>\"\n        }\n      },\n      {\n        \"name\": \"<string>\",\n        \"title\": \"WFM\",\n        \"patron\": \"<boolean>\",\n        \"patronColor\": \"<integer>\",\n        \"flair\": \"<string>\",\n        \"rank\": \"<integer>\",\n        \"rating\": \"<integer>\",\n        \"score\": \"<integer>\",\n        \"sheet\": {\n          \"scores\": \"<string>\",\n          \"fire\": \"<boolean>\"\n        }\n      }\n    ]\n  },\n  \"featured\": {\n    \"id\": \"<string>\",\n    \"fen\": \"<string>\",\n    \"orientation\": \"<string>\",\n    \"color\": \"<string>\",\n    \"lastMove\": \"<string>\",\n    \"white\": {\n      \"name\": \"<string>\",\n      \"id\": \"<string>\",\n      \"rank\": \"<integer>\",\n      \"rating\": \"<integer>\"\n    },\n    \"black\": {\n      \"name\": \"<string>\",\n      \"id\": \"<string>\",\n      \"rank\": \"<integer>\",\n      \"rating\": \"<integer>\"\n    },\n    \"c\": {\n      \"white\": \"<integer>\",\n      \"black\": \"<integer>\"\n    }\n  },\n  \"podium\": [\n    {\n      \"name\": \"<string>\",\n      \"title\": \"GM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"flair\": \"<string>\",\n      \"rank\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"score\": \"<integer>\",\n      \"nb\": {\n        \"game\": \"<integer>\",\n        \"berserk\": \"<integer>\",\n        \"win\": \"<integer>\"\n      },\n      \"performance\": \"<integer>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"title\": \"IM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\",\n      \"flair\": \"<string>\",\n      \"rank\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"score\": \"<integer>\",\n      \"nb\": {\n        \"game\": \"<integer>\",\n        \"berserk\": \"<integer>\",\n        \"win\": \"<integer>\"\n      },\n      \"performance\": \"<integer>\"\n    }\n  ],\n  \"stats\": {\n    \"games\": \"<integer>\",\n    \"moves\": \"<integer>\",\n    \"whiteWins\": \"<integer>\",\n    \"blackWins\": \"<integer>\",\n    \"draws\": \"<integer>\",\n    \"berserks\": \"<integer>\",\n    \"averageRating\": \"<integer>\"\n  },\n  \"myUsername\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:07:01.000Z",
+                  "updatedAt": "2026-07-28T02:07:01.000Z",
+                  "uid": "35240-781de589-5aa5-449f-b992-6e8a67d24608"
+                },
+                {
+                  "id": "de5f1fce-ef6d-421d-8ee2-f6eadae73647",
+                  "name": "The creation of the Arena tournament failed.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "(Required) Clock initial time in minutes",
+                          "key": "clockTime",
+                          "value": "30"
+                        },
+                        {
+                          "description": "(Required) Clock increment in seconds",
+                          "key": "clockIncrement",
+                          "value": "30"
+                        },
+                        {
+                          "description": "(Required) How long the tournament lasts, in minutes",
+                          "key": "minutes",
+                          "value": "330"
+                        },
+                        {
+                          "description": "The tournament name. Leave empty to get a random Grandmaster name",
+                          "key": "name",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "How long to wait before starting the tournament, from now, in minutes",
+                          "key": "waitMinutes",
+                          "value": "5"
+                        },
+                        {
+                          "description": "Timestamp (in milliseconds) to start the tournament at a given date and time. Overrides the `waitMinutes` setting",
+                          "key": "startDate",
+                          "value": "<long>"
+                        },
+                        {
+                          "key": "variant",
+                          "value": "standard"
+                        },
+                        {
+                          "description": "Games are rated and impact players ratings",
+                          "key": "rated",
+                          "value": "true"
+                        },
+                        {
+                          "description": "Custom initial position (in X-FEN). Variant must be standard, fromPosition, or chess960 (if a valid 960 starting position), and the game cannot be rated.",
+                          "key": "position",
+                          "value": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+                        },
+                        {
+                          "description": "Whether the players can use berserk. Only allowed if clockIncrement <= clockTime * 2",
+                          "key": "berserkable",
+                          "value": "true"
+                        },
+                        {
+                          "description": "After 2 wins, consecutive wins grant 4 points instead of 2.",
+                          "key": "streakable",
+                          "value": "true"
+                        },
+                        {
+                          "description": "Whether the players can discuss in a chat",
+                          "key": "hasChat",
+                          "value": "true"
+                        },
+                        {
+                          "description": "Anything you want to tell players about the tournament",
+                          "key": "description",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Make the tournament private, and restrict access with a password.\nYou can also [generate user-specific entry codes](https://github.com/lichess-org/api/tree/master/example/tournament-entry-code)\nbased on this password.\n",
+                          "key": "password",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Set the ID of a team you lead to create a team battle.\nThe other teams can be added using the [team battle edit endpoint](#tag/arena-tournaments/POST/api/tournament/team-battle/{id}).\n",
+                          "key": "teamBattleByTeam",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Restrict entry to members of a team.\nThe teamId is the last part of a team URL, e.g. `https://lichess.org/team/coders` has teamId = `coders`.\nLeave empty to let everyone join the tournament.\nDo not use this to create team battles, use `teamBattleByTeam` instead.\n",
+                          "key": "conditions.teamMember.teamId",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Minimum rating to join. Leave empty to let everyone join the tournament.",
+                          "key": "conditions.minRating.rating",
+                          "value": "2100"
+                        },
+                        {
+                          "description": "Maximum rating to join. Based on best rating reached in the last 7 days. Leave empty to let everyone join the tournament.",
+                          "key": "conditions.maxRating.rating",
+                          "value": "1400"
+                        },
+                        {
+                          "description": "Minimum number of rated games required to join.",
+                          "key": "conditions.nbRatedGame.nb",
+                          "value": "0"
+                        },
+                        {
+                          "description": "Predefined list of usernames that are allowed to join, separated by commas.\nIf this list is non-empty, then usernames absent from this list will be forbidden to join.\nAdding `%titled` to the list additionally allows any titled player to join.\nExample: `thibault,german11,%titled`\n",
+                          "key": "conditions.allowList",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Whether bots are allowed to join the tournament.",
+                          "key": "conditions.bots",
+                          "value": "false"
+                        },
+                        {
+                          "description": "Minium account age in days required to join.",
+                          "key": "conditions.accountAge",
+                          "value": "90"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/api/tournament",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "tournament"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"error\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:07:01.000Z",
+                  "updatedAt": "2026-07-28T02:07:01.000Z",
+                  "uid": "35240-de5f1fce-ef6d-421d-8ee2-f6eadae73647"
+                }
+              ],
+              "createdAt": "2026-07-28T02:07:00.000Z",
+              "updatedAt": "2026-07-28T02:07:00.000Z",
+              "uid": "35240-a547ddfe-05aa-427e-8920-1741daee734d"
+            }
+          ],
+          "id": "970a67f3-5231-4b12-b1ef-5483ea625608",
+          "createdAt": "2026-07-28T02:07:00.000Z",
+          "updatedAt": "2026-07-28T02:07:00.000Z",
+          "uid": "35240-970a67f3-5231-4b12-b1ef-5483ea625608"
+        },
+        {
+          "name": "user",
+          "item": [
+            {
+              "name": "{username}",
+              "item": [
+                {
+                  "name": "tournament",
+                  "item": [
+                    {
+                      "name": "created",
+                      "item": [
+                        {
+                          "name": "Get tournaments created by a user",
+                          "id": "52712e7f-efce-4ce3-a534-2128050fc05c",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "auth": {
+                              "type": "oauth2",
+                              "oauth2": [
+                                {
+                                  "key": "scope",
+                                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "accessTokenUrl",
+                                  "value": "https://lichess.org/api/token",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "authUrl",
+                                  "value": "https://lichess.org/oauth",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "grant_type",
+                                  "value": "authorization_code",
+                                  "type": "string"
+                                }
+                              ]
+                            },
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/x-ndjson"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/user/:username/tournament/created?nb=<integer>&status=10",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "user",
+                                ":username",
+                                "tournament",
+                                "created"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Max number of tournaments to fetch",
+                                  "key": "nb",
+                                  "value": "<integer>"
+                                },
+                                {
+                                  "description": "Include tournaments in the given status: \"Created\" (10), \"Started\" (20), \"Finished\" (30)\nYou can add this parameter more than once to include tournaments in different statuses.\nExample: `?status=10&status=20`\n",
+                                  "key": "status",
+                                  "value": "10"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "id": "e5f0b706-ffc3-4387-9edf-41c8a3ecc670",
+                                  "key": "username",
+                                  "value": "<string>",
+                                  "description": "(Required) The user whose created tournaments to fetch"
+                                }
+                              ]
+                            },
+                            "description": "Get all tournaments created by a given user.\nTournaments are sorted by reverse chronological order of start date (last starting first).\nTournaments are streamed as [ndjson](#description/streaming-with-nd-json).\nThe stream is throttled, depending on who is making the request:\n  - Anonymous request: 20 tournaments per second\n  - [OAuth2 authenticated](#description/authentication) request: 30 tournaments per second\n  - Authenticated, downloading your own tournaments: 50 tournaments per second\n"
+                          },
+                          "response": [
+                            {
+                              "id": "f83ceda4-5e65-42a6-b4fb-d54f42a14c2f",
+                              "name": "The list of tournaments created by the user.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/x-ndjson"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/user/:username/tournament/created?nb=<integer>&status=10",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "user",
+                                    ":username",
+                                    "tournament",
+                                    "created"
+                                  ],
+                                  "query": [
+                                    {
+                                      "description": "Max number of tournaments to fetch",
+                                      "key": "nb",
+                                      "value": "<integer>"
+                                    },
+                                    {
+                                      "description": "Include tournaments in the given status: \"Created\" (10), \"Started\" (20), \"Finished\" (30)\nYou can add this parameter more than once to include tournaments in different statuses.\nExample: `?status=10&status=20`\n",
+                                      "key": "status",
+                                      "value": "10"
+                                    }
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "username"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "text",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/x-ndjson"
+                                },
+                                {
+                                  "disabled": false,
+                                  "description": {
+                                    "content": "",
+                                    "type": "text/plain"
+                                  },
+                                  "key": "Access-Control-Allow-Origin",
+                                  "value": "'*'"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"id\": \"<string>\",\n  \"createdBy\": \"<string>\",\n  \"system\": \"<string>\",\n  \"minutes\": \"<integer>\",\n  \"clock\": {\n    \"limit\": \"<integer>\",\n    \"increment\": \"<integer>\"\n  },\n  \"rated\": \"<boolean>\",\n  \"fullName\": \"<string>\",\n  \"nbPlayers\": \"<integer>\",\n  \"variant\": {\n    \"key\": \"standard\",\n    \"name\": \"<string>\",\n    \"short\": \"<string>\"\n  },\n  \"startsAt\": \"<long>\",\n  \"finishesAt\": \"<long>\",\n  \"status\": 30,\n  \"perf\": {\n    \"key\": \"chess960\",\n    \"name\": \"<string>\",\n    \"position\": \"<integer>\",\n    \"icon\": \"<string>\"\n  },\n  \"secondsToStart\": \"<integer>\",\n  \"hasMaxRating\": \"<boolean>\",\n  \"maxRating\": {\n    \"rating\": \"<integer>\",\n    \"perf\": \"crazyhouse\"\n  },\n  \"minRating\": {\n    \"rating\": \"<integer>\",\n    \"perf\": \"correspondence\"\n  },\n  \"minRatedGames\": {\n    \"nb\": \"<integer>\"\n  },\n  \"botsAllowed\": \"<boolean>\",\n  \"minAccountAgeInDays\": \"<integer>\",\n  \"onlyTitled\": \"<boolean>\",\n  \"teamMember\": \"<string>\",\n  \"private\": \"<boolean>\",\n  \"position\": {\n    \"eco\": \"<string>\",\n    \"name\": \"<string>\",\n    \"fen\": \"<string>\",\n    \"url\": \"<uri>\"\n  },\n  \"schedule\": {\n    \"freq\": \"<string>\",\n    \"speed\": \"<string>\"\n  },\n  \"teamBattle\": {\n    \"teams\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"nbLeaders\": \"<integer>\"\n  },\n  \"winner\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"flair\": \"<string>\",\n    \"title\": \"WIM\",\n    \"patron\": \"<boolean>\",\n    \"patronColor\": \"<integer>\"\n  }\n}",
+                              "createdAt": "2026-07-28T02:07:01.000Z",
+                              "updatedAt": "2026-07-28T02:07:01.000Z",
+                              "uid": "35240-f83ceda4-5e65-42a6-b4fb-d54f42a14c2f"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T02:07:00.000Z",
+                          "updatedAt": "2026-07-28T02:07:00.000Z",
+                          "uid": "35240-52712e7f-efce-4ce3-a534-2128050fc05c"
+                        }
+                      ],
+                      "id": "7a34792f-f153-45cf-b6f0-02687adf1519",
+                      "createdAt": "2026-07-28T02:07:00.000Z",
+                      "updatedAt": "2026-07-28T02:07:00.000Z",
+                      "uid": "35240-7a34792f-f153-45cf-b6f0-02687adf1519"
+                    },
+                    {
+                      "name": "played",
+                      "item": [
+                        {
+                          "name": "Get tournaments played by a user",
+                          "id": "9acffd74-b25c-482e-9a7c-b651c1f45e6f",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "auth": {
+                              "type": "oauth2",
+                              "oauth2": [
+                                {
+                                  "key": "scope",
+                                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "accessTokenUrl",
+                                  "value": "https://lichess.org/api/token",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "authUrl",
+                                  "value": "https://lichess.org/oauth",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "grant_type",
+                                  "value": "authorization_code",
+                                  "type": "string"
+                                }
+                              ]
+                            },
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/x-ndjson"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/user/:username/tournament/played?nb=<integer>&performance=<boolean>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "user",
+                                ":username",
+                                "tournament",
+                                "played"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Max number of tournaments to fetch",
+                                  "key": "nb",
+                                  "value": "<integer>"
+                                },
+                                {
+                                  "description": "Include the player performance rating in the response, at some cost for the server.\n",
+                                  "key": "performance",
+                                  "value": "<boolean>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "id": "34a921ad-b0d0-4791-9964-2b47b9dde949",
+                                  "key": "username",
+                                  "value": "<string>",
+                                  "description": "(Required) The user whose played tournaments to fetch"
+                                }
+                              ]
+                            },
+                            "description": "Get all tournaments played by a given user.\nTournaments are sorted by reverse chronological order of start date (last played first).\nTournaments are streamed as [ndjson](#description/streaming-with-nd-json).\nThe stream is throttled, depending on who is making the request:\n  - Anonymous request: 20 tournaments per second\n  - [OAuth2 authenticated](#description/authentication) request: 30 tournaments per second\n  - Authenticated, downloading your own tournaments: 50 tournaments per second\n"
+                          },
+                          "response": [
+                            {
+                              "id": "cf4c2b8f-722f-4e2b-8f22-b1dc2a44f9f6",
+                              "name": "The list of tournaments played by the user.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/x-ndjson"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/user/:username/tournament/played?nb=<integer>&performance=<boolean>",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "user",
+                                    ":username",
+                                    "tournament",
+                                    "played"
+                                  ],
+                                  "query": [
+                                    {
+                                      "description": "Max number of tournaments to fetch",
+                                      "key": "nb",
+                                      "value": "<integer>"
+                                    },
+                                    {
+                                      "description": "Include the player performance rating in the response, at some cost for the server.\n",
+                                      "key": "performance",
+                                      "value": "<boolean>"
+                                    }
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "username"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "text",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/x-ndjson"
+                                },
+                                {
+                                  "disabled": false,
+                                  "description": {
+                                    "content": "",
+                                    "type": "text/plain"
+                                  },
+                                  "key": "Access-Control-Allow-Origin",
+                                  "value": "'*'"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"tournament\": {\n    \"id\": \"<string>\",\n    \"createdBy\": \"<string>\",\n    \"system\": \"<string>\",\n    \"minutes\": \"<integer>\",\n    \"clock\": {\n      \"limit\": \"<integer>\",\n      \"increment\": \"<integer>\"\n    },\n    \"rated\": \"<boolean>\",\n    \"fullName\": \"<string>\",\n    \"nbPlayers\": \"<integer>\",\n    \"variant\": {\n      \"key\": \"standard\",\n      \"name\": \"<string>\",\n      \"short\": \"<string>\"\n    },\n    \"startsAt\": \"<long>\",\n    \"finishesAt\": \"<long>\",\n    \"status\": 20,\n    \"perf\": {\n      \"key\": \"blitz\",\n      \"name\": \"<string>\",\n      \"position\": \"<integer>\",\n      \"icon\": \"<string>\"\n    },\n    \"secondsToStart\": \"<integer>\",\n    \"hasMaxRating\": \"<boolean>\",\n    \"maxRating\": {\n      \"rating\": \"<integer>\",\n      \"perf\": \"ultraBullet\"\n    },\n    \"minRating\": {\n      \"rating\": \"<integer>\",\n      \"perf\": \"atomic\"\n    },\n    \"minRatedGames\": {\n      \"nb\": \"<integer>\"\n    },\n    \"botsAllowed\": \"<boolean>\",\n    \"minAccountAgeInDays\": \"<integer>\",\n    \"onlyTitled\": \"<boolean>\",\n    \"teamMember\": \"<string>\",\n    \"private\": \"<boolean>\",\n    \"position\": {\n      \"eco\": \"<string>\",\n      \"name\": \"<string>\",\n      \"fen\": \"<string>\",\n      \"url\": \"<uri>\"\n    },\n    \"schedule\": {\n      \"freq\": \"<string>\",\n      \"speed\": \"<string>\"\n    },\n    \"teamBattle\": {\n      \"teams\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"nbLeaders\": \"<integer>\"\n    },\n    \"winner\": {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"flair\": \"<string>\",\n      \"title\": \"CM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\"\n    }\n  },\n  \"player\": {\n    \"games\": \"<integer>\",\n    \"score\": \"<integer>\",\n    \"rank\": \"<integer>\",\n    \"performance\": \"<integer>\"\n  }\n}",
+                              "createdAt": "2026-07-28T02:07:01.000Z",
+                              "updatedAt": "2026-07-28T02:07:01.000Z",
+                              "uid": "35240-cf4c2b8f-722f-4e2b-8f22-b1dc2a44f9f6"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T02:07:00.000Z",
+                          "updatedAt": "2026-07-28T02:07:00.000Z",
+                          "uid": "35240-9acffd74-b25c-482e-9a7c-b651c1f45e6f"
+                        }
+                      ],
+                      "id": "2e1b54ce-8017-4278-9ca6-7ff892260c03",
+                      "createdAt": "2026-07-28T02:07:00.000Z",
+                      "updatedAt": "2026-07-28T02:07:00.000Z",
+                      "uid": "35240-2e1b54ce-8017-4278-9ca6-7ff892260c03"
+                    }
+                  ],
+                  "id": "2a312441-d43f-42fc-b3d7-f62447b9c0cf",
+                  "createdAt": "2026-07-28T02:07:00.000Z",
+                  "updatedAt": "2026-07-28T02:07:00.000Z",
+                  "uid": "35240-2a312441-d43f-42fc-b3d7-f62447b9c0cf"
+                }
+              ],
+              "id": "5440014f-b371-4496-935d-11e157992216",
+              "createdAt": "2026-07-28T02:07:00.000Z",
+              "updatedAt": "2026-07-28T02:07:00.000Z",
+              "uid": "35240-5440014f-b371-4496-935d-11e157992216"
+            }
+          ],
+          "id": "c75ffe74-383e-44b0-89c4-739cb1ef1656",
+          "createdAt": "2026-07-28T02:07:00.000Z",
+          "updatedAt": "2026-07-28T02:07:00.000Z",
+          "uid": "35240-c75ffe74-383e-44b0-89c4-739cb1ef1656"
+        },
+        {
+          "name": "team",
+          "item": [
+            {
+              "name": "{teamId}",
+              "item": [
+                {
+                  "name": "arena",
+                  "item": [
+                    {
+                      "name": "Get team Arena tournaments",
+                      "id": "5c2d70be-4adc-4521-83d5-5f3889f5ff69",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/x-ndjson"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/team/:teamId/arena?max=100&status=created&createdBy=<string>&name=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "team",
+                            ":teamId",
+                            "arena"
+                          ],
+                          "query": [
+                            {
+                              "description": "How many tournaments to download.",
+                              "key": "max",
+                              "value": "100"
+                            },
+                            {
+                              "description": "[Filter] Only arena tournaments in this current state.\n",
+                              "key": "status",
+                              "value": "created"
+                            },
+                            {
+                              "description": "[Filter] Only arena tournaments created by a given user.\n",
+                              "key": "createdBy",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "[Filter] Only arena tournaments with a given name.\n",
+                              "key": "name",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "id": "7820fa42-2633-4192-8fae-4e279dc9d4a1",
+                              "key": "teamId",
+                              "value": "<string>",
+                              "description": "(Required) ID of the team"
+                            }
+                          ]
+                        },
+                        "description": "Get all Arena tournaments relevant to a team.\nTournaments are sorted by reverse chronological order of start date (last starting first).\nTournaments are streamed as [ndjson](#description/streaming-with-nd-json).\n"
+                      },
+                      "response": [
+                        {
+                          "id": "e43fc95d-1521-4692-95b9-e158615ac477",
+                          "name": "The list of Arena tournaments of a team.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/x-ndjson"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/team/:teamId/arena?max=100&status=created&createdBy=<string>&name=<string>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "team",
+                                ":teamId",
+                                "arena"
+                              ],
+                              "query": [
+                                {
+                                  "description": "How many tournaments to download.",
+                                  "key": "max",
+                                  "value": "100"
+                                },
+                                {
+                                  "description": "[Filter] Only arena tournaments in this current state.\n",
+                                  "key": "status",
+                                  "value": "created"
+                                },
+                                {
+                                  "description": "[Filter] Only arena tournaments created by a given user.\n",
+                                  "key": "createdBy",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "[Filter] Only arena tournaments with a given name.\n",
+                                  "key": "name",
+                                  "value": "<string>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "teamId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/x-ndjson"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<string>\",\n  \"createdBy\": \"<string>\",\n  \"system\": \"<string>\",\n  \"minutes\": \"<integer>\",\n  \"clock\": {\n    \"limit\": \"<integer>\",\n    \"increment\": \"<integer>\"\n  },\n  \"rated\": \"<boolean>\",\n  \"fullName\": \"<string>\",\n  \"nbPlayers\": \"<integer>\",\n  \"variant\": {\n    \"key\": \"standard\",\n    \"name\": \"<string>\",\n    \"short\": \"<string>\"\n  },\n  \"startsAt\": \"<long>\",\n  \"finishesAt\": \"<long>\",\n  \"status\": 30,\n  \"perf\": {\n    \"key\": \"chess960\",\n    \"name\": \"<string>\",\n    \"position\": \"<integer>\",\n    \"icon\": \"<string>\"\n  },\n  \"secondsToStart\": \"<integer>\",\n  \"hasMaxRating\": \"<boolean>\",\n  \"maxRating\": {\n    \"rating\": \"<integer>\",\n    \"perf\": \"crazyhouse\"\n  },\n  \"minRating\": {\n    \"rating\": \"<integer>\",\n    \"perf\": \"correspondence\"\n  },\n  \"minRatedGames\": {\n    \"nb\": \"<integer>\"\n  },\n  \"botsAllowed\": \"<boolean>\",\n  \"minAccountAgeInDays\": \"<integer>\",\n  \"onlyTitled\": \"<boolean>\",\n  \"teamMember\": \"<string>\",\n  \"private\": \"<boolean>\",\n  \"position\": {\n    \"eco\": \"<string>\",\n    \"name\": \"<string>\",\n    \"fen\": \"<string>\",\n    \"url\": \"<uri>\"\n  },\n  \"schedule\": {\n    \"freq\": \"<string>\",\n    \"speed\": \"<string>\"\n  },\n  \"teamBattle\": {\n    \"teams\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"nbLeaders\": \"<integer>\"\n  },\n  \"winner\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"flair\": \"<string>\",\n    \"title\": \"WIM\",\n    \"patron\": \"<boolean>\",\n    \"patronColor\": \"<integer>\"\n  }\n}",
+                          "createdAt": "2026-07-28T02:07:01.000Z",
+                          "updatedAt": "2026-07-28T02:07:01.000Z",
+                          "uid": "35240-e43fc95d-1521-4692-95b9-e158615ac477"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:07:00.000Z",
+                      "updatedAt": "2026-07-28T02:07:00.000Z",
+                      "uid": "35240-5c2d70be-4adc-4521-83d5-5f3889f5ff69"
+                    }
+                  ],
+                  "id": "acfc4c24-a59b-4cbe-8952-24b88ae9fa9e",
+                  "createdAt": "2026-07-28T02:07:00.000Z",
+                  "updatedAt": "2026-07-28T02:07:00.000Z",
+                  "uid": "35240-acfc4c24-a59b-4cbe-8952-24b88ae9fa9e"
+                }
+              ],
+              "id": "ddcbbe65-9b18-4a83-8eaf-8005821352d9",
+              "createdAt": "2026-07-28T02:07:00.000Z",
+              "updatedAt": "2026-07-28T02:07:00.000Z",
+              "uid": "35240-ddcbbe65-9b18-4a83-8eaf-8005821352d9"
+            }
+          ],
+          "id": "85ee7440-b25f-4bd9-be9b-ff3f942b0e45",
+          "createdAt": "2026-07-28T02:07:00.000Z",
+          "updatedAt": "2026-07-28T02:07:00.000Z",
+          "uid": "35240-85ee7440-b25f-4bd9-be9b-ff3f942b0e45"
+        }
+      ],
+      "id": "1c9bb6cc-69aa-4e79-bb81-4f36920536a4",
+      "createdAt": "2026-07-28T02:07:00.000Z",
+      "updatedAt": "2026-07-28T02:07:00.000Z",
+      "uid": "35240-1c9bb6cc-69aa-4e79-bb81-4f36920536a4"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://lichess.org"
+    }
+  ]
+}

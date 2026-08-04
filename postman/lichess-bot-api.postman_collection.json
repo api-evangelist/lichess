@@ -1,0 +1,2444 @@
+{
+  "info": {
+    "_postman_id": "a0992247-257d-4e64-9458-cbe034d34613",
+    "name": "Lichess.org API reference Account Bot API",
+    "description": "# Introduction\nWelcome to the reference for the Lichess API! Lichess is free/libre,\nopen-source chess server powered by volunteers and donations.\n- Get help in the [Lichess Discord channel](https://discord.gg/lichess)\n- API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)\n- API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)\n- [Contribute to this documentation on Github](https://github.com/lichess-org/api)\n- Check out [Lichess widgets to embed in your website](https://lichess.org/developers)\n- [Download all Lichess rated games](https://database.lichess.org/)\n- [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)\n- [Download all evaluated positions](https://database.lichess.org/#evals)\n\n## Endpoint\nAll requests go to `https://lichess.org` (unless otherwise specified).\n\n## Clients\n- [Python general API](https://github.com/lichess-org/berserk)\n- [MicroPython general API](https://github.com/mkomon/uberserk)\n- [Python general API - async](https://pypi.org/project/async-lichess-sdk)\n- [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)\n- [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)\n- [Java general API](https://github.com/tors42/chariot)\n- [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)\n- [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)\n- [.NET general API](https://github.com/Dblike/LichessSharp)\n\n## Rate limiting\nAll requests are rate limited using various strategies,\nto ensure the API remains responsive for everyone.\nOnly make one request at a time.\nIf you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),\nyou have exceded one of the rate limits.\nIn most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.\nReduce your request frequency before retrying.\n\n## Streaming with ND-JSON\nSome API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.\n\nHere's a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.\n\n## Authentication\n### Which authentication method is right for me?\n[Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)\n\n### Personal Access Token\nPersonal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.\n- [Generate a personal access token](https://lichess.org/account/oauth/token)\n- `curl https://lichess.org/api/account -H \"Authorization: Bearer {token}\"`\n- [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)\n\n### Token Security\n- Keep your tokens secret. Do not share them in public repositories or public forums.\n- Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens' scope). You remain responsible for all activities on your account.\n- Do not hardcode tokens in your application's code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.\n- If you suspect a token has been compromised, revoke it immediately.\n\nTo see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).\n\n### Authorization Code Flow with PKCE\nThe authorization code flow with PKCE allows your users to **login with Lichess**.\nLichess supports unregistered and public clients (no client authentication, choose any unique client id).\nThe only accepted code challenge method is `S256`.\nAccess tokens are long-lived (expect one year), unless they are revoked.\nRefresh tokens are not supported.\n\nSee the [documentation for the OAuth endpoints](#tag/OAuth) or\nthe [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.\n\n- [Demo app](https://lichess-org.github.io/api-demo/)\n- [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)\n- [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)\n- [Java example](https://github.com/tors42/lichess-oauth-pkce-app)\n- [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)\n\n#### Real life examples\n- [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))\n- [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))\n- [English Chess Federation](https://ecf.octoknight.com/)\n- [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)\n\n### Token format\nAccess tokens and authorization codes match `^[A-Za-z0-9_]+$`.\nThe length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.\nBy convention tokens have a recognizable prefix, but do not rely on this.\n\n\nContact Support:\n Name: Lichess.org API\n Email: contact@lichess.org",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:06:36.000Z",
+    "updatedAt": "2026-07-28T02:06:36.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-a0992247-257d-4e64-9458-cbe034d34613"
+  },
+  "item": [
+    {
+      "name": "api",
+      "item": [
+        {
+          "name": "stream",
+          "item": [
+            {
+              "name": "event",
+              "item": [
+                {
+                  "name": "Stream incoming events",
+                  "id": "ad4edc3a-7c85-4d14-85ad-848ac22a98e6",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "oauth2",
+                      "oauth2": [
+                        {
+                          "key": "scope",
+                          "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                          "type": "string"
+                        },
+                        {
+                          "key": "accessTokenUrl",
+                          "value": "https://lichess.org/api/token",
+                          "type": "string"
+                        },
+                        {
+                          "key": "authUrl",
+                          "value": "https://lichess.org/oauth",
+                          "type": "string"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "authorization_code",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/x-ndjson"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/stream/event",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "stream",
+                        "event"
+                      ]
+                    },
+                    "description": "Stream the events reaching a lichess user in real time as [ndjson](#description/streaming-with-nd-json).\n\nAn empty line is sent every 7 seconds for keep alive purposes.\n\nEach non-empty line is a JSON object containing a `type` field. Possible values are:\n- `gameStart` Start of a game\n- `gameFinish` Completion of a game\n- `challenge` A player sends you a challenge or you challenge someone\n- `challengeCanceled` A player cancels their challenge to you\n- `challengeDeclined` The opponent declines your challenge\n\nWhen the stream opens, all current challenges and games are sent.\n\nOnly one global event stream can be active at a time. When the stream opens, the previous one with the same access token is closed.\n"
+                  },
+                  "response": [
+                    {
+                      "id": "f3b16cc6-9728-48ae-b574-31711f3ba64b",
+                      "name": "The stream of events reaching the logged in user.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/x-ndjson"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/stream/event",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "stream",
+                            "event"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/x-ndjson"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Access-Control-Allow-Origin",
+                          "value": "'*'"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"type\": \"<string>\",\n  \"game\": {\n    \"fullId\": \"<string>\",\n    \"gameId\": \"<string>\",\n    \"fen\": \"<string>\",\n    \"color\": \"black\",\n    \"lastMove\": \"<string>\",\n    \"source\": \"friend\",\n    \"status\": {\n      \"id\": 36,\n      \"name\": \"resign\"\n    },\n    \"variant\": {\n      \"key\": \"standard\",\n      \"name\": \"<string>\",\n      \"short\": \"<string>\"\n    },\n    \"speed\": \"blitz\",\n    \"perf\": \"<string>\",\n    \"rating\": \"<integer>\",\n    \"rated\": \"<boolean>\",\n    \"hasMoved\": \"<boolean>\",\n    \"opponent\": {\n      \"id\": \"<string>\",\n      \"username\": \"<string>\",\n      \"rating\": \"<integer>\",\n      \"ratingDiff\": \"<integer>\"\n    },\n    \"isMyTurn\": \"<boolean>\",\n    \"secondsLeft\": \"<integer>\",\n    \"winner\": \"white\",\n    \"ratingDiff\": \"<integer>\",\n    \"compat\": {\n      \"bot\": \"<boolean>\",\n      \"board\": \"<boolean>\"\n    },\n    \"id\": \"<string>\",\n    \"tournamentId\": \"<string>\"\n  }\n}",
+                      "createdAt": "2026-07-28T02:06:36.000Z",
+                      "updatedAt": "2026-07-28T02:06:36.000Z",
+                      "uid": "35240-f3b16cc6-9728-48ae-b574-31711f3ba64b"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:06:36.000Z",
+                  "updatedAt": "2026-07-28T02:06:36.000Z",
+                  "uid": "35240-ad4edc3a-7c85-4d14-85ad-848ac22a98e6"
+                }
+              ],
+              "id": "7bdb7898-238d-4072-a230-1401a8718bfe",
+              "createdAt": "2026-07-28T02:06:36.000Z",
+              "updatedAt": "2026-07-28T02:06:36.000Z",
+              "uid": "35240-7bdb7898-238d-4072-a230-1401a8718bfe"
+            }
+          ],
+          "id": "092531a0-48a5-4a48-9c68-ff5998a5ceec",
+          "createdAt": "2026-07-28T02:06:36.000Z",
+          "updatedAt": "2026-07-28T02:06:36.000Z",
+          "uid": "35240-092531a0-48a5-4a48-9c68-ff5998a5ceec"
+        },
+        {
+          "name": "bot",
+          "item": [
+            {
+              "name": "online",
+              "item": [
+                {
+                  "name": "Get online bots",
+                  "id": "39218167-5196-45ac-877d-16eae8b6c256",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/x-ndjson"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/bot/online?nb=100",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "bot",
+                        "online"
+                      ],
+                      "query": [
+                        {
+                          "description": "How many bot users to fetch",
+                          "key": "nb",
+                          "value": "100"
+                        }
+                      ]
+                    },
+                    "description": "Stream the [online bot users](https://lichess.org/player/bots), as [ndjson](#description/streaming-with-nd-json)."
+                  },
+                  "response": [
+                    {
+                      "id": "fbc91d18-ea20-4cd2-90c1-01216c26e456",
+                      "name": "The list of online bot users",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/x-ndjson"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/bot/online?nb=100",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "bot",
+                            "online"
+                          ],
+                          "query": [
+                            {
+                              "description": "How many bot users to fetch",
+                              "key": "nb",
+                              "value": "100"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/x-ndjson"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Access-Control-Allow-Origin",
+                          "value": "'*'"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"username\": \"<string>\",\n  \"perfs\": {\n    \"chess960\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"atomic\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"racingKings\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"ultraBullet\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"blitz\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"kingOfTheHill\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"threeCheck\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"antichess\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"crazyhouse\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"bullet\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"correspondence\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"horde\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"puzzle\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"classical\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"rapid\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"storm\": {\n      \"runs\": \"<integer>\",\n      \"score\": \"<integer>\"\n    },\n    \"racer\": {\n      \"runs\": \"<integer>\",\n      \"score\": \"<integer>\"\n    },\n    \"streak\": {\n      \"runs\": \"<integer>\",\n      \"score\": \"<integer>\"\n    }\n  },\n  \"title\": \"WNM\",\n  \"flair\": \"<string>\",\n  \"createdAt\": \"<long>\",\n  \"disabled\": \"<boolean>\",\n  \"tosViolation\": \"<boolean>\",\n  \"profile\": {\n    \"flag\": \"<string>\",\n    \"location\": \"<string>\",\n    \"bio\": \"<string>\",\n    \"realName\": \"<string>\",\n    \"fideRating\": \"<integer>\",\n    \"uscfRating\": \"<integer>\",\n    \"ecfRating\": \"<integer>\",\n    \"cfcRating\": \"<integer>\",\n    \"rcfRating\": \"<integer>\",\n    \"dsbRating\": \"<integer>\",\n    \"links\": \"<string>\"\n  },\n  \"seenAt\": \"<long>\",\n  \"playTime\": {\n    \"total\": \"<integer>\",\n    \"tv\": \"<integer>\",\n    \"human\": \"<integer>\"\n  },\n  \"patron\": \"<boolean>\",\n  \"patronColor\": \"<integer>\",\n  \"verified\": \"<boolean>\"\n}",
+                      "createdAt": "2026-07-28T02:06:36.000Z",
+                      "updatedAt": "2026-07-28T02:06:36.000Z",
+                      "uid": "35240-fbc91d18-ea20-4cd2-90c1-01216c26e456"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:06:36.000Z",
+                  "updatedAt": "2026-07-28T02:06:36.000Z",
+                  "uid": "35240-39218167-5196-45ac-877d-16eae8b6c256"
+                }
+              ],
+              "id": "c7abce09-ab92-439b-a847-d1d7ec3899ed",
+              "createdAt": "2026-07-28T02:06:36.000Z",
+              "updatedAt": "2026-07-28T02:06:36.000Z",
+              "uid": "35240-c7abce09-ab92-439b-a847-d1d7ec3899ed"
+            },
+            {
+              "name": "account",
+              "item": [
+                {
+                  "name": "upgrade",
+                  "item": [
+                    {
+                      "name": "Upgrade to Bot account",
+                      "id": "881123c2-5d5f-494f-b0cd-10aef5767242",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://lichess.org/api/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://lichess.org/oauth",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/bot/account/upgrade",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "bot",
+                            "account",
+                            "upgrade"
+                          ]
+                        },
+                        "description": "Upgrade a lichess player account into a Bot account. Only Bot accounts can use the Bot API.\nThe account **cannot have played any game** before becoming a Bot account. The upgrade is **irreversible**. The account will only be able to play as a Bot.\nTo upgrade an account to Bot, use the [official lichess-bot client](https://github.com/lichess-bot-devs/lichess-bot), or follow these steps:\n- Create an [API access token](https://lichess.org/account/oauth/token/create?scopes[]=bot:play) with \"Play bot moves\" permission.\n- `curl -d '' https://lichess.org/api/bot/account/upgrade -H \"Authorization: Bearer <yourTokenHere>\"`\nTo know if an account has already been upgraded, use the [Get my profile API](#tag/account/GET/api/account):\nthe `title` field should be set to `BOT`.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "45df6157-4353-40d9-9e31-e88341492ab3",
+                          "name": "The bot account was successfully upgraded.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/bot/account/upgrade",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "bot",
+                                "account",
+                                "upgrade"
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"ok\": \"<boolean>\"\n}",
+                          "createdAt": "2026-07-28T02:06:36.000Z",
+                          "updatedAt": "2026-07-28T02:06:36.000Z",
+                          "uid": "35240-45df6157-4353-40d9-9e31-e88341492ab3"
+                        },
+                        {
+                          "id": "3bcc6493-3cc4-4c5c-a25a-f604e6834fd1",
+                          "name": "The upgrade of the bot account failed.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/bot/account/upgrade",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "bot",
+                                "account",
+                                "upgrade"
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"error\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:06:36.000Z",
+                          "updatedAt": "2026-07-28T02:06:36.000Z",
+                          "uid": "35240-3bcc6493-3cc4-4c5c-a25a-f604e6834fd1"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:06:36.000Z",
+                      "updatedAt": "2026-07-28T02:06:36.000Z",
+                      "uid": "35240-881123c2-5d5f-494f-b0cd-10aef5767242"
+                    }
+                  ],
+                  "id": "ee807063-f52c-4649-9372-228176849238",
+                  "createdAt": "2026-07-28T02:06:36.000Z",
+                  "updatedAt": "2026-07-28T02:06:36.000Z",
+                  "uid": "35240-ee807063-f52c-4649-9372-228176849238"
+                }
+              ],
+              "id": "e7938201-0413-43d0-ad1e-4788d155c005",
+              "createdAt": "2026-07-28T02:06:36.000Z",
+              "updatedAt": "2026-07-28T02:06:36.000Z",
+              "uid": "35240-e7938201-0413-43d0-ad1e-4788d155c005"
+            },
+            {
+              "name": "game",
+              "item": [
+                {
+                  "name": "stream",
+                  "item": [
+                    {
+                      "name": "{gameId}",
+                      "item": [
+                        {
+                          "name": "Stream Bot game state",
+                          "id": "b79bf1ce-18f4-4cc8-9f16-aed396183bb4",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "auth": {
+                              "type": "oauth2",
+                              "oauth2": [
+                                {
+                                  "key": "scope",
+                                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "accessTokenUrl",
+                                  "value": "https://lichess.org/api/token",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "authUrl",
+                                  "value": "https://lichess.org/oauth",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "grant_type",
+                                  "value": "authorization_code",
+                                  "type": "string"
+                                }
+                              ]
+                            },
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/x-ndjson"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/bot/game/stream/:gameId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "bot",
+                                "game",
+                                "stream",
+                                ":gameId"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "6b8f9512-555a-4204-85dc-3da430139bb2",
+                                  "key": "gameId",
+                                  "value": "<string>",
+                                  "description": "(Required) "
+                                }
+                              ]
+                            },
+                            "description": "Stream the state of a game being played with the Bot API, as [ndjson](#description/streaming-with-nd-json).\nUse this endpoint to get updates about the game in real-time, with a single request.\nEach line is a JSON object containing a `type` field. Possible values are:\n- `gameFull` Full game data. All values are immutable, except for the `state` field.\n- `gameState` Current state of the game. Immutable values not included.\n- `chatLine` Chat message sent by a user (or the bot itself) in the `room` \"player\" or \"spectator\".\n- `opponentGone` Whether the opponent has left the game, and how long before you can claim a win or draw.\nThe first line is always of type `gameFull`.\n"
+                          },
+                          "response": [
+                            {
+                              "id": "b33ef1d8-e1f9-4d2a-818c-15072c152ca0",
+                              "name": "The stream of the bot game.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/x-ndjson"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/bot/game/stream/:gameId",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "bot",
+                                    "game",
+                                    "stream",
+                                    ":gameId"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "gameId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "text",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/x-ndjson"
+                                },
+                                {
+                                  "disabled": false,
+                                  "description": {
+                                    "content": "",
+                                    "type": "text/plain"
+                                  },
+                                  "key": "Access-Control-Allow-Origin",
+                                  "value": "'*'"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"type\": \"<string>\",\n  \"id\": \"<string>\",\n  \"variant\": {\n    \"key\": \"standard\",\n    \"name\": \"<string>\",\n    \"short\": \"<string>\"\n  },\n  \"speed\": \"bullet\",\n  \"perf\": {\n    \"name\": \"<string>\"\n  },\n  \"rated\": \"<boolean>\",\n  \"createdAt\": \"<long>\",\n  \"white\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"aiLevel\": \"<integer>\",\n    \"title\": \"IM\",\n    \"rating\": \"<integer>\",\n    \"provisional\": \"<boolean>\"\n  },\n  \"black\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"aiLevel\": \"<integer>\",\n    \"title\": \"CM\",\n    \"rating\": \"<integer>\",\n    \"provisional\": \"<boolean>\"\n  },\n  \"initialFen\": \"startpos\",\n  \"state\": {\n    \"type\": \"<string>\",\n    \"moves\": \"<string>\",\n    \"wtime\": \"<integer>\",\n    \"btime\": \"<integer>\",\n    \"winc\": \"<integer>\",\n    \"binc\": \"<integer>\",\n    \"status\": \"insufficientMaterialClaim\",\n    \"winner\": \"black\",\n    \"wdraw\": \"<boolean>\",\n    \"bdraw\": \"<boolean>\",\n    \"wtakeback\": \"<boolean>\",\n    \"btakeback\": \"<boolean>\",\n    \"expiration\": {\n      \"idleMillis\": \"<integer>\",\n      \"millisToMove\": \"<integer>\"\n    }\n  },\n  \"clock\": {\n    \"initial\": \"<long>\",\n    \"increment\": \"<long>\"\n  },\n  \"daysPerTurn\": \"<integer>\",\n  \"tournamentId\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T02:06:36.000Z",
+                              "updatedAt": "2026-07-28T02:06:36.000Z",
+                              "uid": "35240-b33ef1d8-e1f9-4d2a-818c-15072c152ca0"
+                            },
+                            {
+                              "id": "333b826e-3df8-4d7f-b3e6-72f865b255f5",
+                              "name": "The bot game was not found.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/bot/game/stream/:gameId",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "bot",
+                                    "game",
+                                    "stream",
+                                    ":gameId"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "gameId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Not Found",
+                              "code": 404,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"error\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T02:06:36.000Z",
+                              "updatedAt": "2026-07-28T02:06:36.000Z",
+                              "uid": "35240-333b826e-3df8-4d7f-b3e6-72f865b255f5"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T02:06:36.000Z",
+                          "updatedAt": "2026-07-28T02:06:36.000Z",
+                          "uid": "35240-b79bf1ce-18f4-4cc8-9f16-aed396183bb4"
+                        }
+                      ],
+                      "id": "da79e07a-d0de-4744-a468-622e4ffcd7a0",
+                      "createdAt": "2026-07-28T02:06:36.000Z",
+                      "updatedAt": "2026-07-28T02:06:36.000Z",
+                      "uid": "35240-da79e07a-d0de-4744-a468-622e4ffcd7a0"
+                    }
+                  ],
+                  "id": "912f13d5-d973-484a-b946-aac15d572978",
+                  "createdAt": "2026-07-28T02:06:36.000Z",
+                  "updatedAt": "2026-07-28T02:06:36.000Z",
+                  "uid": "35240-912f13d5-d973-484a-b946-aac15d572978"
+                },
+                {
+                  "name": "{gameId}",
+                  "item": [
+                    {
+                      "name": "move",
+                      "item": [
+                        {
+                          "name": "{move}",
+                          "item": [
+                            {
+                              "name": "Make a Bot move",
+                              "id": "76897541-7e5b-4cfe-8bb3-cd2f83e3f94d",
+                              "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                              },
+                              "request": {
+                                "auth": {
+                                  "type": "oauth2",
+                                  "oauth2": [
+                                    {
+                                      "key": "scope",
+                                      "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                                      "type": "string"
+                                    },
+                                    {
+                                      "key": "accessTokenUrl",
+                                      "value": "https://lichess.org/api/token",
+                                      "type": "string"
+                                    },
+                                    {
+                                      "key": "authUrl",
+                                      "value": "https://lichess.org/oauth",
+                                      "type": "string"
+                                    },
+                                    {
+                                      "key": "grant_type",
+                                      "value": "authorization_code",
+                                      "type": "string"
+                                    }
+                                  ]
+                                },
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/bot/game/:gameId/move/:move?offeringDraw=<boolean>",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "bot",
+                                    "game",
+                                    ":gameId",
+                                    "move",
+                                    ":move"
+                                  ],
+                                  "query": [
+                                    {
+                                      "description": "Whether to offer (or agree to) a draw",
+                                      "key": "offeringDraw",
+                                      "value": "<boolean>"
+                                    }
+                                  ],
+                                  "variable": [
+                                    {
+                                      "id": "9bcc7285-d054-49c2-a685-b1f4bd17069b",
+                                      "key": "gameId",
+                                      "value": "<string>",
+                                      "description": "(Required) "
+                                    },
+                                    {
+                                      "id": "a6106a09-b8b2-4753-b78b-291c75c723b9",
+                                      "key": "move",
+                                      "value": "<string>",
+                                      "description": "(Required) The move to play, in UCI format"
+                                    }
+                                  ]
+                                },
+                                "description": "Make a move in a game being played with the Bot API.\nThe move can also contain a draw offer/agreement.\n"
+                              },
+                              "response": [
+                                {
+                                  "id": "1e301b1a-1f55-4c11-920e-8f07dfad8011",
+                                  "name": "The bot move was successfully made.",
+                                  "originalRequest": {
+                                    "method": "POST",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: oauth2",
+                                        "key": "Authorization",
+                                        "value": "<token>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/api/bot/game/:gameId/move/:move?offeringDraw=<boolean>",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "api",
+                                        "bot",
+                                        "game",
+                                        ":gameId",
+                                        "move",
+                                        ":move"
+                                      ],
+                                      "query": [
+                                        {
+                                          "description": "Whether to offer (or agree to) a draw",
+                                          "key": "offeringDraw",
+                                          "value": "<boolean>"
+                                        }
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "gameId"
+                                        },
+                                        {
+                                          "key": "move"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "OK",
+                                  "code": 200,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    },
+                                    {
+                                      "disabled": false,
+                                      "description": {
+                                        "content": "",
+                                        "type": "text/plain"
+                                      },
+                                      "key": "Access-Control-Allow-Origin",
+                                      "value": "'*'"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"ok\": \"<boolean>\"\n}",
+                                  "createdAt": "2026-07-28T02:06:36.000Z",
+                                  "updatedAt": "2026-07-28T02:06:36.000Z",
+                                  "uid": "35240-1e301b1a-1f55-4c11-920e-8f07dfad8011"
+                                },
+                                {
+                                  "id": "923e0213-733f-430d-aaea-a22e1c0f8763",
+                                  "name": "The bot move failed.",
+                                  "originalRequest": {
+                                    "method": "POST",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: oauth2",
+                                        "key": "Authorization",
+                                        "value": "<token>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/api/bot/game/:gameId/move/:move?offeringDraw=<boolean>",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "api",
+                                        "bot",
+                                        "game",
+                                        ":gameId",
+                                        "move",
+                                        ":move"
+                                      ],
+                                      "query": [
+                                        {
+                                          "description": "Whether to offer (or agree to) a draw",
+                                          "key": "offeringDraw",
+                                          "value": "<boolean>"
+                                        }
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "gameId"
+                                        },
+                                        {
+                                          "key": "move"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Bad Request",
+                                  "code": 400,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"error\": \"<string>\"\n}",
+                                  "createdAt": "2026-07-28T02:06:36.000Z",
+                                  "updatedAt": "2026-07-28T02:06:36.000Z",
+                                  "uid": "35240-923e0213-733f-430d-aaea-a22e1c0f8763"
+                                }
+                              ],
+                              "createdAt": "2026-07-28T02:06:36.000Z",
+                              "updatedAt": "2026-07-28T02:06:36.000Z",
+                              "uid": "35240-76897541-7e5b-4cfe-8bb3-cd2f83e3f94d"
+                            }
+                          ],
+                          "id": "a79670c9-977c-4219-aebb-0a4a64f2c417",
+                          "createdAt": "2026-07-28T02:06:36.000Z",
+                          "updatedAt": "2026-07-28T02:06:36.000Z",
+                          "uid": "35240-a79670c9-977c-4219-aebb-0a4a64f2c417"
+                        }
+                      ],
+                      "id": "7e5aa713-2592-4a50-b498-a327dac9dc45",
+                      "createdAt": "2026-07-28T02:06:36.000Z",
+                      "updatedAt": "2026-07-28T02:06:36.000Z",
+                      "uid": "35240-7e5aa713-2592-4a50-b498-a327dac9dc45"
+                    },
+                    {
+                      "name": "chat",
+                      "item": [
+                        {
+                          "name": "Write in the chat",
+                          "id": "f0b806ba-cca1-492e-9ad1-0ecf79d48437",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "auth": {
+                              "type": "oauth2",
+                              "oauth2": [
+                                {
+                                  "key": "scope",
+                                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "accessTokenUrl",
+                                  "value": "https://lichess.org/api/token",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "authUrl",
+                                  "value": "https://lichess.org/oauth",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "grant_type",
+                                  "value": "authorization_code",
+                                  "type": "string"
+                                }
+                              ]
+                            },
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "urlencoded",
+                              "urlencoded": [
+                                {
+                                  "description": "(Required) ",
+                                  "key": "room",
+                                  "value": "player"
+                                },
+                                {
+                                  "description": "(Required) ",
+                                  "key": "text",
+                                  "value": "<string>"
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/bot/game/:gameId/chat",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "bot",
+                                "game",
+                                ":gameId",
+                                "chat"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "98f74de9-3d8b-497d-807e-ebfcbeb81f74",
+                                  "key": "gameId",
+                                  "value": "<string>",
+                                  "description": "(Required) "
+                                }
+                              ]
+                            },
+                            "description": "Post a message to the player or spectator chat, in a game being played with the Bot API.\n"
+                          },
+                          "response": [
+                            {
+                              "id": "5b8f290a-82b5-4f38-b55e-5836f4fa8070",
+                              "name": "The message was successfully posted in chat.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/x-www-form-urlencoded"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "urlencoded",
+                                  "urlencoded": [
+                                    {
+                                      "description": "(Required) ",
+                                      "key": "room",
+                                      "value": "player"
+                                    },
+                                    {
+                                      "description": "(Required) ",
+                                      "key": "text",
+                                      "value": "<string>"
+                                    }
+                                  ]
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/bot/game/:gameId/chat",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "bot",
+                                    "game",
+                                    ":gameId",
+                                    "chat"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "gameId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                },
+                                {
+                                  "disabled": false,
+                                  "description": {
+                                    "content": "",
+                                    "type": "text/plain"
+                                  },
+                                  "key": "Access-Control-Allow-Origin",
+                                  "value": "'*'"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"ok\": \"<boolean>\"\n}",
+                              "createdAt": "2026-07-28T02:06:36.000Z",
+                              "updatedAt": "2026-07-28T02:06:36.000Z",
+                              "uid": "35240-5b8f290a-82b5-4f38-b55e-5836f4fa8070"
+                            },
+                            {
+                              "id": "a8a494a1-4d74-4fe0-becc-c2cfe0818e06",
+                              "name": "The posting of the  message in chat failed.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/x-www-form-urlencoded"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "urlencoded",
+                                  "urlencoded": [
+                                    {
+                                      "description": "(Required) ",
+                                      "key": "room",
+                                      "value": "player"
+                                    },
+                                    {
+                                      "description": "(Required) ",
+                                      "key": "text",
+                                      "value": "<string>"
+                                    }
+                                  ]
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/bot/game/:gameId/chat",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "bot",
+                                    "game",
+                                    ":gameId",
+                                    "chat"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "gameId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Bad Request",
+                              "code": 400,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"error\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T02:06:36.000Z",
+                              "updatedAt": "2026-07-28T02:06:36.000Z",
+                              "uid": "35240-a8a494a1-4d74-4fe0-becc-c2cfe0818e06"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T02:06:36.000Z",
+                          "updatedAt": "2026-07-28T02:06:36.000Z",
+                          "uid": "35240-f0b806ba-cca1-492e-9ad1-0ecf79d48437"
+                        },
+                        {
+                          "name": "Fetch the game chat",
+                          "id": "acff06b1-e248-4670-991f-96f885765c8c",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "auth": {
+                              "type": "oauth2",
+                              "oauth2": [
+                                {
+                                  "key": "scope",
+                                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "accessTokenUrl",
+                                  "value": "https://lichess.org/api/token",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "authUrl",
+                                  "value": "https://lichess.org/oauth",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "grant_type",
+                                  "value": "authorization_code",
+                                  "type": "string"
+                                }
+                              ]
+                            },
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/x-ndjson"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/bot/game/:gameId/chat",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "bot",
+                                "game",
+                                ":gameId",
+                                "chat"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "e6eb2ad4-0224-4f7c-b81f-2a7f1d813355",
+                                  "key": "gameId",
+                                  "value": "<string>",
+                                  "description": "(Required) "
+                                }
+                              ]
+                            },
+                            "description": "Get the messages posted in the game chat\n"
+                          },
+                          "response": [
+                            {
+                              "id": "cdaa1192-c1ad-4f97-99e1-505693c1c6ee",
+                              "name": "The messages posted in the chat.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/x-ndjson"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/bot/game/:gameId/chat",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "bot",
+                                    "game",
+                                    ":gameId",
+                                    "chat"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "gameId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "text",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/x-ndjson"
+                                },
+                                {
+                                  "disabled": false,
+                                  "description": {
+                                    "content": "",
+                                    "type": "text/plain"
+                                  },
+                                  "key": "Access-Control-Allow-Origin",
+                                  "value": "'*'"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "[\n  {\n    \"text\": \"<string>\",\n    \"user\": \"<string>\"\n  },\n  {\n    \"text\": \"<string>\",\n    \"user\": \"<string>\"\n  }\n]",
+                              "createdAt": "2026-07-28T02:06:36.000Z",
+                              "updatedAt": "2026-07-28T02:06:36.000Z",
+                              "uid": "35240-cdaa1192-c1ad-4f97-99e1-505693c1c6ee"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T02:06:36.000Z",
+                          "updatedAt": "2026-07-28T02:06:36.000Z",
+                          "uid": "35240-acff06b1-e248-4670-991f-96f885765c8c"
+                        }
+                      ],
+                      "id": "472b241d-dc3c-4cd1-a5eb-24aa61607f07",
+                      "createdAt": "2026-07-28T02:06:36.000Z",
+                      "updatedAt": "2026-07-28T02:06:36.000Z",
+                      "uid": "35240-472b241d-dc3c-4cd1-a5eb-24aa61607f07"
+                    },
+                    {
+                      "name": "abort",
+                      "item": [
+                        {
+                          "name": "Abort a game",
+                          "id": "ae5c6ede-842a-4eac-832c-dc16eca9267f",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "auth": {
+                              "type": "oauth2",
+                              "oauth2": [
+                                {
+                                  "key": "scope",
+                                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "accessTokenUrl",
+                                  "value": "https://lichess.org/api/token",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "authUrl",
+                                  "value": "https://lichess.org/oauth",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "grant_type",
+                                  "value": "authorization_code",
+                                  "type": "string"
+                                }
+                              ]
+                            },
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/bot/game/:gameId/abort",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "bot",
+                                "game",
+                                ":gameId",
+                                "abort"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "b671e084-508f-4ea0-82f5-ba8eadcdb189",
+                                  "key": "gameId",
+                                  "value": "<string>",
+                                  "description": "(Required) "
+                                }
+                              ]
+                            },
+                            "description": "Abort a game being played with the Bot API.\n"
+                          },
+                          "response": [
+                            {
+                              "id": "befe425f-1118-48fa-a778-d354632041ff",
+                              "name": "The game was successfully aborted.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/bot/game/:gameId/abort",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "bot",
+                                    "game",
+                                    ":gameId",
+                                    "abort"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "gameId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                },
+                                {
+                                  "disabled": false,
+                                  "description": {
+                                    "content": "",
+                                    "type": "text/plain"
+                                  },
+                                  "key": "Access-Control-Allow-Origin",
+                                  "value": "'*'"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"ok\": \"<boolean>\"\n}",
+                              "createdAt": "2026-07-28T02:06:36.000Z",
+                              "updatedAt": "2026-07-28T02:06:36.000Z",
+                              "uid": "35240-befe425f-1118-48fa-a778-d354632041ff"
+                            },
+                            {
+                              "id": "21cad1d8-693f-4acb-b9ed-555f934bec78",
+                              "name": "The abortion of the game failed.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/bot/game/:gameId/abort",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "bot",
+                                    "game",
+                                    ":gameId",
+                                    "abort"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "gameId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Bad Request",
+                              "code": 400,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"error\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T02:06:36.000Z",
+                              "updatedAt": "2026-07-28T02:06:36.000Z",
+                              "uid": "35240-21cad1d8-693f-4acb-b9ed-555f934bec78"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T02:06:36.000Z",
+                          "updatedAt": "2026-07-28T02:06:36.000Z",
+                          "uid": "35240-ae5c6ede-842a-4eac-832c-dc16eca9267f"
+                        }
+                      ],
+                      "id": "590f39c7-a582-4d9f-85cd-26c155aa2014",
+                      "createdAt": "2026-07-28T02:06:36.000Z",
+                      "updatedAt": "2026-07-28T02:06:36.000Z",
+                      "uid": "35240-590f39c7-a582-4d9f-85cd-26c155aa2014"
+                    },
+                    {
+                      "name": "resign",
+                      "item": [
+                        {
+                          "name": "Resign a game",
+                          "id": "f096a43c-f3d8-4975-a881-318000c33720",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "auth": {
+                              "type": "oauth2",
+                              "oauth2": [
+                                {
+                                  "key": "scope",
+                                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "accessTokenUrl",
+                                  "value": "https://lichess.org/api/token",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "authUrl",
+                                  "value": "https://lichess.org/oauth",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "grant_type",
+                                  "value": "authorization_code",
+                                  "type": "string"
+                                }
+                              ]
+                            },
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/bot/game/:gameId/resign",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "bot",
+                                "game",
+                                ":gameId",
+                                "resign"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "f3497cfb-d2dd-4678-a878-6f54148b4771",
+                                  "key": "gameId",
+                                  "value": "<string>",
+                                  "description": "(Required) "
+                                }
+                              ]
+                            },
+                            "description": "Resign a game being played with the Bot API.\n"
+                          },
+                          "response": [
+                            {
+                              "id": "4dc8c5d9-19ad-4c1b-994e-1b4432baf8e1",
+                              "name": "The game was successfully resigned from.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/bot/game/:gameId/resign",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "bot",
+                                    "game",
+                                    ":gameId",
+                                    "resign"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "gameId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                },
+                                {
+                                  "disabled": false,
+                                  "description": {
+                                    "content": "",
+                                    "type": "text/plain"
+                                  },
+                                  "key": "Access-Control-Allow-Origin",
+                                  "value": "'*'"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"ok\": \"<boolean>\"\n}",
+                              "createdAt": "2026-07-28T02:06:36.000Z",
+                              "updatedAt": "2026-07-28T02:06:36.000Z",
+                              "uid": "35240-4dc8c5d9-19ad-4c1b-994e-1b4432baf8e1"
+                            },
+                            {
+                              "id": "9cfc6993-c1dc-432c-9abb-0f90a5df4809",
+                              "name": "Resigning the game failed.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/bot/game/:gameId/resign",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "bot",
+                                    "game",
+                                    ":gameId",
+                                    "resign"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "gameId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Bad Request",
+                              "code": 400,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"error\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T02:06:36.000Z",
+                              "updatedAt": "2026-07-28T02:06:36.000Z",
+                              "uid": "35240-9cfc6993-c1dc-432c-9abb-0f90a5df4809"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T02:06:36.000Z",
+                          "updatedAt": "2026-07-28T02:06:36.000Z",
+                          "uid": "35240-f096a43c-f3d8-4975-a881-318000c33720"
+                        }
+                      ],
+                      "id": "b1b9f5a7-8c11-43c4-86ea-ce4900d28b39",
+                      "createdAt": "2026-07-28T02:06:36.000Z",
+                      "updatedAt": "2026-07-28T02:06:36.000Z",
+                      "uid": "35240-b1b9f5a7-8c11-43c4-86ea-ce4900d28b39"
+                    },
+                    {
+                      "name": "draw",
+                      "item": [
+                        {
+                          "name": "{accept}",
+                          "item": [
+                            {
+                              "name": "Handle draw offers",
+                              "id": "93b16dd2-68a4-4d70-bc3c-06f59f849489",
+                              "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                              },
+                              "request": {
+                                "auth": {
+                                  "type": "oauth2",
+                                  "oauth2": [
+                                    {
+                                      "key": "scope",
+                                      "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                                      "type": "string"
+                                    },
+                                    {
+                                      "key": "accessTokenUrl",
+                                      "value": "https://lichess.org/api/token",
+                                      "type": "string"
+                                    },
+                                    {
+                                      "key": "authUrl",
+                                      "value": "https://lichess.org/oauth",
+                                      "type": "string"
+                                    },
+                                    {
+                                      "key": "grant_type",
+                                      "value": "authorization_code",
+                                      "type": "string"
+                                    }
+                                  ]
+                                },
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/bot/game/:gameId/draw/:accept",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "bot",
+                                    "game",
+                                    ":gameId",
+                                    "draw",
+                                    ":accept"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "id": "944d758f-1c67-4662-acfd-74b671d2b03b",
+                                      "key": "gameId",
+                                      "value": "<string>",
+                                      "description": "(Required) "
+                                    },
+                                    {
+                                      "id": "f1e94e0d-38af-4d0f-8017-1ec2332f1fdb",
+                                      "key": "accept",
+                                      "value": "<boolean>",
+                                      "description": "(Required) "
+                                    }
+                                  ]
+                                },
+                                "description": "Create/accept/decline draw offers with the Bot API.\n- `yes`: Offer a draw, or accept the opponent's draw offer.\n- `no`: Decline a draw offer from the opponent.\n"
+                              },
+                              "response": [
+                                {
+                                  "id": "6f4258d7-9426-4442-948d-54e898ccb7f4",
+                                  "name": "The draw offer was successfully sent.",
+                                  "originalRequest": {
+                                    "method": "POST",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: oauth2",
+                                        "key": "Authorization",
+                                        "value": "<token>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/api/bot/game/:gameId/draw/:accept",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "api",
+                                        "bot",
+                                        "game",
+                                        ":gameId",
+                                        "draw",
+                                        ":accept"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "gameId"
+                                        },
+                                        {
+                                          "key": "accept"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "OK",
+                                  "code": 200,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    },
+                                    {
+                                      "disabled": false,
+                                      "description": {
+                                        "content": "",
+                                        "type": "text/plain"
+                                      },
+                                      "key": "Access-Control-Allow-Origin",
+                                      "value": "'*'"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"ok\": \"<boolean>\"\n}",
+                                  "createdAt": "2026-07-28T02:06:36.000Z",
+                                  "updatedAt": "2026-07-28T02:06:36.000Z",
+                                  "uid": "35240-6f4258d7-9426-4442-948d-54e898ccb7f4"
+                                },
+                                {
+                                  "id": "ee9bbb89-eb31-4d89-aa93-7ef247b5b012",
+                                  "name": "The draw offering failed.",
+                                  "originalRequest": {
+                                    "method": "POST",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: oauth2",
+                                        "key": "Authorization",
+                                        "value": "<token>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/api/bot/game/:gameId/draw/:accept",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "api",
+                                        "bot",
+                                        "game",
+                                        ":gameId",
+                                        "draw",
+                                        ":accept"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "gameId"
+                                        },
+                                        {
+                                          "key": "accept"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Bad Request",
+                                  "code": 400,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"error\": \"<string>\"\n}",
+                                  "createdAt": "2026-07-28T02:06:36.000Z",
+                                  "updatedAt": "2026-07-28T02:06:36.000Z",
+                                  "uid": "35240-ee9bbb89-eb31-4d89-aa93-7ef247b5b012"
+                                }
+                              ],
+                              "createdAt": "2026-07-28T02:06:36.000Z",
+                              "updatedAt": "2026-07-28T02:06:36.000Z",
+                              "uid": "35240-93b16dd2-68a4-4d70-bc3c-06f59f849489"
+                            }
+                          ],
+                          "id": "29a7430c-e6b6-4e0f-a8b7-da8da8bcf563",
+                          "createdAt": "2026-07-28T02:06:36.000Z",
+                          "updatedAt": "2026-07-28T02:06:36.000Z",
+                          "uid": "35240-29a7430c-e6b6-4e0f-a8b7-da8da8bcf563"
+                        }
+                      ],
+                      "id": "c587c443-32dd-454c-9bde-b2acbc535210",
+                      "createdAt": "2026-07-28T02:06:36.000Z",
+                      "updatedAt": "2026-07-28T02:06:36.000Z",
+                      "uid": "35240-c587c443-32dd-454c-9bde-b2acbc535210"
+                    },
+                    {
+                      "name": "takeback",
+                      "item": [
+                        {
+                          "name": "{accept}",
+                          "item": [
+                            {
+                              "name": "Handle takeback offers",
+                              "id": "9aa47c1e-d4da-4775-a182-3a61d4eac902",
+                              "protocolProfileBehavior": {
+                                "disableBodyPruning": true
+                              },
+                              "request": {
+                                "auth": {
+                                  "type": "oauth2",
+                                  "oauth2": [
+                                    {
+                                      "key": "scope",
+                                      "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                                      "type": "string"
+                                    },
+                                    {
+                                      "key": "accessTokenUrl",
+                                      "value": "https://lichess.org/api/token",
+                                      "type": "string"
+                                    },
+                                    {
+                                      "key": "authUrl",
+                                      "value": "https://lichess.org/oauth",
+                                      "type": "string"
+                                    },
+                                    {
+                                      "key": "grant_type",
+                                      "value": "authorization_code",
+                                      "type": "string"
+                                    }
+                                  ]
+                                },
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/bot/game/:gameId/takeback/:accept",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "bot",
+                                    "game",
+                                    ":gameId",
+                                    "takeback",
+                                    ":accept"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "id": "3e00574f-a35e-49b9-be91-fd032738520c",
+                                      "key": "gameId",
+                                      "value": "<string>",
+                                      "description": "(Required) "
+                                    },
+                                    {
+                                      "id": "436d3e61-e89d-449b-a6d9-60c1e9726cb9",
+                                      "key": "accept",
+                                      "value": "<boolean>",
+                                      "description": "(Required) "
+                                    }
+                                  ]
+                                },
+                                "description": "Create/accept/decline takebacks with the Bot API.\n- `yes`: Propose a takeback, or accept the opponent's takeback offer.\n- `no`: Decline a takeback offer from the opponent.\n"
+                              },
+                              "response": [
+                                {
+                                  "id": "ccb600ca-000f-44fd-85d1-d575b8f37136",
+                                  "name": "The takeback offer was successfully sent.",
+                                  "originalRequest": {
+                                    "method": "POST",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: oauth2",
+                                        "key": "Authorization",
+                                        "value": "<token>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/api/bot/game/:gameId/takeback/:accept",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "api",
+                                        "bot",
+                                        "game",
+                                        ":gameId",
+                                        "takeback",
+                                        ":accept"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "gameId"
+                                        },
+                                        {
+                                          "key": "accept"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "OK",
+                                  "code": 200,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    },
+                                    {
+                                      "disabled": false,
+                                      "description": {
+                                        "content": "",
+                                        "type": "text/plain"
+                                      },
+                                      "key": "Access-Control-Allow-Origin",
+                                      "value": "'*'"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"ok\": \"<boolean>\"\n}",
+                                  "createdAt": "2026-07-28T02:06:36.000Z",
+                                  "updatedAt": "2026-07-28T02:06:36.000Z",
+                                  "uid": "35240-ccb600ca-000f-44fd-85d1-d575b8f37136"
+                                },
+                                {
+                                  "id": "ba8db572-0165-4bb2-965f-7e8042105b48",
+                                  "name": "The takeback offering failed.",
+                                  "originalRequest": {
+                                    "method": "POST",
+                                    "header": [
+                                      {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                      },
+                                      {
+                                        "description": "Added as a part of security scheme: oauth2",
+                                        "key": "Authorization",
+                                        "value": "<token>"
+                                      }
+                                    ],
+                                    "url": {
+                                      "raw": "{{baseUrl}}/api/bot/game/:gameId/takeback/:accept",
+                                      "host": [
+                                        "{{baseUrl}}"
+                                      ],
+                                      "path": [
+                                        "api",
+                                        "bot",
+                                        "game",
+                                        ":gameId",
+                                        "takeback",
+                                        ":accept"
+                                      ],
+                                      "variable": [
+                                        {
+                                          "key": "gameId"
+                                        },
+                                        {
+                                          "key": "accept"
+                                        }
+                                      ]
+                                    }
+                                  },
+                                  "status": "Bad Request",
+                                  "code": 400,
+                                  "_postman_previewlanguage": "json",
+                                  "header": [
+                                    {
+                                      "key": "Content-Type",
+                                      "value": "application/json"
+                                    }
+                                  ],
+                                  "cookie": [],
+                                  "responseTime": null,
+                                  "body": "{\n  \"error\": \"<string>\"\n}",
+                                  "createdAt": "2026-07-28T02:06:36.000Z",
+                                  "updatedAt": "2026-07-28T02:06:36.000Z",
+                                  "uid": "35240-ba8db572-0165-4bb2-965f-7e8042105b48"
+                                }
+                              ],
+                              "createdAt": "2026-07-28T02:06:36.000Z",
+                              "updatedAt": "2026-07-28T02:06:36.000Z",
+                              "uid": "35240-9aa47c1e-d4da-4775-a182-3a61d4eac902"
+                            }
+                          ],
+                          "id": "015ac3a5-4a55-4674-bc9b-8860f3f99001",
+                          "createdAt": "2026-07-28T02:06:36.000Z",
+                          "updatedAt": "2026-07-28T02:06:36.000Z",
+                          "uid": "35240-015ac3a5-4a55-4674-bc9b-8860f3f99001"
+                        }
+                      ],
+                      "id": "4ea99d6a-7ea9-4b99-9918-f3186402a88b",
+                      "createdAt": "2026-07-28T02:06:36.000Z",
+                      "updatedAt": "2026-07-28T02:06:36.000Z",
+                      "uid": "35240-4ea99d6a-7ea9-4b99-9918-f3186402a88b"
+                    },
+                    {
+                      "name": "claim-victory",
+                      "item": [
+                        {
+                          "name": "Claim victory of a game",
+                          "id": "50c9912a-60f6-4674-935b-9b79b5df069c",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "auth": {
+                              "type": "oauth2",
+                              "oauth2": [
+                                {
+                                  "key": "scope",
+                                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "accessTokenUrl",
+                                  "value": "https://lichess.org/api/token",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "authUrl",
+                                  "value": "https://lichess.org/oauth",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "grant_type",
+                                  "value": "authorization_code",
+                                  "type": "string"
+                                }
+                              ]
+                            },
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/bot/game/:gameId/claim-victory",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "bot",
+                                "game",
+                                ":gameId",
+                                "claim-victory"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "a0772249-e6e2-4b96-913f-aa5a47639749",
+                                  "key": "gameId",
+                                  "value": "<string>",
+                                  "description": "(Required) "
+                                }
+                              ]
+                            },
+                            "description": "Claim victory when the opponent has left the game for a while.\n"
+                          },
+                          "response": [
+                            {
+                              "id": "d8e0450b-f93a-4b77-ba11-32d6a39fae19",
+                              "name": "The victory was successfully claimed.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/bot/game/:gameId/claim-victory",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "bot",
+                                    "game",
+                                    ":gameId",
+                                    "claim-victory"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "gameId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                },
+                                {
+                                  "disabled": false,
+                                  "description": {
+                                    "content": "",
+                                    "type": "text/plain"
+                                  },
+                                  "key": "Access-Control-Allow-Origin",
+                                  "value": "'*'"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"ok\": \"<boolean>\"\n}",
+                              "createdAt": "2026-07-28T02:06:36.000Z",
+                              "updatedAt": "2026-07-28T02:06:36.000Z",
+                              "uid": "35240-d8e0450b-f93a-4b77-ba11-32d6a39fae19"
+                            },
+                            {
+                              "id": "63d608b0-2731-4554-aa42-35949490289f",
+                              "name": "The victory claim has failed.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/bot/game/:gameId/claim-victory",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "bot",
+                                    "game",
+                                    ":gameId",
+                                    "claim-victory"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "gameId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Bad Request",
+                              "code": 400,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"error\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T02:06:36.000Z",
+                              "updatedAt": "2026-07-28T02:06:36.000Z",
+                              "uid": "35240-63d608b0-2731-4554-aa42-35949490289f"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T02:06:36.000Z",
+                          "updatedAt": "2026-07-28T02:06:36.000Z",
+                          "uid": "35240-50c9912a-60f6-4674-935b-9b79b5df069c"
+                        }
+                      ],
+                      "id": "46e95b07-4d18-4bd1-aa3a-41e7a4eb2189",
+                      "createdAt": "2026-07-28T02:06:36.000Z",
+                      "updatedAt": "2026-07-28T02:06:36.000Z",
+                      "uid": "35240-46e95b07-4d18-4bd1-aa3a-41e7a4eb2189"
+                    },
+                    {
+                      "name": "claim-draw",
+                      "item": [
+                        {
+                          "name": "Claim draw of a game",
+                          "id": "f8003479-db0b-4648-8da7-102e4fc8b467",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "auth": {
+                              "type": "oauth2",
+                              "oauth2": [
+                                {
+                                  "key": "scope",
+                                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "accessTokenUrl",
+                                  "value": "https://lichess.org/api/token",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "authUrl",
+                                  "value": "https://lichess.org/oauth",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "grant_type",
+                                  "value": "authorization_code",
+                                  "type": "string"
+                                }
+                              ]
+                            },
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/bot/game/:gameId/claim-draw",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "bot",
+                                "game",
+                                ":gameId",
+                                "claim-draw"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "d0c23df6-6037-45dc-ae29-20b1770c4a50",
+                                  "key": "gameId",
+                                  "value": "<string>",
+                                  "description": "(Required) "
+                                }
+                              ]
+                            },
+                            "description": "Claim draw when the opponent has left the game for a while.\n"
+                          },
+                          "response": [
+                            {
+                              "id": "61119513-db5d-4a50-b1df-61588e1349d1",
+                              "name": "The draw was successfully claimed.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/bot/game/:gameId/claim-draw",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "bot",
+                                    "game",
+                                    ":gameId",
+                                    "claim-draw"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "gameId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                },
+                                {
+                                  "disabled": false,
+                                  "description": {
+                                    "content": "",
+                                    "type": "text/plain"
+                                  },
+                                  "key": "Access-Control-Allow-Origin",
+                                  "value": "'*'"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"ok\": \"<boolean>\"\n}",
+                              "createdAt": "2026-07-28T02:06:36.000Z",
+                              "updatedAt": "2026-07-28T02:06:36.000Z",
+                              "uid": "35240-61119513-db5d-4a50-b1df-61588e1349d1"
+                            },
+                            {
+                              "id": "13b84312-d79a-4f09-be65-e2754d8d41cc",
+                              "name": "The draw claim has failed.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/bot/game/:gameId/claim-draw",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "bot",
+                                    "game",
+                                    ":gameId",
+                                    "claim-draw"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "gameId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Bad Request",
+                              "code": 400,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"error\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T02:06:36.000Z",
+                              "updatedAt": "2026-07-28T02:06:36.000Z",
+                              "uid": "35240-13b84312-d79a-4f09-be65-e2754d8d41cc"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T02:06:36.000Z",
+                          "updatedAt": "2026-07-28T02:06:36.000Z",
+                          "uid": "35240-f8003479-db0b-4648-8da7-102e4fc8b467"
+                        }
+                      ],
+                      "id": "ef735c0e-636d-45c5-bed0-c19eef779f33",
+                      "createdAt": "2026-07-28T02:06:36.000Z",
+                      "updatedAt": "2026-07-28T02:06:36.000Z",
+                      "uid": "35240-ef735c0e-636d-45c5-bed0-c19eef779f33"
+                    }
+                  ],
+                  "id": "9068a0f5-7f69-4c33-ac9e-e9fd9ddd6597",
+                  "createdAt": "2026-07-28T02:06:36.000Z",
+                  "updatedAt": "2026-07-28T02:06:36.000Z",
+                  "uid": "35240-9068a0f5-7f69-4c33-ac9e-e9fd9ddd6597"
+                }
+              ],
+              "id": "36529113-5aeb-4361-a85d-a5a43fb7d7d0",
+              "createdAt": "2026-07-28T02:06:36.000Z",
+              "updatedAt": "2026-07-28T02:06:36.000Z",
+              "uid": "35240-36529113-5aeb-4361-a85d-a5a43fb7d7d0"
+            }
+          ],
+          "id": "18403ed5-97db-4e46-a5ad-87736f0b0cb7",
+          "createdAt": "2026-07-28T02:06:36.000Z",
+          "updatedAt": "2026-07-28T02:06:36.000Z",
+          "uid": "35240-18403ed5-97db-4e46-a5ad-87736f0b0cb7"
+        }
+      ],
+      "id": "a8c7a54f-6ba6-451d-84d5-c5caf057897c",
+      "createdAt": "2026-07-28T02:06:36.000Z",
+      "updatedAt": "2026-07-28T02:06:36.000Z",
+      "uid": "35240-a8c7a54f-6ba6-451d-84d5-c5caf057897c"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://lichess.org"
+    }
+  ]
+}

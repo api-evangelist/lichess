@@ -1,0 +1,846 @@
+{
+  "info": {
+    "_postman_id": "a5ba77d2-4bb8-42a5-9359-65dad7067d01",
+    "name": "Lichess.org API reference Account Opening Explorer API",
+    "description": "# Introduction\nWelcome to the reference for the Lichess API! Lichess is free/libre,\nopen-source chess server powered by volunteers and donations.\n- Get help in the [Lichess Discord channel](https://discord.gg/lichess)\n- API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)\n- API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)\n- [Contribute to this documentation on Github](https://github.com/lichess-org/api)\n- Check out [Lichess widgets to embed in your website](https://lichess.org/developers)\n- [Download all Lichess rated games](https://database.lichess.org/)\n- [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)\n- [Download all evaluated positions](https://database.lichess.org/#evals)\n\n## Endpoint\nAll requests go to `https://lichess.org` (unless otherwise specified).\n\n## Clients\n- [Python general API](https://github.com/lichess-org/berserk)\n- [MicroPython general API](https://github.com/mkomon/uberserk)\n- [Python general API - async](https://pypi.org/project/async-lichess-sdk)\n- [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)\n- [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)\n- [Java general API](https://github.com/tors42/chariot)\n- [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)\n- [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)\n- [.NET general API](https://github.com/Dblike/LichessSharp)\n\n## Rate limiting\nAll requests are rate limited using various strategies,\nto ensure the API remains responsive for everyone.\nOnly make one request at a time.\nIf you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),\nyou have exceded one of the rate limits.\nIn most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.\nReduce your request frequency before retrying.\n\n## Streaming with ND-JSON\nSome API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.\n\nHere's a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.\n\n## Authentication\n### Which authentication method is right for me?\n[Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)\n\n### Personal Access Token\nPersonal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.\n- [Generate a personal access token](https://lichess.org/account/oauth/token)\n- `curl https://lichess.org/api/account -H \"Authorization: Bearer {token}\"`\n- [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)\n\n### Token Security\n- Keep your tokens secret. Do not share them in public repositories or public forums.\n- Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens' scope). You remain responsible for all activities on your account.\n- Do not hardcode tokens in your application's code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.\n- If you suspect a token has been compromised, revoke it immediately.\n\nTo see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).\n\n### Authorization Code Flow with PKCE\nThe authorization code flow with PKCE allows your users to **login with Lichess**.\nLichess supports unregistered and public clients (no client authentication, choose any unique client id).\nThe only accepted code challenge method is `S256`.\nAccess tokens are long-lived (expect one year), unless they are revoked.\nRefresh tokens are not supported.\n\nSee the [documentation for the OAuth endpoints](#tag/OAuth) or\nthe [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.\n\n- [Demo app](https://lichess-org.github.io/api-demo/)\n- [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)\n- [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)\n- [Java example](https://github.com/tors42/lichess-oauth-pkce-app)\n- [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)\n\n#### Real life examples\n- [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))\n- [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))\n- [English Chess Federation](https://ecf.octoknight.com/)\n- [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)\n\n### Token format\nAccess tokens and authorization codes match `^[A-Za-z0-9_]+$`.\nThe length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.\nBy convention tokens have a recognizable prefix, but do not rely on this.\n\n\nContact Support:\n Name: Lichess.org API\n Email: contact@lichess.org",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:06:50.000Z",
+    "updatedAt": "2026-07-28T02:06:50.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-a5ba77d2-4bb8-42a5-9359-65dad7067d01"
+  },
+  "item": [
+    {
+      "name": "masters",
+      "item": [
+        {
+          "name": "pgn",
+          "item": [
+            {
+              "name": "{gameId}",
+              "item": [
+                {
+                  "name": "OTB master game",
+                  "id": "3de327eb-c8e7-4e67-b1fc-d545e97a4235",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "oauth2",
+                      "oauth2": [
+                        {
+                          "key": "scope",
+                          "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                          "type": "string"
+                        },
+                        {
+                          "key": "accessTokenUrl",
+                          "value": "https://lichess.org/api/token",
+                          "type": "string"
+                        },
+                        {
+                          "key": "authUrl",
+                          "value": "https://lichess.org/oauth",
+                          "type": "string"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "authorization_code",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/x-chess-pgn"
+                      }
+                    ],
+                    "url": {
+                      "raw": "https://explorer.lichess.org/masters/pgn/:gameId",
+                      "protocol": "https",
+                      "host": [
+                        "explorer",
+                        "lichess",
+                        "org"
+                      ],
+                      "path": [
+                        "masters",
+                        "pgn",
+                        ":gameId"
+                      ],
+                      "variable": [
+                        {
+                          "id": "7f4427bc-0052-41a9-84eb-938dc0ab20c4",
+                          "key": "gameId",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "**Endpoint: `https://explorer.lichess.org/masters/pgn/{gameId}`**\n\nExample: `curl https://explorer.lichess.org/masters/pgn/aAbqI4ey`\n"
+                  },
+                  "response": [
+                    {
+                      "id": "70a89486-ecc5-450d-a467-b7ce1f114e98",
+                      "name": "The PGN representation of the game.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/x-chess-pgn"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "https://explorer.lichess.org/masters/pgn/:gameId",
+                          "protocol": "https",
+                          "host": [
+                            "explorer",
+                            "lichess",
+                            "org"
+                          ],
+                          "path": [
+                            "masters",
+                            "pgn",
+                            ":gameId"
+                          ],
+                          "variable": [
+                            {
+                              "key": "gameId"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/x-chess-pgn"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Access-Control-Allow-Origin",
+                          "value": "'*'"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "<string>",
+                      "createdAt": "2026-07-28T02:06:51.000Z",
+                      "updatedAt": "2026-07-28T02:06:51.000Z",
+                      "uid": "35240-70a89486-ecc5-450d-a467-b7ce1f114e98"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:06:51.000Z",
+                  "updatedAt": "2026-07-28T02:06:51.000Z",
+                  "uid": "35240-3de327eb-c8e7-4e67-b1fc-d545e97a4235"
+                }
+              ],
+              "id": "0fb8fc88-6152-46a4-96f4-7f1ecefcd906",
+              "createdAt": "2026-07-28T02:06:51.000Z",
+              "updatedAt": "2026-07-28T02:06:51.000Z",
+              "uid": "35240-0fb8fc88-6152-46a4-96f4-7f1ecefcd906"
+            }
+          ],
+          "id": "8df229f3-ecdc-4034-bad5-f12c37ab448f",
+          "createdAt": "2026-07-28T02:06:51.000Z",
+          "updatedAt": "2026-07-28T02:06:51.000Z",
+          "uid": "35240-8df229f3-ecdc-4034-bad5-f12c37ab448f"
+        },
+        {
+          "name": "Masters database",
+          "id": "3fb9c866-fbcf-45d3-ba9f-d6c2d53a5b7c",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                  "type": "string"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://lichess.org/api/token",
+                  "type": "string"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://lichess.org/oauth",
+                  "type": "string"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "https://explorer.lichess.org/masters?fen=<string>&play=&since=1952&until=<integer>&moves=12&topGames=15",
+              "protocol": "https",
+              "host": [
+                "explorer",
+                "lichess",
+                "org"
+              ],
+              "path": [
+                "masters"
+              ],
+              "query": [
+                {
+                  "description": "X-FEN of the root position",
+                  "key": "fen",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Comma separated sequence of legal moves in UCI notation.\nPlay additional moves starting from `fen`.\nRequired to find an opening name, if `fen` is not an exact match\nfor a named position.\n",
+                  "key": "play",
+                  "value": ""
+                },
+                {
+                  "description": "Include only games from this year or later",
+                  "key": "since",
+                  "value": "1952"
+                },
+                {
+                  "description": "Include only games from this year or earlier",
+                  "key": "until",
+                  "value": "<integer>"
+                },
+                {
+                  "description": "Number of most common moves to display",
+                  "key": "moves",
+                  "value": "12"
+                },
+                {
+                  "description": "Number of top games to display",
+                  "key": "topGames",
+                  "value": "15"
+                }
+              ]
+            },
+            "description": "**Endpoint: <https://explorer.lichess.org/masters>**\n\nExample: `curl https://explorer.lichess.org/masters?play=d2d4,d7d5,c2c4,c7c6,c4d5`\n"
+          },
+          "response": [
+            {
+              "id": "0b07de08-ecf2-4261-a950-7d86f1a4b8b8",
+              "name": "Opening statistics and game references for the position.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://explorer.lichess.org/masters?fen=<string>&play=&since=1952&until=<integer>&moves=12&topGames=15",
+                  "protocol": "https",
+                  "host": [
+                    "explorer",
+                    "lichess",
+                    "org"
+                  ],
+                  "path": [
+                    "masters"
+                  ],
+                  "query": [
+                    {
+                      "description": "X-FEN of the root position",
+                      "key": "fen",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Comma separated sequence of legal moves in UCI notation.\nPlay additional moves starting from `fen`.\nRequired to find an opening name, if `fen` is not an exact match\nfor a named position.\n",
+                      "key": "play",
+                      "value": ""
+                    },
+                    {
+                      "description": "Include only games from this year or later",
+                      "key": "since",
+                      "value": "1952"
+                    },
+                    {
+                      "description": "Include only games from this year or earlier",
+                      "key": "until",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Number of most common moves to display",
+                      "key": "moves",
+                      "value": "12"
+                    },
+                    {
+                      "description": "Number of top games to display",
+                      "key": "topGames",
+                      "value": "15"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"opening\": {\n    \"eco\": \"<string>\",\n    \"name\": \"<string>\"\n  },\n  \"white\": \"<integer>\",\n  \"draws\": \"<integer>\",\n  \"black\": \"<integer>\",\n  \"moves\": [\n    {\n      \"uci\": \"<string>\",\n      \"san\": \"<string>\",\n      \"averageRating\": \"<integer>\",\n      \"white\": \"<integer>\",\n      \"draws\": \"<integer>\",\n      \"black\": \"<integer>\",\n      \"game\": {\n        \"id\": \"<string>\",\n        \"winner\": \"white\",\n        \"white\": {\n          \"name\": \"<string>\",\n          \"rating\": \"<integer>\"\n        },\n        \"black\": {\n          \"name\": \"<string>\",\n          \"rating\": \"<integer>\"\n        },\n        \"year\": \"<integer>\",\n        \"month\": \"<string>\"\n      },\n      \"opening\": {\n        \"eco\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    },\n    {\n      \"uci\": \"<string>\",\n      \"san\": \"<string>\",\n      \"averageRating\": \"<integer>\",\n      \"white\": \"<integer>\",\n      \"draws\": \"<integer>\",\n      \"black\": \"<integer>\",\n      \"game\": {\n        \"id\": \"<string>\",\n        \"winner\": \"black\",\n        \"white\": {\n          \"name\": \"<string>\",\n          \"rating\": \"<integer>\"\n        },\n        \"black\": {\n          \"name\": \"<string>\",\n          \"rating\": \"<integer>\"\n        },\n        \"year\": \"<integer>\",\n        \"month\": \"<string>\"\n      },\n      \"opening\": {\n        \"eco\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    }\n  ],\n  \"topGames\": [\n    {\n      \"black\": {\n        \"name\": \"<string>\",\n        \"rating\": \"<integer>\"\n      },\n      \"id\": \"<string>\",\n      \"uci\": \"<string>\",\n      \"white\": {\n        \"name\": \"<string>\",\n        \"rating\": \"<integer>\"\n      },\n      \"winner\": \"white\",\n      \"year\": \"<integer>\",\n      \"month\": \"<string>\"\n    },\n    {\n      \"black\": {\n        \"name\": \"<string>\",\n        \"rating\": \"<integer>\"\n      },\n      \"id\": \"<string>\",\n      \"uci\": \"<string>\",\n      \"white\": {\n        \"name\": \"<string>\",\n        \"rating\": \"<integer>\"\n      },\n      \"winner\": \"black\",\n      \"year\": \"<integer>\",\n      \"month\": \"<string>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T02:06:51.000Z",
+              "updatedAt": "2026-07-28T02:06:51.000Z",
+              "uid": "35240-0b07de08-ecf2-4261-a950-7d86f1a4b8b8"
+            }
+          ],
+          "createdAt": "2026-07-28T02:06:51.000Z",
+          "updatedAt": "2026-07-28T02:06:51.000Z",
+          "uid": "35240-3fb9c866-fbcf-45d3-ba9f-d6c2d53a5b7c"
+        }
+      ],
+      "id": "bc490ec7-b3ea-415e-9f9c-8e226a22d9cc",
+      "createdAt": "2026-07-28T02:06:51.000Z",
+      "updatedAt": "2026-07-28T02:06:51.000Z",
+      "uid": "35240-bc490ec7-b3ea-415e-9f9c-8e226a22d9cc"
+    },
+    {
+      "name": "lichess",
+      "item": [
+        {
+          "name": "Lichess games",
+          "id": "1565b0da-9c5d-40a6-8fb5-4a7878276cbc",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                  "type": "string"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://lichess.org/api/token",
+                  "type": "string"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://lichess.org/oauth",
+                  "type": "string"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "https://explorer.lichess.org/lichess?variant=standard&fen=<string>&play=&speeds=bullet&speeds=rapid&ratings=1800&ratings=1600&since=1952-01&until=3000-12&moves=12&topGames=4&recentGames=4&history=false",
+              "protocol": "https",
+              "host": [
+                "explorer",
+                "lichess",
+                "org"
+              ],
+              "path": [
+                "lichess"
+              ],
+              "query": [
+                {
+                  "description": "Variant",
+                  "key": "variant",
+                  "value": "standard"
+                },
+                {
+                  "description": "X-FEN or EPD of the root position",
+                  "key": "fen",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Comma separated sequence of legal moves in UCI notation.\nPlay additional moves starting from `fen`.\nRequired to find an opening name, if `fen` is not an exact match\nfor a named position.\n",
+                  "key": "play",
+                  "value": ""
+                },
+                {
+                  "description": "Comma separated list of game speeds to filter by",
+                  "key": "speeds",
+                  "value": "bullet"
+                },
+                {
+                  "description": "Comma separated list of game speeds to filter by",
+                  "key": "speeds",
+                  "value": "rapid"
+                },
+                {
+                  "description": "Comma separated list of ratings groups to filter by.\nEach group ranges from its value to the next higher\ngroup in the enum (`0` from 0 to 999, `1000` from 1000 to 1199,\n..., `2500` from 2500 to any rating above).\n",
+                  "key": "ratings",
+                  "value": "1800"
+                },
+                {
+                  "description": "Comma separated list of ratings groups to filter by.\nEach group ranges from its value to the next higher\ngroup in the enum (`0` from 0 to 999, `1000` from 1000 to 1199,\n..., `2500` from 2500 to any rating above).\n",
+                  "key": "ratings",
+                  "value": "1600"
+                },
+                {
+                  "description": "Include only games from this month or later",
+                  "key": "since",
+                  "value": "1952-01"
+                },
+                {
+                  "description": "Include only games from this month or earlier",
+                  "key": "until",
+                  "value": "3000-12"
+                },
+                {
+                  "description": "Number of most common moves to display",
+                  "key": "moves",
+                  "value": "12"
+                },
+                {
+                  "description": "Maximum number of top games to display.\n\nDue to the way banned users are handled internally, the response may\ncontain fewer games than expected.\n",
+                  "key": "topGames",
+                  "value": "4"
+                },
+                {
+                  "description": "Maximum number of recent games to display.\n\nDue to the way banned users are handled internally, the response may\ncontain fewer games than expected.\n",
+                  "key": "recentGames",
+                  "value": "4"
+                },
+                {
+                  "description": "Optionally retrieve history",
+                  "key": "history",
+                  "value": "false"
+                }
+              ]
+            },
+            "description": "**Endpoint: <https://explorer.lichess.org/lichess>**\n\nAggregated rated games from all Lichess players.\n\nExample: `curl https://explorer.lichess.org/lichess?variant=standard&speeds=blitz,rapid,classical&ratings=2200,2500&fen=rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR%20w%20KQkq%20-%200%201`\n"
+          },
+          "response": [
+            {
+              "id": "aa0f4561-c2f1-43f2-b20e-a708d551f127",
+              "name": "Opening statistics and game references for the position.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://explorer.lichess.org/lichess?variant=standard&fen=<string>&play=&speeds=rapid&ratings=1600&since=1952-01&until=3000-12&moves=12&topGames=4&recentGames=4&history=false",
+                  "protocol": "https",
+                  "host": [
+                    "explorer",
+                    "lichess",
+                    "org"
+                  ],
+                  "path": [
+                    "lichess"
+                  ],
+                  "query": [
+                    {
+                      "description": "Variant",
+                      "key": "variant",
+                      "value": "standard"
+                    },
+                    {
+                      "description": "X-FEN or EPD of the root position",
+                      "key": "fen",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Comma separated sequence of legal moves in UCI notation.\nPlay additional moves starting from `fen`.\nRequired to find an opening name, if `fen` is not an exact match\nfor a named position.\n",
+                      "key": "play",
+                      "value": ""
+                    },
+                    {
+                      "description": "Comma separated list of game speeds to filter by",
+                      "key": "speeds",
+                      "value": "rapid"
+                    },
+                    {
+                      "description": "Comma separated list of ratings groups to filter by.\nEach group ranges from its value to the next higher\ngroup in the enum (`0` from 0 to 999, `1000` from 1000 to 1199,\n..., `2500` from 2500 to any rating above).\n",
+                      "key": "ratings",
+                      "value": "1600"
+                    },
+                    {
+                      "description": "Include only games from this month or later",
+                      "key": "since",
+                      "value": "1952-01"
+                    },
+                    {
+                      "description": "Include only games from this month or earlier",
+                      "key": "until",
+                      "value": "3000-12"
+                    },
+                    {
+                      "description": "Number of most common moves to display",
+                      "key": "moves",
+                      "value": "12"
+                    },
+                    {
+                      "description": "Maximum number of top games to display.\n\nDue to the way banned users are handled internally, the response may\ncontain fewer games than expected.\n",
+                      "key": "topGames",
+                      "value": "4"
+                    },
+                    {
+                      "description": "Maximum number of recent games to display.\n\nDue to the way banned users are handled internally, the response may\ncontain fewer games than expected.\n",
+                      "key": "recentGames",
+                      "value": "4"
+                    },
+                    {
+                      "description": "Optionally retrieve history",
+                      "key": "history",
+                      "value": "false"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"opening\": {\n    \"eco\": \"<string>\",\n    \"name\": \"<string>\"\n  },\n  \"white\": \"<integer>\",\n  \"draws\": \"<integer>\",\n  \"black\": \"<integer>\",\n  \"moves\": [\n    {\n      \"uci\": \"<string>\",\n      \"san\": \"<string>\",\n      \"averageRating\": \"<integer>\",\n      \"white\": \"<integer>\",\n      \"draws\": \"<integer>\",\n      \"black\": \"<integer>\",\n      \"game\": {\n        \"id\": \"<string>\",\n        \"winner\": \"black\",\n        \"white\": {\n          \"name\": \"<string>\",\n          \"rating\": \"<integer>\"\n        },\n        \"black\": {\n          \"name\": \"<string>\",\n          \"rating\": \"<integer>\"\n        },\n        \"year\": \"<number>\",\n        \"month\": \"<string,null>\",\n        \"speed\": \"correspondence\"\n      },\n      \"opening\": {\n        \"eco\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    },\n    {\n      \"uci\": \"<string>\",\n      \"san\": \"<string>\",\n      \"averageRating\": \"<integer>\",\n      \"white\": \"<integer>\",\n      \"draws\": \"<integer>\",\n      \"black\": \"<integer>\",\n      \"game\": {\n        \"id\": \"<string>\",\n        \"winner\": \"white\",\n        \"white\": {\n          \"name\": \"<string>\",\n          \"rating\": \"<integer>\"\n        },\n        \"black\": {\n          \"name\": \"<string>\",\n          \"rating\": \"<integer>\"\n        },\n        \"year\": \"<number>\",\n        \"month\": \"<string,null>\",\n        \"speed\": \"correspondence\"\n      },\n      \"opening\": {\n        \"eco\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    }\n  ],\n  \"topGames\": [\n    {\n      \"black\": {\n        \"name\": \"<string>\",\n        \"rating\": \"<integer>\"\n      },\n      \"id\": \"<string>\",\n      \"month\": \"<string,null>\",\n      \"uci\": \"<string>\",\n      \"white\": {\n        \"name\": \"<string>\",\n        \"rating\": \"<integer>\"\n      },\n      \"winner\": \"black\",\n      \"year\": \"<number>\",\n      \"speed\": \"blitz\"\n    },\n    {\n      \"black\": {\n        \"name\": \"<string>\",\n        \"rating\": \"<integer>\"\n      },\n      \"id\": \"<string>\",\n      \"month\": \"<string,null>\",\n      \"uci\": \"<string>\",\n      \"white\": {\n        \"name\": \"<string>\",\n        \"rating\": \"<integer>\"\n      },\n      \"winner\": \"white\",\n      \"year\": \"<number>\",\n      \"speed\": \"classical\"\n    }\n  ],\n  \"recentGames\": [\n    {\n      \"black\": {\n        \"name\": \"<string>\",\n        \"rating\": \"<integer>\"\n      },\n      \"id\": \"<string>\",\n      \"month\": \"<string,null>\",\n      \"uci\": \"<string>\",\n      \"white\": {\n        \"name\": \"<string>\",\n        \"rating\": \"<integer>\"\n      },\n      \"winner\": \"black\",\n      \"year\": \"<number>\",\n      \"speed\": \"classical\"\n    },\n    {\n      \"black\": {\n        \"name\": \"<string>\",\n        \"rating\": \"<integer>\"\n      },\n      \"id\": \"<string>\",\n      \"month\": \"<string,null>\",\n      \"uci\": \"<string>\",\n      \"white\": {\n        \"name\": \"<string>\",\n        \"rating\": \"<integer>\"\n      },\n      \"winner\": \"white\",\n      \"year\": \"<number>\",\n      \"speed\": \"correspondence\"\n    }\n  ],\n  \"history\": [\n    {\n      \"month\": \"<string>\",\n      \"white\": \"<integer>\",\n      \"draws\": \"<integer>\",\n      \"black\": \"<integer>\"\n    },\n    {\n      \"month\": \"<string>\",\n      \"white\": \"<integer>\",\n      \"draws\": \"<integer>\",\n      \"black\": \"<integer>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T02:06:51.000Z",
+              "updatedAt": "2026-07-28T02:06:51.000Z",
+              "uid": "35240-aa0f4561-c2f1-43f2-b20e-a708d551f127"
+            }
+          ],
+          "createdAt": "2026-07-28T02:06:51.000Z",
+          "updatedAt": "2026-07-28T02:06:51.000Z",
+          "uid": "35240-1565b0da-9c5d-40a6-8fb5-4a7878276cbc"
+        }
+      ],
+      "id": "e2a4cc77-100e-4b04-b080-cc248ea97242",
+      "createdAt": "2026-07-28T02:06:51.000Z",
+      "updatedAt": "2026-07-28T02:06:51.000Z",
+      "uid": "35240-e2a4cc77-100e-4b04-b080-cc248ea97242"
+    },
+    {
+      "name": "player",
+      "item": [
+        {
+          "name": "Player games",
+          "id": "7c63dbfd-a55e-4d59-8cba-77ebe39feba2",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                  "type": "string"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://lichess.org/api/token",
+                  "type": "string"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://lichess.org/oauth",
+                  "type": "string"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/x-ndjson"
+              }
+            ],
+            "url": {
+              "raw": "https://explorer.lichess.org/player?player=<string>&color=white&variant=standard&fen=<string>&play=&speeds=bullet&speeds=rapid&modes=casual&modes=rated&since=1952-01&until=3000-12&moves=<integer>&recentGames=8",
+              "protocol": "https",
+              "host": [
+                "explorer",
+                "lichess",
+                "org"
+              ],
+              "path": [
+                "player"
+              ],
+              "query": [
+                {
+                  "description": "(Required) Username or ID of the player",
+                  "key": "player",
+                  "value": "<string>"
+                },
+                {
+                  "description": "(Required) Look for games with *player* on the given side",
+                  "key": "color",
+                  "value": "white"
+                },
+                {
+                  "description": "Variant",
+                  "key": "variant",
+                  "value": "standard"
+                },
+                {
+                  "description": "X-FEN of the root position",
+                  "key": "fen",
+                  "value": "<string>"
+                },
+                {
+                  "description": "Comma separated sequence of legal moves in UCI notation.\nPlay additional moves starting from `fen`.\nRequired to find an opening name, if `fen` is not an exact match\nfor a named position.\n",
+                  "key": "play",
+                  "value": ""
+                },
+                {
+                  "description": "Comma separated list of game speeds to look for",
+                  "key": "speeds",
+                  "value": "bullet"
+                },
+                {
+                  "description": "Comma separated list of game speeds to look for",
+                  "key": "speeds",
+                  "value": "rapid"
+                },
+                {
+                  "description": "Comma separated list of modes",
+                  "key": "modes",
+                  "value": "casual"
+                },
+                {
+                  "description": "Comma separated list of modes",
+                  "key": "modes",
+                  "value": "rated"
+                },
+                {
+                  "description": "Include only games from this month or later",
+                  "key": "since",
+                  "value": "1952-01"
+                },
+                {
+                  "description": "Include only games from this month or earlier",
+                  "key": "until",
+                  "value": "3000-12"
+                },
+                {
+                  "description": "Number of most common moves to display",
+                  "key": "moves",
+                  "value": "<integer>"
+                },
+                {
+                  "description": "Number of recent games to display",
+                  "key": "recentGames",
+                  "value": "8"
+                }
+              ]
+            },
+            "description": "**Endpoint: <https://explorer.lichess.org/player>**\n\nGames of a Lichess player.\n\nResponds with a stream of [newline delimited JSON](#description/streaming-with-nd-json). Will start indexing\non demand, immediately respond with the current results, and stream\nmore updates until indexing is complete. The stream is throttled\nand deduplicated. Empty lines may be sent to avoid timeouts.\n\nWill index new games at most once per minute, and revisit previously\nongoing games at most once every day.\n\nExample: `curl https://explorer.lichess.org/player?player=revoof&color=white&play=d2d4,d7d5&recentGames=1`\n"
+          },
+          "response": [
+            {
+              "id": "ed5fa46a-1e19-4c2d-a77d-cfd296280415",
+              "name": "Opening statistics and game references for the position.",
+              "originalRequest": {
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/x-ndjson"
+                  },
+                  {
+                    "description": "Added as a part of security scheme: oauth2",
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "url": {
+                  "raw": "https://explorer.lichess.org/player?player=<string>&color=white&variant=standard&fen=<string>&play=&speeds=rapid&modes=rated&since=1952-01&until=3000-12&moves=<integer>&recentGames=8",
+                  "protocol": "https",
+                  "host": [
+                    "explorer",
+                    "lichess",
+                    "org"
+                  ],
+                  "path": [
+                    "player"
+                  ],
+                  "query": [
+                    {
+                      "description": "(Required) Username or ID of the player",
+                      "key": "player",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) Look for games with *player* on the given side",
+                      "key": "color",
+                      "value": "white"
+                    },
+                    {
+                      "description": "Variant",
+                      "key": "variant",
+                      "value": "standard"
+                    },
+                    {
+                      "description": "X-FEN of the root position",
+                      "key": "fen",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Comma separated sequence of legal moves in UCI notation.\nPlay additional moves starting from `fen`.\nRequired to find an opening name, if `fen` is not an exact match\nfor a named position.\n",
+                      "key": "play",
+                      "value": ""
+                    },
+                    {
+                      "description": "Comma separated list of game speeds to look for",
+                      "key": "speeds",
+                      "value": "rapid"
+                    },
+                    {
+                      "description": "Comma separated list of modes",
+                      "key": "modes",
+                      "value": "rated"
+                    },
+                    {
+                      "description": "Include only games from this month or later",
+                      "key": "since",
+                      "value": "1952-01"
+                    },
+                    {
+                      "description": "Include only games from this month or earlier",
+                      "key": "until",
+                      "value": "3000-12"
+                    },
+                    {
+                      "description": "Number of most common moves to display",
+                      "key": "moves",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Number of recent games to display",
+                      "key": "recentGames",
+                      "value": "8"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "text",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/x-ndjson"
+                },
+                {
+                  "disabled": false,
+                  "description": {
+                    "content": "",
+                    "type": "text/plain"
+                  },
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'"
+                }
+              ],
+              "cookie": [],
+              "responseTime": null,
+              "body": "{\n  \"opening\": {\n    \"eco\": \"<string>\",\n    \"name\": \"<string>\"\n  },\n  \"queuePosition\": \"<integer>\",\n  \"white\": \"<integer>\",\n  \"draws\": \"<integer>\",\n  \"black\": \"<integer>\",\n  \"moves\": [\n    {\n      \"uci\": \"<string>\",\n      \"san\": \"<string>\",\n      \"averageOpponentRating\": \"<integer>\",\n      \"performance\": \"<integer>\",\n      \"white\": \"<integer>\",\n      \"draws\": \"<integer>\",\n      \"black\": \"<integer>\",\n      \"game\": {\n        \"id\": \"<string>\",\n        \"winner\": \"white\",\n        \"speed\": \"classical\",\n        \"mode\": \"rated\",\n        \"white\": {\n          \"name\": \"<string>\",\n          \"rating\": \"<integer>\"\n        },\n        \"black\": {\n          \"name\": \"<string>\",\n          \"rating\": \"<integer>\"\n        },\n        \"year\": \"<integer>\",\n        \"month\": \"<string>\"\n      },\n      \"opening\": {\n        \"eco\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    },\n    {\n      \"uci\": \"<string>\",\n      \"san\": \"<string>\",\n      \"averageOpponentRating\": \"<integer>\",\n      \"performance\": \"<integer>\",\n      \"white\": \"<integer>\",\n      \"draws\": \"<integer>\",\n      \"black\": \"<integer>\",\n      \"game\": {\n        \"id\": \"<string>\",\n        \"winner\": \"black\",\n        \"speed\": \"bullet\",\n        \"mode\": \"rated\",\n        \"white\": {\n          \"name\": \"<string>\",\n          \"rating\": \"<integer>\"\n        },\n        \"black\": {\n          \"name\": \"<string>\",\n          \"rating\": \"<integer>\"\n        },\n        \"year\": \"<integer>\",\n        \"month\": \"<string>\"\n      },\n      \"opening\": {\n        \"eco\": \"<string>\",\n        \"name\": \"<string>\"\n      }\n    }\n  ],\n  \"recentGames\": [\n    {\n      \"black\": {\n        \"name\": \"<string>\",\n        \"rating\": \"<integer>\"\n      },\n      \"id\": \"<string>\",\n      \"mode\": \"casual\",\n      \"month\": \"<string>\",\n      \"speed\": \"bullet\",\n      \"uci\": \"<string>\",\n      \"white\": {\n        \"name\": \"<string>\",\n        \"rating\": \"<integer>\"\n      },\n      \"winner\": \"white\",\n      \"year\": \"<integer>\"\n    },\n    {\n      \"black\": {\n        \"name\": \"<string>\",\n        \"rating\": \"<integer>\"\n      },\n      \"id\": \"<string>\",\n      \"mode\": \"casual\",\n      \"month\": \"<string>\",\n      \"speed\": \"rapid\",\n      \"uci\": \"<string>\",\n      \"white\": {\n        \"name\": \"<string>\",\n        \"rating\": \"<integer>\"\n      },\n      \"winner\": \"black\",\n      \"year\": \"<integer>\"\n    }\n  ]\n}",
+              "createdAt": "2026-07-28T02:06:51.000Z",
+              "updatedAt": "2026-07-28T02:06:51.000Z",
+              "uid": "35240-ed5fa46a-1e19-4c2d-a77d-cfd296280415"
+            }
+          ],
+          "createdAt": "2026-07-28T02:06:51.000Z",
+          "updatedAt": "2026-07-28T02:06:51.000Z",
+          "uid": "35240-7c63dbfd-a55e-4d59-8cba-77ebe39feba2"
+        }
+      ],
+      "id": "d163f322-3576-46e6-bc56-2a3e40505dfa",
+      "createdAt": "2026-07-28T02:06:51.000Z",
+      "updatedAt": "2026-07-28T02:06:51.000Z",
+      "uid": "35240-d163f322-3576-46e6-bc56-2a3e40505dfa"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://lichess.org"
+    }
+  ]
+}

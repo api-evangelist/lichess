@@ -1,0 +1,463 @@
+{
+  "info": {
+    "_postman_id": "89d2ac04-db15-40f0-9737-f0d014a18b4e",
+    "name": "Lichess.org API reference Account TV API",
+    "description": "# Introduction\nWelcome to the reference for the Lichess API! Lichess is free/libre,\nopen-source chess server powered by volunteers and donations.\n- Get help in the [Lichess Discord channel](https://discord.gg/lichess)\n- API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)\n- API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)\n- [Contribute to this documentation on Github](https://github.com/lichess-org/api)\n- Check out [Lichess widgets to embed in your website](https://lichess.org/developers)\n- [Download all Lichess rated games](https://database.lichess.org/)\n- [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)\n- [Download all evaluated positions](https://database.lichess.org/#evals)\n\n## Endpoint\nAll requests go to `https://lichess.org` (unless otherwise specified).\n\n## Clients\n- [Python general API](https://github.com/lichess-org/berserk)\n- [MicroPython general API](https://github.com/mkomon/uberserk)\n- [Python general API - async](https://pypi.org/project/async-lichess-sdk)\n- [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)\n- [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)\n- [Java general API](https://github.com/tors42/chariot)\n- [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)\n- [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)\n- [.NET general API](https://github.com/Dblike/LichessSharp)\n\n## Rate limiting\nAll requests are rate limited using various strategies,\nto ensure the API remains responsive for everyone.\nOnly make one request at a time.\nIf you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),\nyou have exceded one of the rate limits.\nIn most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.\nReduce your request frequency before retrying.\n\n## Streaming with ND-JSON\nSome API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.\n\nHere's a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.\n\n## Authentication\n### Which authentication method is right for me?\n[Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)\n\n### Personal Access Token\nPersonal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.\n- [Generate a personal access token](https://lichess.org/account/oauth/token)\n- `curl https://lichess.org/api/account -H \"Authorization: Bearer {token}\"`\n- [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)\n\n### Token Security\n- Keep your tokens secret. Do not share them in public repositories or public forums.\n- Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens' scope). You remain responsible for all activities on your account.\n- Do not hardcode tokens in your application's code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.\n- If you suspect a token has been compromised, revoke it immediately.\n\nTo see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).\n\n### Authorization Code Flow with PKCE\nThe authorization code flow with PKCE allows your users to **login with Lichess**.\nLichess supports unregistered and public clients (no client authentication, choose any unique client id).\nThe only accepted code challenge method is `S256`.\nAccess tokens are long-lived (expect one year), unless they are revoked.\nRefresh tokens are not supported.\n\nSee the [documentation for the OAuth endpoints](#tag/OAuth) or\nthe [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.\n\n- [Demo app](https://lichess-org.github.io/api-demo/)\n- [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)\n- [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)\n- [Java example](https://github.com/tors42/lichess-oauth-pkce-app)\n- [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)\n\n#### Real life examples\n- [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))\n- [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))\n- [English Chess Federation](https://ecf.octoknight.com/)\n- [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)\n\n### Token format\nAccess tokens and authorization codes match `^[A-Za-z0-9_]+$`.\nThe length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.\nBy convention tokens have a recognizable prefix, but do not rely on this.\n\n\nContact Support:\n Name: Lichess.org API\n Email: contact@lichess.org",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:07:22.000Z",
+    "updatedAt": "2026-07-28T02:07:22.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-89d2ac04-db15-40f0-9737-f0d014a18b4e"
+  },
+  "item": [
+    {
+      "name": "api",
+      "item": [
+        {
+          "name": "tv",
+          "item": [
+            {
+              "name": "channels",
+              "item": [
+                {
+                  "name": "Get current TV games",
+                  "id": "c912d43e-3bfb-46cf-8e41-c1ca27ca7843",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/tv/channels",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "tv",
+                        "channels"
+                      ]
+                    },
+                    "description": "Get basic info about the best games being played for each speed and variant,\nbut also computer games and bot games.\nSee [lichess.org/tv](https://lichess.org/tv).\n"
+                  },
+                  "response": [
+                    {
+                      "id": "6fb73017-409b-46a0-9872-2520dae24cd3",
+                      "name": "The list of games being played for each speed and variant.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/tv/channels",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "tv",
+                            "channels"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Access-Control-Allow-Origin",
+                          "value": "'*'"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"bot\": {\n    \"user\": {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"flair\": \"<string>\",\n      \"title\": \"WFM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\"\n    },\n    \"rating\": \"<integer>\",\n    \"gameId\": \"<string>\",\n    \"color\": \"black\"\n  },\n  \"blitz\": {\n    \"user\": {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"flair\": \"<string>\",\n      \"title\": \"FM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\"\n    },\n    \"rating\": \"<integer>\",\n    \"gameId\": \"<string>\",\n    \"color\": \"black\"\n  },\n  \"racingKings\": {\n    \"user\": {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"flair\": \"<string>\",\n      \"title\": \"WGM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\"\n    },\n    \"rating\": \"<integer>\",\n    \"gameId\": \"<string>\",\n    \"color\": \"black\"\n  },\n  \"ultraBullet\": {\n    \"user\": {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"flair\": \"<string>\",\n      \"title\": \"NM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\"\n    },\n    \"rating\": \"<integer>\",\n    \"gameId\": \"<string>\",\n    \"color\": \"white\"\n  },\n  \"bullet\": {\n    \"user\": {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"flair\": \"<string>\",\n      \"title\": \"FM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\"\n    },\n    \"rating\": \"<integer>\",\n    \"gameId\": \"<string>\",\n    \"color\": \"white\"\n  },\n  \"classical\": {\n    \"user\": {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"flair\": \"<string>\",\n      \"title\": \"CM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\"\n    },\n    \"rating\": \"<integer>\",\n    \"gameId\": \"<string>\",\n    \"color\": \"black\"\n  },\n  \"threeCheck\": {\n    \"user\": {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"flair\": \"<string>\",\n      \"title\": \"WIM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\"\n    },\n    \"rating\": \"<integer>\",\n    \"gameId\": \"<string>\",\n    \"color\": \"black\"\n  },\n  \"antichess\": {\n    \"user\": {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"flair\": \"<string>\",\n      \"title\": \"BOT\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\"\n    },\n    \"rating\": \"<integer>\",\n    \"gameId\": \"<string>\",\n    \"color\": \"black\"\n  },\n  \"computer\": {\n    \"user\": {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"flair\": \"<string>\",\n      \"title\": \"CM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\"\n    },\n    \"rating\": \"<integer>\",\n    \"gameId\": \"<string>\",\n    \"color\": \"white\"\n  },\n  \"horde\": {\n    \"user\": {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"flair\": \"<string>\",\n      \"title\": \"WGM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\"\n    },\n    \"rating\": \"<integer>\",\n    \"gameId\": \"<string>\",\n    \"color\": \"white\"\n  },\n  \"rapid\": {\n    \"user\": {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"flair\": \"<string>\",\n      \"title\": \"WIM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\"\n    },\n    \"rating\": \"<integer>\",\n    \"gameId\": \"<string>\",\n    \"color\": \"black\"\n  },\n  \"atomic\": {\n    \"user\": {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"flair\": \"<string>\",\n      \"title\": \"NM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\"\n    },\n    \"rating\": \"<integer>\",\n    \"gameId\": \"<string>\",\n    \"color\": \"black\"\n  },\n  \"crazyhouse\": {\n    \"user\": {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"flair\": \"<string>\",\n      \"title\": \"WCM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\"\n    },\n    \"rating\": \"<integer>\",\n    \"gameId\": \"<string>\",\n    \"color\": \"white\"\n  },\n  \"chess960\": {\n    \"user\": {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"flair\": \"<string>\",\n      \"title\": \"GM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\"\n    },\n    \"rating\": \"<integer>\",\n    \"gameId\": \"<string>\",\n    \"color\": \"white\"\n  },\n  \"kingOfTheHill\": {\n    \"user\": {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"flair\": \"<string>\",\n      \"title\": \"CM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\"\n    },\n    \"rating\": \"<integer>\",\n    \"gameId\": \"<string>\",\n    \"color\": \"black\"\n  },\n  \"best\": {\n    \"user\": {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"flair\": \"<string>\",\n      \"title\": \"WIM\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\"\n    },\n    \"rating\": \"<integer>\",\n    \"gameId\": \"<string>\",\n    \"color\": \"black\"\n  }\n}",
+                      "createdAt": "2026-07-28T02:07:22.000Z",
+                      "updatedAt": "2026-07-28T02:07:22.000Z",
+                      "uid": "35240-6fb73017-409b-46a0-9872-2520dae24cd3"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:07:22.000Z",
+                  "updatedAt": "2026-07-28T02:07:22.000Z",
+                  "uid": "35240-c912d43e-3bfb-46cf-8e41-c1ca27ca7843"
+                }
+              ],
+              "id": "46392ba4-abe4-4ce2-b74a-6f4614984cd2",
+              "createdAt": "2026-07-28T02:07:22.000Z",
+              "updatedAt": "2026-07-28T02:07:22.000Z",
+              "uid": "35240-46392ba4-abe4-4ce2-b74a-6f4614984cd2"
+            },
+            {
+              "name": "feed",
+              "item": [
+                {
+                  "name": "Stream current TV game",
+                  "id": "6b7cb1f0-fa9a-4f30-aa5c-2c2f1bb19abd",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/x-ndjson"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/tv/feed",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "tv",
+                        "feed"
+                      ]
+                    },
+                    "description": "Stream positions and moves of the current [TV game](https://lichess.org/tv) in [ndjson](#description/streaming-with-nd-json).\nTry it with `curl https://lichess.org/api/tv/feed`.\n"
+                  },
+                  "response": [
+                    {
+                      "id": "c6f8fb4b-8033-4df8-8afd-c071fcd1a902",
+                      "name": "The stream of the current TV game.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/x-ndjson"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/tv/feed",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "tv",
+                            "feed"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/x-ndjson"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"t\": \"<string>\",\n  \"d\": {\n    \"id\": \"<string>\",\n    \"orientation\": \"white\",\n    \"players\": [\n      {\n        \"color\": \"black\",\n        \"rating\": \"<integer>\",\n        \"seconds\": \"<integer>\",\n        \"user\": {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"flair\": \"<string>\",\n          \"title\": \"LM\",\n          \"patron\": \"<boolean>\",\n          \"patronColor\": \"<integer>\"\n        }\n      },\n      {\n        \"color\": \"black\",\n        \"rating\": \"<integer>\",\n        \"seconds\": \"<integer>\",\n        \"user\": {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"flair\": \"<string>\",\n          \"title\": \"BOT\",\n          \"patron\": \"<boolean>\",\n          \"patronColor\": \"<integer>\"\n        }\n      }\n    ],\n    \"fen\": \"<string>\"\n  }\n}",
+                      "createdAt": "2026-07-28T02:07:22.000Z",
+                      "updatedAt": "2026-07-28T02:07:22.000Z",
+                      "uid": "35240-c6f8fb4b-8033-4df8-8afd-c071fcd1a902"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:07:22.000Z",
+                  "updatedAt": "2026-07-28T02:07:22.000Z",
+                  "uid": "35240-6b7cb1f0-fa9a-4f30-aa5c-2c2f1bb19abd"
+                }
+              ],
+              "id": "6a3190d4-78f8-4c4e-ac1c-db7f4816aa96",
+              "createdAt": "2026-07-28T02:07:22.000Z",
+              "updatedAt": "2026-07-28T02:07:22.000Z",
+              "uid": "35240-6a3190d4-78f8-4c4e-ac1c-db7f4816aa96"
+            },
+            {
+              "name": "{channel}",
+              "item": [
+                {
+                  "name": "feed",
+                  "item": [
+                    {
+                      "name": "Stream current TV game of a TV channel",
+                      "id": "9e1452d8-bc79-40fd-a45a-8ddc7fccd67d",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/x-ndjson"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/tv/:channel/feed",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "tv",
+                            ":channel",
+                            "feed"
+                          ],
+                          "variable": [
+                            {
+                              "id": "cd84ffb2-89f2-4ac5-86f5-ced4c1c35ed5",
+                              "key": "channel",
+                              "value": "<string>",
+                              "description": "(Required) The name of the channel in camel case."
+                            }
+                          ]
+                        },
+                        "description": "Stream positions and moves of a current [TV channel's game](https://lichess.org/tv/rapid) in [ndjson](#description/streaming-with-nd-json).\nTry it with `curl https://lichess.org/api/tv/rapid/feed`.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "ef03fa14-e756-466b-9f48-433e3025e368",
+                          "name": "The stream of the current TV game of a TV channel.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/x-ndjson"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/tv/:channel/feed",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "tv",
+                                ":channel",
+                                "feed"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "channel"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/x-ndjson"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"t\": \"<string>\",\n  \"d\": {\n    \"id\": \"<string>\",\n    \"orientation\": \"white\",\n    \"players\": [\n      {\n        \"color\": \"black\",\n        \"rating\": \"<integer>\",\n        \"seconds\": \"<integer>\",\n        \"user\": {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"flair\": \"<string>\",\n          \"title\": \"LM\",\n          \"patron\": \"<boolean>\",\n          \"patronColor\": \"<integer>\"\n        }\n      },\n      {\n        \"color\": \"black\",\n        \"rating\": \"<integer>\",\n        \"seconds\": \"<integer>\",\n        \"user\": {\n          \"id\": \"<string>\",\n          \"name\": \"<string>\",\n          \"flair\": \"<string>\",\n          \"title\": \"BOT\",\n          \"patron\": \"<boolean>\",\n          \"patronColor\": \"<integer>\"\n        }\n      }\n    ],\n    \"fen\": \"<string>\"\n  }\n}",
+                          "createdAt": "2026-07-28T02:07:22.000Z",
+                          "updatedAt": "2026-07-28T02:07:22.000Z",
+                          "uid": "35240-ef03fa14-e756-466b-9f48-433e3025e368"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:07:22.000Z",
+                      "updatedAt": "2026-07-28T02:07:22.000Z",
+                      "uid": "35240-9e1452d8-bc79-40fd-a45a-8ddc7fccd67d"
+                    }
+                  ],
+                  "id": "c97e75f2-93ae-43a9-b362-cb3b98fe325e",
+                  "createdAt": "2026-07-28T02:07:22.000Z",
+                  "updatedAt": "2026-07-28T02:07:22.000Z",
+                  "uid": "35240-c97e75f2-93ae-43a9-b362-cb3b98fe325e"
+                },
+                {
+                  "name": "Get best ongoing games of a TV channel",
+                  "id": "1f9348ad-dfc8-4237-8574-67050c997e39",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/x-chess-pgn"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/tv/:channel?nb=10&moves=true&pgnInJson=false&tags=true&clocks=false&opening=false",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "tv",
+                        ":channel"
+                      ],
+                      "query": [
+                        {
+                          "description": "Number of games to fetch.",
+                          "key": "nb",
+                          "value": "10"
+                        },
+                        {
+                          "description": "Include the PGN moves.",
+                          "key": "moves",
+                          "value": "true"
+                        },
+                        {
+                          "description": "Include the full PGN within the JSON response, in a `pgn` field.",
+                          "key": "pgnInJson",
+                          "value": "false"
+                        },
+                        {
+                          "description": "Include the PGN tags.",
+                          "key": "tags",
+                          "value": "true"
+                        },
+                        {
+                          "description": "Include clock status when available.\nEither as PGN comments: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\nOr in a `clocks` JSON field, as centisecond integers, depending on the response type.\n",
+                          "key": "clocks",
+                          "value": "false"
+                        },
+                        {
+                          "description": "Include the opening name.\nExample: `[Opening \"King's Gambit Accepted, King's Knight Gambit\"]`\n",
+                          "key": "opening",
+                          "value": "false"
+                        }
+                      ],
+                      "variable": [
+                        {
+                          "id": "367f8567-cce2-4b44-899c-f463dece9558",
+                          "key": "channel",
+                          "value": "<string>",
+                          "description": "(Required) The name of the channel in camel case."
+                        }
+                      ]
+                    },
+                    "description": "Get a list of ongoing games for a given TV channel. Similar to [lichess.org/games](https://lichess.org/games).\nAvailable in PGN or [ndjson](#description/streaming-with-nd-json) format, depending on the request `Accept` header.\n"
+                  },
+                  "response": [
+                    {
+                      "id": "53e35774-6349-40d3-8d08-c24deaf89eb7",
+                      "name": "The representation of the games.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/x-chess-pgn"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/tv/:channel?nb=10&moves=true&pgnInJson=false&tags=true&clocks=false&opening=false",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "tv",
+                            ":channel"
+                          ],
+                          "query": [
+                            {
+                              "description": "Number of games to fetch.",
+                              "key": "nb",
+                              "value": "10"
+                            },
+                            {
+                              "description": "Include the PGN moves.",
+                              "key": "moves",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Include the full PGN within the JSON response, in a `pgn` field.",
+                              "key": "pgnInJson",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include the PGN tags.",
+                              "key": "tags",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Include clock status when available.\nEither as PGN comments: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\nOr in a `clocks` JSON field, as centisecond integers, depending on the response type.\n",
+                              "key": "clocks",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include the opening name.\nExample: `[Opening \"King's Gambit Accepted, King's Knight Gambit\"]`\n",
+                              "key": "opening",
+                              "value": "false"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "key": "channel"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/x-chess-pgn"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "<string>",
+                      "createdAt": "2026-07-28T02:07:22.000Z",
+                      "updatedAt": "2026-07-28T02:07:22.000Z",
+                      "uid": "35240-53e35774-6349-40d3-8d08-c24deaf89eb7"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:07:22.000Z",
+                  "updatedAt": "2026-07-28T02:07:22.000Z",
+                  "uid": "35240-1f9348ad-dfc8-4237-8574-67050c997e39"
+                }
+              ],
+              "id": "99588941-3801-498d-8470-dbbbe854b24e",
+              "createdAt": "2026-07-28T02:07:22.000Z",
+              "updatedAt": "2026-07-28T02:07:22.000Z",
+              "uid": "35240-99588941-3801-498d-8470-dbbbe854b24e"
+            }
+          ],
+          "id": "584d537c-d4c7-4f91-bd3a-faa754916d91",
+          "createdAt": "2026-07-28T02:07:22.000Z",
+          "updatedAt": "2026-07-28T02:07:22.000Z",
+          "uid": "35240-584d537c-d4c7-4f91-bd3a-faa754916d91"
+        }
+      ],
+      "id": "424ff7f3-be77-4a93-8edc-31aa201b3d2b",
+      "createdAt": "2026-07-28T02:07:22.000Z",
+      "updatedAt": "2026-07-28T02:07:22.000Z",
+      "uid": "35240-424ff7f3-be77-4a93-8edc-31aa201b3d2b"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://lichess.org"
+    }
+  ]
+}

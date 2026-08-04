@@ -1,0 +1,1257 @@
+{
+  "info": {
+    "_postman_id": "e1d4e0fe-d514-469f-9c89-94b0588c9571",
+    "name": "Lichess.org API reference Account Bulk pairings API",
+    "description": "# Introduction\nWelcome to the reference for the Lichess API! Lichess is free/libre,\nopen-source chess server powered by volunteers and donations.\n- Get help in the [Lichess Discord channel](https://discord.gg/lichess)\n- API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)\n- API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)\n- [Contribute to this documentation on Github](https://github.com/lichess-org/api)\n- Check out [Lichess widgets to embed in your website](https://lichess.org/developers)\n- [Download all Lichess rated games](https://database.lichess.org/)\n- [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)\n- [Download all evaluated positions](https://database.lichess.org/#evals)\n\n## Endpoint\nAll requests go to `https://lichess.org` (unless otherwise specified).\n\n## Clients\n- [Python general API](https://github.com/lichess-org/berserk)\n- [MicroPython general API](https://github.com/mkomon/uberserk)\n- [Python general API - async](https://pypi.org/project/async-lichess-sdk)\n- [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)\n- [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)\n- [Java general API](https://github.com/tors42/chariot)\n- [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)\n- [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)\n- [.NET general API](https://github.com/Dblike/LichessSharp)\n\n## Rate limiting\nAll requests are rate limited using various strategies,\nto ensure the API remains responsive for everyone.\nOnly make one request at a time.\nIf you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),\nyou have exceded one of the rate limits.\nIn most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.\nReduce your request frequency before retrying.\n\n## Streaming with ND-JSON\nSome API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.\n\nHere's a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.\n\n## Authentication\n### Which authentication method is right for me?\n[Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)\n\n### Personal Access Token\nPersonal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.\n- [Generate a personal access token](https://lichess.org/account/oauth/token)\n- `curl https://lichess.org/api/account -H \"Authorization: Bearer {token}\"`\n- [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)\n\n### Token Security\n- Keep your tokens secret. Do not share them in public repositories or public forums.\n- Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens' scope). You remain responsible for all activities on your account.\n- Do not hardcode tokens in your application's code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.\n- If you suspect a token has been compromised, revoke it immediately.\n\nTo see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).\n\n### Authorization Code Flow with PKCE\nThe authorization code flow with PKCE allows your users to **login with Lichess**.\nLichess supports unregistered and public clients (no client authentication, choose any unique client id).\nThe only accepted code challenge method is `S256`.\nAccess tokens are long-lived (expect one year), unless they are revoked.\nRefresh tokens are not supported.\n\nSee the [documentation for the OAuth endpoints](#tag/OAuth) or\nthe [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.\n\n- [Demo app](https://lichess-org.github.io/api-demo/)\n- [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)\n- [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)\n- [Java example](https://github.com/tors42/lichess-oauth-pkce-app)\n- [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)\n\n#### Real life examples\n- [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))\n- [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))\n- [English Chess Federation](https://ecf.octoknight.com/)\n- [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)\n\n### Token format\nAccess tokens and authorization codes match `^[A-Za-z0-9_]+$`.\nThe length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.\nBy convention tokens have a recognizable prefix, but do not rely on this.\n\n\nContact Support:\n Name: Lichess.org API\n Email: contact@lichess.org",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:06:39.000Z",
+    "updatedAt": "2026-07-28T02:06:39.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-e1d4e0fe-d514-469f-9c89-94b0588c9571"
+  },
+  "item": [
+    {
+      "name": "api",
+      "item": [
+        {
+          "name": "bulk-pairing",
+          "item": [
+            {
+              "name": "{id}",
+              "item": [
+                {
+                  "name": "start-clocks",
+                  "item": [
+                    {
+                      "name": "Manually start clocks",
+                      "id": "3a5ee0e9-2e61-48c5-8781-c96487c881e8",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://lichess.org/api/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://lichess.org/oauth",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/bulk-pairing/:id/start-clocks",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "bulk-pairing",
+                            ":id",
+                            "start-clocks"
+                          ],
+                          "variable": [
+                            {
+                              "id": "ff2f7669-bde2-41bc-90b5-57644643f6c9",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "Immediately start all clocks of the games of a bulk pairing.\nThis overrides the `startClocksAt` value of an existing bulk pairing.\nIf the games have not yet been created (`bulk.pairAt` is in the future), then this does nothing.\nIf the clocks have already started (`bulk.startClocksAt` is in the past), then this does nothing.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "e72b5b09-c5af-47eb-812d-b9ef8dbf9799",
+                          "name": "The clocks of the games of a bulk pairing were successfully started.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/bulk-pairing/:id/start-clocks",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "bulk-pairing",
+                                ":id",
+                                "start-clocks"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"ok\": \"<boolean>\"\n}",
+                          "createdAt": "2026-07-28T02:06:40.000Z",
+                          "updatedAt": "2026-07-28T02:06:40.000Z",
+                          "uid": "35240-e72b5b09-c5af-47eb-812d-b9ef8dbf9799"
+                        },
+                        {
+                          "id": "0f5f4cad-9d21-477f-a0e9-fcef128e9fc7",
+                          "name": "The bulk pairing was not found.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/bulk-pairing/:id/start-clocks",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "bulk-pairing",
+                                ":id",
+                                "start-clocks"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"error\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:06:40.000Z",
+                          "updatedAt": "2026-07-28T02:06:40.000Z",
+                          "uid": "35240-0f5f4cad-9d21-477f-a0e9-fcef128e9fc7"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:06:40.000Z",
+                      "updatedAt": "2026-07-28T02:06:40.000Z",
+                      "uid": "35240-3a5ee0e9-2e61-48c5-8781-c96487c881e8"
+                    }
+                  ],
+                  "id": "6fa107d9-f715-4797-92ad-f49d194ae4ef",
+                  "createdAt": "2026-07-28T02:06:40.000Z",
+                  "updatedAt": "2026-07-28T02:06:40.000Z",
+                  "uid": "35240-6fa107d9-f715-4797-92ad-f49d194ae4ef"
+                },
+                {
+                  "name": "games",
+                  "item": [
+                    {
+                      "name": "Export games of a bulk pairing",
+                      "id": "17e0eff0-ae69-41f5-8434-f8d09dd71651",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://lichess.org/api/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://lichess.org/oauth",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/x-chess-pgn"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/bulk-pairing/:id/games?moves=true&pgnInJson=false&tags=true&clocks=false&evals=false&accuracy=false&opening=false&division=false&literate=false",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "bulk-pairing",
+                            ":id",
+                            "games"
+                          ],
+                          "query": [
+                            {
+                              "description": "Include the PGN moves.",
+                              "key": "moves",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Include the full PGN within the JSON response, in a `pgn` field.",
+                              "key": "pgnInJson",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include the PGN tags.",
+                              "key": "tags",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Include clock status when available.\nEither as PGN comments: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\nOr in a `clocks` JSON field, as centisecond integers, depending on the response type.\n",
+                              "key": "clocks",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include analysis evaluations and comments, when available.\nEither as PGN comments: `12. Bxf6 { [%eval 0.23] } a3 { [%eval -1.09] }`\nOr in an `analysis` JSON field, depending on the response type.\n",
+                              "key": "evals",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include [accuracy percent](https://lichess.org/page/accuracy) of each player, when available. Only available in JSON.\n",
+                              "key": "accuracy",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Include the opening name.\nExample: `[Opening \"King's Gambit Accepted, King's Knight Gambit\"]`\n",
+                              "key": "opening",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Plies which mark the beginning of the middlegame and endgame.\nOnly available in JSON\n",
+                              "key": "division",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Insert textual annotations in the PGN about the opening, analysis variations, mistakes, and game termination.\nExample: `5... g4? { (-0.98 \u2192 0.60) Mistake. Best move was h6. } (5... h6 6. d4 Ne7 7. g3 d5 8. exd5 fxg3 9. hxg3 c6 10. dxc6)`\n",
+                              "key": "literate",
+                              "value": "false"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "id": "18f6f7a6-ea47-4cfb-af8c-8f25982578ce",
+                              "key": "id",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "Download games of a bulk in PGN or [ndjson](#description/streaming-with-nd-json) format, depending on the request `Accept` header.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "4fd3a9a7-5824-496d-a3a1-f1d6602e9ac8",
+                          "name": "The representation of the games.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/x-chess-pgn"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/bulk-pairing/:id/games?moves=true&pgnInJson=false&tags=true&clocks=false&evals=false&accuracy=false&opening=false&division=false&literate=false",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "bulk-pairing",
+                                ":id",
+                                "games"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Include the PGN moves.",
+                                  "key": "moves",
+                                  "value": "true"
+                                },
+                                {
+                                  "description": "Include the full PGN within the JSON response, in a `pgn` field.",
+                                  "key": "pgnInJson",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Include the PGN tags.",
+                                  "key": "tags",
+                                  "value": "true"
+                                },
+                                {
+                                  "description": "Include clock status when available.\nEither as PGN comments: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\nOr in a `clocks` JSON field, as centisecond integers, depending on the response type.\n",
+                                  "key": "clocks",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Include analysis evaluations and comments, when available.\nEither as PGN comments: `12. Bxf6 { [%eval 0.23] } a3 { [%eval -1.09] }`\nOr in an `analysis` JSON field, depending on the response type.\n",
+                                  "key": "evals",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Include [accuracy percent](https://lichess.org/page/accuracy) of each player, when available. Only available in JSON.\n",
+                                  "key": "accuracy",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Include the opening name.\nExample: `[Opening \"King's Gambit Accepted, King's Knight Gambit\"]`\n",
+                                  "key": "opening",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Plies which mark the beginning of the middlegame and endgame.\nOnly available in JSON\n",
+                                  "key": "division",
+                                  "value": "false"
+                                },
+                                {
+                                  "description": "Insert textual annotations in the PGN about the opening, analysis variations, mistakes, and game termination.\nExample: `5... g4? { (-0.98 \u2192 0.60) Mistake. Best move was h6. } (5... h6 6. d4 Ne7 7. g3 d5 8. exd5 fxg3 9. hxg3 c6 10. dxc6)`\n",
+                                  "key": "literate",
+                                  "value": "false"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "id"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/x-chess-pgn"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "<string>",
+                          "createdAt": "2026-07-28T02:06:40.000Z",
+                          "updatedAt": "2026-07-28T02:06:40.000Z",
+                          "uid": "35240-4fd3a9a7-5824-496d-a3a1-f1d6602e9ac8"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:06:40.000Z",
+                      "updatedAt": "2026-07-28T02:06:40.000Z",
+                      "uid": "35240-17e0eff0-ae69-41f5-8434-f8d09dd71651"
+                    }
+                  ],
+                  "id": "2ccf5463-a98c-4dfe-87fc-b6abb38adfa4",
+                  "createdAt": "2026-07-28T02:06:40.000Z",
+                  "updatedAt": "2026-07-28T02:06:40.000Z",
+                  "uid": "35240-2ccf5463-a98c-4dfe-87fc-b6abb38adfa4"
+                },
+                {
+                  "name": "Show a bulk pairing",
+                  "id": "c1c42a5d-8a39-45b6-a376-f2a6f0a90c31",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "oauth2",
+                      "oauth2": [
+                        {
+                          "key": "scope",
+                          "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                          "type": "string"
+                        },
+                        {
+                          "key": "accessTokenUrl",
+                          "value": "https://lichess.org/api/token",
+                          "type": "string"
+                        },
+                        {
+                          "key": "authUrl",
+                          "value": "https://lichess.org/oauth",
+                          "type": "string"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "authorization_code",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/bulk-pairing/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "bulk-pairing",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "2ca53a83-0a09-44d6-8cf7-2a176b55ffc0",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Get a single bulk pairing by its ID.\n"
+                  },
+                  "response": [
+                    {
+                      "id": "bb98c445-856b-4efd-8316-b1e635218885",
+                      "name": "The bulk pairing.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/bulk-pairing/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "bulk-pairing",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Access-Control-Allow-Origin",
+                          "value": "'*'"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"games\": [\n    {\n      \"id\": \"<string>\",\n      \"black\": \"<string>\",\n      \"white\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"black\": \"<string>\",\n      \"white\": \"<string>\"\n    }\n  ],\n  \"variant\": \"standard\",\n  \"clock\": {\n    \"limit\": \"<integer>\",\n    \"increment\": \"<integer>\"\n  },\n  \"pairAt\": \"<integer>\",\n  \"pairedAt\": \"<integer,null>\",\n  \"rated\": \"<boolean>\",\n  \"startClocksAt\": \"<integer>\",\n  \"scheduledAt\": \"<integer>\"\n}",
+                      "createdAt": "2026-07-28T02:06:40.000Z",
+                      "updatedAt": "2026-07-28T02:06:40.000Z",
+                      "uid": "35240-bb98c445-856b-4efd-8316-b1e635218885"
+                    },
+                    {
+                      "id": "d89ae6f4-a056-486c-a1b0-216077eec269",
+                      "name": "The bulk pairing was not found.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/bulk-pairing/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "bulk-pairing",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"error\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:06:40.000Z",
+                      "updatedAt": "2026-07-28T02:06:40.000Z",
+                      "uid": "35240-d89ae6f4-a056-486c-a1b0-216077eec269"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:06:40.000Z",
+                  "updatedAt": "2026-07-28T02:06:40.000Z",
+                  "uid": "35240-c1c42a5d-8a39-45b6-a376-f2a6f0a90c31"
+                },
+                {
+                  "name": "Cancel a bulk pairing",
+                  "id": "f1c5ac0a-3225-4855-8ed5-daee39450318",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "oauth2",
+                      "oauth2": [
+                        {
+                          "key": "scope",
+                          "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                          "type": "string"
+                        },
+                        {
+                          "key": "accessTokenUrl",
+                          "value": "https://lichess.org/api/token",
+                          "type": "string"
+                        },
+                        {
+                          "key": "authUrl",
+                          "value": "https://lichess.org/oauth",
+                          "type": "string"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "authorization_code",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "DELETE",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/bulk-pairing/:id",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "bulk-pairing",
+                        ":id"
+                      ],
+                      "variable": [
+                        {
+                          "id": "806abb07-c3e5-41b3-99e8-60701c6e056e",
+                          "key": "id",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Cancel and delete a bulk pairing that is scheduled in the future.\nIf the games have already been created, then this does nothing.\nCanceling a bulk pairing does not refund the rate limit cost of that bulk pairing.\n"
+                  },
+                  "response": [
+                    {
+                      "id": "aa10052a-2f07-423f-a012-121e505d5fb3",
+                      "name": "The bulk pairing was successfully deleted.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/bulk-pairing/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "bulk-pairing",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Access-Control-Allow-Origin",
+                          "value": "'*'"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"ok\": \"<boolean>\"\n}",
+                      "createdAt": "2026-07-28T02:06:40.000Z",
+                      "updatedAt": "2026-07-28T02:06:40.000Z",
+                      "uid": "35240-aa10052a-2f07-423f-a012-121e505d5fb3"
+                    },
+                    {
+                      "id": "1a824fec-a311-406b-9b37-ded80893590a",
+                      "name": "The bulk pairing to delete was not found.",
+                      "originalRequest": {
+                        "method": "DELETE",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/bulk-pairing/:id",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "bulk-pairing",
+                            ":id"
+                          ],
+                          "variable": [
+                            {
+                              "key": "id"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Not Found",
+                      "code": 404,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"error\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:06:40.000Z",
+                      "updatedAt": "2026-07-28T02:06:40.000Z",
+                      "uid": "35240-1a824fec-a311-406b-9b37-ded80893590a"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:06:40.000Z",
+                  "updatedAt": "2026-07-28T02:06:40.000Z",
+                  "uid": "35240-f1c5ac0a-3225-4855-8ed5-daee39450318"
+                }
+              ],
+              "id": "312ce600-afc9-41bb-aa93-831907e89a7d",
+              "createdAt": "2026-07-28T02:06:40.000Z",
+              "updatedAt": "2026-07-28T02:06:40.000Z",
+              "uid": "35240-312ce600-afc9-41bb-aa93-831907e89a7d"
+            },
+            {
+              "name": "View your bulk pairings",
+              "id": "0275e194-3ce7-4781-a8be-2976a3bab988",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "scope",
+                      "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                      "type": "string"
+                    },
+                    {
+                      "key": "accessTokenUrl",
+                      "value": "https://lichess.org/api/token",
+                      "type": "string"
+                    },
+                    {
+                      "key": "authUrl",
+                      "value": "https://lichess.org/oauth",
+                      "type": "string"
+                    },
+                    {
+                      "key": "grant_type",
+                      "value": "authorization_code",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/bulk-pairing",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "bulk-pairing"
+                  ]
+                },
+                "description": "Get a list of bulk pairings you created.\n"
+              },
+              "response": [
+                {
+                  "id": "7e0c7b77-bf72-4c5b-8229-503afe82d72c",
+                  "name": "The list of bulk pairing the logged in user created.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/bulk-pairing",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "bulk-pairing"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "Access-Control-Allow-Origin",
+                      "value": "'*'"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "[\n  {\n    \"id\": \"<string>\",\n    \"games\": [\n      {\n        \"id\": \"<string>\",\n        \"black\": \"<string>\",\n        \"white\": \"<string>\"\n      },\n      {\n        \"id\": \"<string>\",\n        \"black\": \"<string>\",\n        \"white\": \"<string>\"\n      }\n    ],\n    \"variant\": \"standard\",\n    \"clock\": {\n      \"limit\": \"<integer>\",\n      \"increment\": \"<integer>\"\n    },\n    \"pairAt\": \"<integer>\",\n    \"pairedAt\": \"<integer,null>\",\n    \"rated\": \"<boolean>\",\n    \"startClocksAt\": \"<integer>\",\n    \"scheduledAt\": \"<integer>\"\n  },\n  {\n    \"id\": \"<string>\",\n    \"games\": [\n      {\n        \"id\": \"<string>\",\n        \"black\": \"<string>\",\n        \"white\": \"<string>\"\n      },\n      {\n        \"id\": \"<string>\",\n        \"black\": \"<string>\",\n        \"white\": \"<string>\"\n      }\n    ],\n    \"variant\": \"standard\",\n    \"clock\": {\n      \"limit\": \"<integer>\",\n      \"increment\": \"<integer>\"\n    },\n    \"pairAt\": \"<integer>\",\n    \"pairedAt\": \"<integer,null>\",\n    \"rated\": \"<boolean>\",\n    \"startClocksAt\": \"<integer>\",\n    \"scheduledAt\": \"<integer>\"\n  }\n]",
+                  "createdAt": "2026-07-28T02:06:40.000Z",
+                  "updatedAt": "2026-07-28T02:06:40.000Z",
+                  "uid": "35240-7e0c7b77-bf72-4c5b-8229-503afe82d72c"
+                }
+              ],
+              "createdAt": "2026-07-28T02:06:40.000Z",
+              "updatedAt": "2026-07-28T02:06:40.000Z",
+              "uid": "35240-0275e194-3ce7-4781-a8be-2976a3bab988"
+            },
+            {
+              "name": "Create a bulk pairing",
+              "id": "c3ab130c-379a-494e-a243-c8da8a77542b",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "scope",
+                      "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                      "type": "string"
+                    },
+                    {
+                      "key": "accessTokenUrl",
+                      "value": "https://lichess.org/api/token",
+                      "type": "string"
+                    },
+                    {
+                      "key": "authUrl",
+                      "value": "https://lichess.org/oauth",
+                      "type": "string"
+                    },
+                    {
+                      "key": "grant_type",
+                      "value": "authorization_code",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/x-www-form-urlencoded"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "description": "OAuth tokens of all the players to pair, with the syntax `tokenOfWhitePlayerInGame1:tokenOfBlackPlayerInGame1,tokenOfWhitePlayerInGame2:tokenOfBlackPlayerInGame2,...`.\nThe 2 tokens of the players of a game are separated with `:`. The first token gets the white pieces. Games are separated with `,`.\nUp to 1000 tokens can be sent, for a max of 500 games.\nEach token must be included at most once.\nExample: `token1:token2,token3:token4,token5:token6`\n",
+                      "key": "players",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "Clock initial time in seconds. Example: `600`\n",
+                      "key": "clock.limit",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Clock increment in seconds. Example: `2`\n",
+                      "key": "clock.increment",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Days per turn. For correspondence games only.",
+                      "key": "days",
+                      "value": "1"
+                    },
+                    {
+                      "description": "Date at which the games will be created as a Unix timestamp in milliseconds.\nUp to 7 days in the future.\nOmit, or set to current date and time, to start the games immediately.\nExample: `1612289869919`\n",
+                      "key": "pairAt",
+                      "value": "<long>"
+                    },
+                    {
+                      "description": "Date at which the clocks will be automatically started as a Unix timestamp in milliseconds.\nUp to 7 days in the future.\nNote that the clocks can start earlier than specified, if players start making moves in the game.\nIf omitted, the clocks will not start automatically.\nExample: `1612289869919`\n",
+                      "key": "startClocksAt",
+                      "value": "<long>"
+                    },
+                    {
+                      "description": "Game is rated and impacts players ratings",
+                      "key": "rated",
+                      "value": "false"
+                    },
+                    {
+                      "key": "variant",
+                      "value": "standard"
+                    },
+                    {
+                      "description": "Custom initial position (in X-FEN). Variant must be standard, fromPosition, or chess960 (if a valid 960 starting position), and the game cannot be rated.",
+                      "key": "fen",
+                      "value": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+                    },
+                    {
+                      "description": "Message that will be sent to each player, when the game is created.  It is sent from your user account.\n`{opponent}` and `{game}` are placeholders that will be replaced with the opponent and the game URLs.\nYou can omit this field to send the default message,\nbut if you set your own message, it must at least contain the `{game}` placeholder.\n",
+                      "key": "message",
+                      "value": "Your game with {opponent} is ready: {game}."
+                    },
+                    {
+                      "description": "Extra game rules separated by commas.\nExample: `noAbort,noRematch`\n",
+                      "key": "rules",
+                      "value": "noRematch"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/bulk-pairing",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "bulk-pairing"
+                  ]
+                },
+                "description": "Schedule many games at once, up to 24h in advance.\nOAuth tokens are required for all paired players, with the `challenge:write` scope.\nYou can schedule up to 500 games every 10 minutes. [Contact us](mailto:contact@lichess.org) if you need higher limits.\nIf games have a real-time clock, each player must have only one pairing.\nFor correspondence games, players can have multiple pairings within the same bulk.\n\n**The entire bulk is rejected if:**\n  - a token is missing\n  - a token is present more than once (except in correspondence)\n  - a token lacks the `challenge:write` scope\n  - a player account is closed\n  - a player is paired more than once (except in correspondence)\n  - a bulk is already scheduled to start at the same time with the same player\n  - you have 20 scheduled bulks\n  - you have 1000 scheduled games\n\nPartial bulks are never created. Either it all fails, or it all succeeds.\nWhen it fails, it does so with an error message explaining the issue.\nFailed bulks are not counted in the rate limiting, they are free.\nFix the issues, manually or programmatically, then retry to schedule the bulk.\nA successful bulk creation returns a JSON bulk document. Its ID can be used for further operations.\n"
+              },
+              "response": [
+                {
+                  "id": "7b638972-8bd4-4d90-808e-ef92eaf46010",
+                  "name": "The bulk pairing has been successfully created.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "OAuth tokens of all the players to pair, with the syntax `tokenOfWhitePlayerInGame1:tokenOfBlackPlayerInGame1,tokenOfWhitePlayerInGame2:tokenOfBlackPlayerInGame2,...`.\nThe 2 tokens of the players of a game are separated with `:`. The first token gets the white pieces. Games are separated with `,`.\nUp to 1000 tokens can be sent, for a max of 500 games.\nEach token must be included at most once.\nExample: `token1:token2,token3:token4,token5:token6`\n",
+                          "key": "players",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Clock initial time in seconds. Example: `600`\n",
+                          "key": "clock.limit",
+                          "value": "<integer>"
+                        },
+                        {
+                          "description": "Clock increment in seconds. Example: `2`\n",
+                          "key": "clock.increment",
+                          "value": "<integer>"
+                        },
+                        {
+                          "description": "Days per turn. For correspondence games only.",
+                          "key": "days",
+                          "value": "1"
+                        },
+                        {
+                          "description": "Date at which the games will be created as a Unix timestamp in milliseconds.\nUp to 7 days in the future.\nOmit, or set to current date and time, to start the games immediately.\nExample: `1612289869919`\n",
+                          "key": "pairAt",
+                          "value": "<long>"
+                        },
+                        {
+                          "description": "Date at which the clocks will be automatically started as a Unix timestamp in milliseconds.\nUp to 7 days in the future.\nNote that the clocks can start earlier than specified, if players start making moves in the game.\nIf omitted, the clocks will not start automatically.\nExample: `1612289869919`\n",
+                          "key": "startClocksAt",
+                          "value": "<long>"
+                        },
+                        {
+                          "description": "Game is rated and impacts players ratings",
+                          "key": "rated",
+                          "value": "false"
+                        },
+                        {
+                          "key": "variant",
+                          "value": "standard"
+                        },
+                        {
+                          "description": "Custom initial position (in X-FEN). Variant must be standard, fromPosition, or chess960 (if a valid 960 starting position), and the game cannot be rated.",
+                          "key": "fen",
+                          "value": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+                        },
+                        {
+                          "description": "Message that will be sent to each player, when the game is created.  It is sent from your user account.\n`{opponent}` and `{game}` are placeholders that will be replaced with the opponent and the game URLs.\nYou can omit this field to send the default message,\nbut if you set your own message, it must at least contain the `{game}` placeholder.\n",
+                          "key": "message",
+                          "value": "Your game with {opponent} is ready: {game}."
+                        },
+                        {
+                          "description": "Extra game rules separated by commas.\nExample: `noAbort,noRematch`\n",
+                          "key": "rules",
+                          "value": "noRematch"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/api/bulk-pairing",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "bulk-pairing"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "Access-Control-Allow-Origin",
+                      "value": "'*'"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"games\": [\n    {\n      \"id\": \"<string>\",\n      \"black\": \"<string>\",\n      \"white\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"black\": \"<string>\",\n      \"white\": \"<string>\"\n    }\n  ],\n  \"variant\": \"standard\",\n  \"clock\": {\n    \"limit\": \"<integer>\",\n    \"increment\": \"<integer>\"\n  },\n  \"pairAt\": \"<integer>\",\n  \"pairedAt\": \"<integer,null>\",\n  \"rated\": \"<boolean>\",\n  \"startClocksAt\": \"<integer>\",\n  \"scheduledAt\": \"<integer>\"\n}",
+                  "createdAt": "2026-07-28T02:06:40.000Z",
+                  "updatedAt": "2026-07-28T02:06:40.000Z",
+                  "uid": "35240-7b638972-8bd4-4d90-808e-ef92eaf46010"
+                },
+                {
+                  "id": "c0833a2c-54e2-4b89-bda0-d7f7d83d3b1f",
+                  "name": "The creation of the bulk pairings failed.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "OAuth tokens of all the players to pair, with the syntax `tokenOfWhitePlayerInGame1:tokenOfBlackPlayerInGame1,tokenOfWhitePlayerInGame2:tokenOfBlackPlayerInGame2,...`.\nThe 2 tokens of the players of a game are separated with `:`. The first token gets the white pieces. Games are separated with `,`.\nUp to 1000 tokens can be sent, for a max of 500 games.\nEach token must be included at most once.\nExample: `token1:token2,token3:token4,token5:token6`\n",
+                          "key": "players",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Clock initial time in seconds. Example: `600`\n",
+                          "key": "clock.limit",
+                          "value": "<integer>"
+                        },
+                        {
+                          "description": "Clock increment in seconds. Example: `2`\n",
+                          "key": "clock.increment",
+                          "value": "<integer>"
+                        },
+                        {
+                          "description": "Days per turn. For correspondence games only.",
+                          "key": "days",
+                          "value": "1"
+                        },
+                        {
+                          "description": "Date at which the games will be created as a Unix timestamp in milliseconds.\nUp to 7 days in the future.\nOmit, or set to current date and time, to start the games immediately.\nExample: `1612289869919`\n",
+                          "key": "pairAt",
+                          "value": "<long>"
+                        },
+                        {
+                          "description": "Date at which the clocks will be automatically started as a Unix timestamp in milliseconds.\nUp to 7 days in the future.\nNote that the clocks can start earlier than specified, if players start making moves in the game.\nIf omitted, the clocks will not start automatically.\nExample: `1612289869919`\n",
+                          "key": "startClocksAt",
+                          "value": "<long>"
+                        },
+                        {
+                          "description": "Game is rated and impacts players ratings",
+                          "key": "rated",
+                          "value": "false"
+                        },
+                        {
+                          "key": "variant",
+                          "value": "standard"
+                        },
+                        {
+                          "description": "Custom initial position (in X-FEN). Variant must be standard, fromPosition, or chess960 (if a valid 960 starting position), and the game cannot be rated.",
+                          "key": "fen",
+                          "value": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+                        },
+                        {
+                          "description": "Message that will be sent to each player, when the game is created.  It is sent from your user account.\n`{opponent}` and `{game}` are placeholders that will be replaced with the opponent and the game URLs.\nYou can omit this field to send the default message,\nbut if you set your own message, it must at least contain the `{game}` placeholder.\n",
+                          "key": "message",
+                          "value": "Your game with {opponent} is ready: {game}."
+                        },
+                        {
+                          "description": "Extra game rules separated by commas.\nExample: `noAbort,noRematch`\n",
+                          "key": "rules",
+                          "value": "noRematch"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/api/bulk-pairing",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "bulk-pairing"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"error\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:06:40.000Z",
+                  "updatedAt": "2026-07-28T02:06:40.000Z",
+                  "uid": "35240-c0833a2c-54e2-4b89-bda0-d7f7d83d3b1f"
+                }
+              ],
+              "createdAt": "2026-07-28T02:06:40.000Z",
+              "updatedAt": "2026-07-28T02:06:40.000Z",
+              "uid": "35240-c3ab130c-379a-494e-a243-c8da8a77542b"
+            }
+          ],
+          "id": "fe1825b5-7725-4aa8-9cec-2eeef1f017db",
+          "createdAt": "2026-07-28T02:06:40.000Z",
+          "updatedAt": "2026-07-28T02:06:40.000Z",
+          "uid": "35240-fe1825b5-7725-4aa8-9cec-2eeef1f017db"
+        }
+      ],
+      "id": "cdff977c-aac0-448e-ab7e-d0be8a1fabb1",
+      "createdAt": "2026-07-28T02:06:40.000Z",
+      "updatedAt": "2026-07-28T02:06:40.000Z",
+      "uid": "35240-cdff977c-aac0-448e-ab7e-d0be8a1fabb1"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://lichess.org"
+    }
+  ]
+}

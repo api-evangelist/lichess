@@ -1,0 +1,774 @@
+{
+  "info": {
+    "_postman_id": "1f3119ba-9211-45e0-981c-d1cae3faab87",
+    "name": "Lichess.org API reference Account API",
+    "description": "# Introduction\nWelcome to the reference for the Lichess API! Lichess is free/libre,\nopen-source chess server powered by volunteers and donations.\n- Get help in the [Lichess Discord channel](https://discord.gg/lichess)\n- API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)\n- API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)\n- [Contribute to this documentation on Github](https://github.com/lichess-org/api)\n- Check out [Lichess widgets to embed in your website](https://lichess.org/developers)\n- [Download all Lichess rated games](https://database.lichess.org/)\n- [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)\n- [Download all evaluated positions](https://database.lichess.org/#evals)\n\n## Endpoint\nAll requests go to `https://lichess.org` (unless otherwise specified).\n\n## Clients\n- [Python general API](https://github.com/lichess-org/berserk)\n- [MicroPython general API](https://github.com/mkomon/uberserk)\n- [Python general API - async](https://pypi.org/project/async-lichess-sdk)\n- [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)\n- [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)\n- [Java general API](https://github.com/tors42/chariot)\n- [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)\n- [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)\n- [.NET general API](https://github.com/Dblike/LichessSharp)\n\n## Rate limiting\nAll requests are rate limited using various strategies,\nto ensure the API remains responsive for everyone.\nOnly make one request at a time.\nIf you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),\nyou have exceded one of the rate limits.\nIn most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.\nReduce your request frequency before retrying.\n\n## Streaming with ND-JSON\nSome API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.\n\nHere's a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.\n\n## Authentication\n### Which authentication method is right for me?\n[Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)\n\n### Personal Access Token\nPersonal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.\n- [Generate a personal access token](https://lichess.org/account/oauth/token)\n- `curl https://lichess.org/api/account -H \"Authorization: Bearer {token}\"`\n- [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)\n\n### Token Security\n- Keep your tokens secret. Do not share them in public repositories or public forums.\n- Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens' scope). You remain responsible for all activities on your account.\n- Do not hardcode tokens in your application's code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.\n- If you suspect a token has been compromised, revoke it immediately.\n\nTo see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).\n\n### Authorization Code Flow with PKCE\nThe authorization code flow with PKCE allows your users to **login with Lichess**.\nLichess supports unregistered and public clients (no client authentication, choose any unique client id).\nThe only accepted code challenge method is `S256`.\nAccess tokens are long-lived (expect one year), unless they are revoked.\nRefresh tokens are not supported.\n\nSee the [documentation for the OAuth endpoints](#tag/OAuth) or\nthe [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.\n\n- [Demo app](https://lichess-org.github.io/api-demo/)\n- [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)\n- [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)\n- [Java example](https://github.com/tors42/lichess-oauth-pkce-app)\n- [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)\n\n#### Real life examples\n- [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))\n- [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))\n- [English Chess Federation](https://ecf.octoknight.com/)\n- [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)\n\n### Token format\nAccess tokens and authorization codes match `^[A-Za-z0-9_]+$`.\nThe length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.\nBy convention tokens have a recognizable prefix, but do not rely on this.\n\n\nContact Support:\n Name: Lichess.org API\n Email: contact@lichess.org",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:06:30.000Z",
+    "updatedAt": "2026-07-28T02:06:30.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-1f3119ba-9211-45e0-981c-d1cae3faab87"
+  },
+  "item": [
+    {
+      "name": "api",
+      "item": [
+        {
+          "name": "account",
+          "item": [
+            {
+              "name": "email",
+              "item": [
+                {
+                  "name": "Get my email address",
+                  "id": "a2d67d0d-3600-47fb-84a5-ad61e7382ba5",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "oauth2",
+                      "oauth2": [
+                        {
+                          "key": "scope",
+                          "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                          "type": "string"
+                        },
+                        {
+                          "key": "accessTokenUrl",
+                          "value": "https://lichess.org/api/token",
+                          "type": "string"
+                        },
+                        {
+                          "key": "authUrl",
+                          "value": "https://lichess.org/oauth",
+                          "type": "string"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "authorization_code",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/account/email",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "account",
+                        "email"
+                      ]
+                    },
+                    "description": "Read the email address of the logged in user.\n"
+                  },
+                  "response": [
+                    {
+                      "id": "0fe3f359-bdf6-4a7b-a14a-b5fd2b82dd71",
+                      "name": "The email address of the logged in user.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/account/email",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "account",
+                            "email"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Access-Control-Allow-Origin",
+                          "value": "'*'"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"email\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:06:31.000Z",
+                      "updatedAt": "2026-07-28T02:06:31.000Z",
+                      "uid": "35240-0fe3f359-bdf6-4a7b-a14a-b5fd2b82dd71"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:06:31.000Z",
+                  "updatedAt": "2026-07-28T02:06:31.000Z",
+                  "uid": "35240-a2d67d0d-3600-47fb-84a5-ad61e7382ba5"
+                }
+              ],
+              "id": "2f9171db-e1d5-48af-addf-21055c13d8cd",
+              "createdAt": "2026-07-28T02:06:31.000Z",
+              "updatedAt": "2026-07-28T02:06:31.000Z",
+              "uid": "35240-2f9171db-e1d5-48af-addf-21055c13d8cd"
+            },
+            {
+              "name": "preferences",
+              "item": [
+                {
+                  "name": "Get my preferences",
+                  "id": "35e7c815-2b83-41e6-94ec-f14733808fcf",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "oauth2",
+                      "oauth2": [
+                        {
+                          "key": "scope",
+                          "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                          "type": "string"
+                        },
+                        {
+                          "key": "accessTokenUrl",
+                          "value": "https://lichess.org/api/token",
+                          "type": "string"
+                        },
+                        {
+                          "key": "authUrl",
+                          "value": "https://lichess.org/oauth",
+                          "type": "string"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "authorization_code",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/account/preferences",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "account",
+                        "preferences"
+                      ]
+                    },
+                    "description": "Read the preferences of the logged in user.\n- <https://lichess.org/account/preferences/game-display>\n- <https://github.com/ornicar/lila/blob/master/modules/pref/src/main/Pref.scala>\n"
+                  },
+                  "response": [
+                    {
+                      "id": "f363a7fd-65bc-4bec-ba36-42d8589bcb4e",
+                      "name": "The preferences of the logged in user.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/account/preferences",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "account",
+                            "preferences"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Access-Control-Allow-Origin",
+                          "value": "'*'"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"prefs\": {\n    \"dark\": \"<boolean>\",\n    \"transp\": \"<boolean>\",\n    \"bgImg\": \"<uri>\",\n    \"is3d\": \"<boolean>\",\n    \"theme\": \"maple2\",\n    \"pieceSet\": \"icpieces\",\n    \"theme3d\": \"China-Blue\",\n    \"pieceSet3d\": \"Wood\",\n    \"soundSet\": \"speech\",\n    \"blindfold\": \"<integer>\",\n    \"autoQueen\": \"<integer>\",\n    \"autoThreefold\": \"<integer>\",\n    \"takeback\": \"<integer>\",\n    \"moretime\": \"<integer>\",\n    \"clockTenths\": \"<integer>\",\n    \"clockBar\": \"<boolean>\",\n    \"clockSound\": \"<boolean>\",\n    \"premove\": \"<boolean>\",\n    \"animation\": \"<integer>\",\n    \"pieceNotation\": \"<integer>\",\n    \"captured\": \"<boolean>\",\n    \"follow\": \"<boolean>\",\n    \"highlight\": \"<boolean>\",\n    \"destination\": \"<boolean>\",\n    \"coords\": \"<integer>\",\n    \"replay\": \"<integer>\",\n    \"challenge\": \"<integer>\",\n    \"message\": \"<integer>\",\n    \"submitMove\": \"<integer>\",\n    \"confirmResign\": \"<integer>\",\n    \"insightShare\": \"<integer>\",\n    \"keyboardMove\": \"<integer>\",\n    \"voiceMove\": \"<boolean>\",\n    \"zen\": \"<integer>\",\n    \"ratings\": \"<integer>\",\n    \"moveEvent\": \"<integer>\",\n    \"rookCastle\": \"<integer>\",\n    \"flairs\": \"<boolean>\",\n    \"sayGG\": 2\n  },\n  \"language\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:06:31.000Z",
+                      "updatedAt": "2026-07-28T02:06:31.000Z",
+                      "uid": "35240-f363a7fd-65bc-4bec-ba36-42d8589bcb4e"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:06:31.000Z",
+                  "updatedAt": "2026-07-28T02:06:31.000Z",
+                  "uid": "35240-35e7c815-2b83-41e6-94ec-f14733808fcf"
+                }
+              ],
+              "id": "3f541da0-2184-45ba-b647-b500e0a4a59e",
+              "createdAt": "2026-07-28T02:06:31.000Z",
+              "updatedAt": "2026-07-28T02:06:31.000Z",
+              "uid": "35240-3f541da0-2184-45ba-b647-b500e0a4a59e"
+            },
+            {
+              "name": "kid",
+              "item": [
+                {
+                  "name": "Get my kid mode status",
+                  "id": "332ffb20-1ac9-4bb3-97e8-dd28a7d0996f",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "oauth2",
+                      "oauth2": [
+                        {
+                          "key": "scope",
+                          "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                          "type": "string"
+                        },
+                        {
+                          "key": "accessTokenUrl",
+                          "value": "https://lichess.org/api/token",
+                          "type": "string"
+                        },
+                        {
+                          "key": "authUrl",
+                          "value": "https://lichess.org/oauth",
+                          "type": "string"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "authorization_code",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/account/kid",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "account",
+                        "kid"
+                      ]
+                    },
+                    "description": "Read the kid mode status of the logged in user.\n- <https://lichess.org/account/kid>\n"
+                  },
+                  "response": [
+                    {
+                      "id": "5728d40d-04b2-48dc-9da9-4b88cd8690ef",
+                      "name": "The kid mode status of the logged in user.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/account/kid",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "account",
+                            "kid"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Access-Control-Allow-Origin",
+                          "value": "'*'"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"kid\": \"<boolean>\"\n}",
+                      "createdAt": "2026-07-28T02:06:31.000Z",
+                      "updatedAt": "2026-07-28T02:06:31.000Z",
+                      "uid": "35240-5728d40d-04b2-48dc-9da9-4b88cd8690ef"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:06:31.000Z",
+                  "updatedAt": "2026-07-28T02:06:31.000Z",
+                  "uid": "35240-332ffb20-1ac9-4bb3-97e8-dd28a7d0996f"
+                },
+                {
+                  "name": "Set my kid mode status",
+                  "id": "2f4f882d-a28a-4e4c-a0f4-6bcf7de766d5",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "oauth2",
+                      "oauth2": [
+                        {
+                          "key": "scope",
+                          "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                          "type": "string"
+                        },
+                        {
+                          "key": "accessTokenUrl",
+                          "value": "https://lichess.org/api/token",
+                          "type": "string"
+                        },
+                        {
+                          "key": "authUrl",
+                          "value": "https://lichess.org/oauth",
+                          "type": "string"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "authorization_code",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/account/kid?v=<boolean>",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "account",
+                        "kid"
+                      ],
+                      "query": [
+                        {
+                          "description": "(Required) Kid mode status",
+                          "key": "v",
+                          "value": "<boolean>"
+                        }
+                      ]
+                    },
+                    "description": "Set the kid mode status of the logged in user.\n- <https://lichess.org/account/kid>\n"
+                  },
+                  "response": [
+                    {
+                      "id": "e878e3ad-6c7d-4233-8d44-6dda0d52be37",
+                      "name": "The kid mode status was set successfully for the logged in user.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/account/kid?v=<boolean>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "account",
+                            "kid"
+                          ],
+                          "query": [
+                            {
+                              "description": "(Required) Kid mode status",
+                              "key": "v",
+                              "value": "<boolean>"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Access-Control-Allow-Origin",
+                          "value": "'*'"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"ok\": \"<boolean>\"\n}",
+                      "createdAt": "2026-07-28T02:06:31.000Z",
+                      "updatedAt": "2026-07-28T02:06:31.000Z",
+                      "uid": "35240-e878e3ad-6c7d-4233-8d44-6dda0d52be37"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:06:31.000Z",
+                  "updatedAt": "2026-07-28T02:06:31.000Z",
+                  "uid": "35240-2f4f882d-a28a-4e4c-a0f4-6bcf7de766d5"
+                }
+              ],
+              "id": "660736b0-fe5a-4d84-8c9b-d95cec43b844",
+              "createdAt": "2026-07-28T02:06:31.000Z",
+              "updatedAt": "2026-07-28T02:06:31.000Z",
+              "uid": "35240-660736b0-fe5a-4d84-8c9b-d95cec43b844"
+            },
+            {
+              "name": "Get my profile",
+              "id": "be84409f-206e-43de-9d8a-dc22567a5a35",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "scope",
+                      "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                      "type": "string"
+                    },
+                    {
+                      "key": "accessTokenUrl",
+                      "value": "https://lichess.org/api/token",
+                      "type": "string"
+                    },
+                    {
+                      "key": "authUrl",
+                      "value": "https://lichess.org/oauth",
+                      "type": "string"
+                    },
+                    {
+                      "key": "grant_type",
+                      "value": "authorization_code",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/account",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "account"
+                  ]
+                },
+                "description": "Public information about the logged in user.\n"
+              },
+              "response": [
+                {
+                  "id": "b79a7580-f2d2-4b8a-a919-e39ffbe13075",
+                  "name": "The public information about the logged in user.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/account",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "account"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "Access-Control-Allow-Origin",
+                      "value": "'*'"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\",\n  \"url\": \"<uri>\",\n  \"username\": \"<string>\",\n  \"perfs\": {\n    \"chess960\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"atomic\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"racingKings\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"ultraBullet\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"blitz\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"kingOfTheHill\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"threeCheck\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"antichess\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"crazyhouse\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"bullet\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"correspondence\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"horde\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"puzzle\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"classical\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"rapid\": {\n      \"games\": \"<integer>\",\n      \"rating\": \"<integer>\",\n      \"rd\": \"<integer>\",\n      \"prog\": \"<integer>\",\n      \"prov\": \"<boolean>\",\n      \"rank\": \"<integer>\"\n    },\n    \"storm\": {\n      \"runs\": \"<integer>\",\n      \"score\": \"<integer>\"\n    },\n    \"racer\": {\n      \"runs\": \"<integer>\",\n      \"score\": \"<integer>\"\n    },\n    \"streak\": {\n      \"runs\": \"<integer>\",\n      \"score\": \"<integer>\"\n    }\n  },\n  \"title\": \"IM\",\n  \"flair\": \"<string>\",\n  \"createdAt\": \"<long>\",\n  \"disabled\": \"<boolean>\",\n  \"tosViolation\": \"<boolean>\",\n  \"profile\": {\n    \"flag\": \"<string>\",\n    \"location\": \"<string>\",\n    \"bio\": \"<string>\",\n    \"realName\": \"<string>\",\n    \"fideRating\": \"<integer>\",\n    \"uscfRating\": \"<integer>\",\n    \"ecfRating\": \"<integer>\",\n    \"cfcRating\": \"<integer>\",\n    \"rcfRating\": \"<integer>\",\n    \"dsbRating\": \"<integer>\",\n    \"links\": \"<string>\"\n  },\n  \"seenAt\": \"<long>\",\n  \"playTime\": {\n    \"total\": \"<integer>\",\n    \"tv\": \"<integer>\",\n    \"human\": \"<integer>\"\n  },\n  \"patron\": \"<boolean>\",\n  \"patronColor\": \"<integer>\",\n  \"verified\": \"<boolean>\",\n  \"playing\": \"<uri>\",\n  \"count\": {\n    \"all\": \"<integer>\",\n    \"rated\": \"<integer>\",\n    \"draw\": \"<integer>\",\n    \"loss\": \"<integer>\",\n    \"win\": \"<integer>\",\n    \"bookmark\": \"<integer>\",\n    \"playing\": \"<integer>\",\n    \"import\": \"<integer>\",\n    \"me\": \"<integer>\",\n    \"ai\": \"<integer>\",\n    \"drawH\": \"<integer>\",\n    \"lossH\": \"<integer>\",\n    \"winH\": \"<integer>\"\n  },\n  \"streaming\": \"<boolean>\",\n  \"streamer\": {\n    \"twitch\": {\n      \"channel\": \"<uri>\"\n    },\n    \"youtube\": {\n      \"channel\": \"<uri>\"\n    }\n  },\n  \"followable\": \"<boolean>\",\n  \"following\": \"<boolean>\",\n  \"blocking\": \"<boolean>\",\n  \"fideId\": \"<number>\"\n}",
+                  "createdAt": "2026-07-28T02:06:31.000Z",
+                  "updatedAt": "2026-07-28T02:06:31.000Z",
+                  "uid": "35240-b79a7580-f2d2-4b8a-a919-e39ffbe13075"
+                }
+              ],
+              "createdAt": "2026-07-28T02:06:31.000Z",
+              "updatedAt": "2026-07-28T02:06:31.000Z",
+              "uid": "35240-be84409f-206e-43de-9d8a-dc22567a5a35"
+            }
+          ],
+          "id": "56441762-d927-4007-bfa8-54c88493bf4e",
+          "createdAt": "2026-07-28T02:06:31.000Z",
+          "updatedAt": "2026-07-28T02:06:31.000Z",
+          "uid": "35240-56441762-d927-4007-bfa8-54c88493bf4e"
+        },
+        {
+          "name": "timeline",
+          "item": [
+            {
+              "name": "Get my timeline",
+              "id": "ea5dd62c-96ff-43ba-9854-281efb688b82",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "scope",
+                      "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                      "type": "string"
+                    },
+                    {
+                      "key": "accessTokenUrl",
+                      "value": "https://lichess.org/api/token",
+                      "type": "string"
+                    },
+                    {
+                      "key": "authUrl",
+                      "value": "https://lichess.org/oauth",
+                      "type": "string"
+                    },
+                    {
+                      "key": "grant_type",
+                      "value": "authorization_code",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/timeline?since=<integer>&nb=15",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "timeline"
+                  ],
+                  "query": [
+                    {
+                      "description": "Show events since this timestamp.",
+                      "key": "since",
+                      "value": "<integer>"
+                    },
+                    {
+                      "description": "Max number of events to fetch.",
+                      "key": "nb",
+                      "value": "15"
+                    }
+                  ]
+                },
+                "description": "Get the timeline events of the logged in user.\n"
+              },
+              "response": [
+                {
+                  "id": "17470538-9c48-467f-bf65-feb51ea83055",
+                  "name": "The events in the timeline of the logged in user.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/timeline?since=<integer>&nb=15",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "timeline"
+                      ],
+                      "query": [
+                        {
+                          "description": "Show events since this timestamp.",
+                          "key": "since",
+                          "value": "<integer>"
+                        },
+                        {
+                          "description": "Max number of events to fetch.",
+                          "key": "nb",
+                          "value": "15"
+                        }
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "Access-Control-Allow-Origin",
+                      "value": "'*'"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"entries\": [\n    {\n      \"type\": \"follow\",\n      \"date\": \"<number>\",\n      \"data\": {\n        \"u1\": \"<string>\",\n        \"u2\": \"<string>\"\n      }\n    },\n    {\n      \"type\": \"follow\",\n      \"date\": \"<number>\",\n      \"data\": {\n        \"u1\": \"<string>\",\n        \"u2\": \"<string>\"\n      }\n    }\n  ],\n  \"users\": {\n    \"in_b\": {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"title\": \"WFM\",\n      \"flair\": \"<string>\",\n      \"patron\": \"<boolean>\",\n      \"patronColor\": \"<integer>\"\n    }\n  }\n}",
+                  "createdAt": "2026-07-28T02:06:31.000Z",
+                  "updatedAt": "2026-07-28T02:06:31.000Z",
+                  "uid": "35240-17470538-9c48-467f-bf65-feb51ea83055"
+                }
+              ],
+              "createdAt": "2026-07-28T02:06:31.000Z",
+              "updatedAt": "2026-07-28T02:06:31.000Z",
+              "uid": "35240-ea5dd62c-96ff-43ba-9854-281efb688b82"
+            }
+          ],
+          "id": "0a60780c-bc0a-452f-b18a-14e2fe9986b0",
+          "createdAt": "2026-07-28T02:06:31.000Z",
+          "updatedAt": "2026-07-28T02:06:31.000Z",
+          "uid": "35240-0a60780c-bc0a-452f-b18a-14e2fe9986b0"
+        }
+      ],
+      "id": "d0548400-468f-4f9e-9830-44110a70577f",
+      "createdAt": "2026-07-28T02:06:31.000Z",
+      "updatedAt": "2026-07-28T02:06:31.000Z",
+      "uid": "35240-d0548400-468f-4f9e-9830-44110a70577f"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://lichess.org"
+    }
+  ]
+}

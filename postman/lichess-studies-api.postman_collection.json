@@ -1,0 +1,1972 @@
+{
+  "info": {
+    "_postman_id": "3218bfeb-4a8c-4c14-a548-18c3a739e79b",
+    "name": "Lichess.org API reference Account Studies API",
+    "description": "# Introduction\nWelcome to the reference for the Lichess API! Lichess is free/libre,\nopen-source chess server powered by volunteers and donations.\n- Get help in the [Lichess Discord channel](https://discord.gg/lichess)\n- API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)\n- API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)\n- [Contribute to this documentation on Github](https://github.com/lichess-org/api)\n- Check out [Lichess widgets to embed in your website](https://lichess.org/developers)\n- [Download all Lichess rated games](https://database.lichess.org/)\n- [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)\n- [Download all evaluated positions](https://database.lichess.org/#evals)\n\n## Endpoint\nAll requests go to `https://lichess.org` (unless otherwise specified).\n\n## Clients\n- [Python general API](https://github.com/lichess-org/berserk)\n- [MicroPython general API](https://github.com/mkomon/uberserk)\n- [Python general API - async](https://pypi.org/project/async-lichess-sdk)\n- [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)\n- [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)\n- [Java general API](https://github.com/tors42/chariot)\n- [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)\n- [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)\n- [.NET general API](https://github.com/Dblike/LichessSharp)\n\n## Rate limiting\nAll requests are rate limited using various strategies,\nto ensure the API remains responsive for everyone.\nOnly make one request at a time.\nIf you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),\nyou have exceded one of the rate limits.\nIn most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.\nReduce your request frequency before retrying.\n\n## Streaming with ND-JSON\nSome API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.\n\nHere's a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.\n\n## Authentication\n### Which authentication method is right for me?\n[Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)\n\n### Personal Access Token\nPersonal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.\n- [Generate a personal access token](https://lichess.org/account/oauth/token)\n- `curl https://lichess.org/api/account -H \"Authorization: Bearer {token}\"`\n- [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)\n\n### Token Security\n- Keep your tokens secret. Do not share them in public repositories or public forums.\n- Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens' scope). You remain responsible for all activities on your account.\n- Do not hardcode tokens in your application's code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.\n- If you suspect a token has been compromised, revoke it immediately.\n\nTo see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).\n\n### Authorization Code Flow with PKCE\nThe authorization code flow with PKCE allows your users to **login with Lichess**.\nLichess supports unregistered and public clients (no client authentication, choose any unique client id).\nThe only accepted code challenge method is `S256`.\nAccess tokens are long-lived (expect one year), unless they are revoked.\nRefresh tokens are not supported.\n\nSee the [documentation for the OAuth endpoints](#tag/OAuth) or\nthe [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.\n\n- [Demo app](https://lichess-org.github.io/api-demo/)\n- [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)\n- [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)\n- [Java example](https://github.com/tors42/lichess-oauth-pkce-app)\n- [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)\n\n#### Real life examples\n- [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))\n- [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))\n- [English Chess Federation](https://ecf.octoknight.com/)\n- [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)\n\n### Token format\nAccess tokens and authorization codes match `^[A-Za-z0-9_]+$`.\nThe length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.\nBy convention tokens have a recognizable prefix, but do not rely on this.\n\n\nContact Support:\n Name: Lichess.org API\n Email: contact@lichess.org",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:06:55.000Z",
+    "updatedAt": "2026-07-28T02:06:55.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-3218bfeb-4a8c-4c14-a548-18c3a739e79b"
+  },
+  "item": [
+    {
+      "name": "api",
+      "item": [
+        {
+          "name": "study",
+          "item": [
+            {
+              "name": "{studyId}",
+              "item": [
+                {
+                  "name": "{chapterId}.pgn",
+                  "item": [
+                    {
+                      "name": "Export one study chapter",
+                      "id": "cea05c3d-55ee-4019-9612-9cc0e60d1dbe",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://lichess.org/api/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://lichess.org/oauth",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/x-chess-pgn"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/study/:studyId/{{chapterId}}.pgn?clocks=true&comments=true&variations=true&orientation=false",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "study",
+                            ":studyId",
+                            "{{chapterId}}.pgn"
+                          ],
+                          "query": [
+                            {
+                              "description": "Include clock comments in the PGN moves, when available.\nExample: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\n",
+                              "key": "clocks",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Include analysis and annotator comments in the PGN moves, when available.\nExample: `12. Bxf6 { [%eval 0.23] } a3 { White is in a pickle. }`\n",
+                              "key": "comments",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Include non-mainline moves, when available.\nExample: `4. d4 Bb4+ (4... Nc6 5. Nf3 Bb4+ 6. Bd2 (6. Nbd2 O-O 7. O-O) 6... Bd6) 5. Nd2`\n",
+                              "key": "variations",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Add a `Orientation` PGN tag with the chapter predefined orientation.\nExample: `[Orientation \"white\"]`\n",
+                              "key": "orientation",
+                              "value": "false"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "id": "4840b9dc-c31b-4679-b94c-9555ac27ffa1",
+                              "key": "studyId",
+                              "value": "<string>",
+                              "description": "(Required) The study ID"
+                            }
+                          ]
+                        },
+                        "description": "Download one study chapter in PGN format.\nIf authenticated, then all public, unlisted, and private study chapters are read.\nIf not, only public (non-unlisted) study chapters are read.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "ad81c01d-d7da-414e-b44b-cf86ee3bb5f9",
+                          "name": "The chapter of the study.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/x-chess-pgn"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/study/:studyId/{{chapterId}}.pgn?clocks=true&comments=true&variations=true&orientation=false",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "study",
+                                ":studyId",
+                                "{{chapterId}}.pgn"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Include clock comments in the PGN moves, when available.\nExample: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\n",
+                                  "key": "clocks",
+                                  "value": "true"
+                                },
+                                {
+                                  "description": "Include analysis and annotator comments in the PGN moves, when available.\nExample: `12. Bxf6 { [%eval 0.23] } a3 { White is in a pickle. }`\n",
+                                  "key": "comments",
+                                  "value": "true"
+                                },
+                                {
+                                  "description": "Include non-mainline moves, when available.\nExample: `4. d4 Bb4+ (4... Nc6 5. Nf3 Bb4+ 6. Bd2 (6. Nbd2 O-O 7. O-O) 6... Bd6) 5. Nd2`\n",
+                                  "key": "variations",
+                                  "value": "true"
+                                },
+                                {
+                                  "description": "Add a `Orientation` PGN tag with the chapter predefined orientation.\nExample: `[Orientation \"white\"]`\n",
+                                  "key": "orientation",
+                                  "value": "false"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "studyId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/x-chess-pgn"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "<string>",
+                          "createdAt": "2026-07-28T02:06:56.000Z",
+                          "updatedAt": "2026-07-28T02:06:56.000Z",
+                          "uid": "35240-ad81c01d-d7da-414e-b44b-cf86ee3bb5f9"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:06:56.000Z",
+                      "updatedAt": "2026-07-28T02:06:56.000Z",
+                      "uid": "35240-cea05c3d-55ee-4019-9612-9cc0e60d1dbe"
+                    }
+                  ],
+                  "id": "6756058c-3327-4526-90e0-849703268c6f",
+                  "createdAt": "2026-07-28T02:06:56.000Z",
+                  "updatedAt": "2026-07-28T02:06:56.000Z",
+                  "uid": "35240-6756058c-3327-4526-90e0-849703268c6f"
+                },
+                {
+                  "name": "import-pgn",
+                  "item": [
+                    {
+                      "name": "Import PGN into a study",
+                      "id": "8b92a169-acfc-4c4f-8ccf-27bc98aafab1",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://lichess.org/api/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://lichess.org/oauth",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "(Required) PGN to import. Can contain multiple games separated by 2 or more newlines.\n",
+                              "key": "pgn",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Name of the new chapter.\nIf not specified, or if multiple chapters are created, the names will be inferred from the PGN tags.\n",
+                              "key": "name",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Default board orientation.",
+                              "key": "orientation",
+                              "value": "white"
+                            },
+                            {
+                              "key": "variant",
+                              "value": "standard"
+                            },
+                            {
+                              "description": "Analysis mode.\nIf not specified, Normal analysis.\n* practice - Practise with Computer\n* conceal - Hide next moves\n* gamebook - Interactive lesson\n",
+                              "key": "mode",
+                              "value": "conceal"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/study/:studyId/import-pgn",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "study",
+                            ":studyId",
+                            "import-pgn"
+                          ],
+                          "variable": [
+                            {
+                              "id": "77f222cc-ea77-4404-a230-adaf178742bb",
+                              "key": "studyId",
+                              "value": "<string>",
+                              "description": "(Required) ID of the study"
+                            }
+                          ]
+                        },
+                        "description": "Imports arbitrary PGN into an existing [study](https://lichess.org/study). Creates a new chapter in the study.\nIf the PGN contains multiple games (separated by 2 or more newlines)\nthen multiple chapters will be created within the study.\nNote that a study can contain at most 64 chapters.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "d218aa94-befb-4a4d-b8e5-ba706ba4c55d",
+                          "name": "The chapters that were created.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "urlencoded",
+                              "urlencoded": [
+                                {
+                                  "description": "(Required) PGN to import. Can contain multiple games separated by 2 or more newlines.\n",
+                                  "key": "pgn",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Name of the new chapter.\nIf not specified, or if multiple chapters are created, the names will be inferred from the PGN tags.\n",
+                                  "key": "name",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Default board orientation.",
+                                  "key": "orientation",
+                                  "value": "white"
+                                },
+                                {
+                                  "key": "variant",
+                                  "value": "standard"
+                                },
+                                {
+                                  "description": "Analysis mode.\nIf not specified, Normal analysis.\n* practice - Practise with Computer\n* conceal - Hide next moves\n* gamebook - Interactive lesson\n",
+                                  "key": "mode",
+                                  "value": "conceal"
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/study/:studyId/import-pgn",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "study",
+                                ":studyId",
+                                "import-pgn"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "studyId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"chapters\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"players\": [\n        {\n          \"name\": \"<string,null>\",\n          \"rating\": \"<integer>\"\n        },\n        {\n          \"name\": \"<string,null>\",\n          \"rating\": \"<integer>\"\n        }\n      ],\n      \"status\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"players\": [\n        {\n          \"name\": \"<string,null>\",\n          \"rating\": \"<integer>\"\n        },\n        {\n          \"name\": \"<string,null>\",\n          \"rating\": \"<integer>\"\n        }\n      ],\n      \"status\": \"<string>\"\n    }\n  ]\n}",
+                          "createdAt": "2026-07-28T02:06:56.000Z",
+                          "updatedAt": "2026-07-28T02:06:56.000Z",
+                          "uid": "35240-d218aa94-befb-4a4d-b8e5-ba706ba4c55d"
+                        },
+                        {
+                          "id": "93f2b426-3da1-490d-acc9-325f150b6d88",
+                          "name": "The creation of the chapter(s) failed.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "urlencoded",
+                              "urlencoded": [
+                                {
+                                  "description": "(Required) PGN to import. Can contain multiple games separated by 2 or more newlines.\n",
+                                  "key": "pgn",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Name of the new chapter.\nIf not specified, or if multiple chapters are created, the names will be inferred from the PGN tags.\n",
+                                  "key": "name",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "Default board orientation.",
+                                  "key": "orientation",
+                                  "value": "white"
+                                },
+                                {
+                                  "key": "variant",
+                                  "value": "standard"
+                                },
+                                {
+                                  "description": "Analysis mode.\nIf not specified, Normal analysis.\n* practice - Practise with Computer\n* conceal - Hide next moves\n* gamebook - Interactive lesson\n",
+                                  "key": "mode",
+                                  "value": "conceal"
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/study/:studyId/import-pgn",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "study",
+                                ":studyId",
+                                "import-pgn"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "studyId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Bad Request",
+                          "code": 400,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"error\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:06:56.000Z",
+                          "updatedAt": "2026-07-28T02:06:56.000Z",
+                          "uid": "35240-93f2b426-3da1-490d-acc9-325f150b6d88"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:06:56.000Z",
+                      "updatedAt": "2026-07-28T02:06:56.000Z",
+                      "uid": "35240-8b92a169-acfc-4c4f-8ccf-27bc98aafab1"
+                    }
+                  ],
+                  "id": "eba4f7bf-5297-4a79-a467-c3a422bdfee9",
+                  "createdAt": "2026-07-28T02:06:56.000Z",
+                  "updatedAt": "2026-07-28T02:06:56.000Z",
+                  "uid": "35240-eba4f7bf-5297-4a79-a467-c3a422bdfee9"
+                },
+                {
+                  "name": "{chapterId}",
+                  "item": [
+                    {
+                      "name": "tags",
+                      "item": [
+                        {
+                          "name": "Update PGN tags of a study chapter",
+                          "id": "e67cea99-bbfd-4f2b-8e09-2ece176688bd",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "auth": {
+                              "type": "oauth2",
+                              "oauth2": [
+                                {
+                                  "key": "scope",
+                                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "accessTokenUrl",
+                                  "value": "https://lichess.org/api/token",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "authUrl",
+                                  "value": "https://lichess.org/oauth",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "grant_type",
+                                  "value": "authorization_code",
+                                  "type": "string"
+                                }
+                              ]
+                            },
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "urlencoded",
+                              "urlencoded": [
+                                {
+                                  "description": "(Required) PGN text containing the tags. Only the tags are used. Moves are just ignored.\n",
+                                  "key": "pgn",
+                                  "value": "<string>"
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/study/:studyId/:chapterId/tags",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "study",
+                                ":studyId",
+                                ":chapterId",
+                                "tags"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "3a638ea1-25eb-4374-8f80-ad8b9f23a531",
+                                  "key": "studyId",
+                                  "value": "<string>",
+                                  "description": "(Required) The study ID"
+                                },
+                                {
+                                  "id": "dcd512dd-20ea-475f-b477-090f4bdc1c2b",
+                                  "key": "chapterId",
+                                  "value": "<string>",
+                                  "description": "(Required) The chapter ID"
+                                }
+                              ]
+                            },
+                            "description": "Add, update and delete the PGN tags of a study.\nBy providing a list of PGN tags in the usual PGN format, you can:\n- Add new tags if the chapter doesn't have them yet\n- Update existing chapter tags\n- Delete existing chapter tags, by providing a tag with an empty value.\n\nThe chapter keeps the tags that you don't provide.\n"
+                          },
+                          "response": [
+                            {
+                              "id": "cc51b7f9-60b5-4f36-9378-b329c9fd2b27",
+                              "name": "Tags updated successfully, if the chapter exists and you are authorized the update the study.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/x-www-form-urlencoded"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "urlencoded",
+                                  "urlencoded": [
+                                    {
+                                      "description": "(Required) PGN text containing the tags. Only the tags are used. Moves are just ignored.\n",
+                                      "key": "pgn",
+                                      "value": "<string>"
+                                    }
+                                  ]
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/study/:studyId/:chapterId/tags",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "study",
+                                    ":studyId",
+                                    ":chapterId",
+                                    "tags"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "studyId"
+                                    },
+                                    {
+                                      "key": "chapterId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "No Content",
+                              "code": 204,
+                              "_postman_previewlanguage": "text",
+                              "header": [
+                                {
+                                  "disabled": false,
+                                  "description": {
+                                    "content": "",
+                                    "type": "text/plain"
+                                  },
+                                  "key": "Access-Control-Allow-Origin",
+                                  "value": "'*'"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-07-28T02:06:56.000Z",
+                              "updatedAt": "2026-07-28T02:06:56.000Z",
+                              "uid": "35240-cc51b7f9-60b5-4f36-9378-b329c9fd2b27"
+                            },
+                            {
+                              "id": "add61876-02e8-442a-98f3-140594f7797b",
+                              "name": "The request body was invalid, such as missing or malformed PGN tag data.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/x-www-form-urlencoded"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "urlencoded",
+                                  "urlencoded": [
+                                    {
+                                      "description": "(Required) PGN text containing the tags. Only the tags are used. Moves are just ignored.\n",
+                                      "key": "pgn",
+                                      "value": "<string>"
+                                    }
+                                  ]
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/study/:studyId/:chapterId/tags",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "study",
+                                    ":studyId",
+                                    ":chapterId",
+                                    "tags"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "studyId"
+                                    },
+                                    {
+                                      "key": "chapterId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Bad Request",
+                              "code": 400,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"error\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T02:06:56.000Z",
+                              "updatedAt": "2026-07-28T02:06:56.000Z",
+                              "uid": "35240-add61876-02e8-442a-98f3-140594f7797b"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T02:06:56.000Z",
+                          "updatedAt": "2026-07-28T02:06:56.000Z",
+                          "uid": "35240-e67cea99-bbfd-4f2b-8e09-2ece176688bd"
+                        }
+                      ],
+                      "id": "a48fe581-8a7a-41b3-8132-e28dbf2fdecc",
+                      "createdAt": "2026-07-28T02:06:56.000Z",
+                      "updatedAt": "2026-07-28T02:06:56.000Z",
+                      "uid": "35240-a48fe581-8a7a-41b3-8132-e28dbf2fdecc"
+                    },
+                    {
+                      "name": "moves",
+                      "item": [
+                        {
+                          "name": "Update the moves of a study chapter",
+                          "id": "3557a8a0-dfde-417e-a3f8-2b27c9a20ead",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "auth": {
+                              "type": "oauth2",
+                              "oauth2": [
+                                {
+                                  "key": "scope",
+                                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "accessTokenUrl",
+                                  "value": "https://lichess.org/api/token",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "authUrl",
+                                  "value": "https://lichess.org/oauth",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "grant_type",
+                                  "value": "authorization_code",
+                                  "type": "string"
+                                }
+                              ]
+                            },
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "body": {
+                              "mode": "urlencoded",
+                              "urlencoded": [
+                                {
+                                  "description": "(Required) PGN text containing the moves that will replace the chapter's existing moves.\nAny provided tags are ignored.\n",
+                                  "key": "pgn",
+                                  "value": "<string>"
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/study/:studyId/:chapterId/moves",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "study",
+                                ":studyId",
+                                ":chapterId",
+                                "moves"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "b26e9a22-28c6-49c6-ab19-6edddc52f315",
+                                  "key": "studyId",
+                                  "value": "<string>",
+                                  "description": "(Required) The study ID"
+                                },
+                                {
+                                  "id": "e4f10926-4c8b-44bc-8b31-3d99be8b41d9",
+                                  "key": "chapterId",
+                                  "value": "<string>",
+                                  "description": "(Required) The chapter ID"
+                                }
+                              ]
+                            },
+                            "description": "Replaces the moves tree of a study chapter.\nNo tags will be modified.\n"
+                          },
+                          "response": [
+                            {
+                              "id": "3dfdca8f-54de-4e0f-ab87-6591bf55ac7b",
+                              "name": "Moves updated, as the chapter exists and you are allowed to edit it.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/x-www-form-urlencoded"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "urlencoded",
+                                  "urlencoded": [
+                                    {
+                                      "description": "(Required) PGN text containing the moves that will replace the chapter's existing moves.\nAny provided tags are ignored.\n",
+                                      "key": "pgn",
+                                      "value": "<string>"
+                                    }
+                                  ]
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/study/:studyId/:chapterId/moves",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "study",
+                                    ":studyId",
+                                    ":chapterId",
+                                    "moves"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "studyId"
+                                    },
+                                    {
+                                      "key": "chapterId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "No Content",
+                              "code": 204,
+                              "_postman_previewlanguage": "text",
+                              "header": [
+                                {
+                                  "disabled": false,
+                                  "description": {
+                                    "content": "",
+                                    "type": "text/plain"
+                                  },
+                                  "key": "Access-Control-Allow-Origin",
+                                  "value": "'*'"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": null,
+                              "createdAt": "2026-07-28T02:06:56.000Z",
+                              "updatedAt": "2026-07-28T02:06:56.000Z",
+                              "uid": "35240-3dfdca8f-54de-4e0f-ab87-6591bf55ac7b"
+                            },
+                            {
+                              "id": "c63302a6-6f85-4bce-b970-3895e3712ba6",
+                              "name": "Bad request - might be the provided study/chapter doesn't exist, or you aren't allowed to edit it, or the PGN is invalid.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Content-Type",
+                                    "value": "application/x-www-form-urlencoded"
+                                  },
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "body": {
+                                  "mode": "urlencoded",
+                                  "urlencoded": [
+                                    {
+                                      "description": "(Required) PGN text containing the moves that will replace the chapter's existing moves.\nAny provided tags are ignored.\n",
+                                      "key": "pgn",
+                                      "value": "<string>"
+                                    }
+                                  ]
+                                },
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/study/:studyId/:chapterId/moves",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "study",
+                                    ":studyId",
+                                    ":chapterId",
+                                    "moves"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "studyId"
+                                    },
+                                    {
+                                      "key": "chapterId"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "Bad Request",
+                              "code": 400,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"error\": \"<string>\"\n}",
+                              "createdAt": "2026-07-28T02:06:56.000Z",
+                              "updatedAt": "2026-07-28T02:06:56.000Z",
+                              "uid": "35240-c63302a6-6f85-4bce-b970-3895e3712ba6"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T02:06:56.000Z",
+                          "updatedAt": "2026-07-28T02:06:56.000Z",
+                          "uid": "35240-3557a8a0-dfde-417e-a3f8-2b27c9a20ead"
+                        }
+                      ],
+                      "id": "adb27fec-742f-4f3d-8db6-04caff21d8ba",
+                      "createdAt": "2026-07-28T02:06:56.000Z",
+                      "updatedAt": "2026-07-28T02:06:56.000Z",
+                      "uid": "35240-adb27fec-742f-4f3d-8db6-04caff21d8ba"
+                    },
+                    {
+                      "name": "Delete a study chapter",
+                      "id": "cc1330dc-323b-44ff-bce9-fb9300f4f678",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://lichess.org/api/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://lichess.org/oauth",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/study/:studyId/:chapterId",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "study",
+                            ":studyId",
+                            ":chapterId"
+                          ],
+                          "variable": [
+                            {
+                              "id": "ce45a214-1e1a-4865-8731-9511621d38ba",
+                              "key": "studyId",
+                              "value": "<string>",
+                              "description": "(Required) The study ID"
+                            },
+                            {
+                              "id": "9f856dca-1b89-4365-a6aa-46c041a12fa5",
+                              "key": "chapterId",
+                              "value": "<string>",
+                              "description": "(Required) The chapter ID"
+                            }
+                          ]
+                        },
+                        "description": "Delete a chapter of a study you own. This is definitive.\nA study must have at least one chapter; so if you delete the last chapter,\nan empty one will be automatically created to replace it.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "79e8635c-79fe-4612-b095-b789bb39770c",
+                          "name": "Chapter successfully deleted",
+                          "originalRequest": {
+                            "method": "DELETE",
+                            "header": [
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/study/:studyId/:chapterId",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "study",
+                                ":studyId",
+                                ":chapterId"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "studyId"
+                                },
+                                {
+                                  "key": "chapterId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "No Content",
+                          "code": 204,
+                          "_postman_previewlanguage": "text",
+                          "header": [
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": null,
+                          "createdAt": "2026-07-28T02:06:56.000Z",
+                          "updatedAt": "2026-07-28T02:06:56.000Z",
+                          "uid": "35240-79e8635c-79fe-4612-b095-b789bb39770c"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:06:56.000Z",
+                      "updatedAt": "2026-07-28T02:06:56.000Z",
+                      "uid": "35240-cc1330dc-323b-44ff-bce9-fb9300f4f678"
+                    }
+                  ],
+                  "id": "99e562d9-cea3-425b-b184-64204c0dfc6a",
+                  "createdAt": "2026-07-28T02:06:56.000Z",
+                  "updatedAt": "2026-07-28T02:06:56.000Z",
+                  "uid": "35240-99e562d9-cea3-425b-b184-64204c0dfc6a"
+                }
+              ],
+              "id": "c68f502d-b9d4-47b7-a622-a04c9c49f975",
+              "createdAt": "2026-07-28T02:06:56.000Z",
+              "updatedAt": "2026-07-28T02:06:56.000Z",
+              "uid": "35240-c68f502d-b9d4-47b7-a622-a04c9c49f975"
+            },
+            {
+              "name": "{studyId}.pgn",
+              "item": [
+                {
+                  "name": "Export all chapters",
+                  "id": "a573bd05-2bc8-4303-b843-4f59bdd287bf",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "oauth2",
+                      "oauth2": [
+                        {
+                          "key": "scope",
+                          "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                          "type": "string"
+                        },
+                        {
+                          "key": "accessTokenUrl",
+                          "value": "https://lichess.org/api/token",
+                          "type": "string"
+                        },
+                        {
+                          "key": "authUrl",
+                          "value": "https://lichess.org/oauth",
+                          "type": "string"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "authorization_code",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/x-chess-pgn"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/study/{{studyId}}.pgn?clocks=true&comments=true&variations=true&orientation=false",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "study",
+                        "{{studyId}}.pgn"
+                      ],
+                      "query": [
+                        {
+                          "description": "Include clock comments in the PGN moves, when available.\nExample: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\n",
+                          "key": "clocks",
+                          "value": "true"
+                        },
+                        {
+                          "description": "Include analysis and annotator comments in the PGN moves, when available.\nExample: `12. Bxf6 { [%eval 0.23] } a3 { White is in a pickle. }`\n",
+                          "key": "comments",
+                          "value": "true"
+                        },
+                        {
+                          "description": "Include non-mainline moves, when available.\nExample: `4. d4 Bb4+ (4... Nc6 5. Nf3 Bb4+ 6. Bd2 (6. Nbd2 O-O 7. O-O) 6... Bd6) 5. Nd2`\n",
+                          "key": "variations",
+                          "value": "true"
+                        },
+                        {
+                          "description": "Add a `Orientation` PGN tag with the chapter predefined orientation.\nExample: `[Orientation \"white\"]`\n",
+                          "key": "orientation",
+                          "value": "false"
+                        }
+                      ]
+                    },
+                    "description": "Download all chapters of a study in PGN format.\nIf authenticated, then all public, unlisted, and private study chapters are read.\nIf not, only public (non-unlisted) study chapters are read.\n"
+                  },
+                  "response": [
+                    {
+                      "id": "d8c58aed-88fc-4ec4-ae37-dfa25c6bb07e",
+                      "name": "The PGN representation of the study.",
+                      "originalRequest": {
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/x-chess-pgn"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/study/{{studyId}}.pgn?clocks=true&comments=true&variations=true&orientation=false",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "study",
+                            "{{studyId}}.pgn"
+                          ],
+                          "query": [
+                            {
+                              "description": "Include clock comments in the PGN moves, when available.\nExample: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\n",
+                              "key": "clocks",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Include analysis and annotator comments in the PGN moves, when available.\nExample: `12. Bxf6 { [%eval 0.23] } a3 { White is in a pickle. }`\n",
+                              "key": "comments",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Include non-mainline moves, when available.\nExample: `4. d4 Bb4+ (4... Nc6 5. Nf3 Bb4+ 6. Bd2 (6. Nbd2 O-O 7. O-O) 6... Bd6) 5. Nd2`\n",
+                              "key": "variations",
+                              "value": "true"
+                            },
+                            {
+                              "description": "Add a `Orientation` PGN tag with the chapter predefined orientation.\nExample: `[Orientation \"white\"]`\n",
+                              "key": "orientation",
+                              "value": "false"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "text",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/x-chess-pgn"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Access-Control-Allow-Origin",
+                          "value": "'*'"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Last-Modified",
+                          "value": "<string>"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "<string>",
+                      "createdAt": "2026-07-28T02:06:56.000Z",
+                      "updatedAt": "2026-07-28T02:06:56.000Z",
+                      "uid": "35240-d8c58aed-88fc-4ec4-ae37-dfa25c6bb07e"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:06:56.000Z",
+                  "updatedAt": "2026-07-28T02:06:56.000Z",
+                  "uid": "35240-a573bd05-2bc8-4303-b843-4f59bdd287bf"
+                },
+                {
+                  "name": "Study metadata",
+                  "id": "cceb8bf8-2c63-49f7-be96-8ab116f431b0",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "HEAD",
+                    "header": [],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/study/{{studyId}}.pgn",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "study",
+                        "{{studyId}}.pgn"
+                      ]
+                    },
+                    "description": "Only get the study headers, including `Last-Modified`.\n"
+                  },
+                  "response": [
+                    {
+                      "id": "bc99f6b2-5d5d-4a11-8fa0-57cf773aa748",
+                      "name": "The study headers.",
+                      "originalRequest": {
+                        "method": "HEAD",
+                        "header": [],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/study/{{studyId}}.pgn",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "study",
+                            "{{studyId}}.pgn"
+                          ]
+                        }
+                      },
+                      "status": "No Content",
+                      "code": 204,
+                      "_postman_previewlanguage": "text",
+                      "header": [
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Access-Control-Allow-Origin",
+                          "value": "'*'"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Last-Modified",
+                          "value": "<string>"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": null,
+                      "createdAt": "2026-07-28T02:06:56.000Z",
+                      "updatedAt": "2026-07-28T02:06:56.000Z",
+                      "uid": "35240-bc99f6b2-5d5d-4a11-8fa0-57cf773aa748"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:06:56.000Z",
+                  "updatedAt": "2026-07-28T02:06:56.000Z",
+                  "uid": "35240-cceb8bf8-2c63-49f7-be96-8ab116f431b0"
+                }
+              ],
+              "id": "c75ad31f-d5b0-4697-a34b-dc4975cd5209",
+              "createdAt": "2026-07-28T02:06:56.000Z",
+              "updatedAt": "2026-07-28T02:06:56.000Z",
+              "uid": "35240-c75ad31f-d5b0-4697-a34b-dc4975cd5209"
+            },
+            {
+              "name": "by",
+              "item": [
+                {
+                  "name": "{username}",
+                  "item": [
+                    {
+                      "name": "export.pgn",
+                      "item": [
+                        {
+                          "name": "Export all studies of a user",
+                          "id": "157b8134-0238-4c02-a024-7d5f67c07a88",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "auth": {
+                              "type": "oauth2",
+                              "oauth2": [
+                                {
+                                  "key": "scope",
+                                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "accessTokenUrl",
+                                  "value": "https://lichess.org/api/token",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "authUrl",
+                                  "value": "https://lichess.org/oauth",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "grant_type",
+                                  "value": "authorization_code",
+                                  "type": "string"
+                                }
+                              ]
+                            },
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/x-chess-pgn"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/study/by/:username/export.pgn?clocks=true&comments=true&variations=true&orientation=false",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "study",
+                                "by",
+                                ":username",
+                                "export.pgn"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Include clock comments in the PGN moves, when available.\nExample: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\n",
+                                  "key": "clocks",
+                                  "value": "true"
+                                },
+                                {
+                                  "description": "Include analysis and annotator comments in the PGN moves, when available.\nExample: `12. Bxf6 { [%eval 0.23] } a3 { White is in a pickle. }`\n",
+                                  "key": "comments",
+                                  "value": "true"
+                                },
+                                {
+                                  "description": "Include non-mainline moves, when available.\nExample: `4. d4 Bb4+ (4... Nc6 5. Nf3 Bb4+ 6. Bd2 (6. Nbd2 O-O 7. O-O) 6... Bd6) 5. Nd2`\n",
+                                  "key": "variations",
+                                  "value": "true"
+                                },
+                                {
+                                  "description": "Add a `Orientation` PGN tag with the chapter predefined orientation.\nExample: `[Orientation \"white\"]`\n",
+                                  "key": "orientation",
+                                  "value": "false"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "id": "9ff74609-7acf-4dc4-8294-0e3b425137a7",
+                                  "key": "username",
+                                  "value": "<string>",
+                                  "description": "(Required) The user whose studies we export"
+                                }
+                              ]
+                            },
+                            "description": "Download all chapters of all studies of a user in PGN format.\nIf authenticated, then all public, unlisted, and private studies are included.\nIf not, only public (non-unlisted) studies are included.\n"
+                          },
+                          "response": [
+                            {
+                              "id": "ef358629-ef17-4fbc-9d50-bd732badac28",
+                              "name": "The studies of the user.",
+                              "originalRequest": {
+                                "method": "GET",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/x-chess-pgn"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/study/by/:username/export.pgn?clocks=true&comments=true&variations=true&orientation=false",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "study",
+                                    "by",
+                                    ":username",
+                                    "export.pgn"
+                                  ],
+                                  "query": [
+                                    {
+                                      "description": "Include clock comments in the PGN moves, when available.\nExample: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\n",
+                                      "key": "clocks",
+                                      "value": "true"
+                                    },
+                                    {
+                                      "description": "Include analysis and annotator comments in the PGN moves, when available.\nExample: `12. Bxf6 { [%eval 0.23] } a3 { White is in a pickle. }`\n",
+                                      "key": "comments",
+                                      "value": "true"
+                                    },
+                                    {
+                                      "description": "Include non-mainline moves, when available.\nExample: `4. d4 Bb4+ (4... Nc6 5. Nf3 Bb4+ 6. Bd2 (6. Nbd2 O-O 7. O-O) 6... Bd6) 5. Nd2`\n",
+                                      "key": "variations",
+                                      "value": "true"
+                                    },
+                                    {
+                                      "description": "Add a `Orientation` PGN tag with the chapter predefined orientation.\nExample: `[Orientation \"white\"]`\n",
+                                      "key": "orientation",
+                                      "value": "false"
+                                    }
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "username"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "text",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/x-chess-pgn"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "<string>",
+                              "createdAt": "2026-07-28T02:06:56.000Z",
+                              "updatedAt": "2026-07-28T02:06:56.000Z",
+                              "uid": "35240-ef358629-ef17-4fbc-9d50-bd732badac28"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T02:06:56.000Z",
+                          "updatedAt": "2026-07-28T02:06:56.000Z",
+                          "uid": "35240-157b8134-0238-4c02-a024-7d5f67c07a88"
+                        }
+                      ],
+                      "id": "6b26320a-0e94-430c-8673-c0692ece5756",
+                      "createdAt": "2026-07-28T02:06:56.000Z",
+                      "updatedAt": "2026-07-28T02:06:56.000Z",
+                      "uid": "35240-6b26320a-0e94-430c-8673-c0692ece5756"
+                    },
+                    {
+                      "name": "List studies of a user",
+                      "id": "63d3ce48-0e8e-47ec-81d3-26ec4e8144a2",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://lichess.org/api/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://lichess.org/oauth",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/x-ndjson"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/study/by/:username",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "study",
+                            "by",
+                            ":username"
+                          ],
+                          "variable": [
+                            {
+                              "id": "8bd45de2-921e-485e-adac-11215d1b8925",
+                              "key": "username",
+                              "value": "<string>",
+                              "description": "(Required) The user whose studies we list"
+                            }
+                          ]
+                        },
+                        "description": "Get metadata (name and dates) of all studies of a user.\nIf authenticated, then all public, unlisted, and private studies are included.\nIf not, only public (non-unlisted) studies are included.\nStudies are streamed as [ndjson](#description/streaming-with-nd-json).\n"
+                      },
+                      "response": [
+                        {
+                          "id": "408451cb-b0dc-4335-b9fd-8b384e972e65",
+                          "name": "The list of studies.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/x-ndjson"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/study/by/:username",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "study",
+                                "by",
+                                ":username"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "username"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "text",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/x-ndjson"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<string>\",\n  \"name\": \"<string>\",\n  \"createdAt\": \"<long>\",\n  \"updatedAt\": \"<long>\"\n}",
+                          "createdAt": "2026-07-28T02:06:56.000Z",
+                          "updatedAt": "2026-07-28T02:06:56.000Z",
+                          "uid": "35240-408451cb-b0dc-4335-b9fd-8b384e972e65"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:06:56.000Z",
+                      "updatedAt": "2026-07-28T02:06:56.000Z",
+                      "uid": "35240-63d3ce48-0e8e-47ec-81d3-26ec4e8144a2"
+                    }
+                  ],
+                  "id": "19b96a2c-543b-4060-b558-062be4b922c2",
+                  "createdAt": "2026-07-28T02:06:56.000Z",
+                  "updatedAt": "2026-07-28T02:06:56.000Z",
+                  "uid": "35240-19b96a2c-543b-4060-b558-062be4b922c2"
+                }
+              ],
+              "id": "59bcd9d8-41ad-4f95-b25d-0be9402c6323",
+              "createdAt": "2026-07-28T02:06:56.000Z",
+              "updatedAt": "2026-07-28T02:06:56.000Z",
+              "uid": "35240-59bcd9d8-41ad-4f95-b25d-0be9402c6323"
+            },
+            {
+              "name": "Create a new Study",
+              "id": "60020ea7-58b4-49d1-b91c-1204c9c1b78b",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "scope",
+                      "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                      "type": "string"
+                    },
+                    {
+                      "key": "accessTokenUrl",
+                      "value": "https://lichess.org/api/token",
+                      "type": "string"
+                    },
+                    {
+                      "key": "authUrl",
+                      "value": "https://lichess.org/oauth",
+                      "type": "string"
+                    },
+                    {
+                      "key": "grant_type",
+                      "value": "authorization_code",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/x-www-form-urlencoded"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "description": "(Required) The study name.",
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "description": "(Required) Who can view the study.\n* `public`: Default. Anyone can view the study, it appears on public listings\n* `unlisted`: Only people with the link can view the study, it doesn't appear on public listings\n* `private`: Only the study members can view the study\n",
+                      "key": "visibility",
+                      "value": "unlisted"
+                    },
+                    {
+                      "description": "(Required) ",
+                      "key": "computer",
+                      "value": "owner"
+                    },
+                    {
+                      "description": "(Required) ",
+                      "key": "explorer",
+                      "value": "owner"
+                    },
+                    {
+                      "description": "(Required) ",
+                      "key": "cloneable",
+                      "value": "everyone"
+                    },
+                    {
+                      "description": "(Required) ",
+                      "key": "shareable",
+                      "value": "owner"
+                    },
+                    {
+                      "description": "(Required) ",
+                      "key": "chat",
+                      "value": "nobody"
+                    },
+                    {
+                      "description": "Keep everyone on the same chapter and position",
+                      "key": "sticky",
+                      "value": "true"
+                    }
+                  ]
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/api/study",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "study"
+                  ]
+                },
+                "description": "Create a [study](https://lichess.org/study), and a new empty chapter within it.\nYou can make up to 30 new studies per day.\n"
+              },
+              "response": [
+                {
+                  "id": "6ecc3b92-2545-4c7f-8647-3f1eabc35e84",
+                  "name": "The Study has been successfully created.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "(Required) The study name.",
+                          "key": "name",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) Who can view the study.\n* `public`: Default. Anyone can view the study, it appears on public listings\n* `unlisted`: Only people with the link can view the study, it doesn't appear on public listings\n* `private`: Only the study members can view the study\n",
+                          "key": "visibility",
+                          "value": "unlisted"
+                        },
+                        {
+                          "description": "(Required) ",
+                          "key": "computer",
+                          "value": "owner"
+                        },
+                        {
+                          "description": "(Required) ",
+                          "key": "explorer",
+                          "value": "owner"
+                        },
+                        {
+                          "description": "(Required) ",
+                          "key": "cloneable",
+                          "value": "everyone"
+                        },
+                        {
+                          "description": "(Required) ",
+                          "key": "shareable",
+                          "value": "owner"
+                        },
+                        {
+                          "description": "(Required) ",
+                          "key": "chat",
+                          "value": "nobody"
+                        },
+                        {
+                          "description": "Keep everyone on the same chapter and position",
+                          "key": "sticky",
+                          "value": "true"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/api/study",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "study"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "Access-Control-Allow-Origin",
+                      "value": "'*'"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"id\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:06:56.000Z",
+                  "updatedAt": "2026-07-28T02:06:56.000Z",
+                  "uid": "35240-6ecc3b92-2545-4c7f-8647-3f1eabc35e84"
+                },
+                {
+                  "id": "f84b7e67-9ef5-47df-9580-5cca20faa882",
+                  "name": "The creation of the Study failed.",
+                  "originalRequest": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "(Required) The study name.",
+                          "key": "name",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) Who can view the study.\n* `public`: Default. Anyone can view the study, it appears on public listings\n* `unlisted`: Only people with the link can view the study, it doesn't appear on public listings\n* `private`: Only the study members can view the study\n",
+                          "key": "visibility",
+                          "value": "unlisted"
+                        },
+                        {
+                          "description": "(Required) ",
+                          "key": "computer",
+                          "value": "owner"
+                        },
+                        {
+                          "description": "(Required) ",
+                          "key": "explorer",
+                          "value": "owner"
+                        },
+                        {
+                          "description": "(Required) ",
+                          "key": "cloneable",
+                          "value": "everyone"
+                        },
+                        {
+                          "description": "(Required) ",
+                          "key": "shareable",
+                          "value": "owner"
+                        },
+                        {
+                          "description": "(Required) ",
+                          "key": "chat",
+                          "value": "nobody"
+                        },
+                        {
+                          "description": "Keep everyone on the same chapter and position",
+                          "key": "sticky",
+                          "value": "true"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/api/study",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "study"
+                      ]
+                    }
+                  },
+                  "status": "Bad Request",
+                  "code": 400,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"error\": \"<string>\"\n}",
+                  "createdAt": "2026-07-28T02:06:56.000Z",
+                  "updatedAt": "2026-07-28T02:06:56.000Z",
+                  "uid": "35240-f84b7e67-9ef5-47df-9580-5cca20faa882"
+                }
+              ],
+              "createdAt": "2026-07-28T02:06:56.000Z",
+              "updatedAt": "2026-07-28T02:06:56.000Z",
+              "uid": "35240-60020ea7-58b4-49d1-b91c-1204c9c1b78b"
+            }
+          ],
+          "id": "aa28720f-0ba4-4974-8fe5-4b08e282192e",
+          "createdAt": "2026-07-28T02:06:56.000Z",
+          "updatedAt": "2026-07-28T02:06:56.000Z",
+          "uid": "35240-aa28720f-0ba4-4974-8fe5-4b08e282192e"
+        }
+      ],
+      "id": "f5316efd-eb8e-4f3c-8f49-a9a452d008fe",
+      "createdAt": "2026-07-28T02:06:56.000Z",
+      "updatedAt": "2026-07-28T02:06:56.000Z",
+      "uid": "35240-f5316efd-eb8e-4f3c-8f49-a9a452d008fe"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://lichess.org"
+    },
+    {
+      "key": "chapterId",
+      "value": "<string>"
+    },
+    {
+      "key": "studyId",
+      "value": "<string>"
+    }
+  ]
+}

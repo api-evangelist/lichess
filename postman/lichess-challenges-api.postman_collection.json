@@ -1,0 +1,2399 @@
+{
+  "info": {
+    "_postman_id": "1f7a1528-a5d2-46e7-bd45-15800e88f3f2",
+    "name": "Lichess.org API reference Account Challenges API",
+    "description": "# Introduction\nWelcome to the reference for the Lichess API! Lichess is free/libre,\nopen-source chess server powered by volunteers and donations.\n- Get help in the [Lichess Discord channel](https://discord.gg/lichess)\n- API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)\n- API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)\n- [Contribute to this documentation on Github](https://github.com/lichess-org/api)\n- Check out [Lichess widgets to embed in your website](https://lichess.org/developers)\n- [Download all Lichess rated games](https://database.lichess.org/)\n- [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)\n- [Download all evaluated positions](https://database.lichess.org/#evals)\n\n## Endpoint\nAll requests go to `https://lichess.org` (unless otherwise specified).\n\n## Clients\n- [Python general API](https://github.com/lichess-org/berserk)\n- [MicroPython general API](https://github.com/mkomon/uberserk)\n- [Python general API - async](https://pypi.org/project/async-lichess-sdk)\n- [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)\n- [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)\n- [Java general API](https://github.com/tors42/chariot)\n- [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)\n- [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)\n- [.NET general API](https://github.com/Dblike/LichessSharp)\n\n## Rate limiting\nAll requests are rate limited using various strategies,\nto ensure the API remains responsive for everyone.\nOnly make one request at a time.\nIf you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),\nyou have exceded one of the rate limits.\nIn most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.\nReduce your request frequency before retrying.\n\n## Streaming with ND-JSON\nSome API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.\n\nHere's a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.\n\n## Authentication\n### Which authentication method is right for me?\n[Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)\n\n### Personal Access Token\nPersonal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.\n- [Generate a personal access token](https://lichess.org/account/oauth/token)\n- `curl https://lichess.org/api/account -H \"Authorization: Bearer {token}\"`\n- [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)\n\n### Token Security\n- Keep your tokens secret. Do not share them in public repositories or public forums.\n- Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens' scope). You remain responsible for all activities on your account.\n- Do not hardcode tokens in your application's code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.\n- If you suspect a token has been compromised, revoke it immediately.\n\nTo see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).\n\n### Authorization Code Flow with PKCE\nThe authorization code flow with PKCE allows your users to **login with Lichess**.\nLichess supports unregistered and public clients (no client authentication, choose any unique client id).\nThe only accepted code challenge method is `S256`.\nAccess tokens are long-lived (expect one year), unless they are revoked.\nRefresh tokens are not supported.\n\nSee the [documentation for the OAuth endpoints](#tag/OAuth) or\nthe [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.\n\n- [Demo app](https://lichess-org.github.io/api-demo/)\n- [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)\n- [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)\n- [Java example](https://github.com/tors42/lichess-oauth-pkce-app)\n- [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)\n\n#### Real life examples\n- [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))\n- [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))\n- [English Chess Federation](https://ecf.octoknight.com/)\n- [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)\n\n### Token format\nAccess tokens and authorization codes match `^[A-Za-z0-9_]+$`.\nThe length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.\nBy convention tokens have a recognizable prefix, but do not rely on this.\n\n\nContact Support:\n Name: Lichess.org API\n Email: contact@lichess.org",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "createdAt": "2026-07-28T02:06:40.000Z",
+    "updatedAt": "2026-07-28T02:06:41.000Z",
+    "lastUpdatedBy": "35240",
+    "uid": "35240-1f7a1528-a5d2-46e7-bd45-15800e88f3f2"
+  },
+  "item": [
+    {
+      "name": "api",
+      "item": [
+        {
+          "name": "challenge",
+          "item": [
+            {
+              "name": "{username}",
+              "item": [
+                {
+                  "name": "Create a challenge",
+                  "id": "4770e06d-fbbf-4349-924d-46723f10126a",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "oauth2",
+                      "oauth2": [
+                        {
+                          "key": "scope",
+                          "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                          "type": "string"
+                        },
+                        {
+                          "key": "accessTokenUrl",
+                          "value": "https://lichess.org/api/token",
+                          "type": "string"
+                        },
+                        {
+                          "key": "authUrl",
+                          "value": "https://lichess.org/oauth",
+                          "type": "string"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "authorization_code",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "key": "clock.limit",
+                          "value": "<integer>"
+                        },
+                        {
+                          "key": "clock.increment",
+                          "value": "<integer>"
+                        },
+                        {
+                          "key": "rated",
+                          "value": "false"
+                        },
+                        {
+                          "key": "color",
+                          "value": "black"
+                        },
+                        {
+                          "key": "variant",
+                          "value": "standard"
+                        },
+                        {
+                          "key": "fen",
+                          "value": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+                        },
+                        {
+                          "key": "keepAliveStream",
+                          "value": "<boolean>"
+                        },
+                        {
+                          "key": "rules",
+                          "value": "noClaimWin"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/api/challenge/:username",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "challenge",
+                        ":username"
+                      ],
+                      "variable": [
+                        {
+                          "id": "265fba4e-2e96-40a3-8e38-e1c8a812faaa",
+                          "key": "username",
+                          "value": "<string>",
+                          "description": "(Required) "
+                        }
+                      ]
+                    },
+                    "description": "Challenge someone to play. The targeted player can choose to accept or decline.\nIf the challenge is accepted, you will be notified on the [event stream](#tag/board/GET/api/board/game/stream/{gameId})\nthat a new game has started. The game ID will be the same as the challenge ID.\nChallenges for realtime games (not correspondence) expire after 20s if not accepted.\nTo prevent that, use the `keepAliveStream` flag described below.\n"
+                  },
+                  "response": [
+                    {
+                      "id": "63c59714-981a-461f-8eaa-b5f2f92f4698",
+                      "name": "The challenge was successfully created.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "key": "clock.limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "key": "clock.increment",
+                              "value": "<integer>"
+                            },
+                            {
+                              "key": "rated",
+                              "value": "false"
+                            },
+                            {
+                              "key": "color",
+                              "value": "black"
+                            },
+                            {
+                              "key": "variant",
+                              "value": "standard"
+                            },
+                            {
+                              "key": "fen",
+                              "value": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+                            },
+                            {
+                              "key": "keepAliveStream",
+                              "value": "<boolean>"
+                            },
+                            {
+                              "key": "rules",
+                              "value": "noClaimWin"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/challenge/:username",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "challenge",
+                            ":username"
+                          ],
+                          "variable": [
+                            {
+                              "key": "username"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Access-Control-Allow-Origin",
+                          "value": "'*'"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"url\": \"<uri>\",\n  \"status\": \"canceled\",\n  \"challenger\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"rating\": \"<integer>\",\n    \"title\": \"CM\",\n    \"flair\": \"<string>\",\n    \"patron\": \"<boolean>\",\n    \"patronColor\": \"<integer>\",\n    \"provisional\": \"<boolean>\",\n    \"online\": \"<boolean>\",\n    \"lag\": \"<integer>\"\n  },\n  \"destUser\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"rating\": \"<integer>\",\n    \"title\": \"GM\",\n    \"flair\": \"<string>\",\n    \"patron\": \"<boolean>\",\n    \"patronColor\": \"<integer>\",\n    \"provisional\": \"<boolean>\",\n    \"online\": \"<boolean>\",\n    \"lag\": \"<integer>\"\n  },\n  \"variant\": {\n    \"key\": \"standard\",\n    \"name\": \"<string>\",\n    \"short\": \"<string>\"\n  },\n  \"rated\": \"<boolean>\",\n  \"speed\": \"bullet\",\n  \"timeControl\": {\n    \"type\": \"<string>\",\n    \"limit\": \"<integer>\",\n    \"increment\": \"<integer>\",\n    \"show\": \"<string>\"\n  },\n  \"color\": \"black\",\n  \"perf\": {\n    \"icon\": \"<string>\",\n    \"name\": \"<string>\"\n  },\n  \"finalColor\": \"white\",\n  \"direction\": \"out\",\n  \"initialFen\": \"<string>\",\n  \"rematchOf\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:06:41.000Z",
+                      "updatedAt": "2026-07-28T02:06:41.000Z",
+                      "uid": "35240-63c59714-981a-461f-8eaa-b5f2f92f4698"
+                    },
+                    {
+                      "id": "c492b6be-d7e1-47ad-8f82-cd9398beeef7",
+                      "name": "The creation of the challenge failed.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "key": "clock.limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "key": "clock.increment",
+                              "value": "<integer>"
+                            },
+                            {
+                              "key": "rated",
+                              "value": "false"
+                            },
+                            {
+                              "key": "color",
+                              "value": "black"
+                            },
+                            {
+                              "key": "variant",
+                              "value": "standard"
+                            },
+                            {
+                              "key": "fen",
+                              "value": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+                            },
+                            {
+                              "key": "keepAliveStream",
+                              "value": "<boolean>"
+                            },
+                            {
+                              "key": "rules",
+                              "value": "noClaimWin"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/challenge/:username",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "challenge",
+                            ":username"
+                          ],
+                          "variable": [
+                            {
+                              "key": "username"
+                            }
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"error\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:06:41.000Z",
+                      "updatedAt": "2026-07-28T02:06:41.000Z",
+                      "uid": "35240-c492b6be-d7e1-47ad-8f82-cd9398beeef7"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:06:41.000Z",
+                  "updatedAt": "2026-07-28T02:06:41.000Z",
+                  "uid": "35240-4770e06d-fbbf-4349-924d-46723f10126a"
+                }
+              ],
+              "id": "adee4166-9f38-431e-ac76-1b83e4df8be9",
+              "createdAt": "2026-07-28T02:06:41.000Z",
+              "updatedAt": "2026-07-28T02:06:41.000Z",
+              "uid": "35240-adee4166-9f38-431e-ac76-1b83e4df8be9"
+            },
+            {
+              "name": "{challengeId}",
+              "item": [
+                {
+                  "name": "show",
+                  "item": [
+                    {
+                      "name": "Show one challenge",
+                      "id": "6d6725e7-777b-4bb0-841d-4246ca2bd67a",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://lichess.org/api/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://lichess.org/oauth",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "GET",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/challenge/:challengeId/show",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "challenge",
+                            ":challengeId",
+                            "show"
+                          ],
+                          "variable": [
+                            {
+                              "id": "03703581-ef70-43d5-9377-6a1e72e25743",
+                              "key": "challengeId",
+                              "value": "<string>",
+                              "description": "(Required) The challenge ID"
+                            }
+                          ]
+                        },
+                        "description": "Get details about a challenge, even if it has been recently accepted, canceled or declined.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "fcaace5f-1f43-48c4-8846-6e859b21ac20",
+                          "name": "The challenge for that ID.",
+                          "originalRequest": {
+                            "method": "GET",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/challenge/:challengeId/show",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "challenge",
+                                ":challengeId",
+                                "show"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "challengeId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"id\": \"<string>\",\n  \"url\": \"<uri>\",\n  \"status\": \"canceled\",\n  \"challenger\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"rating\": \"<integer>\",\n    \"title\": \"CM\",\n    \"flair\": \"<string>\",\n    \"patron\": \"<boolean>\",\n    \"patronColor\": \"<integer>\",\n    \"provisional\": \"<boolean>\",\n    \"online\": \"<boolean>\",\n    \"lag\": \"<integer>\"\n  },\n  \"destUser\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"rating\": \"<integer>\",\n    \"title\": \"GM\",\n    \"flair\": \"<string>\",\n    \"patron\": \"<boolean>\",\n    \"patronColor\": \"<integer>\",\n    \"provisional\": \"<boolean>\",\n    \"online\": \"<boolean>\",\n    \"lag\": \"<integer>\"\n  },\n  \"variant\": {\n    \"key\": \"standard\",\n    \"name\": \"<string>\",\n    \"short\": \"<string>\"\n  },\n  \"rated\": \"<boolean>\",\n  \"speed\": \"bullet\",\n  \"timeControl\": {\n    \"type\": \"<string>\",\n    \"limit\": \"<integer>\",\n    \"increment\": \"<integer>\",\n    \"show\": \"<string>\"\n  },\n  \"color\": \"black\",\n  \"perf\": {\n    \"icon\": \"<string>\",\n    \"name\": \"<string>\"\n  },\n  \"finalColor\": \"white\",\n  \"direction\": \"out\",\n  \"initialFen\": \"<string>\",\n  \"rematchOf\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:06:41.000Z",
+                          "updatedAt": "2026-07-28T02:06:41.000Z",
+                          "uid": "35240-fcaace5f-1f43-48c4-8846-6e859b21ac20"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:06:41.000Z",
+                      "updatedAt": "2026-07-28T02:06:41.000Z",
+                      "uid": "35240-6d6725e7-777b-4bb0-841d-4246ca2bd67a"
+                    }
+                  ],
+                  "id": "46dfbeca-a167-4efe-8d44-b355aadd3b63",
+                  "createdAt": "2026-07-28T02:06:41.000Z",
+                  "updatedAt": "2026-07-28T02:06:41.000Z",
+                  "uid": "35240-46dfbeca-a167-4efe-8d44-b355aadd3b63"
+                },
+                {
+                  "name": "accept",
+                  "item": [
+                    {
+                      "name": "Accept a challenge",
+                      "id": "361e8cfb-bb11-48cc-8238-dd71f68c04c9",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://lichess.org/api/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://lichess.org/oauth",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/challenge/:challengeId/accept?color=white",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "challenge",
+                            ":challengeId",
+                            "accept"
+                          ],
+                          "query": [
+                            {
+                              "description": "Accept challenge as this color (only valid if this is an [open challenge](#challenge/open))",
+                              "key": "color",
+                              "value": "white"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "id": "9d2036a6-2b3a-40b9-887d-f56bf43f708a",
+                              "key": "challengeId",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "Accept an incoming challenge.\nYou should receive a `gameStart` event on the [incoming events stream](#tag/board/GET/api/board/game/stream/{gameId}).\n"
+                      },
+                      "response": [
+                        {
+                          "id": "449270dc-f2b7-48ed-af70-40ac7560bd3f",
+                          "name": "The challenge was successfully accepted.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/challenge/:challengeId/accept?color=white",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "challenge",
+                                ":challengeId",
+                                "accept"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Accept challenge as this color (only valid if this is an [open challenge](#challenge/open))",
+                                  "key": "color",
+                                  "value": "white"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "challengeId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"ok\": \"<boolean>\"\n}",
+                          "createdAt": "2026-07-28T02:06:41.000Z",
+                          "updatedAt": "2026-07-28T02:06:41.000Z",
+                          "uid": "35240-449270dc-f2b7-48ed-af70-40ac7560bd3f"
+                        },
+                        {
+                          "id": "697492fd-4c19-4a5d-8546-558ccef45f8d",
+                          "name": "The challenge to accept was not found.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/challenge/:challengeId/accept?color=white",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "challenge",
+                                ":challengeId",
+                                "accept"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Accept challenge as this color (only valid if this is an [open challenge](#challenge/open))",
+                                  "key": "color",
+                                  "value": "white"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "challengeId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"error\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:06:41.000Z",
+                          "updatedAt": "2026-07-28T02:06:41.000Z",
+                          "uid": "35240-697492fd-4c19-4a5d-8546-558ccef45f8d"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:06:41.000Z",
+                      "updatedAt": "2026-07-28T02:06:41.000Z",
+                      "uid": "35240-361e8cfb-bb11-48cc-8238-dd71f68c04c9"
+                    }
+                  ],
+                  "id": "f04249f6-91ac-41a9-b149-7c457ffe5bbe",
+                  "createdAt": "2026-07-28T02:06:41.000Z",
+                  "updatedAt": "2026-07-28T02:06:41.000Z",
+                  "uid": "35240-f04249f6-91ac-41a9-b149-7c457ffe5bbe"
+                },
+                {
+                  "name": "decline",
+                  "item": [
+                    {
+                      "name": "Decline a challenge",
+                      "id": "a5b62e43-cc55-4449-bfc8-c61ba8394be7",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://lichess.org/api/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://lichess.org/oauth",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "Reason challenge was declined. It will be translated to the player's language. See [the full list in the translation file](https://github.com/ornicar/lila/blob/master/translation/source/challenge.xml#L14).",
+                              "key": "reason",
+                              "value": "rated"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/challenge/:challengeId/decline",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "challenge",
+                            ":challengeId",
+                            "decline"
+                          ],
+                          "variable": [
+                            {
+                              "id": "c322dd8e-66fa-410a-ac5a-5073af67bf9d",
+                              "key": "challengeId",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "Decline an incoming challenge.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "113e1e52-5365-409a-a421-75cf6f4de302",
+                          "name": "The challenge was successfully declined.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "urlencoded",
+                              "urlencoded": [
+                                {
+                                  "description": "Reason challenge was declined. It will be translated to the player's language. See [the full list in the translation file](https://github.com/ornicar/lila/blob/master/translation/source/challenge.xml#L14).",
+                                  "key": "reason",
+                                  "value": "rated"
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/challenge/:challengeId/decline",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "challenge",
+                                ":challengeId",
+                                "decline"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "challengeId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"ok\": \"<boolean>\"\n}",
+                          "createdAt": "2026-07-28T02:06:41.000Z",
+                          "updatedAt": "2026-07-28T02:06:41.000Z",
+                          "uid": "35240-113e1e52-5365-409a-a421-75cf6f4de302"
+                        },
+                        {
+                          "id": "ce696442-7b63-4e6d-be1a-25a1ef0649c7",
+                          "name": "The challenge to decline was not found.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Content-Type",
+                                "value": "application/x-www-form-urlencoded"
+                              },
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "body": {
+                              "mode": "urlencoded",
+                              "urlencoded": [
+                                {
+                                  "description": "Reason challenge was declined. It will be translated to the player's language. See [the full list in the translation file](https://github.com/ornicar/lila/blob/master/translation/source/challenge.xml#L14).",
+                                  "key": "reason",
+                                  "value": "rated"
+                                }
+                              ]
+                            },
+                            "url": {
+                              "raw": "{{baseUrl}}/api/challenge/:challengeId/decline",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "challenge",
+                                ":challengeId",
+                                "decline"
+                              ],
+                              "variable": [
+                                {
+                                  "key": "challengeId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"error\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:06:41.000Z",
+                          "updatedAt": "2026-07-28T02:06:41.000Z",
+                          "uid": "35240-ce696442-7b63-4e6d-be1a-25a1ef0649c7"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:06:41.000Z",
+                      "updatedAt": "2026-07-28T02:06:41.000Z",
+                      "uid": "35240-a5b62e43-cc55-4449-bfc8-c61ba8394be7"
+                    }
+                  ],
+                  "id": "f9c72518-915b-4013-9079-46b5fedad55f",
+                  "createdAt": "2026-07-28T02:06:41.000Z",
+                  "updatedAt": "2026-07-28T02:06:41.000Z",
+                  "uid": "35240-f9c72518-915b-4013-9079-46b5fedad55f"
+                },
+                {
+                  "name": "cancel",
+                  "item": [
+                    {
+                      "name": "Cancel a challenge",
+                      "id": "e8edf7ca-9627-4dbb-8fc0-f74e6dbe9c0b",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://lichess.org/api/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://lichess.org/oauth",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/challenge/:challengeId/cancel?opponentToken=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "challenge",
+                            ":challengeId",
+                            "cancel"
+                          ],
+                          "query": [
+                            {
+                              "description": "Optional `challenge:write` token of the opponent. If set, the game can be canceled even if both players have moved.",
+                              "key": "opponentToken",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "id": "adf16170-12cb-4759-9b32-7876347d13f9",
+                              "key": "challengeId",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "Cancel a challenge you sent, or aborts the game if the challenge was accepted, but the game was not yet played.\nNote that the ID of a game is the same as the ID of the challenge that created it.\nWorks for user challenges and open challenges alike.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "3cebce14-86dc-406e-80ae-a37016112e9f",
+                          "name": "The challenge was successfully cancelled.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/challenge/:challengeId/cancel?opponentToken=<string>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "challenge",
+                                ":challengeId",
+                                "cancel"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Optional `challenge:write` token of the opponent. If set, the game can be canceled even if both players have moved.",
+                                  "key": "opponentToken",
+                                  "value": "<string>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "challengeId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"ok\": \"<boolean>\"\n}",
+                          "createdAt": "2026-07-28T02:06:41.000Z",
+                          "updatedAt": "2026-07-28T02:06:41.000Z",
+                          "uid": "35240-3cebce14-86dc-406e-80ae-a37016112e9f"
+                        },
+                        {
+                          "id": "791b2e4c-56ae-418c-9484-14e507311ce7",
+                          "name": "The challenge to cancel was not found.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/challenge/:challengeId/cancel?opponentToken=<string>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "challenge",
+                                ":challengeId",
+                                "cancel"
+                              ],
+                              "query": [
+                                {
+                                  "description": "Optional `challenge:write` token of the opponent. If set, the game can be canceled even if both players have moved.",
+                                  "key": "opponentToken",
+                                  "value": "<string>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "challengeId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "Not Found",
+                          "code": 404,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"error\": \"<string>\"\n}",
+                          "createdAt": "2026-07-28T02:06:41.000Z",
+                          "updatedAt": "2026-07-28T02:06:41.000Z",
+                          "uid": "35240-791b2e4c-56ae-418c-9484-14e507311ce7"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:06:41.000Z",
+                      "updatedAt": "2026-07-28T02:06:41.000Z",
+                      "uid": "35240-e8edf7ca-9627-4dbb-8fc0-f74e6dbe9c0b"
+                    }
+                  ],
+                  "id": "0de5c6ce-41fe-4b09-acc7-cfa77a5d6582",
+                  "createdAt": "2026-07-28T02:06:41.000Z",
+                  "updatedAt": "2026-07-28T02:06:41.000Z",
+                  "uid": "35240-0de5c6ce-41fe-4b09-acc7-cfa77a5d6582"
+                }
+              ],
+              "id": "02730632-8ec3-4550-b01d-8b70909155a9",
+              "createdAt": "2026-07-28T02:06:41.000Z",
+              "updatedAt": "2026-07-28T02:06:41.000Z",
+              "uid": "35240-02730632-8ec3-4550-b01d-8b70909155a9"
+            },
+            {
+              "name": "ai",
+              "item": [
+                {
+                  "name": "Challenge the AI",
+                  "id": "d99ad016-c3f2-4758-b2c3-9d989371b288",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "oauth2",
+                      "oauth2": [
+                        {
+                          "key": "scope",
+                          "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                          "type": "string"
+                        },
+                        {
+                          "key": "accessTokenUrl",
+                          "value": "https://lichess.org/api/token",
+                          "type": "string"
+                        },
+                        {
+                          "key": "authUrl",
+                          "value": "https://lichess.org/oauth",
+                          "type": "string"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "authorization_code",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "(Required) AI strength",
+                          "key": "level",
+                          "value": "<integer>"
+                        },
+                        {
+                          "description": "Clock initial time in seconds. If empty, a correspondence game is created.",
+                          "key": "clock.limit",
+                          "value": "<integer>"
+                        },
+                        {
+                          "description": "Clock increment in seconds. If empty, a correspondence game is created.",
+                          "key": "clock.increment",
+                          "value": "<integer>"
+                        },
+                        {
+                          "description": "Days per move, for correspondence games. Clock settings must be omitted.",
+                          "key": "days",
+                          "value": "3"
+                        },
+                        {
+                          "key": "color",
+                          "value": "random"
+                        },
+                        {
+                          "key": "variant",
+                          "value": "standard"
+                        },
+                        {
+                          "description": "Custom initial position (in X-FEN). Variant must be standard, fromPosition, or chess960 (if a valid 960 starting position), and the game cannot be rated.",
+                          "key": "fen",
+                          "value": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/api/challenge/ai",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "challenge",
+                        "ai"
+                      ]
+                    },
+                    "description": "Start a game with Lichess AI.\nYou will be notified on the [event stream](#tag/board/GET/api/board/game/stream/{gameId}) that a new game has started.\n"
+                  },
+                  "response": [
+                    {
+                      "id": "abc702e3-1ffd-4f28-819a-f19c26d68e71",
+                      "name": "The game with Lichess AI was successfully started.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "(Required) AI strength",
+                              "key": "level",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": "Clock initial time in seconds. If empty, a correspondence game is created.",
+                              "key": "clock.limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": "Clock increment in seconds. If empty, a correspondence game is created.",
+                              "key": "clock.increment",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": "Days per move, for correspondence games. Clock settings must be omitted.",
+                              "key": "days",
+                              "value": "3"
+                            },
+                            {
+                              "key": "color",
+                              "value": "random"
+                            },
+                            {
+                              "key": "variant",
+                              "value": "standard"
+                            },
+                            {
+                              "description": "Custom initial position (in X-FEN). Variant must be standard, fromPosition, or chess960 (if a valid 960 starting position), and the game cannot be rated.",
+                              "key": "fen",
+                              "value": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/challenge/ai",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "challenge",
+                            "ai"
+                          ]
+                        }
+                      },
+                      "status": "Created",
+                      "code": 201,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Access-Control-Allow-Origin",
+                          "value": "'*'"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"variant\": {\n    \"key\": \"standard\",\n    \"name\": \"<string>\",\n    \"short\": \"<string>\"\n  },\n  \"speed\": \"rapid\",\n  \"perf\": \"correspondence\",\n  \"rated\": \"<boolean>\",\n  \"fen\": \"<string>\",\n  \"turns\": \"<integer>\",\n  \"source\": \"swiss\",\n  \"status\": {\n    \"id\": 39,\n    \"name\": \"started\"\n  },\n  \"createdAt\": \"<long>\",\n  \"player\": \"white\",\n  \"fullId\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:06:41.000Z",
+                      "updatedAt": "2026-07-28T02:06:41.000Z",
+                      "uid": "35240-abc702e3-1ffd-4f28-819a-f19c26d68e71"
+                    },
+                    {
+                      "id": "c7748af7-668c-4078-85c1-8297a299e083",
+                      "name": "The creation of a game with Lichess AI failed.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "(Required) AI strength",
+                              "key": "level",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": "Clock initial time in seconds. If empty, a correspondence game is created.",
+                              "key": "clock.limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": "Clock increment in seconds. If empty, a correspondence game is created.",
+                              "key": "clock.increment",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": "Days per move, for correspondence games. Clock settings must be omitted.",
+                              "key": "days",
+                              "value": "3"
+                            },
+                            {
+                              "key": "color",
+                              "value": "random"
+                            },
+                            {
+                              "key": "variant",
+                              "value": "standard"
+                            },
+                            {
+                              "description": "Custom initial position (in X-FEN). Variant must be standard, fromPosition, or chess960 (if a valid 960 starting position), and the game cannot be rated.",
+                              "key": "fen",
+                              "value": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/challenge/ai",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "challenge",
+                            "ai"
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"error\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:06:41.000Z",
+                      "updatedAt": "2026-07-28T02:06:41.000Z",
+                      "uid": "35240-c7748af7-668c-4078-85c1-8297a299e083"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:06:41.000Z",
+                  "updatedAt": "2026-07-28T02:06:41.000Z",
+                  "uid": "35240-d99ad016-c3f2-4758-b2c3-9d989371b288"
+                }
+              ],
+              "id": "868b3678-b991-4dac-8587-cf97e335fce0",
+              "createdAt": "2026-07-28T02:06:41.000Z",
+              "updatedAt": "2026-07-28T02:06:41.000Z",
+              "uid": "35240-868b3678-b991-4dac-8587-cf97e335fce0"
+            },
+            {
+              "name": "open",
+              "item": [
+                {
+                  "name": "Open-ended challenge",
+                  "id": "4dc3fda4-6171-44f1-833a-755066f36424",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "Game is rated and impacts players ratings",
+                          "key": "rated",
+                          "value": "false"
+                        },
+                        {
+                          "description": "Clock initial time in seconds. If empty, a correspondence game is created.",
+                          "key": "clock.limit",
+                          "value": "<integer>"
+                        },
+                        {
+                          "description": "Clock increment in seconds. If empty, a correspondence game is created.",
+                          "key": "clock.increment",
+                          "value": "<integer>"
+                        },
+                        {
+                          "description": "Days per turn. For correspondence challenges.",
+                          "key": "days",
+                          "value": "3"
+                        },
+                        {
+                          "key": "variant",
+                          "value": "standard"
+                        },
+                        {
+                          "description": "Custom initial position (in X-FEN). Variant must be standard, fromPosition, or chess960 (if a valid 960 starting position), and the game cannot be rated.",
+                          "key": "fen",
+                          "value": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+                        },
+                        {
+                          "description": "Optional name for the challenge, that players will see on the challenge page.",
+                          "key": "name",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Extra game rules separated by commas.\nExample: `noRematch,noGiveTime`\nThe `noAbort` rule is available for Lichess admins only\n",
+                          "key": "rules",
+                          "value": "noRematch"
+                        },
+                        {
+                          "description": "Optional pair of usernames, separated by a comma.\nIf set, only these users will be allowed to join the game.\nThe first username gets the white pieces.\nExample: `Username1,Username2`\n",
+                          "key": "users",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "Timestamp in milliseconds to expire the challenge. Defaults to 24h after creation. Can't be more than 2 weeks after creation.",
+                          "key": "expiresAt",
+                          "value": "<long>"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/api/challenge/open",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "challenge",
+                        "open"
+                      ]
+                    },
+                    "description": "Create a challenge that any 2 players can join.\nShare the URL of the challenge. the first 2 players to click it will be paired for a game.\nThe response body also contains `whiteUrl` and `blackUrl`.\nYou can control which color each player gets by giving them these URLs,\ninstead of the main challenge URL.\nOpen challenges expire after 24h.\nIf the challenge creation is [authenticated with OAuth2](#description/authentication),\nthen you can use the [challenge cancel endpoint](#tag/challenges/POST/api/challenge/{challengeId}/cancel) to cancel it.\nTo directly pair 2 known players, use [this endpoint](#tag/bulk-pairings/GET/api/bulk-pairing) instead.\n"
+                  },
+                  "response": [
+                    {
+                      "id": "bf26e74d-8d17-4b48-91ec-8941a59b3a5f",
+                      "name": "The challenge was successfully created.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "Game is rated and impacts players ratings",
+                              "key": "rated",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Clock initial time in seconds. If empty, a correspondence game is created.",
+                              "key": "clock.limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": "Clock increment in seconds. If empty, a correspondence game is created.",
+                              "key": "clock.increment",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": "Days per turn. For correspondence challenges.",
+                              "key": "days",
+                              "value": "3"
+                            },
+                            {
+                              "key": "variant",
+                              "value": "standard"
+                            },
+                            {
+                              "description": "Custom initial position (in X-FEN). Variant must be standard, fromPosition, or chess960 (if a valid 960 starting position), and the game cannot be rated.",
+                              "key": "fen",
+                              "value": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+                            },
+                            {
+                              "description": "Optional name for the challenge, that players will see on the challenge page.",
+                              "key": "name",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Extra game rules separated by commas.\nExample: `noRematch,noGiveTime`\nThe `noAbort` rule is available for Lichess admins only\n",
+                              "key": "rules",
+                              "value": "noRematch"
+                            },
+                            {
+                              "description": "Optional pair of usernames, separated by a comma.\nIf set, only these users will be allowed to join the game.\nThe first username gets the white pieces.\nExample: `Username1,Username2`\n",
+                              "key": "users",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Timestamp in milliseconds to expire the challenge. Defaults to 24h after creation. Can't be more than 2 weeks after creation.",
+                              "key": "expiresAt",
+                              "value": "<long>"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/challenge/open",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "challenge",
+                            "open"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Access-Control-Allow-Origin",
+                          "value": "'*'"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"id\": \"<string>\",\n  \"url\": \"<uri>\",\n  \"status\": \"accepted\",\n  \"challenger\": \"<null>\",\n  \"destUser\": \"<null>\",\n  \"variant\": {\n    \"key\": \"standard\",\n    \"name\": \"<string>\",\n    \"short\": \"<string>\"\n  },\n  \"rated\": \"<boolean>\",\n  \"speed\": \"bullet\",\n  \"timeControl\": {\n    \"type\": \"<string>\",\n    \"limit\": \"<integer>\",\n    \"increment\": \"<integer>\",\n    \"show\": \"<string>\"\n  },\n  \"color\": \"white\",\n  \"perf\": {\n    \"icon\": \"<string>\",\n    \"name\": \"<string>\"\n  },\n  \"urlWhite\": \"<uri>\",\n  \"urlBlack\": \"<uri>\",\n  \"open\": {\n    \"userIds\": [\n      \"<string>\",\n      \"<string>\"\n    ]\n  },\n  \"finalColor\": \"black\",\n  \"initialFen\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:06:41.000Z",
+                      "updatedAt": "2026-07-28T02:06:41.000Z",
+                      "uid": "35240-bf26e74d-8d17-4b48-91ec-8941a59b3a5f"
+                    },
+                    {
+                      "id": "32f524b4-eeca-4b14-b572-7982a8bd8b2a",
+                      "name": "The creation of the challenge failed.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "Game is rated and impacts players ratings",
+                              "key": "rated",
+                              "value": "false"
+                            },
+                            {
+                              "description": "Clock initial time in seconds. If empty, a correspondence game is created.",
+                              "key": "clock.limit",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": "Clock increment in seconds. If empty, a correspondence game is created.",
+                              "key": "clock.increment",
+                              "value": "<integer>"
+                            },
+                            {
+                              "description": "Days per turn. For correspondence challenges.",
+                              "key": "days",
+                              "value": "3"
+                            },
+                            {
+                              "key": "variant",
+                              "value": "standard"
+                            },
+                            {
+                              "description": "Custom initial position (in X-FEN). Variant must be standard, fromPosition, or chess960 (if a valid 960 starting position), and the game cannot be rated.",
+                              "key": "fen",
+                              "value": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+                            },
+                            {
+                              "description": "Optional name for the challenge, that players will see on the challenge page.",
+                              "key": "name",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Extra game rules separated by commas.\nExample: `noRematch,noGiveTime`\nThe `noAbort` rule is available for Lichess admins only\n",
+                              "key": "rules",
+                              "value": "noRematch"
+                            },
+                            {
+                              "description": "Optional pair of usernames, separated by a comma.\nIf set, only these users will be allowed to join the game.\nThe first username gets the white pieces.\nExample: `Username1,Username2`\n",
+                              "key": "users",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "Timestamp in milliseconds to expire the challenge. Defaults to 24h after creation. Can't be more than 2 weeks after creation.",
+                              "key": "expiresAt",
+                              "value": "<long>"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/challenge/open",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "challenge",
+                            "open"
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"error\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:06:41.000Z",
+                      "updatedAt": "2026-07-28T02:06:41.000Z",
+                      "uid": "35240-32f524b4-eeca-4b14-b572-7982a8bd8b2a"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:06:41.000Z",
+                  "updatedAt": "2026-07-28T02:06:41.000Z",
+                  "uid": "35240-4dc3fda4-6171-44f1-833a-755066f36424"
+                }
+              ],
+              "id": "dcd69127-3033-4631-a14f-4679440fc49d",
+              "createdAt": "2026-07-28T02:06:41.000Z",
+              "updatedAt": "2026-07-28T02:06:41.000Z",
+              "uid": "35240-dcd69127-3033-4631-a14f-4679440fc49d"
+            },
+            {
+              "name": "{gameId}",
+              "item": [
+                {
+                  "name": "start-clocks",
+                  "item": [
+                    {
+                      "name": "Start clocks of a game",
+                      "id": "d733c459-a29f-4a96-a7fb-e0b0dff76cce",
+                      "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                      },
+                      "request": {
+                        "auth": {
+                          "type": "oauth2",
+                          "oauth2": [
+                            {
+                              "key": "scope",
+                              "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                              "type": "string"
+                            },
+                            {
+                              "key": "accessTokenUrl",
+                              "value": "https://lichess.org/api/token",
+                              "type": "string"
+                            },
+                            {
+                              "key": "authUrl",
+                              "value": "https://lichess.org/oauth",
+                              "type": "string"
+                            },
+                            {
+                              "key": "grant_type",
+                              "value": "authorization_code",
+                              "type": "string"
+                            }
+                          ]
+                        },
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          }
+                        ],
+                        "url": {
+                          "raw": "{{baseUrl}}/api/challenge/:gameId/start-clocks?token1=<string>&token2=<string>",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "challenge",
+                            ":gameId",
+                            "start-clocks"
+                          ],
+                          "query": [
+                            {
+                              "description": "(Required) OAuth token of a player",
+                              "key": "token1",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "OAuth token of the other player. Omit for AI games that have only one player.",
+                              "key": "token2",
+                              "value": "<string>"
+                            }
+                          ],
+                          "variable": [
+                            {
+                              "id": "b1deef66-260f-4988-a8fd-e323e56f2757",
+                              "key": "gameId",
+                              "value": "<string>",
+                              "description": "(Required) "
+                            }
+                          ]
+                        },
+                        "description": "Start the clocks of a game immediately, even if a player has not yet made a move.\nRequires the OAuth tokens of both players with `challenge:write` scope.\nIf the clocks have already started, the call will have no effect.\n\nFor AI games with only one player, omit the `token2` parameter.\n"
+                      },
+                      "response": [
+                        {
+                          "id": "5fa46c72-8fc8-42b0-adf3-ed4a92bec553",
+                          "name": "The clock of a game was successfully started.",
+                          "originalRequest": {
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              },
+                              {
+                                "description": "Added as a part of security scheme: oauth2",
+                                "key": "Authorization",
+                                "value": "<token>"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/challenge/:gameId/start-clocks?token1=<string>&token2=<string>",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "challenge",
+                                ":gameId",
+                                "start-clocks"
+                              ],
+                              "query": [
+                                {
+                                  "description": "(Required) OAuth token of a player",
+                                  "key": "token1",
+                                  "value": "<string>"
+                                },
+                                {
+                                  "description": "OAuth token of the other player. Omit for AI games that have only one player.",
+                                  "key": "token2",
+                                  "value": "<string>"
+                                }
+                              ],
+                              "variable": [
+                                {
+                                  "key": "gameId"
+                                }
+                              ]
+                            }
+                          },
+                          "status": "OK",
+                          "code": 200,
+                          "_postman_previewlanguage": "json",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            },
+                            {
+                              "disabled": false,
+                              "description": {
+                                "content": "",
+                                "type": "text/plain"
+                              },
+                              "key": "Access-Control-Allow-Origin",
+                              "value": "'*'"
+                            }
+                          ],
+                          "cookie": [],
+                          "responseTime": null,
+                          "body": "{\n  \"ok\": \"<boolean>\"\n}",
+                          "createdAt": "2026-07-28T02:06:41.000Z",
+                          "updatedAt": "2026-07-28T02:06:41.000Z",
+                          "uid": "35240-5fa46c72-8fc8-42b0-adf3-ed4a92bec553"
+                        }
+                      ],
+                      "createdAt": "2026-07-28T02:06:41.000Z",
+                      "updatedAt": "2026-07-28T02:06:41.000Z",
+                      "uid": "35240-d733c459-a29f-4a96-a7fb-e0b0dff76cce"
+                    }
+                  ],
+                  "id": "15107562-a17b-4baf-8bbc-c77be22aaee8",
+                  "createdAt": "2026-07-28T02:06:41.000Z",
+                  "updatedAt": "2026-07-28T02:06:41.000Z",
+                  "uid": "35240-15107562-a17b-4baf-8bbc-c77be22aaee8"
+                }
+              ],
+              "id": "ba977525-8b39-4d77-8faf-147256a188d4",
+              "createdAt": "2026-07-28T02:06:41.000Z",
+              "updatedAt": "2026-07-28T02:06:41.000Z",
+              "uid": "35240-ba977525-8b39-4d77-8faf-147256a188d4"
+            },
+            {
+              "name": "List your challenges",
+              "id": "d853d5cd-0469-46f4-8cf9-1efbad5c7e7c",
+              "protocolProfileBehavior": {
+                "disableBodyPruning": true
+              },
+              "request": {
+                "auth": {
+                  "type": "oauth2",
+                  "oauth2": [
+                    {
+                      "key": "scope",
+                      "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                      "type": "string"
+                    },
+                    {
+                      "key": "accessTokenUrl",
+                      "value": "https://lichess.org/api/token",
+                      "type": "string"
+                    },
+                    {
+                      "key": "authUrl",
+                      "value": "https://lichess.org/oauth",
+                      "type": "string"
+                    },
+                    {
+                      "key": "grant_type",
+                      "value": "authorization_code",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "url": {
+                  "raw": "{{baseUrl}}/api/challenge",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "api",
+                    "challenge"
+                  ]
+                },
+                "description": "Get a list of challenges created by or targeted at you.\n"
+              },
+              "response": [
+                {
+                  "id": "03e5f39c-c54c-4f1d-8f7e-fe6f355bcd81",
+                  "name": "The list of challenges created by or targeted at the logged in user.",
+                  "originalRequest": {
+                    "method": "GET",
+                    "header": [
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      },
+                      {
+                        "description": "Added as a part of security scheme: oauth2",
+                        "key": "Authorization",
+                        "value": "<token>"
+                      }
+                    ],
+                    "url": {
+                      "raw": "{{baseUrl}}/api/challenge",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "challenge"
+                      ]
+                    }
+                  },
+                  "status": "OK",
+                  "code": 200,
+                  "_postman_previewlanguage": "json",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "",
+                        "type": "text/plain"
+                      },
+                      "key": "Access-Control-Allow-Origin",
+                      "value": "'*'"
+                    }
+                  ],
+                  "cookie": [],
+                  "responseTime": null,
+                  "body": "{\n  \"in\": [\n    {\n      \"id\": \"<string>\",\n      \"url\": \"<uri>\",\n      \"status\": \"offline\",\n      \"challenger\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"rating\": \"<integer>\",\n        \"title\": \"WNM\",\n        \"flair\": \"<string>\",\n        \"patron\": \"<boolean>\",\n        \"patronColor\": \"<integer>\",\n        \"provisional\": \"<boolean>\",\n        \"online\": \"<boolean>\",\n        \"lag\": \"<integer>\"\n      },\n      \"destUser\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"rating\": \"<integer>\",\n        \"title\": \"CM\",\n        \"flair\": \"<string>\",\n        \"patron\": \"<boolean>\",\n        \"patronColor\": \"<integer>\",\n        \"provisional\": \"<boolean>\",\n        \"online\": \"<boolean>\",\n        \"lag\": \"<integer>\"\n      },\n      \"variant\": {\n        \"key\": \"standard\",\n        \"name\": \"<string>\",\n        \"short\": \"<string>\"\n      },\n      \"rated\": \"<boolean>\",\n      \"speed\": \"correspondence\",\n      \"timeControl\": {\n        \"type\": \"<string>\",\n        \"limit\": \"<integer>\",\n        \"increment\": \"<integer>\",\n        \"show\": \"<string>\"\n      },\n      \"color\": \"random\",\n      \"perf\": {\n        \"icon\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"finalColor\": \"black\",\n      \"direction\": \"out\",\n      \"initialFen\": \"<string>\",\n      \"rematchOf\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"url\": \"<uri>\",\n      \"status\": \"offline\",\n      \"challenger\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"rating\": \"<integer>\",\n        \"title\": \"GM\",\n        \"flair\": \"<string>\",\n        \"patron\": \"<boolean>\",\n        \"patronColor\": \"<integer>\",\n        \"provisional\": \"<boolean>\",\n        \"online\": \"<boolean>\",\n        \"lag\": \"<integer>\"\n      },\n      \"destUser\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"rating\": \"<integer>\",\n        \"title\": \"WFM\",\n        \"flair\": \"<string>\",\n        \"patron\": \"<boolean>\",\n        \"patronColor\": \"<integer>\",\n        \"provisional\": \"<boolean>\",\n        \"online\": \"<boolean>\",\n        \"lag\": \"<integer>\"\n      },\n      \"variant\": {\n        \"key\": \"standard\",\n        \"name\": \"<string>\",\n        \"short\": \"<string>\"\n      },\n      \"rated\": \"<boolean>\",\n      \"speed\": \"bullet\",\n      \"timeControl\": {\n        \"type\": \"<string>\",\n        \"limit\": \"<integer>\",\n        \"increment\": \"<integer>\",\n        \"show\": \"<string>\"\n      },\n      \"color\": \"random\",\n      \"perf\": {\n        \"icon\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"finalColor\": \"black\",\n      \"direction\": \"out\",\n      \"initialFen\": \"<string>\",\n      \"rematchOf\": \"<string>\"\n    }\n  ],\n  \"out\": [\n    {\n      \"id\": \"<string>\",\n      \"url\": \"<uri>\",\n      \"status\": \"offline\",\n      \"challenger\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"rating\": \"<integer>\",\n        \"title\": \"WCM\",\n        \"flair\": \"<string>\",\n        \"patron\": \"<boolean>\",\n        \"patronColor\": \"<integer>\",\n        \"provisional\": \"<boolean>\",\n        \"online\": \"<boolean>\",\n        \"lag\": \"<integer>\"\n      },\n      \"destUser\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"rating\": \"<integer>\",\n        \"title\": \"WFM\",\n        \"flair\": \"<string>\",\n        \"patron\": \"<boolean>\",\n        \"patronColor\": \"<integer>\",\n        \"provisional\": \"<boolean>\",\n        \"online\": \"<boolean>\",\n        \"lag\": \"<integer>\"\n      },\n      \"variant\": {\n        \"key\": \"standard\",\n        \"name\": \"<string>\",\n        \"short\": \"<string>\"\n      },\n      \"rated\": \"<boolean>\",\n      \"speed\": \"bullet\",\n      \"timeControl\": {\n        \"type\": \"<string>\",\n        \"limit\": \"<integer>\",\n        \"increment\": \"<integer>\",\n        \"show\": \"<string>\"\n      },\n      \"color\": \"white\",\n      \"perf\": {\n        \"icon\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"finalColor\": \"white\",\n      \"direction\": \"in\",\n      \"initialFen\": \"<string>\",\n      \"rematchOf\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"url\": \"<uri>\",\n      \"status\": \"accepted\",\n      \"challenger\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"rating\": \"<integer>\",\n        \"title\": \"FM\",\n        \"flair\": \"<string>\",\n        \"patron\": \"<boolean>\",\n        \"patronColor\": \"<integer>\",\n        \"provisional\": \"<boolean>\",\n        \"online\": \"<boolean>\",\n        \"lag\": \"<integer>\"\n      },\n      \"destUser\": {\n        \"id\": \"<string>\",\n        \"name\": \"<string>\",\n        \"rating\": \"<integer>\",\n        \"title\": \"GM\",\n        \"flair\": \"<string>\",\n        \"patron\": \"<boolean>\",\n        \"patronColor\": \"<integer>\",\n        \"provisional\": \"<boolean>\",\n        \"online\": \"<boolean>\",\n        \"lag\": \"<integer>\"\n      },\n      \"variant\": {\n        \"key\": \"standard\",\n        \"name\": \"<string>\",\n        \"short\": \"<string>\"\n      },\n      \"rated\": \"<boolean>\",\n      \"speed\": \"ultraBullet\",\n      \"timeControl\": {\n        \"type\": \"<string>\",\n        \"limit\": \"<integer>\",\n        \"increment\": \"<integer>\",\n        \"show\": \"<string>\"\n      },\n      \"color\": \"random\",\n      \"perf\": {\n        \"icon\": \"<string>\",\n        \"name\": \"<string>\"\n      },\n      \"finalColor\": \"white\",\n      \"direction\": \"out\",\n      \"initialFen\": \"<string>\",\n      \"rematchOf\": \"<string>\"\n    }\n  ]\n}",
+                  "createdAt": "2026-07-28T02:06:41.000Z",
+                  "updatedAt": "2026-07-28T02:06:41.000Z",
+                  "uid": "35240-03e5f39c-c54c-4f1d-8f7e-fe6f355bcd81"
+                }
+              ],
+              "createdAt": "2026-07-28T02:06:41.000Z",
+              "updatedAt": "2026-07-28T02:06:41.000Z",
+              "uid": "35240-d853d5cd-0469-46f4-8cf9-1efbad5c7e7c"
+            }
+          ],
+          "id": "29ad8233-63da-4e88-a08a-d12891c77bb0",
+          "createdAt": "2026-07-28T02:06:41.000Z",
+          "updatedAt": "2026-07-28T02:06:41.000Z",
+          "uid": "35240-29ad8233-63da-4e88-a08a-d12891c77bb0"
+        },
+        {
+          "name": "round",
+          "item": [
+            {
+              "name": "{gameId}",
+              "item": [
+                {
+                  "name": "add-time",
+                  "item": [
+                    {
+                      "name": "{seconds}",
+                      "item": [
+                        {
+                          "name": "Add time to the opponent clock",
+                          "id": "ddbdb50c-5fe0-42b8-9c09-7295cf7b261d",
+                          "protocolProfileBehavior": {
+                            "disableBodyPruning": true
+                          },
+                          "request": {
+                            "auth": {
+                              "type": "oauth2",
+                              "oauth2": [
+                                {
+                                  "key": "scope",
+                                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "accessTokenUrl",
+                                  "value": "https://lichess.org/api/token",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "authUrl",
+                                  "value": "https://lichess.org/oauth",
+                                  "type": "string"
+                                },
+                                {
+                                  "key": "grant_type",
+                                  "value": "authorization_code",
+                                  "type": "string"
+                                }
+                              ]
+                            },
+                            "method": "POST",
+                            "header": [
+                              {
+                                "key": "Accept",
+                                "value": "application/json"
+                              }
+                            ],
+                            "url": {
+                              "raw": "{{baseUrl}}/api/round/:gameId/add-time/:seconds",
+                              "host": [
+                                "{{baseUrl}}"
+                              ],
+                              "path": [
+                                "api",
+                                "round",
+                                ":gameId",
+                                "add-time",
+                                ":seconds"
+                              ],
+                              "variable": [
+                                {
+                                  "id": "b6582fea-69df-487d-a2bf-b05a29f18785",
+                                  "key": "gameId",
+                                  "value": "<string>",
+                                  "description": "(Required) "
+                                },
+                                {
+                                  "id": "c619472a-8217-4951-b5b1-2188ad2f35e1",
+                                  "key": "seconds",
+                                  "value": "<integer>",
+                                  "description": "(Required) How many seconds to give"
+                                }
+                              ]
+                            },
+                            "description": "Add seconds to the opponent's clock. Can be used to create games with time odds.\n"
+                          },
+                          "response": [
+                            {
+                              "id": "926493af-d568-40fc-b388-a5711c655e77",
+                              "name": "Time was successfully added to the opponent's clock.",
+                              "originalRequest": {
+                                "method": "POST",
+                                "header": [
+                                  {
+                                    "key": "Accept",
+                                    "value": "application/json"
+                                  },
+                                  {
+                                    "description": "Added as a part of security scheme: oauth2",
+                                    "key": "Authorization",
+                                    "value": "<token>"
+                                  }
+                                ],
+                                "url": {
+                                  "raw": "{{baseUrl}}/api/round/:gameId/add-time/:seconds",
+                                  "host": [
+                                    "{{baseUrl}}"
+                                  ],
+                                  "path": [
+                                    "api",
+                                    "round",
+                                    ":gameId",
+                                    "add-time",
+                                    ":seconds"
+                                  ],
+                                  "variable": [
+                                    {
+                                      "key": "gameId"
+                                    },
+                                    {
+                                      "key": "seconds"
+                                    }
+                                  ]
+                                }
+                              },
+                              "status": "OK",
+                              "code": 200,
+                              "_postman_previewlanguage": "json",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                },
+                                {
+                                  "disabled": false,
+                                  "description": {
+                                    "content": "",
+                                    "type": "text/plain"
+                                  },
+                                  "key": "Access-Control-Allow-Origin",
+                                  "value": "'*'"
+                                }
+                              ],
+                              "cookie": [],
+                              "responseTime": null,
+                              "body": "{\n  \"ok\": \"<boolean>\"\n}",
+                              "createdAt": "2026-07-28T02:06:41.000Z",
+                              "updatedAt": "2026-07-28T02:06:41.000Z",
+                              "uid": "35240-926493af-d568-40fc-b388-a5711c655e77"
+                            }
+                          ],
+                          "createdAt": "2026-07-28T02:06:41.000Z",
+                          "updatedAt": "2026-07-28T02:06:41.000Z",
+                          "uid": "35240-ddbdb50c-5fe0-42b8-9c09-7295cf7b261d"
+                        }
+                      ],
+                      "id": "6ce86a72-941e-4c08-91f8-2c4b44585f52",
+                      "createdAt": "2026-07-28T02:06:41.000Z",
+                      "updatedAt": "2026-07-28T02:06:41.000Z",
+                      "uid": "35240-6ce86a72-941e-4c08-91f8-2c4b44585f52"
+                    }
+                  ],
+                  "id": "3d8d570d-3891-4b4a-8ede-12b342b42680",
+                  "createdAt": "2026-07-28T02:06:41.000Z",
+                  "updatedAt": "2026-07-28T02:06:41.000Z",
+                  "uid": "35240-3d8d570d-3891-4b4a-8ede-12b342b42680"
+                }
+              ],
+              "id": "04f1bbdc-fdee-4d96-a527-80668084a4a1",
+              "createdAt": "2026-07-28T02:06:41.000Z",
+              "updatedAt": "2026-07-28T02:06:41.000Z",
+              "uid": "35240-04f1bbdc-fdee-4d96-a527-80668084a4a1"
+            }
+          ],
+          "id": "fc8b82b9-83f9-405f-85d0-05709dcb9526",
+          "createdAt": "2026-07-28T02:06:41.000Z",
+          "updatedAt": "2026-07-28T02:06:41.000Z",
+          "uid": "35240-fc8b82b9-83f9-405f-85d0-05709dcb9526"
+        },
+        {
+          "name": "token",
+          "item": [
+            {
+              "name": "admin-challenge",
+              "item": [
+                {
+                  "name": "Admin challenge tokens",
+                  "id": "99f4181a-a78b-482e-b2c8-8f8e5cb9bd60",
+                  "protocolProfileBehavior": {
+                    "disableBodyPruning": true
+                  },
+                  "request": {
+                    "auth": {
+                      "type": "oauth2",
+                      "oauth2": [
+                        {
+                          "key": "scope",
+                          "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod",
+                          "type": "string"
+                        },
+                        {
+                          "key": "accessTokenUrl",
+                          "value": "https://lichess.org/api/token",
+                          "type": "string"
+                        },
+                        {
+                          "key": "authUrl",
+                          "value": "https://lichess.org/oauth",
+                          "type": "string"
+                        },
+                        {
+                          "key": "grant_type",
+                          "value": "authorization_code",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "method": "POST",
+                    "header": [
+                      {
+                        "key": "Content-Type",
+                        "value": "application/x-www-form-urlencoded"
+                      },
+                      {
+                        "key": "Accept",
+                        "value": "application/json"
+                      }
+                    ],
+                    "body": {
+                      "mode": "urlencoded",
+                      "urlencoded": [
+                        {
+                          "description": "(Required) Usernames separated with commas",
+                          "key": "users",
+                          "value": "<string>"
+                        },
+                        {
+                          "description": "(Required) User visible description of the token",
+                          "key": "description",
+                          "value": "<string>"
+                        }
+                      ]
+                    },
+                    "url": {
+                      "raw": "{{baseUrl}}/api/token/admin-challenge",
+                      "host": [
+                        "{{baseUrl}}"
+                      ],
+                      "path": [
+                        "api",
+                        "token",
+                        "admin-challenge"
+                      ]
+                    },
+                    "description": "**This endpoint can only be used by Lichess administrators. It will not work if you do not have the appropriate permissions.** Tournament organizers should instead use [OAuth](#tag/OAuth) to obtain `challenge:write` tokens from users in order to perform bulk pairing.*\nCreate and obtain `challenge:write` tokens for multiple users.\nIf a similar token already exists for a user, it is reused. This endpoint is idempotent.\n"
+                  },
+                  "response": [
+                    {
+                      "id": "21d21ded-10c2-426b-84c6-54f736bc5113",
+                      "name": "The `challenge:write` tokens of each user",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "(Required) Usernames separated with commas",
+                              "key": "users",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "(Required) User visible description of the token",
+                              "key": "description",
+                              "value": "<string>"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/token/admin-challenge",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "token",
+                            "admin-challenge"
+                          ]
+                        }
+                      },
+                      "status": "OK",
+                      "code": 200,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        },
+                        {
+                          "disabled": false,
+                          "description": {
+                            "content": "",
+                            "type": "text/plain"
+                          },
+                          "key": "Access-Control-Allow-Origin",
+                          "value": "'*'"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"culpa_84\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:06:41.000Z",
+                      "updatedAt": "2026-07-28T02:06:41.000Z",
+                      "uid": "35240-21d21ded-10c2-426b-84c6-54f736bc5113"
+                    },
+                    {
+                      "id": "1a7a4bf8-beb2-4847-8e0f-452cb615be31",
+                      "name": "The creation of the tokens failed.",
+                      "originalRequest": {
+                        "method": "POST",
+                        "header": [
+                          {
+                            "key": "Content-Type",
+                            "value": "application/x-www-form-urlencoded"
+                          },
+                          {
+                            "key": "Accept",
+                            "value": "application/json"
+                          },
+                          {
+                            "description": "Added as a part of security scheme: oauth2",
+                            "key": "Authorization",
+                            "value": "<token>"
+                          }
+                        ],
+                        "body": {
+                          "mode": "urlencoded",
+                          "urlencoded": [
+                            {
+                              "description": "(Required) Usernames separated with commas",
+                              "key": "users",
+                              "value": "<string>"
+                            },
+                            {
+                              "description": "(Required) User visible description of the token",
+                              "key": "description",
+                              "value": "<string>"
+                            }
+                          ]
+                        },
+                        "url": {
+                          "raw": "{{baseUrl}}/api/token/admin-challenge",
+                          "host": [
+                            "{{baseUrl}}"
+                          ],
+                          "path": [
+                            "api",
+                            "token",
+                            "admin-challenge"
+                          ]
+                        }
+                      },
+                      "status": "Bad Request",
+                      "code": 400,
+                      "_postman_previewlanguage": "json",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                        }
+                      ],
+                      "cookie": [],
+                      "responseTime": null,
+                      "body": "{\n  \"error\": \"<string>\"\n}",
+                      "createdAt": "2026-07-28T02:06:41.000Z",
+                      "updatedAt": "2026-07-28T02:06:41.000Z",
+                      "uid": "35240-1a7a4bf8-beb2-4847-8e0f-452cb615be31"
+                    }
+                  ],
+                  "createdAt": "2026-07-28T02:06:41.000Z",
+                  "updatedAt": "2026-07-28T02:06:41.000Z",
+                  "uid": "35240-99f4181a-a78b-482e-b2c8-8f8e5cb9bd60"
+                }
+              ],
+              "id": "9759c004-3d7d-45dc-9814-0779df886c78",
+              "createdAt": "2026-07-28T02:06:41.000Z",
+              "updatedAt": "2026-07-28T02:06:41.000Z",
+              "uid": "35240-9759c004-3d7d-45dc-9814-0779df886c78"
+            }
+          ],
+          "id": "5711170a-f970-442b-be8e-4ff646cc63b4",
+          "createdAt": "2026-07-28T02:06:41.000Z",
+          "updatedAt": "2026-07-28T02:06:41.000Z",
+          "uid": "35240-5711170a-f970-442b-be8e-4ff646cc63b4"
+        }
+      ],
+      "id": "973bf937-89e3-414d-8b23-d91d5ad4661b",
+      "createdAt": "2026-07-28T02:06:41.000Z",
+      "updatedAt": "2026-07-28T02:06:41.000Z",
+      "uid": "35240-973bf937-89e3-414d-8b23-d91d5ad4661b"
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://lichess.org"
+    }
+  ]
+}
