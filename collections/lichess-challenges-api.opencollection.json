@@ -1,0 +1,423 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lichess.org API reference Account Challenges API",
+    "version": "2.0.144"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Challenges",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List your challenges",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/challenge",
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Get a list of challenges created by or targeted at you.\n"
+        },
+        {
+          "info": {
+            "name": "Create a challenge",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/challenge/:username",
+            "params": [
+              {
+                "name": "username",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Challenge someone to play. The targeted player can choose to accept or decline.\nIf the challenge is accepted, you will be notified on the [event stream](#tag/board/GET/api/board/game/stream/{gameId})\nthat a new game has started. The game ID will be the same as the challenge ID.\nChallenges for realtime games (not correspondence) expire after 20s if not accepted.\nTo prevent that, use the `keepAliveStream` flag described below.\n"
+        },
+        {
+          "info": {
+            "name": "Show one challenge",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/challenge/:challengeId/show",
+            "params": [
+              {
+                "name": "challengeId",
+                "value": "",
+                "type": "path",
+                "description": "The challenge ID"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Get details about a challenge, even if it has been recently accepted, canceled or declined.\n"
+        },
+        {
+          "info": {
+            "name": "Accept a challenge",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/challenge/:challengeId/accept",
+            "params": [
+              {
+                "name": "challengeId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "color",
+                "value": "",
+                "type": "query",
+                "description": "Accept challenge as this color (only valid if this is an [open challenge](#challenge/open))"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Accept an incoming challenge.\nYou should receive a `gameStart` event on the [incoming events stream](#tag/board/GET/api/board/game/stream/{gameId}).\n"
+        },
+        {
+          "info": {
+            "name": "Decline a challenge",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/challenge/:challengeId/decline",
+            "params": [
+              {
+                "name": "challengeId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "reason",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Decline an incoming challenge.\n"
+        },
+        {
+          "info": {
+            "name": "Cancel a challenge",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/challenge/:challengeId/cancel",
+            "params": [
+              {
+                "name": "challengeId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "opponentToken",
+                "value": "",
+                "type": "query",
+                "description": "Optional `challenge:write` token of the opponent. If set, the game can be canceled even if both players have moved."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Cancel a challenge you sent, or aborts the game if the challenge was accepted, but the game was not yet played.\nNote that the ID of a game is the same as the ID of the challenge that created it.\nWorks for user challenges and open challenges alike.\n"
+        },
+        {
+          "info": {
+            "name": "Challenge the AI",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/challenge/ai",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "level",
+                  "value": ""
+                },
+                {
+                  "name": "clock.limit",
+                  "value": ""
+                },
+                {
+                  "name": "clock.increment",
+                  "value": ""
+                },
+                {
+                  "name": "days",
+                  "value": ""
+                },
+                {
+                  "name": "color",
+                  "value": ""
+                },
+                {
+                  "name": "variant",
+                  "value": ""
+                },
+                {
+                  "name": "fen",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Start a game with Lichess AI.\nYou will be notified on the [event stream](#tag/board/GET/api/board/game/stream/{gameId}) that a new game has started.\n"
+        },
+        {
+          "info": {
+            "name": "Open-ended challenge",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/challenge/open",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "rated",
+                  "value": ""
+                },
+                {
+                  "name": "clock.limit",
+                  "value": ""
+                },
+                {
+                  "name": "clock.increment",
+                  "value": ""
+                },
+                {
+                  "name": "days",
+                  "value": ""
+                },
+                {
+                  "name": "variant",
+                  "value": ""
+                },
+                {
+                  "name": "fen",
+                  "value": ""
+                },
+                {
+                  "name": "name",
+                  "value": ""
+                },
+                {
+                  "name": "rules",
+                  "value": ""
+                },
+                {
+                  "name": "users",
+                  "value": ""
+                },
+                {
+                  "name": "expiresAt",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "Create a challenge that any 2 players can join.\nShare the URL of the challenge. the first 2 players to click it will be paired for a game.\nThe response body also contains `whiteUrl` and `blackUrl`.\nYou can control which color each player gets by giving them these URLs,\ninstead of the main challenge URL.\nOpen challenges expire after 24h.\nIf the challenge creation is [authenticated with OAuth2](#description/authentication),\nthen you can use the [challenge cancel endpoint](#tag/challenges/POST/api/"
+        },
+        {
+          "info": {
+            "name": "Start clocks of a game",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/challenge/:gameId/start-clocks",
+            "params": [
+              {
+                "name": "gameId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "token1",
+                "value": "",
+                "type": "query",
+                "description": "OAuth token of a player"
+              },
+              {
+                "name": "token2",
+                "value": "",
+                "type": "query",
+                "description": "OAuth token of the other player. Omit for AI games that have only one player."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Start the clocks of a game immediately, even if a player has not yet made a move.\nRequires the OAuth tokens of both players with `challenge:write` scope.\nIf the clocks have already started, the call will have no effect.\n\nFor AI games with only one player, omit the `token2` parameter.\n"
+        },
+        {
+          "info": {
+            "name": "Add time to the opponent clock",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/round/:gameId/add-time/:seconds",
+            "params": [
+              {
+                "name": "gameId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "seconds",
+                "value": "",
+                "type": "path",
+                "description": "How many seconds to give"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Add seconds to the opponent's clock. Can be used to create games with time odds.\n"
+        },
+        {
+          "info": {
+            "name": "Admin challenge tokens",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/token/admin-challenge",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "users",
+                  "value": ""
+                },
+                {
+                  "name": "description",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "**This endpoint can only be used by Lichess administrators. It will not work if you do not have the appropriate permissions.** Tournament organizers should instead use [OAuth](#tag/OAuth) to obtain `challenge:write` tokens from users in order to perform bulk pairing.*\nCreate and obtain `challenge:write` tokens for multiple users.\nIf a similar token already exists for a user, it is reused. This endpoint is idempotent.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

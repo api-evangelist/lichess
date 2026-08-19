@@ -1,0 +1,399 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lichess.org API reference Account Users API",
+    "version": "2.0.144"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Users",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get real-time users status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/users/status",
+            "params": [
+              {
+                "name": "ids",
+                "value": "thibault,maia1,maia5",
+                "type": "query",
+                "description": "User IDs separated by commas. Up to 100 IDs."
+              },
+              {
+                "name": "withSignal",
+                "value": "true",
+                "type": "query",
+                "description": "Also return the network signal of the player, when available.\nIt ranges from 1 (poor connection, lag > 500ms) to 4 (great connection, lag < 150ms)\nDefaults to `false` to preserve server resources.\n"
+              },
+              {
+                "name": "withGameIds",
+                "value": "true",
+                "type": "query",
+                "description": "Also return the ID of the game being played, if any, for each player, in a `playingId` field.\nDefaults to `false` to preserve server resources.\n"
+              },
+              {
+                "name": "withGameMetas",
+                "value": "true",
+                "type": "query",
+                "description": "Also return the id, time control and variant of the game being played, if any, for each player, in a `playing` field.\nDefaults to `false` to preserve server resources. Disables `withGameIds`.\n"
+              }
+            ]
+          },
+          "docs": "Read the `online`, `playing` and `streaming` flags of several users.\nThis API is very fast and cheap on lichess side.\nSo you can call it quite often (like once every 5 seconds).\nUse it to track players and know when they're connected on lichess and playing games.\n"
+        },
+        {
+          "info": {
+            "name": "Get all top 10",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/player"
+          },
+          "docs": "Get the top 10 players for each speed and variant.\nSee <https://lichess.org/player>.\n"
+        },
+        {
+          "info": {
+            "name": "Get one leaderboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/player/top/:nb/:perfType",
+            "params": [
+              {
+                "name": "nb",
+                "value": "",
+                "type": "path",
+                "description": "How many users to fetch"
+              },
+              {
+                "name": "perfType",
+                "value": "",
+                "type": "path",
+                "description": "The speed or variant"
+              }
+            ]
+          },
+          "docs": "Get the leaderboard for a single speed or variant (a.k.a. `perfType`).\nThere is no leaderboard for correspondence or puzzles.\nSee <https://lichess.org/player/top/100/bullet>.\n"
+        },
+        {
+          "info": {
+            "name": "Get user public data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/user/:username",
+            "params": [
+              {
+                "name": "username",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "trophies",
+                "value": "",
+                "type": "query",
+                "description": "Include user trophies"
+              },
+              {
+                "name": "profile",
+                "value": "",
+                "type": "query",
+                "description": "Include user profile data"
+              },
+              {
+                "name": "rank",
+                "value": "",
+                "type": "query",
+                "description": "Include global lichess ranking for each perf"
+              },
+              {
+                "name": "fideId",
+                "value": "",
+                "type": "query",
+                "description": "Include public FIDE ID if any"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Read public data of a user.\n"
+        },
+        {
+          "info": {
+            "name": "Get rating history of a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/user/:username/rating-history",
+            "params": [
+              {
+                "name": "username",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Read rating history of a user, for all perf types.\nThere is at most one entry per day.\nFormat of an entry is `[year, month, day, rating]`.\n`month` starts at zero (January).\n"
+        },
+        {
+          "info": {
+            "name": "Get performance statistics of a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/user/:username/perf/:perf",
+            "params": [
+              {
+                "name": "username",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "perf",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Read performance statistics of a user, for a single performance.\nSimilar to the [performance pages on the website](https://lichess.org/@/thibault/perf/bullet).\n"
+        },
+        {
+          "info": {
+            "name": "Get user activity",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/user/:username/activity",
+            "params": [
+              {
+                "name": "username",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Read data to generate the activity feed of a user.\n"
+        },
+        {
+          "info": {
+            "name": "Get users by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/users",
+            "params": [
+              {
+                "name": "profile",
+                "value": "",
+                "type": "query",
+                "description": "Include user profile data"
+              },
+              {
+                "name": "rank",
+                "value": "",
+                "type": "query",
+                "description": "Include global lichess ranking for each perf"
+              }
+            ]
+          },
+          "docs": "Get up to 300 users by their IDs. Users are returned in the same order as the IDs.\nThe method is `POST` to allow a longer list of IDs to be sent in the request body.\nPlease do not try to download all the Lichess users with this endpoint, or any other endpoint.\nAn API is not a way to fully export a website. We do not provide a full download of the Lichess users.\nThis endpoint is limited to 8,000 users every 10 minutes, and 120,000 every day.\n"
+        },
+        {
+          "info": {
+            "name": "Get live streamers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/streamer/live"
+          },
+          "docs": "Get basic info about currently streaming users.\nThis API is very fast and cheap on lichess side.\nSo you can call it quite often (like once every 5 seconds).\n"
+        },
+        {
+          "info": {
+            "name": "Get crosstable",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/crosstable/:user1/:user2",
+            "params": [
+              {
+                "name": "user1",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "user2",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "matchup",
+                "value": "",
+                "type": "query",
+                "description": "Whether to get the current match data, if any"
+              }
+            ]
+          },
+          "docs": "Get total number of games, and current score, of any two users.\nIf the `matchup` flag is provided, and the users are currently playing, also gets the current match game number and scores.\n"
+        },
+        {
+          "info": {
+            "name": "Autocomplete usernames",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/player/autocomplete",
+            "params": [
+              {
+                "name": "term",
+                "value": "",
+                "type": "query",
+                "description": "The beginning of a username"
+              },
+              {
+                "name": "exists",
+                "value": "",
+                "type": "query",
+                "description": "If `true`, only checks if the user exists.\n"
+              },
+              {
+                "name": "object",
+                "value": "",
+                "type": "query",
+                "description": "- `false` returns an array of usernames\n- `true` returns an object with matching users\n"
+              },
+              {
+                "name": "names",
+                "value": "",
+                "type": "query",
+                "description": "- `false` returns an array of usernames\n- `true` returns an array of usernames with preferred casing\n"
+              },
+              {
+                "name": "friend",
+                "value": "",
+                "type": "query",
+                "description": "Returns followed players matching `term` if any, else returns other players.\nRequires [OAuth](#tag/OAuth).\n"
+              },
+              {
+                "name": "team",
+                "value": "",
+                "type": "query",
+                "description": "Search within a team.\nUse team ID/slug.\n"
+              },
+              {
+                "name": "tour",
+                "value": "",
+                "type": "query",
+                "description": "Search within a arena tournament.\nUse tournament ID.\n"
+              },
+              {
+                "name": "swiss",
+                "value": "",
+                "type": "query",
+                "description": "Search within a Swiss tournament.\n"
+              },
+              {
+                "name": "teacher",
+                "value": "",
+                "type": "query",
+                "description": "Only search for players who also have a teacher role.\n"
+              }
+            ]
+          },
+          "docs": "Provides autocompletion options for an incomplete username.\n"
+        },
+        {
+          "info": {
+            "name": "Get notes for a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/user/:username/note",
+            "params": [
+              {
+                "name": "username",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Get the private notes that you have added for a user.\n"
+        },
+        {
+          "info": {
+            "name": "Add a note for a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/user/:username/note",
+            "params": [
+              {
+                "name": "username",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "text",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Add a private note available only to you about this account.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

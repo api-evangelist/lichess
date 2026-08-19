@@ -1,0 +1,571 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lichess.org API reference Account Broadcasts API",
+    "version": "2.0.144"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Broadcasts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get official broadcasts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/broadcast",
+            "params": [
+              {
+                "name": "nb",
+                "value": "",
+                "type": "query",
+                "description": "Max number of broadcasts to fetch"
+              },
+              {
+                "name": "html",
+                "value": "true",
+                "type": "query",
+                "description": "Convert the \"description\" field from markdown to HTML"
+              },
+              {
+                "name": "live",
+                "value": "true",
+                "type": "query",
+                "description": "[Filter] only broadcasts where a round is ongoing, i.e. started and not finished"
+              }
+            ]
+          },
+          "docs": "Returns active (a round is scheduled or ongoing) official broadcasts sorted by tier. \nAfter that, returns finished broadcasts sorted by most recent sync time.\nBroadcasts are streamed as [ndjson](#description/streaming-with-nd-json).\n"
+        },
+        {
+          "info": {
+            "name": "Get paginated top broadcast previews",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/broadcast/top",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Which page to fetch. Only page 1 has \"active\" broadcasts."
+              },
+              {
+                "name": "html",
+                "value": "true",
+                "type": "query",
+                "description": "Convert the \"description\" field from markdown to HTML"
+              }
+            ]
+          },
+          "docs": "The same data, in the same order, as can be seen on [https://lichess.org/broadcast](/broadcast).\n"
+        },
+        {
+          "info": {
+            "name": "Get broadcasts created by a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/broadcast/by/:username",
+            "params": [
+              {
+                "name": "username",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "html",
+                "value": "true",
+                "type": "query",
+                "description": "Convert the \"description\" field from markdown to HTML"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Get all incoming, ongoing, and finished official broadcasts.\nThe broadcasts are sorted by created date, most recent first.\n\nIf you are authenticated as the user whose broadcasts you are requesting, you will also see your private and unlisted broadcasts.\n"
+        },
+        {
+          "info": {
+            "name": "Search broadcasts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/broadcast/search",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Which page to fetch."
+              },
+              {
+                "name": "q",
+                "value": "",
+                "type": "query",
+                "description": "Search term"
+              }
+            ]
+          },
+          "docs": "Search across recent official broadcasts.\n"
+        },
+        {
+          "info": {
+            "name": "Create a broadcast tournament",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/broadcast/new",
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Create a new broadcast tournament to relay external games.\nThis endpoint accepts the same form data as the [web form](https://lichess.org/broadcast/new).\n"
+        },
+        {
+          "info": {
+            "name": "Get a broadcast tournament",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/broadcast/:broadcastTournamentId",
+            "params": [
+              {
+                "name": "broadcastTournamentId",
+                "value": "",
+                "type": "path",
+                "description": "The broadcast tournament ID"
+              }
+            ]
+          },
+          "docs": "Get information about a broadcast tournament.\n"
+        },
+        {
+          "info": {
+            "name": "Get players of a broadcast",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/broadcast/:broadcastTournamentId/players",
+            "params": [
+              {
+                "name": "broadcastTournamentId",
+                "value": "",
+                "type": "path",
+                "description": "The broadcast tournament ID"
+              }
+            ]
+          },
+          "docs": "Get the list of players of a broadcast tournament, if available.\n"
+        },
+        {
+          "info": {
+            "name": "Get a player of a broadcast",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/broadcast/:broadcastTournamentId/players/:playerId",
+            "params": [
+              {
+                "name": "broadcastTournamentId",
+                "value": "",
+                "type": "path",
+                "description": "The broadcast tournament ID"
+              },
+              {
+                "name": "playerId",
+                "value": "",
+                "type": "path",
+                "description": "The unique player ID within the broadcast. This is usually their fideId. \nIf the player does not have a fideId, it is their name. Consult the [list of players for the broadcast](#tag/broadcasts/GET/broadcast/{broadcastTournamentId}/players) for which ID to use.\n"
+              }
+            ]
+          },
+          "docs": "Get the details of a specific player and their games from a broadcast tournament.\n"
+        },
+        {
+          "info": {
+            "name": "Get the team leaderboard of a broadcast",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/broadcast/:broadcastTournamentId/teams/standings",
+            "params": [
+              {
+                "name": "broadcastTournamentId",
+                "value": "",
+                "type": "path",
+                "description": "The broadcast tournament ID"
+              }
+            ]
+          },
+          "docs": "Get the team leaderboard of a broadcast tournament, if available.\n"
+        },
+        {
+          "info": {
+            "name": "Update your broadcast tournament",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/broadcast/:broadcastTournamentId/edit",
+            "params": [
+              {
+                "name": "broadcastTournamentId",
+                "value": "",
+                "type": "path",
+                "description": "The broadcast ID"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Update information about a broadcast tournament that you created.\nThis endpoint accepts the same form data as the web form.\nAll fields must be populated with data. Missing fields will override the broadcast with empty data.\n"
+        },
+        {
+          "info": {
+            "name": "Create a broadcast round",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/broadcast/:broadcastTournamentId/new",
+            "params": [
+              {
+                "name": "broadcastTournamentId",
+                "value": "",
+                "type": "path",
+                "description": "The broadcast tournament ID"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Create a new broadcast round to relay external games.\nThis endpoint accepts the same form data as the web form.\n\nChoose one between `syncUrl`, `syncUrls`, `syncIds` and `syncUsers`, if it is missing, the broadcast needs to be fed by [pushing PGN to it](#tag/broadcasts/POST/api/broadcast/round/{broadcastRoundId}/push)\n"
+        },
+        {
+          "info": {
+            "name": "Get a broadcast round",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/broadcast/:broadcastTournamentSlug/:broadcastRoundSlug/:broadcastRoundId",
+            "params": [
+              {
+                "name": "broadcastTournamentSlug",
+                "value": "",
+                "type": "path",
+                "description": "The broadcast tournament slug. Only used for SEO, the slug can be safely replaced by `-`. Only the `broadcastRoundId` is actually used."
+              },
+              {
+                "name": "broadcastRoundSlug",
+                "value": "",
+                "type": "path",
+                "description": "The broadcast round slug. Only used for SEO, the slug can be safely replaced by `-`. Only the `broadcastRoundId` is actually used."
+              },
+              {
+                "name": "broadcastRoundId",
+                "value": "",
+                "type": "path",
+                "description": "The broadcast Round ID"
+              }
+            ]
+          },
+          "docs": "Get information about a broadcast round.\n"
+        },
+        {
+          "info": {
+            "name": "Update a broadcast round",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/broadcast/round/:broadcastRoundId/edit",
+            "params": [
+              {
+                "name": "broadcastRoundId",
+                "value": "",
+                "type": "path",
+                "description": "The broadcast round ID"
+              },
+              {
+                "name": "patch",
+                "value": "true",
+                "type": "query",
+                "description": "Only update the provided fields, leaving others unchanged"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Update information about a broadcast round.\nThis endpoint accepts the same form data as the web form.\nAll fields must be populated with data. Missing fields will override the broadcast with empty data.\nFor instance, if you omit `startDate`, then any pre-existing start date will be removed.\n"
+        },
+        {
+          "info": {
+            "name": "Reset a broadcast round",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/broadcast/round/:broadcastRoundId/reset",
+            "params": [
+              {
+                "name": "broadcastRoundId",
+                "value": "",
+                "type": "path",
+                "description": "The broadcast round ID"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Remove any games from the broadcast round and reset it to its initial state.\n"
+        },
+        {
+          "info": {
+            "name": "Push PGN to a broadcast round",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/broadcast/round/:broadcastRoundId/push",
+            "params": [
+              {
+                "name": "broadcastRoundId",
+                "value": "",
+                "type": "path",
+                "description": "The broadcast round ID"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Update a broadcast with new PGN.\nOnly for broadcasts without a source URL.\n"
+        },
+        {
+          "info": {
+            "name": "Stream an ongoing broadcast round as PGN",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/stream/broadcast/round/:broadcastRoundId.pgn",
+            "params": [
+              {
+                "name": "broadcastRoundId",
+                "value": "",
+                "type": "path",
+                "description": "The broadcast round ID"
+              },
+              {
+                "name": "clocks",
+                "value": "",
+                "type": "query",
+                "description": "Include clock comments in the PGN moves, when available.\nExample: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\n"
+              },
+              {
+                "name": "comments",
+                "value": "",
+                "type": "query",
+                "description": "Include analysis comments in the PGN moves, when available.\nExample: `12. Bxf6 { [%eval 0.23] }`\n"
+              }
+            ]
+          },
+          "docs": "This streaming endpoint first sends all games of a broadcast round in PGN format.\nThen, it waits for new moves to be played. As soon as it happens, the entire PGN of the game is sent to the stream.\nThe stream will also send PGNs when games are added to the round.\nThis is the best way to get updates about an ongoing round. Streaming means no polling,\nand no pollings means no latency, and minimum impact on the server.\n"
+        },
+        {
+          "info": {
+            "name": "Export one round as PGN",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/broadcast/round/:broadcastRoundId.pgn",
+            "params": [
+              {
+                "name": "broadcastRoundId",
+                "value": "",
+                "type": "path",
+                "description": "The round ID"
+              },
+              {
+                "name": "clocks",
+                "value": "",
+                "type": "query",
+                "description": "Include clock comments in the PGN moves, when available.\nExample: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\n"
+              },
+              {
+                "name": "comments",
+                "value": "",
+                "type": "query",
+                "description": "Include analysis comments in the PGN moves, when available.\nExample: `12. Bxf6 { [%eval 0.23] }`\n"
+              }
+            ]
+          },
+          "docs": "Download all games of a single round of a broadcast tournament in PGN format.\nYou *could* poll this endpoint to get updates about a tournament, but it would be slow,\nand very inefficient.\nInstead, consider [streaming the tournament](#tag/broadcasts/GET/api/stream/broadcast/round/{broadcastRoundId}.pgn) to get\na new PGN every time a game is updated, in real-time.\n"
+        },
+        {
+          "info": {
+            "name": "Export all rounds as PGN",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/broadcast/:broadcastTournamentId.pgn",
+            "params": [
+              {
+                "name": "broadcastTournamentId",
+                "value": "",
+                "type": "path",
+                "description": "The broadcast tournament ID"
+              },
+              {
+                "name": "clocks",
+                "value": "",
+                "type": "query",
+                "description": "Include clock comments in the PGN moves, when available.\nExample: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\n"
+              },
+              {
+                "name": "comments",
+                "value": "",
+                "type": "query",
+                "description": "Include analysis comments in the PGN moves, when available.\nExample: `12. Bxf6 { [%eval 0.23] }`\n"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Download all games of all rounds of a broadcast in PGN format.\nIf a `study:read` [OAuth token](#tag/OAuth) is provided,\nthe private rounds where the user is a contributor will be available.\nYou may want to [download only the games of a single round](#tag/broadcasts/GET/api/broadcast/round/{broadcastRoundId}.pgn) instead.\n"
+        },
+        {
+          "info": {
+            "name": "Get your broadcast rounds",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/broadcast/my-rounds",
+            "params": [
+              {
+                "name": "nb",
+                "value": "",
+                "type": "query",
+                "description": "How many rounds to get"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Stream all broadcast rounds you are a member of.\nAlso includes broadcasts rounds you did not create, but were invited to.\nAlso includes broadcasts rounds where you're a non-writing member. See the `writeable` flag in the response.\nRounds are ordered by rank, which is roughly chronological, most recent first, slightly pondered with popularity.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

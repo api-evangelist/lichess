@@ -1,0 +1,75 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lichess.org API reference Account FIDE API",
+    "version": "2.0.144"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "FIDE",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get a FIDE player",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/fide/player/:playerId",
+            "params": [
+              {
+                "name": "playerId",
+                "value": "",
+                "type": "path",
+                "description": "The FIDE player ID."
+              }
+            ]
+          },
+          "docs": "Get information about a FIDE player.\n"
+        },
+        {
+          "info": {
+            "name": "Get ratings history of a FIDE player",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/fide/player/:playerId/ratings",
+            "params": [
+              {
+                "name": "playerId",
+                "value": "",
+                "type": "path",
+                "description": "The FIDE player ID."
+              }
+            ]
+          },
+          "docs": "Historical standard, rapid and blitz ratings of a FIDE player\n"
+        },
+        {
+          "info": {
+            "name": "Search FIDE players",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/fide/player",
+            "params": [
+              {
+                "name": "q",
+                "value": "",
+                "type": "query",
+                "description": "The search query."
+              }
+            ]
+          },
+          "docs": "List of FIDE players search results for a query.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

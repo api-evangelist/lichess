@@ -1,0 +1,355 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lichess.org API reference Account Puzzles API",
+    "version": "2.0.144"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Puzzles",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get the daily puzzle",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/puzzle/daily"
+          },
+          "docs": "Get the daily Lichess puzzle in JSON format.\n"
+        },
+        {
+          "info": {
+            "name": "Get a puzzle by its ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/puzzle/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The puzzle ID"
+              }
+            ]
+          },
+          "docs": "Get a single Lichess puzzle in JSON format."
+        },
+        {
+          "info": {
+            "name": "Get a new puzzle",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/puzzle/next",
+            "params": [
+              {
+                "name": "angle",
+                "value": "",
+                "type": "query",
+                "description": "The theme or opening to filter puzzles with.\n\nAvailable themes are listed in [the lichess source code](https://github.com/ornicar/lila/blob/master/translation/source/puzzleTheme.xml) and [the lichess training themes hyperlinks](https://lichess.org/training/themes).\n"
+              },
+              {
+                "name": "difficulty",
+                "value": "",
+                "type": "query",
+                "description": "The desired puzzle difficulty, relative to the authenticated user puzzle rating, or 1500 if anonymous."
+              },
+              {
+                "name": "color",
+                "value": "",
+                "type": "query",
+                "description": "The color to play. Better left empty to automatically get 50% white."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Get a random Lichess puzzle in JSON format.\n\nIf authenticated, only returns puzzles that the user has never seen before.\n\n**DO NOT** use this endpoint to enumerate puzzles for mass download. Instead, download the [full public puzzle database](https://database.lichess.org/#puzzles).\n"
+        },
+        {
+          "info": {
+            "name": "Get multiple puzzles at once",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/puzzle/batch/:angle",
+            "params": [
+              {
+                "name": "angle",
+                "value": "",
+                "type": "path",
+                "description": "The theme or opening to filter puzzles with. Recommended: `mix`.\n\nAvailable themes are listed in [the lichess source code](https://github.com/ornicar/lila/blob/master/translation/source/puzzleTheme.xml) and [the lichess training themes hyperlinks](https://lichess.org/training/themes).\n"
+              },
+              {
+                "name": "difficulty",
+                "value": "",
+                "type": "query",
+                "description": "The desired puzzle difficulty, relative to the authenticated user puzzle rating, or 1500 if anonymous."
+              },
+              {
+                "name": "nb",
+                "value": "",
+                "type": "query",
+                "description": "How many puzzles to fetch. Just set it to `1` if you only need one puzzle.\n"
+              },
+              {
+                "name": "color",
+                "value": "",
+                "type": "query",
+                "description": "The color to play. Better left empty to automatically get 50% white.\nCurrently only works when `nb=1`.\n"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Get a batch of random Lichess puzzles in JSON format.\n\nIf authenticated, only returns puzzles that the user has never seen before.\n\n**DO NOT** use this endpoint to enumerate puzzles for mass download. Instead, download the [full public puzzle database](https://database.lichess.org/#puzzles).\n"
+        },
+        {
+          "info": {
+            "name": "Solve multiple puzzles at once",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/puzzle/batch/:angle",
+            "params": [
+              {
+                "name": "angle",
+                "value": "",
+                "type": "path",
+                "description": "The theme or opening of the solved puzzles.\n\nAvailable themes are listed in [the lichess source code](https://github.com/ornicar/lila/blob/master/translation/source/puzzleTheme.xml) and [the lichess training themes hyperlinks](https://lichess.org/training/themes).\n"
+              },
+              {
+                "name": "nb",
+                "value": "",
+                "type": "query",
+                "description": "When > 0, the response includes a new puzzle batch with that many puzzles.\n\nThis is equivalent to calling [/api/puzzle/batch/{angle}](#tag/puzzles/GET/api/puzzle/batch/{angle}),\nand can sometimes save a request.\n"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Set puzzles as solved and update ratings.\n"
+        },
+        {
+          "info": {
+            "name": "Get your puzzle activity",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/puzzle/activity",
+            "params": [
+              {
+                "name": "max",
+                "value": "",
+                "type": "query",
+                "description": "How many entries to download. Leave empty to download all activity."
+              },
+              {
+                "name": "before",
+                "value": "",
+                "type": "query",
+                "description": "Download entries before this timestamp. Defaults to now. Use `before` and `max` for pagination."
+              },
+              {
+                "name": "since",
+                "value": "",
+                "type": "query",
+                "description": "Download entries since this timestamp. Defaults to account creation date."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Download your puzzle activity in [ndjson](#description/streaming-with-nd-json) format.\nPuzzle activity is sorted by reverse chronological order (most recent first)\nWe recommend streaming the response, for it can be very long.\n"
+        },
+        {
+          "info": {
+            "name": "Get puzzles to replay",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/puzzle/replay/:days/:theme",
+            "params": [
+              {
+                "name": "days",
+                "value": "",
+                "type": "path",
+                "description": "How many days to look back when aggregating puzzle results. 30 is sensible."
+              },
+              {
+                "name": "theme",
+                "value": "",
+                "type": "path",
+                "description": "The theme or opening to filter puzzles with."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Gets the puzzle IDs of remaining puzzles to re-attempt in JSON format."
+        },
+        {
+          "info": {
+            "name": "Get your puzzle dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/puzzle/dashboard/:days",
+            "params": [
+              {
+                "name": "days",
+                "value": "",
+                "type": "path",
+                "description": "How many days to look back when aggregating puzzle results. 30 is sensible."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Download your [puzzle dashboard](https://lichess.org/training/dashboard/30/dashboard) as JSON.\nAlso includes all puzzle themes played, with aggregated results.\nAllows re-creating the [improvement/strengths](https://lichess.org/training/dashboard/30/improvementAreas) interfaces.\n"
+        },
+        {
+          "info": {
+            "name": "Get the storm dashboard of a player",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/storm/dashboard/:username",
+            "params": [
+              {
+                "name": "username",
+                "value": "",
+                "type": "path",
+                "description": "Username of the player"
+              },
+              {
+                "name": "days",
+                "value": "",
+                "type": "query",
+                "description": "How many days of history to return"
+              }
+            ]
+          },
+          "docs": "Download the [storm dashboard](https://lichess.org/storm/dashboard/mrbasso) of any player as JSON.\nContains the aggregated highscores, and the history of storm runs aggregated by days.\nUse `?days=0` if you only care about the highscores.\n"
+        },
+        {
+          "info": {
+            "name": "Create and join a puzzle race",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/racer",
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Create a new private [puzzle race](https://lichess.org/racer).\nThe Lichess user who creates the race must join the race page,\nand manually start the race when enough players have joined.\n- <https://lichess.org/racer>\n"
+        },
+        {
+          "info": {
+            "name": "Get puzzle race results",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/racer/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The puzzle race ID"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Get the results of a [puzzle race](https://lichess.org/racer).\nReturns information about players, puzzles, and the current status of the race.\n- <https://lichess.org/racer>\n\nNote that Lichess puzzle races are not persisted, and are only available\nfor 30 minutes. After that delay, they are permanently deleted.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

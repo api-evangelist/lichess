@@ -1,0 +1,81 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lichess.org API reference Account Tablebase API",
+    "version": "2.0.144"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tablebase",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Tablebase lookup",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/standard",
+            "params": [
+              {
+                "name": "fen",
+                "value": "",
+                "type": "query",
+                "description": "X-FEN of the position. Underscores allowed."
+              },
+              {
+                "name": "dtc",
+                "value": "",
+                "type": "query",
+                "description": "When to query the tablebase for `dtc` values. The default is\n`auxiliary`, i.e., only when the position is not covered by one of the\nother tablebases.\n"
+              }
+            ]
+          },
+          "docs": "**Endpoint: <https://tablebase.lichess.org>**\n\nExample: `curl http://tablebase.lichess.org/standard?fen=4k3/6KP/8/8/8/8/7p/8_w_-_-_0_1`\n"
+        },
+        {
+          "info": {
+            "name": "Tablebase lookup for Atomic chess",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/atomic",
+            "params": [
+              {
+                "name": "fen",
+                "value": "",
+                "type": "query",
+                "description": "X-FEN of the position. Underscores allowed."
+              }
+            ]
+          },
+          "docs": "**Endpoint: <https://tablebase.lichess.org>**\n"
+        },
+        {
+          "info": {
+            "name": "Tablebase lookup for Antichess",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/antichess",
+            "params": [
+              {
+                "name": "fen",
+                "value": "",
+                "type": "query",
+                "description": "X-FEN of the position. Underscores allowed."
+              }
+            ]
+          },
+          "docs": "**Endpoint: <https://tablebase.lichess.org>**\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

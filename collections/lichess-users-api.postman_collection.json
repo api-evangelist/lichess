@@ -1,0 +1,1585 @@
+{
+  "item": [
+    {
+      "id": "a3ef0d1b-4ee5-4eef-90df-ad4542d43206",
+      "name": "Users",
+      "description": {
+        "content": "Access registered users on Lichess.\n<https://lichess.org/player>\n\n- Each user blog exposes an atom (RSS) feed, like <https://lichess.org/@/thibault/blog.atom>\n- User blogs mashup feed: https://lichess.org/blog/community.atom\n- User blogs mashup feed for a language: https://lichess.org/blog/community/fr.atom\n",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "96f1b541-b7ca-47b7-89e6-6889d73b4de1",
+          "name": "Get real-time users status",
+          "request": {
+            "name": "Get real-time users status",
+            "description": {
+              "content": "Read the `online`, `playing` and `streaming` flags of several users.\nThis API is very fast and cheap on lichess side.\nSo you can call it quite often (like once every 5 seconds).\nUse it to track players and know when they're connected on lichess and playing games.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "users",
+                "status"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "ids",
+                  "value": "<string>",
+                  "description": "(Required) User IDs separated by commas. Up to 100 IDs."
+                },
+                {
+                  "disabled": false,
+                  "key": "withSignal",
+                  "value": "<boolean>",
+                  "description": "Also return the network signal of the player, when available.\nIt ranges from 1 (poor connection, lag > 500ms) to 4 (great connection, lag < 150ms)\nDefaults to `false` to preserve server resources.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "withGameIds",
+                  "value": "<boolean>",
+                  "description": "Also return the ID of the game being played, if any, for each player, in a `playingId` field.\nDefaults to `false` to preserve server resources.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "withGameMetas",
+                  "value": "<boolean>",
+                  "description": "Also return the id, time control and variant of the game being played, if any, for each player, in a `playing` field.\nDefaults to `false` to preserve server resources. Disables `withGameIds`.\n"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "f5f760d8-4c03-4e35-ac0f-aaf5b07afea2",
+              "name": "The list of users and their respective statuses.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "users",
+                    "status"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "ids",
+                      "value": "thibault,maia1,maia5"
+                    },
+                    {
+                      "key": "withSignal",
+                      "value": "true"
+                    },
+                    {
+                      "key": "withGameIds",
+                      "value": "true"
+                    },
+                    {
+                      "key": "withGameMetas",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"name\": \"Mary\",\n    \"flair\": \"people.open-hands-medium-light-skin-tone\",\n    \"id\": \"mary\"\n  },\n  {\n    \"name\": \"Ana\",\n    \"title\": \"WCM\",\n    \"flair\": \"smileys.downcast-face-with-sweat\",\n    \"id\": \"ana\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "13cff021-605f-4324-ad12-999b1d03da5b",
+          "name": "Get all top 10",
+          "request": {
+            "name": "Get all top 10",
+            "description": {
+              "content": "Get the top 10 players for each speed and variant.\nSee <https://lichess.org/player>.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "player"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7833c8ea-e048-4ab0-9aa0-311ce74bd2a0",
+              "name": "The list of variants with their respective top players.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "player"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"bullet\": [\n    {\n      \"id\": \"chessplayer202024\",\n      \"username\": \"chessplayer202024\",\n      \"perfs\": {\n        \"bullet\": {\n          \"rating\": 3337,\n          \"progress\": 50\n        }\n      }\n    },\n    {\n      \"id\": \"ediz_gurel\",\n      \"username\": \"Ediz_Gurel\",\n      \"perfs\": {\n        \"bullet\": {\n          \"rating\": 3314,\n          \"progress\": -15\n        }\n      },\n      \"title\": \"GM\"\n    },\n    {\n      \"id\": \"rodosfatihi\",\n      \"username\": \"RoDoSfAtiHi\",\n      \"perfs\": {\n        \"bullet\": {\n          \"rating\": 3309,\n          \"progress\": -5\n        }\n      }\n    },\n    {\n      \"id\": \"chess-art-us\",\n      \"username\": \"chess-art-us\",\n      \"perfs\": {\n        \"bullet\": {\n          \"rating\": 3302,\n          \"progress\": 23\n        }\n      },\n      \"title\": \"GM\"\n    },\n    {\n      \"id\": \"grizzlybear15\",\n      \"username\": \"grizzlybear15\",\n      \"perfs\": {\n        \"bullet\": {\n          \"rating\": 3302,\n          \"progress\": 34\n        }\n      }\n    },\n    {\n      \"id\": \"sindarovgm\",\n      \"username\": \"SindarovGM\",\n      \"perfs\": {\n        \"bullet\": {\n          \"rating\": 3294,\n          \"progress\": 13\n        }\n      },\n      \"title\": \"GM\"\n    },\n    {\n      \"id\": \"vladimirovich9000\",\n      \"username\": \"Vladimirovich9000\",\n      \"perfs\": {\n        \"bullet\": {\n          \"rating\": 3243,\n          \"progress\": 1\n        }\n      },\n      \"title\": \"GM\"\n    },\n    {\n      \"id\": \"arka50\",\n      \"username\": \"Arka50\",\n      \"perfs\": {\n        \"bullet\": {\n          \"rating\": 3224,\n          \"progress\": 8\n        }\n      },\n      \"title\": \"GM\"\n    },\n    {\n      \"id\": \"shant7777777\",\n      \"username\": \"Shant7777777\",\n      \"perfs\": {\n        \"bullet\": {\n          \"rating\": 3222,\n          \"progress\": 14\n        }\n      },\n      \"title\": \"GM\"\n    },\n    {\n      \"id\": \"woshigeshagua\",\n      \"username\": \"woshigeshagua\",\n      \"perfs\": {\n        \"bullet\": {\n          \"rating\": 3207,\n          \"progress\": 14\n        }\n      },\n      \"online\": true\n    }\n  ],\n  \"blitz\": [\n    {\n      \"id\": \"asdert9\",\n      \"username\": \"asdert9\",\n      \"perfs\": {\n        \"blitz\": {\n          \"rating\": 3039,\n          \"progress\": 33\n        }\n      }\n    },\n    {\n      \"id\": \"wonderland305\",\n      \"username\": \"wonderland305\",\n      \"perfs\": {\n        \"blitz\": {\n          \"rating\": 3003,\n          \"progress\": -11\n        }\n      }\n    },\n    {\n      \"id\": \"functionjunkie\",\n      \"username\": \"FunctionJunkie\",\n      \"perfs\": {\n        \"blitz\": {\n          \"rating\": 2968,\n          \"progress\": 41\n        }\n      }\n    },\n    {\n      \"id\": \"athena-pallada\",\n      \"username\": \"athena-pallada\",\n      \"perfs\": {\n        \"blitz\": {\n          \"rating\": 2954,\n          \"progress\": 4\n        }\n      },\n      \"title\": \"GM\"\n    },\n    {\n      \"id\": \"yarebore\",\n      \"username\": \"Yarebore\",\n      \"perfs\": {\n        \"blitz\": {\n          \"rating\": 2953,\n          \"progress\": -7\n        }\n      },\n      \"title\": \"GM\"\n    },\n    {\n      \"id\": \"woshigeshagua\",\n      \"username\": \"woshigeshagua\",\n      \"perfs\": {\n        \"blitz\": {\n          \"rating\": 2938,\n          \"progress\": -18\n        }\n      },\n      \"online\": true\n    },\n    {\n      \"id\": \"vladimirovich9000\",\n      \"username\": \"Vladimirovich9000\",\n      \"perfs\": {\n        \"blitz\": {\n          \"rating\": 2932,\n          \"progress\": 21\n        }\n      },\n      \"title\": \"GM\"\n    },\n    {\n      \"id\": \"dr_tiger\",\n      \"username\": \"Dr_Tiger\",\n      \"perfs\": {\n        \"blitz\": {\n          \"rating\": 2931,\n          \"progress\": 30\n        }\n      },\n      \"title\": \"GM\"\n    },\n    {\n      \"id\": \"lu_shanglei\",\n      \"username\": \"Lu_Shanglei\",\n      \"perfs\": {\n        \"blitz\": {\n          \"rating\": 2931,\n          \"progress\": -21\n        }\n      }\n    },\n    {\n      \"id\": \"worstplayerinbullet\",\n      \"username\": \"worstplayerinbullet\",\n      \"perfs\": {\n        \"blitz\": {\n          \"rating\": 2922,\n          \"progress\": 31\n        }\n      }\n    }\n  ],\n  \"rapid\": [\n    {\n      \"id\": \"ultra_d_instinct\",\n      \"username\": \"Ultra_D_Instinct\",\n      \"perfs\": {\n        \"rapid\": {\n          \"rating\": 2801,\n          \"progress\": 7\n        }\n      }\n    },\n    {\n      \"id\": \"just_no_fun\",\n      \"username\": \"Just_No_Fun\",\n      \"perfs\": {\n        \"rapid\": {\n          \"rating\": 2801,\n          \"progress\": -21\n        }\n      }\n    },\n    {\n      \"id\": \"ilqar_7474\",\n      \"username\": \"ilqar_7474\",\n      \"perfs\": {\n        \"rapid\": {\n          \"rating\": 2768,\n          \"progress\": -44\n        }\n      }\n    },\n    {\n      \"id\": \"tuzakli_egitim\",\n      \"username\": \"Tuzakli_Egitim\",\n      \"perfs\": {\n        \"rapid\": {\n          \"rating\": 2754,\n          \"progress\": 12\n        }\n      },\n      \"title\": \"FM\"\n    },\n    {\n      \"id\": \"coolchessschool\",\n      \"username\": \"CoolChessSchool\",\n      \"perfs\": {\n        \"rapid\": {\n          \"rating\": 2752,\n          \"progress\": 56\n        }\n      }\n    },\n    {\n      \"id\": \"fluorinedesu\",\n      \"username\": \"Fluorinedesu\",\n      \"perfs\": {\n        \"rapid\": {\n          \"rating\": 2749,\n          \"progress\": 44\n        }\n      }\n    },\n    {\n      \"id\": \"andrey11976\",\n      \"username\": \"Andrey11976\",\n      \"perfs\": {\n        \"rapid\": {\n          \"rating\": 2733,\n          \"progress\": 10\n        }\n      },\n      \"title\": \"NM\"\n    },\n    {\n      \"id\": \"sashakuzhilniy\",\n      \"username\": \"SashaKuzhilniy\",\n      \"perfs\": {\n        \"rapid\": {\n          \"rating\": 2725,\n          \"progress\": -2\n        }\n      },\n      \"title\": \"CM\"\n    },\n    {\n      \"id\": \"metan0ia\",\n      \"username\": \"metan0ia\",\n      \"perfs\": {\n        \"rapid\": {\n          \"rating\": 2718,\n          \"progress\": 36\n        }\n      }\n    },\n    {\n      \"id\": \"wuinmas\",\n      \"username\": \"WUINMAS\",\n      \"perfs\": {\n        \"rapid\": {\n          \"rating\": 2717,\n          \"progress\": 31\n        }\n      }\n    }\n  ],\n  \"classical\": [\n    {\n      \"id\": \"belyakovbogdan\",\n      \"username\": \"BelyakovBogdan\",\n      \"perfs\": {\n        \"classical\": {\n          \"rating\": 2612,\n          \"progress\": 8\n        }\n      },\n      \"title\": \"IM\",\n      \"patron\": true,\n      \"patronColor\": 3\n    },\n    {\n      \"id\": \"heisingen1234\",\n      \"username\": \"heisingen1234\",\n      \"perfs\": {\n        \"classical\": {\n          \"rating\": 2559,\n          \"progress\": 53\n        }\n      }\n    },\n    {\n      \"id\": \"mw1966\",\n      \"username\": \"MW1966\",\n      \"perfs\": {\n        \"classical\": {\n          \"rating\": 2520,\n          \"progress\": 8\n        }\n      },\n      \"patron\": true,\n      \"patronColor\": 4\n    },\n    {\n      \"id\": \"vlad_lazarev79\",\n      \"username\": \"Vlad_Lazarev79\",\n      \"perfs\": {\n        \"classical\": {\n          \"rating\": 2512,\n          \"progress\": -23\n        }\n      }\n    },\n    {\n      \"id\": \"lance5500\",\n      \"username\": \"Lance5500\",\n      \"perfs\": {\n        \"classical\": {\n          \"rating\": 2495,\n          \"progress\": 7\n        }\n      },\n      \"title\": \"LM\",\n      \"patron\": true,\n      \"patronColor\": 10,\n      \"online\": true\n    },\n    {\n      \"id\": \"ojaijoao\",\n      \"username\": \"OjaiJoao\",\n      \"perfs\": {\n        \"classical\": {\n          \"rating\": 2482,\n          \"progress\": -3\n        }\n      },\n      \"title\": \"FM\"\n    },\n    {\n      \"id\": \"chesstheory64\",\n      \"username\": \"ChessTheory64\",\n      \"perfs\": {\n        \"classical\": {\n          \"rating\": 2480,\n          \"progress\": -39\n        }\n      },\n      \"title\": \"FM\",\n      \"patron\": true,\n      \"patronColor\": 7\n    },\n    {\n      \"id\": \"dynamicus\",\n      \"username\": \"Dynamicus\",\n      \"perfs\": {\n        \"classical\": {\n          \"rating\": 2469,\n          \"progress\": 17\n        }\n      },\n      \"title\": \"CM\"\n    },\n    {\n      \"id\": \"inner___join\",\n      \"username\": \"Inner___Join\",\n      \"perfs\": {\n        \"classical\": {\n          \"rating\": 2467,\n          \"progress\": 19\n        }\n      }\n    },\n    {\n      \"id\": \"marshal67\",\n      \"username\": \"marshal67\",\n      \"perfs\": {\n        \"classical\": {\n          \"rating\": 2459,\n          \"progress\": -2\n        }\n      }\n    }\n  ],\n  \"ultraBullet\": [\n    {\n      \"id\": \"arkadiy_khromaev\",\n      \"username\": \"Arkadiy_Khromaev\",\n      \"perfs\": {\n        \"ultraBullet\": {\n          \"rating\": 2804,\n          \"progress\": 37\n        }\n      },\n      \"patron\": true,\n      \"patronColor\": 1\n    },\n    {\n      \"id\": \"nihalsarin2004\",\n      \"username\": \"nihalsarin2004\",\n      \"perfs\": {\n        \"ultraBullet\": {\n          \"rating\": 2744,\n          \"progress\": -6\n        }\n      },\n      \"title\": \"GM\",\n      \"patron\": true,\n      \"patronColor\": 10\n    },\n    {\n      \"id\": \"tamojerry\",\n      \"username\": \"tamojerry\",\n      \"perfs\": {\n        \"ultraBullet\": {\n          \"rating\": 2731,\n          \"progress\": 17\n        }\n      },\n      \"title\": \"IM\"\n    },\n    {\n      \"id\": \"shadowking78\",\n      \"username\": \"ShadowKing78\",\n      \"perfs\": {\n        \"ultraBullet\": {\n          \"rating\": 2635,\n          \"progress\": 18\n        }\n      },\n      \"title\": \"FM\",\n      \"online\": true\n    },\n    {\n      \"id\": \"amethyst27\",\n      \"username\": \"AmeThyst27\",\n      \"perfs\": {\n        \"ultraBullet\": {\n          \"rating\": 2613,\n          \"progress\": -36\n        }\n      }\n    },\n    {\n      \"id\": \"blazinq\",\n      \"username\": \"Blazinq\",\n      \"perfs\": {\n        \"ultraBullet\": {\n          \"rating\": 2613,\n          \"progress\": 9\n        }\n      },\n      \"title\": \"IM\"\n    },\n    {\n      \"id\": \"trixr4kidzzz\",\n      \"username\": \"TrixR4Kidzzz\",\n      \"perfs\": {\n        \"ultraBullet\": {\n          \"rating\": 2611,\n          \"progress\": -24\n        }\n      },\n      \"title\": \"FM\"\n    },\n    {\n      \"id\": \"aa175\",\n      \"username\": \"aa175\",\n      \"perfs\": {\n        \"ultraBullet\": {\n          \"rating\": 2572,\n          \"progress\": -26\n        }\n      },\n      \"online\": true\n    },\n    {\n      \"id\": \"mysterious_expert\",\n      \"username\": \"mysterious_expert\",\n      \"perfs\": {\n        \"ultraBullet\": {\n          \"rating\": 2564,\n          \"progress\": -37\n        }\n      },\n      \"title\": \"IM\",\n      \"patron\": true,\n      \"patronColor\": 10\n    },\n    {\n      \"id\": \"impogthefunnyfrog\",\n      \"username\": \"impogthefunnyfrog\",\n      \"perfs\": {\n        \"ultraBullet\": {\n          \"rating\": 2555,\n          \"progress\": 1\n        }\n      }\n    }\n  ],\n  \"crazyhouse\": [\n    {\n      \"id\": \"littleplotkin\",\n      \"username\": \"littleplotkin\",\n      \"perfs\": {\n        \"crazyhouse\": {\n          \"rating\": 2849,\n          \"progress\": 1\n        }\n      },\n      \"title\": \"IM\",\n      \"online\": true\n    },\n    {\n      \"id\": \"jannlee\",\n      \"username\": \"JannLee\",\n      \"perfs\": {\n        \"crazyhouse\": {\n          \"rating\": 2817,\n          \"progress\": 4\n        }\n      },\n      \"title\": \"LM\",\n      \"patron\": true,\n      \"patronColor\": 10\n    },\n    {\n      \"id\": \"visualdennis\",\n      \"username\": \"visualdennis\",\n      \"perfs\": {\n        \"crazyhouse\": {\n          \"rating\": 2765,\n          \"progress\": 3\n        }\n      },\n      \"title\": \"NM\",\n      \"patron\": true,\n      \"patronColor\": 9\n    },\n    {\n      \"id\": \"bzdybowicz\",\n      \"username\": \"bzdybowicz\",\n      \"perfs\": {\n        \"crazyhouse\": {\n          \"rating\": 2686,\n          \"progress\": 25\n        }\n      },\n      \"online\": true\n    },\n    {\n      \"id\": \"vikal00\",\n      \"username\": \"vikal00\",\n      \"perfs\": {\n        \"crazyhouse\": {\n          \"rating\": 2638,\n          \"progress\": 15\n        }\n      }\n    },\n    {\n      \"id\": \"tobyrizzo\",\n      \"username\": \"tobyrizzo\",\n      \"perfs\": {\n        \"crazyhouse\": {\n          \"rating\": 2637,\n          \"progress\": -29\n        }\n      },\n      \"title\": \"NM\"\n    },\n    {\n      \"id\": \"samuraitonto\",\n      \"username\": \"Samuraitonto\",\n      \"perfs\": {\n        \"crazyhouse\": {\n          \"rating\": 2594,\n          \"progress\": 21\n        }\n      }\n    },\n    {\n      \"id\": \"sonogoneli\",\n      \"username\": \"sonogoneli\",\n      \"perfs\": {\n        \"crazyhouse\": {\n          \"rating\": 2585,\n          \"progress\": 18\n        }\n      }\n    },\n    {\n      \"id\": \"pknm\",\n      \"username\": \"pknm\",\n      \"perfs\": {\n        \"crazyhouse\": {\n          \"rating\": 2584,\n          \"progress\": -1\n        }\n      }\n    },\n    {\n      \"id\": \"unjournakamura\",\n      \"username\": \"unjournakamura\",\n      \"perfs\": {\n        \"crazyhouse\": {\n          \"rating\": 2555,\n          \"progress\": 33\n        }\n      }\n    }\n  ],\n  \"chess960\": [\n    {\n      \"id\": \"chess-art-us\",\n      \"username\": \"chess-art-us\",\n      \"perfs\": {\n        \"chess960\": {\n          \"rating\": 2817,\n          \"progress\": 42\n        }\n      },\n      \"title\": \"GM\"\n    },\n    {\n      \"id\": \"jumpingknight20\",\n      \"username\": \"jumpingknight20\",\n      \"perfs\": {\n        \"chess960\": {\n          \"rating\": 2773,\n          \"progress\": -12\n        }\n      }\n    },\n    {\n      \"id\": \"guary1\",\n      \"username\": \"Guary1\",\n      \"perfs\": {\n        \"chess960\": {\n          \"rating\": 2667,\n          \"progress\": -8\n        }\n      },\n      \"title\": \"FM\",\n      \"online\": true\n    },\n    {\n      \"id\": \"matteorf2b\",\n      \"username\": \"matteorf2b\",\n      \"perfs\": {\n        \"chess960\": {\n          \"rating\": 2602,\n          \"progress\": 32\n        }\n      },\n      \"title\": \"CM\"\n    },\n    {\n      \"id\": \"johnsam1\",\n      \"username\": \"johnsam1\",\n      \"perfs\": {\n        \"chess960\": {\n          \"rating\": 2600,\n          \"progress\": 8\n        }\n      }\n    },\n    {\n      \"id\": \"potnie_ladoshki2\",\n      \"username\": \"Potnie_Ladoshki2\",\n      \"perfs\": {\n        \"chess960\": {\n          \"rating\": 2596,\n          \"progress\": -10\n        }\n      },\n      \"title\": \"CM\"\n    },\n    {\n      \"id\": \"maratgilfanovyoutube\",\n      \"username\": \"MaratGilfanovYoutube\",\n      \"perfs\": {\n        \"chess960\": {\n          \"rating\": 2594,\n          \"progress\": 43\n        }\n      },\n      \"title\": \"FM\"\n    },\n    {\n      \"id\": \"hanskai\",\n      \"username\": \"Hanskai\",\n      \"perfs\": {\n        \"chess960\": {\n          \"rating\": 2566,\n          \"progress\": -15\n        }\n      }\n    },\n    {\n      \"id\": \"neverenough\",\n      \"username\": \"NeverEnough\",\n      \"perfs\": {\n        \"chess960\": {\n          \"rating\": 2551,\n          \"progress\": 28\n        }\n      },\n      \"title\": \"GM\"\n    },\n    {\n      \"id\": \"mereseberserknhi\",\n      \"username\": \"MereseBerserkNhi\",\n      \"perfs\": {\n        \"chess960\": {\n          \"rating\": 2531,\n          \"progress\": -22\n        }\n      }\n    }\n  ],\n  \"kingOfTheHill\": [\n    {\n      \"id\": \"trixr4kidzzz\",\n      \"username\": \"TrixR4Kidzzz\",\n      \"perfs\": {\n        \"kingOfTheHill\": {\n          \"rating\": 2609,\n          \"progress\": -10\n        }\n      },\n      \"title\": \"FM\"\n    },\n    {\n      \"id\": \"chess-art-us\",\n      \"username\": \"chess-art-us\",\n      \"perfs\": {\n        \"kingOfTheHill\": {\n          \"rating\": 2605,\n          \"progress\": 22\n        }\n      },\n      \"title\": \"GM\"\n    },\n    {\n      \"id\": \"johnsam1\",\n      \"username\": \"johnsam1\",\n      \"perfs\": {\n        \"kingOfTheHill\": {\n          \"rating\": 2559,\n          \"progress\": 14\n        }\n      }\n    },\n    {\n      \"id\": \"aqua_blazing\",\n      \"username\": \"Aqua_Blazing\",\n      \"perfs\": {\n        \"kingOfTheHill\": {\n          \"rating\": 2518,\n          \"progress\": -9\n        }\n      }\n    },\n    {\n      \"id\": \"yakov25\",\n      \"username\": \"Yakov25\",\n      \"perfs\": {\n        \"kingOfTheHill\": {\n          \"rating\": 2501,\n          \"progress\": 25\n        }\n      }\n    },\n    {\n      \"id\": \"marek_religa\",\n      \"username\": \"Marek_Religa\",\n      \"perfs\": {\n        \"kingOfTheHill\": {\n          \"rating\": 2485,\n          \"progress\": 9\n        }\n      }\n    },\n    {\n      \"id\": \"move5\",\n      \"username\": \"move5\",\n      \"perfs\": {\n        \"kingOfTheHill\": {\n          \"rating\": 2471,\n          \"progress\": 20\n        }\n      },\n      \"title\": \"FM\"\n    },\n    {\n      \"id\": \"yuuki-asuna\",\n      \"username\": \"yuuki-asuna\",\n      \"perfs\": {\n        \"kingOfTheHill\": {\n          \"rating\": 2463,\n          \"progress\": 13\n        }\n      },\n      \"title\": \"CM\",\n      \"online\": true\n    },\n    {\n      \"id\": \"mereseberserknhi\",\n      \"username\": \"MereseBerserkNhi\",\n      \"perfs\": {\n        \"kingOfTheHill\": {\n          \"rating\": 2452,\n          \"progress\": -21\n        }\n      }\n    },\n    {\n      \"id\": \"lance5500\",\n      \"username\": \"Lance5500\",\n      \"perfs\": {\n        \"kingOfTheHill\": {\n          \"rating\": 2426,\n          \"progress\": 13\n        }\n      },\n      \"title\": \"LM\",\n      \"patron\": true,\n      \"patronColor\": 10,\n      \"online\": true\n    }\n  ],\n  \"threeCheck\": [\n    {\n      \"id\": \"statham_13\",\n      \"username\": \"Statham_13\",\n      \"perfs\": {\n        \"threeCheck\": {\n          \"rating\": 2667,\n          \"progress\": 12\n        }\n      },\n      \"title\": \"FM\"\n    },\n    {\n      \"id\": \"unholycrusade\",\n      \"username\": \"UnholyCrusade\",\n      \"perfs\": {\n        \"threeCheck\": {\n          \"rating\": 2570,\n          \"progress\": 10\n        }\n      },\n      \"title\": \"FM\"\n    },\n    {\n      \"id\": \"knightrider-777\",\n      \"username\": \"Knightrider-777\",\n      \"perfs\": {\n        \"threeCheck\": {\n          \"rating\": 2521,\n          \"progress\": -14\n        }\n      }\n    },\n    {\n      \"id\": \"maxwellssilvrhammer\",\n      \"username\": \"maxwellssilvrhaMMer\",\n      \"perfs\": {\n        \"threeCheck\": {\n          \"rating\": 2459,\n          \"progress\": -11\n        }\n      }\n    },\n    {\n      \"id\": \"lion2006-45\",\n      \"username\": \"lion2006-45\",\n      \"perfs\": {\n        \"threeCheck\": {\n          \"rating\": 2459,\n          \"progress\": 2\n        }\n      }\n    },\n    {\n      \"id\": \"coldstar1\",\n      \"username\": \"ColdStar1\",\n      \"perfs\": {\n        \"threeCheck\": {\n          \"rating\": 2449,\n          \"progress\": -20\n        }\n      }\n    },\n    {\n      \"id\": \"maimel\",\n      \"username\": \"Maimel\",\n      \"perfs\": {\n        \"threeCheck\": {\n          \"rating\": 2448,\n          \"progress\": 9\n        }\n      }\n    },\n    {\n      \"id\": \"yuuki-asuna\",\n      \"username\": \"yuuki-asuna\",\n      \"perfs\": {\n        \"threeCheck\": {\n          \"rating\": 2444,\n          \"progress\": -26\n        }\n      },\n      \"title\": \"CM\",\n      \"online\": true\n    },\n    {\n      \"id\": \"yakov25\",\n      \"username\": \"Yakov25\",\n      \"perfs\": {\n        \"threeCheck\": {\n          \"rating\": 2439,\n          \"progress\": 20\n        }\n      }\n    },\n    {\n      \"id\": \"vikal00\",\n      \"username\": \"vikal00\",\n      \"perfs\": {\n        \"threeCheck\": {\n          \"rating\": 2435,\n          \"progress\": 20\n        }\n      }\n    }\n  ],\n  \"antichess\": [\n    {\n      \"id\": \"bonab_bakery\",\n      \"username\": \"Bonab_Bakery\",\n      \"perfs\": {\n        \"antichess\": {\n          \"rating\": 2559,\n          \"progress\": -19\n        }\n      }\n    },\n    {\n      \"id\": \"mr_pirinchoo\",\n      \"username\": \"Mr_Pirinchoo\",\n      \"perfs\": {\n        \"antichess\": {\n          \"rating\": 2546,\n          \"progress\": 5\n        }\n      },\n      \"patron\": true,\n      \"patronColor\": 2,\n      \"online\": true\n    },\n    {\n      \"id\": \"theunknownguyreborn\",\n      \"username\": \"TheUnknownGuyReborn\",\n      \"perfs\": {\n        \"antichess\": {\n          \"rating\": 2543,\n          \"progress\": 19\n        }\n      },\n      \"patron\": true,\n      \"patronColor\": 5\n    },\n    {\n      \"id\": \"tetiksh1agrawal\",\n      \"username\": \"Tetiksh1Agrawal\",\n      \"perfs\": {\n        \"antichess\": {\n          \"rating\": 2542,\n          \"progress\": -33\n        }\n      },\n      \"patron\": true,\n      \"patronColor\": 4\n    },\n    {\n      \"id\": \"antichessepico\",\n      \"username\": \"AntichessEpico\",\n      \"perfs\": {\n        \"antichess\": {\n          \"rating\": 2485,\n          \"progress\": 15\n        }\n      }\n    },\n    {\n      \"id\": \"rush_g15\",\n      \"username\": \"Rush_G15\",\n      \"perfs\": {\n        \"antichess\": {\n          \"rating\": 2471,\n          \"progress\": -6\n        }\n      },\n      \"online\": true\n    },\n    {\n      \"id\": \"pf2000\",\n      \"username\": \"pf2000\",\n      \"perfs\": {\n        \"antichess\": {\n          \"rating\": 2457,\n          \"progress\": -5\n        }\n      }\n    },\n    {\n      \"id\": \"irlywnttply\",\n      \"username\": \"irlywnttply\",\n      \"perfs\": {\n        \"antichess\": {\n          \"rating\": 2457,\n          \"progress\": 23\n        }\n      }\n    },\n    {\n      \"id\": \"antichess_valentino\",\n      \"username\": \"Antichess_Valentino\",\n      \"perfs\": {\n        \"antichess\": {\n          \"rating\": 2421,\n          \"progress\": 10\n        }\n      }\n    },\n    {\n      \"id\": \"iithearunii\",\n      \"username\": \"IiTheAruNiI\",\n      \"perfs\": {\n        \"antichess\": {\n          \"rating\": 2417,\n          \"progress\": 7\n        }\n      }\n    }\n  ],\n  \"atomic\": [\n    {\n      \"id\": \"chrisrapid\",\n      \"username\": \"chrisrapid\",\n      \"perfs\": {\n        \"atomic\": {\n          \"rating\": 2472,\n          \"progress\": -20\n        }\n      }\n    },\n    {\n      \"id\": \"maxwellssilvrhammer\",\n      \"username\": \"maxwellssilvrhaMMer\",\n      \"perfs\": {\n        \"atomic\": {\n          \"rating\": 2464,\n          \"progress\": -25\n        }\n      }\n    },\n    {\n      \"id\": \"jakestatefarm\",\n      \"username\": \"JakeStateFarm\",\n      \"perfs\": {\n        \"atomic\": {\n          \"rating\": 2460,\n          \"progress\": 9\n        }\n      }\n    },\n    {\n      \"id\": \"rechesster\",\n      \"username\": \"ReChesster\",\n      \"perfs\": {\n        \"atomic\": {\n          \"rating\": 2444,\n          \"progress\": 6\n        }\n      },\n      \"patron\": true,\n      \"patronColor\": 3\n    },\n    {\n      \"id\": \"rkrounit\",\n      \"username\": \"RKROUNIT\",\n      \"perfs\": {\n        \"atomic\": {\n          \"rating\": 2442,\n          \"progress\": 12\n        }\n      }\n    },\n    {\n      \"id\": \"mss365\",\n      \"username\": \"mss365\",\n      \"perfs\": {\n        \"atomic\": {\n          \"rating\": 2423,\n          \"progress\": 19\n        }\n      }\n    },\n    {\n      \"id\": \"quasabianth\",\n      \"username\": \"Quasabianth\",\n      \"perfs\": {\n        \"atomic\": {\n          \"rating\": 2420,\n          \"progress\": 21\n        }\n      }\n    },\n    {\n      \"id\": \"ihatespammers\",\n      \"username\": \"ihatespaMMers\",\n      \"perfs\": {\n        \"atomic\": {\n          \"rating\": 2405,\n          \"progress\": -10\n        }\n      }\n    },\n    {\n      \"id\": \"chembaby\",\n      \"username\": \"Chembaby\",\n      \"perfs\": {\n        \"atomic\": {\n          \"rating\": 2383,\n          \"progress\": -43\n        }\n      }\n    },\n    {\n      \"id\": \"statham_13\",\n      \"username\": \"Statham_13\",\n      \"perfs\": {\n        \"atomic\": {\n          \"rating\": 2374,\n          \"progress\": -18\n        }\n      },\n      \"title\": \"FM\"\n    }\n  ],\n  \"horde\": [\n    {\n      \"id\": \"horus_88\",\n      \"username\": \"Horus_88\",\n      \"perfs\": {\n        \"horde\": {\n          \"rating\": 2738,\n          \"progress\": 6\n        }\n      },\n      \"online\": true\n    },\n    {\n      \"id\": \"matvei-e2e4\",\n      \"username\": \"Matvei-e2e4\",\n      \"perfs\": {\n        \"horde\": {\n          \"rating\": 2734,\n          \"progress\": 2\n        }\n      }\n    },\n    {\n      \"id\": \"kutlugbilgekagan\",\n      \"username\": \"KutlugBilgeKagan\",\n      \"perfs\": {\n        \"horde\": {\n          \"rating\": 2668,\n          \"progress\": -10\n        }\n      }\n    },\n    {\n      \"id\": \"mindhoonter-f5f6\",\n      \"username\": \"MindHoonter-f5f6\",\n      \"perfs\": {\n        \"horde\": {\n          \"rating\": 2586,\n          \"progress\": 5\n        }\n      }\n    },\n    {\n      \"id\": \"hod-konem96\",\n      \"username\": \"hod-konem96\",\n      \"perfs\": {\n        \"horde\": {\n          \"rating\": 2580,\n          \"progress\": 9\n        }\n      }\n    },\n    {\n      \"id\": \"tahaaminecherraben\",\n      \"username\": \"TahaAmineCherraben\",\n      \"perfs\": {\n        \"horde\": {\n          \"rating\": 2559,\n          \"progress\": 55\n        }\n      }\n    },\n    {\n      \"id\": \"yakov25\",\n      \"username\": \"Yakov25\",\n      \"perfs\": {\n        \"horde\": {\n          \"rating\": 2556,\n          \"progress\": 4\n        }\n      }\n    },\n    {\n      \"id\": \"stubenfisch\",\n      \"username\": \"Stubenfisch\",\n      \"perfs\": {\n        \"horde\": {\n          \"rating\": 2548,\n          \"progress\": -41\n        }\n      },\n      \"patron\": true,\n      \"patronColor\": 10\n    },\n    {\n      \"id\": \"rayholt\",\n      \"username\": \"RayHolt\",\n      \"perfs\": {\n        \"horde\": {\n          \"rating\": 2543,\n          \"progress\": -37\n        }\n      }\n    },\n    {\n      \"id\": \"aar_77on\",\n      \"username\": \"Aar_77on\",\n      \"perfs\": {\n        \"horde\": {\n          \"rating\": 2524,\n          \"progress\": -16\n        }\n      },\n      \"online\": true\n    }\n  ],\n  \"racingKings\": [\n    {\n      \"id\": \"royalmaniac\",\n      \"username\": \"RoyalManiac\",\n      \"perfs\": {\n        \"racingKings\": {\n          \"rating\": 2522,\n          \"progress\": -12\n        }\n      },\n      \"patron\": true,\n      \"patronColor\": 10\n    },\n    {\n      \"id\": \"m-a01\",\n      \"username\": \"M-A01\",\n      \"perfs\": {\n        \"racingKings\": {\n          \"rating\": 2448,\n          \"progress\": 7\n        }\n      }\n    },\n    {\n      \"id\": \"r2300\",\n      \"username\": \"R2300\",\n      \"perfs\": {\n        \"racingKings\": {\n          \"rating\": 2422,\n          \"progress\": 15\n        }\n      }\n    },\n    {\n      \"id\": \"playanotherone\",\n      \"username\": \"playanotherone\",\n      \"perfs\": {\n        \"racingKings\": {\n          \"rating\": 2384,\n          \"progress\": 0\n        }\n      }\n    },\n    {\n      \"id\": \"seth_777\",\n      \"username\": \"seth_777\",\n      \"perfs\": {\n        \"racingKings\": {\n          \"rating\": 2383,\n          \"progress\": -38\n        }\n      }\n    },\n    {\n      \"id\": \"cybershredder\",\n      \"username\": \"CyberShredder\",\n      \"perfs\": {\n        \"racingKings\": {\n          \"rating\": 2371,\n          \"progress\": 0\n        }\n      },\n      \"online\": true\n    },\n    {\n      \"id\": \"oscarsm80\",\n      \"username\": \"OSCARSM80\",\n      \"perfs\": {\n        \"racingKings\": {\n          \"rating\": 2353,\n          \"progress\": 30\n        }\n      }\n    },\n    {\n      \"id\": \"gleb_momot\",\n      \"username\": \"Gleb_Momot\",\n      \"perfs\": {\n        \"racingKings\": {\n          \"rating\": 2319,\n          \"progress\": -7\n        }\n      }\n    },\n    {\n      \"id\": \"controllerofficial77\",\n      \"username\": \"ControllerOfficial77\",\n      \"perfs\": {\n        \"racingKings\": {\n          \"rating\": 2313,\n          \"progress\": -26\n        }\n      },\n      \"patron\": true,\n      \"patronColor\": 1\n    },\n    {\n      \"id\": \"cr0c0d1l3\",\n      \"username\": \"cr0c0d1l3\",\n      \"perfs\": {\n        \"racingKings\": {\n          \"rating\": 2299,\n          \"progress\": -33\n        }\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f4bc8af1-ea18-4efe-a638-2a645bdab87a",
+          "name": "Get one leaderboard",
+          "request": {
+            "name": "Get one leaderboard",
+            "description": {
+              "content": "Get the leaderboard for a single speed or variant (a.k.a. `perfType`).\nThere is no leaderboard for correspondence or puzzles.\nSee <https://lichess.org/player/top/100/bullet>.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "player",
+                "top",
+                ":nb",
+                ":perfType"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "nb",
+                  "description": "(Required) How many users to fetch"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "perfType",
+                  "description": "(Required) The speed or variant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/vnd.lichess.v3+json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "707db290-cc6e-4dad-bb45-ccd7b2450c79",
+              "name": "The list of top players for the variant.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "player",
+                    "top",
+                    ":nb",
+                    ":perfType"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "nb",
+                      "description": "(Required) How many users to fetch"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "perfType",
+                      "description": "(Required) The speed or variant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/vnd.lichess.v3+json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/vnd.lichess.v3+json"
+                }
+              ],
+              "body": "{\n  \"users\": [\n    {\n      \"id\": \"ana\",\n      \"username\": \"Ana\",\n      \"perfs\": {\n        \"blitz\": {\n          \"rating\": 2512,\n          \"progress\": 0\n        }\n      },\n      \"title\": \"WCM\"\n    },\n    {\n      \"id\": \"elena\",\n      \"username\": \"Elena\",\n      \"perfs\": {\n        \"blitz\": {\n          \"rating\": 2389,\n          \"progress\": 0\n        }\n      },\n      \"title\": \"WNM\",\n      \"patron\": true,\n      \"patronColor\": 1\n    },\n    {\n      \"id\": \"lola\",\n      \"username\": \"Lola\",\n      \"perfs\": {\n        \"blitz\": {\n          \"rating\": 2366,\n          \"progress\": 0\n        }\n      },\n      \"title\": \"CM\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e443b841-0bd0-4506-bb41-de0cbe479317",
+          "name": "Get user public data",
+          "request": {
+            "name": "Get user public data",
+            "description": {
+              "content": "Read public data of a user.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "user",
+                ":username"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "trophies",
+                  "value": "false",
+                  "description": "Include user trophies"
+                },
+                {
+                  "disabled": false,
+                  "key": "profile",
+                  "value": "true",
+                  "description": "Include user profile data"
+                },
+                {
+                  "disabled": false,
+                  "key": "rank",
+                  "value": "false",
+                  "description": "Include global lichess ranking for each perf"
+                },
+                {
+                  "disabled": false,
+                  "key": "fideId",
+                  "value": "false",
+                  "description": "Include public FIDE ID if any"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "username",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://lichess.org/api/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://lichess.org/oauth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "e1032bcf-ed7f-4605-a93f-6961ca40ad50",
+              "name": "The information of the user.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "user",
+                    ":username"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "trophies",
+                      "value": "false"
+                    },
+                    {
+                      "key": "profile",
+                      "value": "true"
+                    },
+                    {
+                      "key": "rank",
+                      "value": "false"
+                    },
+                    {
+                      "key": "fideId",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "username",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"mary\",\n  \"username\": \"Mary\",\n  \"perfs\": {\n    \"bullet\": {\n      \"games\": 1593,\n      \"rating\": 1119,\n      \"rd\": 66,\n      \"prog\": -27\n    },\n    \"blitz\": {\n      \"games\": 1560,\n      \"rating\": 1145,\n      \"rd\": 56,\n      \"prog\": -29\n    },\n    \"rapid\": {\n      \"games\": 358,\n      \"rating\": 1124,\n      \"rd\": 83,\n      \"prog\": -8\n    },\n    \"classical\": {\n      \"games\": 414,\n      \"rating\": 946,\n      \"rd\": 110,\n      \"prog\": 33,\n      \"prov\": true\n    },\n    \"correspondence\": {\n      \"games\": 692,\n      \"rating\": 1083,\n      \"rd\": 56,\n      \"prog\": 23\n    },\n    \"chess960\": {\n      \"games\": 600,\n      \"rating\": 1104,\n      \"rd\": 92,\n      \"prog\": 22\n    },\n    \"kingOfTheHill\": {\n      \"games\": 454,\n      \"rating\": 1077,\n      \"rd\": 54,\n      \"prog\": 43\n    },\n    \"threeCheck\": {\n      \"games\": 159,\n      \"rating\": 1018,\n      \"rd\": 108,\n      \"prog\": -6\n    },\n    \"antichess\": {\n      \"games\": 114,\n      \"rating\": 937,\n      \"rd\": 49,\n      \"prog\": -51\n    },\n    \"atomic\": {\n      \"games\": 1261,\n      \"rating\": 1073,\n      \"rd\": 45,\n      \"prog\": -6\n    },\n    \"horde\": {\n      \"games\": 83,\n      \"rating\": 1115,\n      \"rd\": 45,\n      \"prog\": -28\n    },\n    \"crazyhouse\": {\n      \"games\": 1556,\n      \"rating\": 965,\n      \"rd\": 49,\n      \"prog\": 2\n    },\n    \"puzzle\": {\n      \"games\": 60,\n      \"rating\": 1033,\n      \"rd\": 45,\n      \"prog\": -36\n    }\n  },\n  \"flair\": \"people.open-hands-medium-light-skin-tone\",\n  \"createdAt\": 1775221588473,\n  \"profile\": {\n    \"flag\": \"GW\",\n    \"location\": \"Mary City\",\n    \"bio\": \"A normal working day for modern industry only dates from the Factory Act of 1833, which included cotton, wool, flax, and silk factories. Nothing is more characteristic of the spirit of capital than the history of the English Factory Acts from 1833 to 1864.\",\n    \"fideRating\": 1400,\n    \"uscfRating\": 1035,\n    \"ecfRating\": 1084,\n    \"rcfRating\": 910,\n    \"cfcRating\": 992,\n    \"dsbRating\": 1129,\n    \"links\": \"https://en.wikipedia.org/wiki/Srinivasa_Ramanujan\\nhttps://en.wikipedia.org/wiki/Charles_Darwin\\nhttps://lichess.org\\nhttps://reddit.com/r/chess\\nhttps://en.wikipedia.org/wiki/Noam_Chomsky\"\n  },\n  \"seenAt\": 1776880668894,\n  \"playTime\": {\n    \"total\": 15514,\n    \"tv\": 0\n  },\n  \"url\": \"https://lichess.org/@/Mary\",\n  \"count\": {\n    \"all\": 9795,\n    \"rated\": 7836,\n    \"draw\": 904,\n    \"loss\": 4408,\n    \"win\": 4483,\n    \"bookmark\": 0,\n    \"playing\": 0,\n    \"import\": 0,\n    \"me\": 1\n  },\n  \"followable\": true,\n  \"following\": true,\n  \"blocking\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "130c9848-35da-4845-8eec-d4530965fd90",
+          "name": "Get rating history of a user",
+          "request": {
+            "name": "Get rating history of a user",
+            "description": {
+              "content": "Read rating history of a user, for all perf types.\nThere is at most one entry per day.\nFormat of an entry is `[year, month, day, rating]`.\n`month` starts at zero (January).\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "user",
+                ":username",
+                "rating-history"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "username",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d64df11c-8625-4a7f-8d37-8d2b11e10e72",
+              "name": "The rating history of the user.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "user",
+                    ":username",
+                    "rating-history"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "username",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"name\": \"UltraBullet\",\n    \"points\": []\n  },\n  {\n    \"name\": \"Bullet\",\n    \"points\": [\n      [\n        2026,\n        3,\n        3,\n        1193\n      ],\n      [\n        2026,\n        3,\n        6,\n        1195\n      ],\n      [\n        2026,\n        3,\n        9,\n        1262\n      ],\n      [\n        2026,\n        3,\n        12,\n        1150\n      ],\n      [\n        2026,\n        3,\n        15,\n        1213\n      ],\n      [\n        2026,\n        3,\n        18,\n        1120\n      ],\n      [\n        2026,\n        3,\n        21,\n        1220\n      ],\n      [\n        2026,\n        3,\n        24,\n        1115\n      ],\n      [\n        2026,\n        3,\n        27,\n        1076\n      ],\n      [\n        2026,\n        3,\n        30,\n        1219\n      ],\n      [\n        2026,\n        4,\n        3,\n        1231\n      ],\n      [\n        2026,\n        4,\n        6,\n        1138\n      ],\n      [\n        2026,\n        4,\n        9,\n        1134\n      ],\n      [\n        2026,\n        4,\n        12,\n        1220\n      ]\n    ]\n  },\n  {\n    \"name\": \"Blitz\",\n    \"points\": [\n      [\n        2026,\n        3,\n        3,\n        697\n      ],\n      [\n        2026,\n        3,\n        5,\n        674\n      ],\n      [\n        2026,\n        3,\n        7,\n        671\n      ],\n      [\n        2026,\n        3,\n        9,\n        717\n      ],\n      [\n        2026,\n        3,\n        11,\n        838\n      ],\n      [\n        2026,\n        3,\n        13,\n        807\n      ],\n      [\n        2026,\n        3,\n        15,\n        862\n      ],\n      [\n        2026,\n        3,\n        17,\n        919\n      ],\n      [\n        2026,\n        3,\n        19,\n        900\n      ],\n      [\n        2026,\n        3,\n        21,\n        900\n      ],\n      [\n        2026,\n        3,\n        23,\n        1005\n      ],\n      [\n        2026,\n        3,\n        25,\n        992\n      ],\n      [\n        2026,\n        3,\n        27,\n        870\n      ],\n      [\n        2026,\n        3,\n        29,\n        933\n      ],\n      [\n        2026,\n        4,\n        1,\n        1027\n      ],\n      [\n        2026,\n        4,\n        3,\n        983\n      ],\n      [\n        2026,\n        4,\n        5,\n        1119\n      ],\n      [\n        2026,\n        4,\n        7,\n        1023\n      ],\n      [\n        2026,\n        4,\n        9,\n        1137\n      ],\n      [\n        2026,\n        4,\n        11,\n        1019\n      ],\n      [\n        2026,\n        4,\n        13,\n        1098\n      ]\n    ]\n  },\n  {\n    \"name\": \"Rapid\",\n    \"points\": [\n      [\n        2026,\n        3,\n        3,\n        737\n      ],\n      [\n        2026,\n        3,\n        9,\n        750\n      ],\n      [\n        2026,\n        3,\n        15,\n        784\n      ],\n      [\n        2026,\n        3,\n        21,\n        859\n      ],\n      [\n        2026,\n        3,\n        27,\n        852\n      ],\n      [\n        2026,\n        4,\n        3,\n        959\n      ],\n      [\n        2026,\n        4,\n        9,\n        1000\n      ]\n    ]\n  },\n  {\n    \"name\": \"Classical\",\n    \"points\": [\n      [\n        2026,\n        3,\n        3,\n        988\n      ],\n      [\n        2026,\n        3,\n        10,\n        1069\n      ],\n      [\n        2026,\n        3,\n        17,\n        963\n      ],\n      [\n        2026,\n        3,\n        24,\n        946\n      ],\n      [\n        2026,\n        4,\n        1,\n        907\n      ],\n      [\n        2026,\n        4,\n        8,\n        864\n      ]\n    ]\n  },\n  {\n    \"name\": \"Correspondence\",\n    \"points\": [\n      [\n        2026,\n        3,\n        3,\n        1474\n      ],\n      [\n        2026,\n        3,\n        10,\n        1270\n      ],\n      [\n        2026,\n        3,\n        17,\n        1291\n      ],\n      [\n        2026,\n        3,\n        24,\n        1307\n      ],\n      [\n        2026,\n        4,\n        1,\n        1229\n      ],\n      [\n        2026,\n        4,\n        8,\n        1058\n      ]\n    ]\n  },\n  {\n    \"name\": \"Crazyhouse\",\n    \"points\": [\n      [\n        2026,\n        3,\n        3,\n        1158\n      ],\n      [\n        2026,\n        3,\n        6,\n        1196\n      ],\n      [\n        2026,\n        3,\n        9,\n        1120\n      ],\n      [\n        2026,\n        3,\n        12,\n        1170\n      ],\n      [\n        2026,\n        3,\n        15,\n        1106\n      ],\n      [\n        2026,\n        3,\n        18,\n        1045\n      ],\n      [\n        2026,\n        3,\n        21,\n        1156\n      ],\n      [\n        2026,\n        3,\n        24,\n        1066\n      ],\n      [\n        2026,\n        3,\n        27,\n        1061\n      ],\n      [\n        2026,\n        3,\n        30,\n        1056\n      ],\n      [\n        2026,\n        4,\n        3,\n        1074\n      ],\n      [\n        2026,\n        4,\n        6,\n        1014\n      ],\n      [\n        2026,\n        4,\n        9,\n        931\n      ],\n      [\n        2026,\n        4,\n        12,\n        965\n      ]\n    ]\n  },\n  {\n    \"name\": \"Chess960\",\n    \"points\": [\n      [\n        2026,\n        3,\n        3,\n        1035\n      ],\n      [\n        2026,\n        3,\n        8,\n        957\n      ],\n      [\n        2026,\n        3,\n        13,\n        1084\n      ],\n      [\n        2026,\n        3,\n        18,\n        1043\n      ],\n      [\n        2026,\n        3,\n        23,\n        1055\n      ],\n      [\n        2026,\n        3,\n        28,\n        1118\n      ],\n      [\n        2026,\n        4,\n        3,\n        1139\n      ],\n      [\n        2026,\n        4,\n        8,\n        1146\n      ],\n      [\n        2026,\n        4,\n        13,\n        1194\n      ]\n    ]\n  },\n  {\n    \"name\": \"King of the Hill\",\n    \"points\": [\n      [\n        2026,\n        3,\n        3,\n        1346\n      ],\n      [\n        2026,\n        3,\n        5,\n        1405\n      ],\n      [\n        2026,\n        3,\n        7,\n        1377\n      ],\n      [\n        2026,\n        3,\n        9,\n        1259\n      ],\n      [\n        2026,\n        3,\n        11,\n        1290\n      ],\n      [\n        2026,\n        3,\n        13,\n        1269\n      ],\n      [\n        2026,\n        3,\n        15,\n        1227\n      ],\n      [\n        2026,\n        3,\n        17,\n        1338\n      ],\n      [\n        2026,\n        3,\n        19,\n        1321\n      ],\n      [\n        2026,\n        3,\n        21,\n        1155\n      ],\n      [\n        2026,\n        3,\n        23,\n        1220\n      ],\n      [\n        2026,\n        3,\n        25,\n        1132\n      ],\n      [\n        2026,\n        3,\n        27,\n        1143\n      ],\n      [\n        2026,\n        3,\n        29,\n        1099\n      ],\n      [\n        2026,\n        4,\n        1,\n        1143\n      ],\n      [\n        2026,\n        4,\n        3,\n        1211\n      ],\n      [\n        2026,\n        4,\n        5,\n        1182\n      ],\n      [\n        2026,\n        4,\n        7,\n        1219\n      ],\n      [\n        2026,\n        4,\n        9,\n        1171\n      ],\n      [\n        2026,\n        4,\n        11,\n        1105\n      ],\n      [\n        2026,\n        4,\n        13,\n        1162\n      ]\n    ]\n  },\n  {\n    \"name\": \"Three-Check\",\n    \"points\": [\n      [\n        2026,\n        3,\n        3,\n        1575\n      ],\n      [\n        2026,\n        3,\n        7,\n        1371\n      ],\n      [\n        2026,\n        3,\n        11,\n        1388\n      ],\n      [\n        2026,\n        3,\n        15,\n        1379\n      ],\n      [\n        2026,\n        3,\n        19,\n        1245\n      ],\n      [\n        2026,\n        3,\n        23,\n        1358\n      ],\n      [\n        2026,\n        3,\n        27,\n        1234\n      ],\n      [\n        2026,\n        4,\n        1,\n        1113\n      ],\n      [\n        2026,\n        4,\n        5,\n        1161\n      ],\n      [\n        2026,\n        4,\n        9,\n        1062\n      ],\n      [\n        2026,\n        4,\n        13,\n        1042\n      ]\n    ]\n  },\n  {\n    \"name\": \"Antichess\",\n    \"points\": [\n      [\n        2026,\n        3,\n        3,\n        1126\n      ],\n      [\n        2026,\n        3,\n        10,\n        1200\n      ],\n      [\n        2026,\n        3,\n        17,\n        1147\n      ],\n      [\n        2026,\n        3,\n        24,\n        1030\n      ],\n      [\n        2026,\n        4,\n        1,\n        1074\n      ],\n      [\n        2026,\n        4,\n        8,\n        1065\n      ]\n    ]\n  },\n  {\n    \"name\": \"Atomic\",\n    \"points\": [\n      [\n        2026,\n        3,\n        3,\n        1576\n      ],\n      [\n        2026,\n        3,\n        5,\n        1399\n      ],\n      [\n        2026,\n        3,\n        7,\n        1359\n      ],\n      [\n        2026,\n        3,\n        9,\n        1416\n      ],\n      [\n        2026,\n        3,\n        11,\n        1364\n      ],\n      [\n        2026,\n        3,\n        13,\n        1405\n      ],\n      [\n        2026,\n        3,\n        15,\n        1364\n      ],\n      [\n        2026,\n        3,\n        17,\n        1343\n      ],\n      [\n        2026,\n        3,\n        19,\n        1365\n      ],\n      [\n        2026,\n        3,\n        21,\n        1385\n      ],\n      [\n        2026,\n        3,\n        23,\n        1236\n      ],\n      [\n        2026,\n        3,\n        25,\n        1280\n      ],\n      [\n        2026,\n        3,\n        27,\n        1156\n      ],\n      [\n        2026,\n        3,\n        29,\n        1191\n      ],\n      [\n        2026,\n        4,\n        1,\n        1124\n      ],\n      [\n        2026,\n        4,\n        3,\n        1122\n      ],\n      [\n        2026,\n        4,\n        5,\n        1163\n      ],\n      [\n        2026,\n        4,\n        7,\n        1131\n      ],\n      [\n        2026,\n        4,\n        9,\n        1053\n      ],\n      [\n        2026,\n        4,\n        11,\n        1169\n      ],\n      [\n        2026,\n        4,\n        13,\n        1140\n      ]\n    ]\n  },\n  {\n    \"name\": \"Horde\",\n    \"points\": [\n      [\n        2026,\n        3,\n        3,\n        701\n      ],\n      [\n        2026,\n        3,\n        6,\n        853\n      ],\n      [\n        2026,\n        3,\n        9,\n        919\n      ],\n      [\n        2026,\n        3,\n        12,\n        844\n      ],\n      [\n        2026,\n        3,\n        15,\n        826\n      ],\n      [\n        2026,\n        3,\n        18,\n        959\n      ],\n      [\n        2026,\n        3,\n        21,\n        851\n      ],\n      [\n        2026,\n        3,\n        24,\n        859\n      ],\n      [\n        2026,\n        3,\n        27,\n        1012\n      ],\n      [\n        2026,\n        3,\n        30,\n        1043\n      ],\n      [\n        2026,\n        4,\n        3,\n        1108\n      ],\n      [\n        2026,\n        4,\n        6,\n        1138\n      ],\n      [\n        2026,\n        4,\n        9,\n        986\n      ],\n      [\n        2026,\n        4,\n        12,\n        1121\n      ]\n    ]\n  },\n  {\n    \"name\": \"Racing Kings\",\n    \"points\": []\n  },\n  {\n    \"name\": \"Puzzles\",\n    \"points\": [\n      [\n        2026,\n        3,\n        3,\n        1123\n      ],\n      [\n        2026,\n        3,\n        7,\n        1094\n      ],\n      [\n        2026,\n        3,\n        11,\n        1268\n      ],\n      [\n        2026,\n        3,\n        15,\n        1223\n      ],\n      [\n        2026,\n        3,\n        19,\n        1232\n      ],\n      [\n        2026,\n        3,\n        23,\n        1085\n      ],\n      [\n        2026,\n        3,\n        27,\n        1021\n      ],\n      [\n        2026,\n        4,\n        1,\n        1146\n      ],\n      [\n        2026,\n        4,\n        5,\n        1076\n      ],\n      [\n        2026,\n        4,\n        9,\n        965\n      ],\n      [\n        2026,\n        4,\n        13,\n        1108\n      ]\n    ]\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "115dcbc0-5724-48b2-b4ad-586ca11c7674",
+          "name": "Get performance statistics of a user",
+          "request": {
+            "name": "Get performance statistics of a user",
+            "description": {
+              "content": "Read performance statistics of a user, for a single performance.\nSimilar to the [performance pages on the website](https://lichess.org/@/thibault/perf/bullet).\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "user",
+                ":username",
+                "perf",
+                ":perf"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "username",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "perf",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ebe42050-b3f3-47a2-a345-766b9ff5ff2a",
+              "name": "The performance statistics of the user",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "user",
+                    ":username",
+                    "perf",
+                    ":perf"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "username",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "perf",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"user\": {\n    \"name\": \"thibault\"\n  },\n  \"perf\": {\n    \"glicko\": {\n      \"rating\": 1791.48,\n      \"deviation\": 47.84\n    },\n    \"nb\": 11614,\n    \"progress\": -1\n  },\n  \"rank\": 147171,\n  \"percentile\": 77.6,\n  \"stat\": {\n    \"highest\": {\n      \"int\": 1970,\n      \"at\": \"2022-02-23T13:44:54.633Z\",\n      \"gameId\": \"Blpjmhnf\"\n    },\n    \"lowest\": {\n      \"int\": 1385,\n      \"at\": \"2015-08-05T10:13:41.326Z\",\n      \"gameId\": \"tgbRykg2\"\n    },\n    \"bestWins\": {\n      \"results\": [\n        {\n          \"opRating\": 2239,\n          \"opId\": {\n            \"name\": \"aqua21\",\n            \"flair\": \"objects.postal-horn\",\n            \"id\": \"aqua21\"\n          },\n          \"at\": \"2020-02-15T19:13:05.329Z\",\n          \"gameId\": \"UxNJmMXz\"\n        },\n        {\n          \"opRating\": 2163,\n          \"opId\": {\n            \"name\": \"Staffan67\",\n            \"id\": \"staffan67\"\n          },\n          \"at\": \"2022-12-28T10:54:21.597Z\",\n          \"gameId\": \"9IMlwEv1\"\n        },\n        {\n          \"opRating\": 2120,\n          \"opId\": {\n            \"name\": \"Heissenberger\",\n            \"id\": \"heissenberger\"\n          },\n          \"at\": \"2021-10-25T08:26:27.155Z\",\n          \"gameId\": \"2buPRuV8\"\n        },\n        {\n          \"opRating\": 2051,\n          \"opId\": {\n            \"name\": \"Stas235\",\n            \"id\": \"stas235\"\n          },\n          \"at\": \"2021-11-06T18:55:53.728Z\",\n          \"gameId\": \"VLxCVzDY\"\n        },\n        {\n          \"opRating\": 2040,\n          \"opId\": {\n            \"name\": \"Harryz-77\",\n            \"id\": \"harryz-77\"\n          },\n          \"at\": \"2021-11-03T17:39:40.181Z\",\n          \"gameId\": \"eCgiYDS7\"\n        }\n      ]\n    },\n    \"worstLosses\": {\n      \"results\": [\n        {\n          \"opRating\": 995,\n          \"opId\": {\n            \"name\": \"dahupetitjoueur\",\n            \"id\": \"dahupetitjoueur\"\n          },\n          \"at\": \"2017-04-12T14:31:58.002Z\",\n          \"gameId\": \"7zyddy2c\"\n        },\n        {\n          \"opRating\": 1121,\n          \"opId\": {\n            \"name\": \"Tinkugupta1011\",\n            \"id\": \"tinkugupta1011\"\n          },\n          \"at\": \"2022-10-22T03:36:35.447Z\",\n          \"gameId\": \"CCyyGKmD\"\n        },\n        {\n          \"opRating\": 1146,\n          \"opId\": {\n            \"name\": \"chemkhihabib\",\n            \"id\": \"chemkhihabib\"\n          },\n          \"at\": \"2016-06-01T09:31:09.694Z\",\n          \"gameId\": \"XatMm3RO\"\n        },\n        {\n          \"opRating\": 1166,\n          \"opId\": {\n            \"name\": \"Bottios\",\n            \"title\": \"BOT\",\n            \"id\": \"bottios\"\n          },\n          \"at\": \"2018-12-14T09:22:52.633Z\",\n          \"gameId\": \"3fke4MHX\"\n        },\n        {\n          \"opRating\": 1182,\n          \"opId\": {\n            \"name\": \"skanerterry\",\n            \"id\": \"skanerterry\"\n          },\n          \"at\": \"2016-06-09T15:32:10.474Z\",\n          \"gameId\": \"n4ViqGlp\"\n        }\n      ]\n    },\n    \"count\": {\n      \"all\": 12101,\n      \"rated\": 11492,\n      \"win\": 5726,\n      \"loss\": 5802,\n      \"draw\": 573,\n      \"tour\": 1601,\n      \"berserk\": 52,\n      \"opAvg\": 1706.62,\n      \"seconds\": 3767400,\n      \"disconnects\": 9\n    },\n    \"resultStreak\": {\n      \"win\": {\n        \"cur\": {\n          \"v\": 0\n        },\n        \"max\": {\n          \"v\": 11,\n          \"from\": {\n            \"at\": \"2018-10-19T10:02:05.144Z\",\n            \"gameId\": \"ycmyqK6e\"\n          },\n          \"to\": {\n            \"at\": \"2018-10-19T12:25:31.868Z\",\n            \"gameId\": \"3PwQXIBN\"\n          }\n        }\n      },\n      \"loss\": {\n        \"cur\": {\n          \"v\": 2,\n          \"from\": {\n            \"at\": \"2026-05-13T08:23:38.653Z\",\n            \"gameId\": \"nrO6iTZ3\"\n          },\n          \"to\": {\n            \"at\": \"2026-05-13T08:32:58.61Z\",\n            \"gameId\": \"fSJcMeCL\"\n          }\n        },\n        \"max\": {\n          \"v\": 19,\n          \"from\": {\n            \"at\": \"2018-03-09T23:54:54.771Z\",\n            \"gameId\": \"iAJe1M8f\"\n          },\n          \"to\": {\n            \"at\": \"2018-03-16T20:52:03.611Z\",\n            \"gameId\": \"7CZ1SEF5\"\n          }\n        }\n      }\n    },\n    \"playStreak\": {\n      \"nb\": {\n        \"cur\": {\n          \"v\": 0\n        },\n        \"max\": {\n          \"v\": 115,\n          \"from\": {\n            \"at\": \"2024-10-18T11:32:12.142Z\",\n            \"gameId\": \"l819pRNp\"\n          },\n          \"to\": {\n            \"at\": \"2024-10-18T20:54:30.256Z\",\n            \"gameId\": \"1HeDeGbe\"\n          }\n        }\n      },\n      \"time\": {\n        \"cur\": {\n          \"v\": 0\n        },\n        \"max\": {\n          \"v\": 23231,\n          \"from\": {\n            \"at\": \"2024-10-18T11:32:12.142Z\",\n            \"gameId\": \"l819pRNp\"\n          },\n          \"to\": {\n            \"at\": \"2024-10-18T20:54:30.256Z\",\n            \"gameId\": \"1HeDeGbe\"\n          }\n        }\n      },\n      \"lastDate\": \"2026-05-13T08:32:58.61Z\"\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a15c07fe-6a62-462b-9f29-972ddbb3a07b",
+          "name": "Get user activity",
+          "request": {
+            "name": "Get user activity",
+            "description": {
+              "content": "Read data to generate the activity feed of a user.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "user",
+                ":username",
+                "activity"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "username",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "65426e58-b51a-4c95-b83c-d17c974165c4",
+              "name": "The activity feed of the user.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "user",
+                    ":username",
+                    "activity"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "username",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"interval\": {\n      \"start\": 1778803200000,\n      \"end\": 1778889600000\n    },\n    \"follows\": {\n      \"in\": {\n        \"ids\": [\n          \"chrisc5mb\"\n        ]\n      }\n    }\n  },\n  {\n    \"interval\": {\n      \"start\": 1778716800000,\n      \"end\": 1778803200000\n    },\n    \"puzzles\": {\n      \"score\": {\n        \"win\": 1,\n        \"loss\": 0,\n        \"draw\": 0,\n        \"rp\": {\n          \"before\": 1999,\n          \"after\": 2009\n        }\n      }\n    },\n    \"follows\": {\n      \"in\": {\n        \"ids\": [\n          \"lisanthm\",\n          \"pureaperionsq\",\n          \"arda_kslc21\",\n          \"teso22\",\n          \"ww0ut\",\n          \"vidhathathreya\",\n          \"shirakuchess\"\n        ]\n      }\n    }\n  },\n  {\n    \"interval\": {\n      \"start\": 1778630400000,\n      \"end\": 1778716800000\n    },\n    \"games\": {\n      \"blitz\": {\n        \"win\": 0,\n        \"loss\": 2,\n        \"draw\": 0,\n        \"rp\": {\n          \"before\": 1805,\n          \"after\": 1791\n        }\n      }\n    },\n    \"puzzles\": {\n      \"score\": {\n        \"win\": 1,\n        \"loss\": 0,\n        \"draw\": 0,\n        \"rp\": {\n          \"before\": 1986,\n          \"after\": 1999\n        }\n      }\n    },\n    \"follows\": {\n      \"in\": {\n        \"ids\": [\n          \"sathvik_nannuri\",\n          \"raphael_171123\",\n          \"l3azwa\",\n          \"orion_banerjee\",\n          \"leftfreezingdoor\",\n          \"shapovalov1\",\n          \"tolbrandir\",\n          \"jhansirani\",\n          \"mailtoadvik\",\n          \"battledudes606dbdb\",\n          \"hdjjkf\",\n          \"advit_bhat\",\n          \"j_harshiv\",\n          \"bobybot\",\n          \"jackhlay\"\n        ],\n        \"nb\": 18\n      }\n    }\n  },\n  {\n    \"interval\": {\n      \"start\": 1778544000000,\n      \"end\": 1778630400000\n    },\n    \"puzzles\": {\n      \"score\": {\n        \"win\": 1,\n        \"loss\": 0,\n        \"draw\": 0,\n        \"rp\": {\n          \"before\": 1978,\n          \"after\": 1986\n        }\n      }\n    },\n    \"follows\": {\n      \"in\": {\n        \"ids\": [\n          \"xinyilovechess\",\n          \"kushnorris\",\n          \"enrigo93\",\n          \"zanycolourfulwindow\",\n          \"pet_your_enemy\",\n          \"advikrnair\",\n          \"rom1_chess\",\n          \"gleb1234567899\",\n          \"masterr_67\",\n          \"gknuchamp\",\n          \"mr_checkmate007\",\n          \"karpov005\",\n          \"pragyanreddy\"\n        ]\n      }\n    },\n    \"stream\": true\n  },\n  {\n    \"interval\": {\n      \"start\": 1778457600000,\n      \"end\": 1778544000000\n    },\n    \"games\": {\n      \"blitz\": {\n        \"win\": 1,\n        \"loss\": 0,\n        \"draw\": 0,\n        \"rp\": {\n          \"before\": 1799,\n          \"after\": 1805\n        }\n      }\n    },\n    \"follows\": {\n      \"in\": {\n        \"ids\": [\n          \"kolya228322\",\n          \"uluthrek\",\n          \"sixtyseven_67\",\n          \"jilbo1234\",\n          \"onemorekiwi\",\n          \"laskeristhebomb\",\n          \"vihariuppalapati\",\n          \"alexhuerta\",\n          \"fjcruiser\",\n          \"thenameisstan\",\n          \"bhoomin\",\n          \"zeus555\",\n          \"ramrachit_2204\",\n          \"kishalay_m\",\n          \"dayronf1\"\n        ]\n      }\n    }\n  },\n  {\n    \"interval\": {\n      \"start\": 1778371200000,\n      \"end\": 1778457600000\n    },\n    \"puzzles\": {\n      \"score\": {\n        \"win\": 13,\n        \"loss\": 2,\n        \"draw\": 0,\n        \"rp\": {\n          \"before\": 1886,\n          \"after\": 1978\n        }\n      }\n    },\n    \"follows\": {\n      \"in\": {\n        \"ids\": [\n          \"coolcoldice3\",\n          \"johndoe5743\",\n          \"kemalbaitemir\",\n          \"emmanuelrv1\",\n          \"qlibet\",\n          \"jay63\",\n          \"rchess14102013\",\n          \"r-a1h8h1a8\",\n          \"tidahy\",\n          \"tikhon_loud\",\n          \"danielgg14\",\n          \"chessking20122026\",\n          \"h4zuop\",\n          \"schiffskoch\",\n          \"nilusha1984\"\n        ]\n      }\n    }\n  },\n  {\n    \"interval\": {\n      \"start\": 1778284800000,\n      \"end\": 1778371200000\n    },\n    \"puzzles\": {\n      \"score\": {\n        \"win\": 1,\n        \"loss\": 0,\n        \"draw\": 0,\n        \"rp\": {\n          \"before\": 1872,\n          \"after\": 1886\n        }\n      }\n    },\n    \"follows\": {\n      \"in\": {\n        \"ids\": [\n          \"h4zuop\",\n          \"thebeguiler\",\n          \"rawlyfearful\",\n          \"brilliant-siesta\",\n          \"r01-f2f7\",\n          \"iamsubhajitroy\",\n          \"akshayksingh\",\n          \"nel_2000\",\n          \"feshom\",\n          \"remotecon_troller\",\n          \"yonilavo\",\n          \"basitbc02\"\n        ]\n      }\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "50e3f93c-2d0e-4dac-95ed-6cd8e3b4d7cc",
+          "name": "Get users by ID",
+          "request": {
+            "name": "Get users by ID",
+            "description": {
+              "content": "Get up to 300 users by their IDs. Users are returned in the same order as the IDs.\nThe method is `POST` to allow a longer list of IDs to be sent in the request body.\nPlease do not try to download all the Lichess users with this endpoint, or any other endpoint.\nAn API is not a way to fully export a website. We do not provide a full download of the Lichess users.\nThis endpoint is limited to 8,000 users every 10 minutes, and 120,000 every day.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "users"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "profile",
+                  "value": "true",
+                  "description": "Include user profile data"
+                },
+                {
+                  "disabled": false,
+                  "key": "rank",
+                  "value": "false",
+                  "description": "Include global lichess ranking for each perf"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "text/plain"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "<string>"
+            }
+          },
+          "response": [
+            {
+              "id": "0ac10276-9628-46b4-8fd8-49e388cca3b7",
+              "name": "The list of users.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "users"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "profile",
+                      "value": "true"
+                    },
+                    {
+                      "key": "rank",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "thibault,maia1,maia5"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"thibault\",\n    \"username\": \"thibault\",\n    \"perfs\": {\n      \"ultraBullet\": {\n        \"games\": 3,\n        \"rating\": 1688,\n        \"rd\": 358,\n        \"prog\": 0,\n        \"prov\": true\n      },\n      \"bullet\": {\n        \"games\": 7482,\n        \"rating\": 1785,\n        \"rd\": 86,\n        \"prog\": 12\n      },\n      \"blitz\": {\n        \"games\": 11614,\n        \"rating\": 1791,\n        \"rd\": 47,\n        \"prog\": -1\n      },\n      \"rapid\": {\n        \"games\": 894,\n        \"rating\": 1907,\n        \"rd\": 72,\n        \"prog\": -34\n      },\n      \"classical\": {\n        \"games\": 25,\n        \"rating\": 1858,\n        \"rd\": 241,\n        \"prog\": 48,\n        \"prov\": true\n      },\n      \"correspondence\": {\n        \"games\": 377,\n        \"rating\": 1942,\n        \"rd\": 165,\n        \"prog\": -12,\n        \"prov\": true\n      },\n      \"chess960\": {\n        \"games\": 348,\n        \"rating\": 1551,\n        \"rd\": 264,\n        \"prog\": 61,\n        \"prov\": true\n      },\n      \"kingOfTheHill\": {\n        \"games\": 94,\n        \"rating\": 1744,\n        \"rd\": 284,\n        \"prog\": 14,\n        \"prov\": true\n      },\n      \"threeCheck\": {\n        \"games\": 66,\n        \"rating\": 1728,\n        \"rd\": 257,\n        \"prog\": 132,\n        \"prov\": true\n      },\n      \"antichess\": {\n        \"games\": 73,\n        \"rating\": 1465,\n        \"rd\": 248,\n        \"prog\": -56,\n        \"prov\": true\n      },\n      \"atomic\": {\n        \"games\": 99,\n        \"rating\": 1633,\n        \"rd\": 297,\n        \"prog\": 18,\n        \"prov\": true\n      },\n      \"horde\": {\n        \"games\": 46,\n        \"rating\": 1592,\n        \"rd\": 278,\n        \"prog\": -20,\n        \"prov\": true\n      },\n      \"racingKings\": {\n        \"games\": 13,\n        \"rating\": 1552,\n        \"rd\": 329,\n        \"prog\": -75,\n        \"prov\": true\n      },\n      \"crazyhouse\": {\n        \"games\": 50,\n        \"rating\": 1567,\n        \"rd\": 295,\n        \"prog\": -34,\n        \"prov\": true\n      },\n      \"puzzle\": {\n        \"games\": 5875,\n        \"rating\": 2009,\n        \"rd\": 66,\n        \"prog\": 0\n      },\n      \"storm\": {\n        \"runs\": 44,\n        \"score\": 33\n      },\n      \"racer\": {\n        \"runs\": 83,\n        \"score\": 51\n      },\n      \"streak\": {\n        \"runs\": 49,\n        \"score\": 33\n      }\n    },\n    \"flair\": \"nature.seedling\",\n    \"patron\": true,\n    \"patronColor\": 10,\n    \"verified\": true,\n    \"createdAt\": 1290415680000,\n    \"profile\": {\n      \"bio\": \"I turn coffee into bugs.\",\n      \"realName\": \"Thibault Duplessis\",\n      \"links\": \"github.com/ornicar\\r\\nmas.to/@thibault\"\n    },\n    \"seenAt\": 1778797754768,\n    \"playTime\": {\n      \"total\": 6501837,\n      \"tv\": 18024\n    }\n  },\n  {\n    \"id\": \"maia1\",\n    \"username\": \"maia1\",\n    \"perfs\": {\n      \"bullet\": {\n        \"games\": 213943,\n        \"rating\": 1646,\n        \"rd\": 45,\n        \"prog\": 9\n      },\n      \"blitz\": {\n        \"games\": 405348,\n        \"rating\": 1454,\n        \"rd\": 45,\n        \"prog\": -19\n      },\n      \"rapid\": {\n        \"games\": 531260,\n        \"rating\": 1554,\n        \"rd\": 45,\n        \"prog\": -12\n      },\n      \"classical\": {\n        \"games\": 141761,\n        \"rating\": 1648,\n        \"rd\": 45,\n        \"prog\": 17\n      },\n      \"correspondence\": {\n        \"games\": 265,\n        \"rating\": 1527,\n        \"rd\": 219,\n        \"prog\": -18,\n        \"prov\": true\n      }\n    },\n    \"title\": \"BOT\",\n    \"verified\": true,\n    \"createdAt\": 1582579972726,\n    \"profile\": {\n      \"bio\": \"Maia is a human-like neural network chess engine. This version was trained by learning from over 10 million Lichess games between 1100s. \\r\\n\\r\\nMaia Chess is an ongoing research project aiming to make a more human-friendly, useful, and fun chess AI. For more information go to maiachess.com. You can also play against @maia5 and @maia9. Developed by @ashtonanderson, @sidsen and @reidmcy.\",\n      \"realName\": \"Maia Chess 1100\",\n      \"links\": \"https://maiachess.com\\r\\nhttps://github.com/CSSLab/maia-chess\\r\\nhttps://twitter.com/maiachess\"\n    },\n    \"seenAt\": 1778812162634,\n    \"playTime\": {\n      \"total\": 1241669416,\n      \"tv\": 3031257,\n      \"human\": 975711343\n    }\n  },\n  {\n    \"id\": \"maia5\",\n    \"username\": \"maia5\",\n    \"perfs\": {\n      \"bullet\": {\n        \"games\": 64081,\n        \"rating\": 1619,\n        \"rd\": 45,\n        \"prog\": 0\n      },\n      \"blitz\": {\n        \"games\": 182714,\n        \"rating\": 1436,\n        \"rd\": 45,\n        \"prog\": -11\n      },\n      \"rapid\": {\n        \"games\": 205434,\n        \"rating\": 1666,\n        \"rd\": 45,\n        \"prog\": 10\n      },\n      \"classical\": {\n        \"games\": 49627,\n        \"rating\": 1726,\n        \"rd\": 45,\n        \"prog\": -16\n      },\n      \"correspondence\": {\n        \"games\": 18,\n        \"rating\": 1792,\n        \"rd\": 240,\n        \"prog\": 30,\n        \"prov\": true\n      }\n    },\n    \"title\": \"BOT\",\n    \"verified\": true,\n    \"createdAt\": 1582580198358,\n    \"profile\": {\n      \"bio\": \"Maia is a human-like neural network chess engine. This version was trained by learning from over 10 million Lichess games between 1500s. Maia Chess is an ongoing research project aiming to make a more human-friendly, useful, and fun chess AI. For more information go to maiachess.com. You can also play @maia1 and @maia9. Developed by @ashtonanderson,  @sidsen and @reidmcy.\",\n      \"realName\": \"Maia Chess 1500\",\n      \"links\": \"https://maiachess.com\\r\\ngithub.com/CSSLab/maia-chess\\r\\nhttps://twitter.com/maiachess\"\n    },\n    \"seenAt\": 1778812197532,\n    \"playTime\": {\n      \"total\": 562691901,\n      \"tv\": 3859273,\n      \"human\": 410999173\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a8fbd8d5-958e-4468-841e-b59ff4369230",
+          "name": "Get live streamers",
+          "request": {
+            "name": "Get live streamers",
+            "description": {
+              "content": "Get basic info about currently streaming users.\nThis API is very fast and cheap on lichess side.\nSo you can call it quite often (like once every 5 seconds).\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "streamer",
+                "live"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c09c79df-79f0-4101-b897-35494e2923c9",
+              "name": "The list of live streamers and their respective information.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "streamer",
+                    "live"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"name\": \"lefonghua\",\n    \"title\": \"FM\",\n    \"id\": \"lefonghua\",\n    \"stream\": {\n      \"service\": \"twitch\",\n      \"status\": \"Analyzing Viewers Games! | !analyze !rapid !plus | lichess.org\",\n      \"lang\": \"en\"\n    },\n    \"streamer\": {\n      \"name\": \"Lefong Hua\",\n      \"headline\": \"FM Lefong Hua. Professional chess coach from Montreal, Canada.\",\n      \"twitch\": \"https://www.twitch.tv/lefonghua\",\n      \"image\": \"https://image.lichess1.org/display?fmt=webp&h=350&op=thumbnail&path=lefonghua:streamer:lefonghua:Vr5ViPnv.jpg&w=350&sig=4dec7bb87631c83eb93b427fc24e4726582e6af0\"\n    }\n  },\n  {\n    \"name\": \"sabinafoisor\",\n    \"title\": \"WGM\",\n    \"id\": \"sabinafoisor\",\n    \"stream\": {\n      \"service\": \"twitch\",\n      \"status\": \"Commentary on US Chess this weekend | lichess.org\",\n      \"lang\": \"en\"\n    },\n    \"streamer\": {\n      \"name\": \"Sabina Foisor\",\n      \"headline\": \"WGM Sabina Foisor\",\n      \"description\": \"Hello everyone,\\r\\n\\r\\nMy name is Sabina Foisor and I am a WGM representing the United States. I was born in Romania to a chess family and learned to play chess at 4 years old. At around  5 and a half y.o I have competed in my first open tournament. Despite not having won any games, I have made up my mind to make a career out of chess, though there were many moments when I struggled. In 1997, I won the European Championship for Girls under 8 years old. In my teens I have won multiple national girls youth championships. In the European scene I triumphed winning  medals in Classical, Blitz, Rapid and Solving Problems competitions. At the age of 16 I became a WIM and at 18 I received the title of WGM. I consider the year 2007 to have been the peak of my chess career sharing 5th place at the European Individual Women’s Chess Championship from which I qualified for the Women’s World Chess Championship. That same year I was ranked in the top 10 Junior Girls in the World. In 2008 I received a chess scholarship at UMBC and decided to put chess on pause to focus on my studies. I graduated in 2012 with an BA in Modern Languages and Linguistics and in 2014 I received my Masters Degree in Intercultural Communication, specializing in intercultural training. In the begging of 2009 I started representing the United States and proudly participated in 5 Chess Olympiads and 4 Women’s World Team Championships. My biggest achievement was winning US Women’s Chess Championship in 2017.\\r\\n\\r\\nI started my streaming in March 2020. I hope you enjoy my channel and stream! I am taking challenges from viewers and subscribers and happy to take on different chess variants. \\r\\n\\r\\nTwitter: https://twitter.com/SabinaFoisor\\r\\nFacebook: https://www.facebook.com/SabinaFoisor/\\r\\nInstagram: https://www.instagram.com/sabinafoisor/\\r\\nTwitch: https://www.twitch.tv/sabinafoisor\",\n      \"twitch\": \"https://www.twitch.tv/sabinafoisor\",\n      \"youtube\": \"https://www.youtube.com/channel/UC2hjYBYRdE2ynHqfQpo_gow/live\",\n      \"image\": \"https://image.lichess1.org/display?fmt=webp&h=350&op=thumbnail&path=sabinafoisor:streamer:sabinafoisor:JpKJW8ke.jpg&w=350&sig=fcefac30465d2a3db65e123dd45393bd2dc03494\"\n    }\n  },\n  {\n    \"name\": \"sloppydogg\",\n    \"title\": \"IM\",\n    \"id\": \"sloppydogg\",\n    \"stream\": {\n      \"service\": \"twitch\",\n      \"status\": \"Lichess Simul Record Attempt #10 lichess.org\",\n      \"lang\": \"en\"\n    },\n    \"streamer\": {\n      \"name\": \"John Ludwig\",\n      \"headline\": \"Watch and learn chess from an International Master! :)\",\n      \"description\": \"Thank you so much for checking my stream out! It will be a great mix of entertaining play, teaching moments, and all other things great with chess! The more you engage, the better! I will play whatever openings you recommend, or even specific ideas you would like to see! \",\n      \"twitch\": \"https://www.twitch.tv/jludwig\",\n      \"image\": \"https://image.lichess1.org/display?fmt=webp&h=350&op=thumbnail&path=psrd6rY4J8tr.webp&w=350&sig=7959c8fdc44570537eefe98bc450d81022fe13f3\"\n    }\n  },\n  {\n    \"name\": \"chessoptics\",\n    \"patron\": true,\n    \"patronColor\": 1,\n    \"id\": \"chessoptics\",\n    \"stream\": {\n      \"service\": \"twitch\",\n      \"status\": \"|Chess is the lens life is the view| Variety Music |Lichess.org {Training with the chessbook app}\",\n      \"lang\": \"en\"\n    },\n    \"streamer\": {\n      \"name\": \"chessoptics\",\n      \"headline\": \"This is a place to enjoy chess and learn.\",\n      \"description\": \"If you Love Chess then come watch me play and enjoy. leave some comments and lets talk about chess.\",\n      \"twitch\": \"https://www.twitch.tv/chessoptics\",\n      \"image\": \"https://image.lichess1.org/display?fmt=webp&h=350&op=thumbnail&path=vPkudbELA3pE.webp&w=350&sig=4240861f841d02a38742f5a5f9f2d40ce89315ec\"\n    }\n  },\n  {\n    \"name\": \"account4BD\",\n    \"flair\": \"people.troll\",\n    \"patron\": true,\n    \"patronColor\": 4,\n    \"id\": \"account4bd\",\n    \"stream\": {\n      \"service\": \"twitch\",\n      \"status\": \"Fred Again... X Chess Again Best NightTime recipe !! | Dailys Fastest Echecs Arènes's Fully Zerked Only on @Lichess.org\",\n      \"lang\": \"en\"\n    },\n    \"streamer\": {\n      \"name\": \"account4BD\",\n      \"headline\": \"hey chess addicts\",\n      \"twitch\": \"https://www.twitch.tv/chess_punk\",\n      \"image\": \"https://image.lichess1.org/display?fmt=webp&h=350&op=thumbnail&path=streamer:account4bd:fUQxz0qi.webp&w=350&sig=a3c17df24c8be4a4016e0029b730680e5db4fb5c\"\n    }\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "34f187d8-67c7-48bc-aa3c-7d33fce161e2",
+          "name": "Get crosstable",
+          "request": {
+            "name": "Get crosstable",
+            "description": {
+              "content": "Get total number of games, and current score, of any two users.\nIf the `matchup` flag is provided, and the users are currently playing, also gets the current match game number and scores.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "crosstable",
+                ":user1",
+                ":user2"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "matchup",
+                  "value": "<boolean>",
+                  "description": "Whether to get the current match data, if any"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "user1",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "user2",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "2800e60b-e76e-4eb2-961f-39d4a1b2ef39",
+              "name": "The crosstable of the two users.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "crosstable",
+                    ":user1",
+                    ":user2"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "matchup",
+                      "value": "<boolean>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "user1",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "user2",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"users\": {\n    \"drnykterstein\": 753.5,\n    \"rebeccaharris\": 459.5\n  },\n  \"nbGames\": 1213\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d1df969d-502b-4ef0-bd15-0f0fee06d2e7",
+          "name": "Autocomplete usernames",
+          "request": {
+            "name": "Autocomplete usernames",
+            "description": {
+              "content": "Provides autocompletion options for an incomplete username.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "player",
+                "autocomplete"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "term",
+                  "value": "<string>",
+                  "description": "(Required) The beginning of a username"
+                },
+                {
+                  "disabled": false,
+                  "key": "exists",
+                  "value": "false",
+                  "description": "If `true`, only checks if the user exists.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "object",
+                  "value": "false",
+                  "description": "- `false` returns an array of usernames\n- `true` returns an object with matching users\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "names",
+                  "value": "false",
+                  "description": "- `false` returns an array of usernames\n- `true` returns an array of usernames with preferred casing\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "friend",
+                  "value": "<boolean>",
+                  "description": "Returns followed players matching `term` if any, else returns other players.\nRequires [OAuth](#tag/OAuth).\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "team",
+                  "value": "<string>",
+                  "description": "Search within a team.\nUse team ID/slug.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "tour",
+                  "value": "<string>",
+                  "description": "Search within a arena tournament.\nUse tournament ID.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "swiss",
+                  "value": "<string>",
+                  "description": "Search within a Swiss tournament.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "teacher",
+                  "value": "false",
+                  "description": "Only search for players who also have a teacher role.\n"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "response": [
+            {
+              "id": "5e01050c-1d42-444e-ad2c-f5e47dbc1afd",
+              "name": "An array of players which usernames start with the provided term.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "player",
+                    "autocomplete"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "term",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "exists",
+                      "value": "false"
+                    },
+                    {
+                      "key": "object",
+                      "value": "false"
+                    },
+                    {
+                      "key": "names",
+                      "value": "false"
+                    },
+                    {
+                      "key": "friend",
+                      "value": "<boolean>"
+                    },
+                    {
+                      "key": "team",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "tour",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "swiss",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "teacher",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  \"bobby\"\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "26922d9c-ac7b-4928-a366-a29d0ca160d1",
+          "name": "Add a note for a user",
+          "request": {
+            "name": "Add a note for a user",
+            "description": {
+              "content": "Add a private note available only to you about this account.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "user",
+                ":username",
+                "note"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "username",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://lichess.org/api/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://lichess.org/oauth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "text",
+                  "value": "<string>",
+                  "description": "(Required) The contents of the note"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "1c85b2ee-9766-429b-bd62-9964c5899ebc",
+              "name": "The note was successfully added.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "user",
+                    ":username",
+                    "note"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "username",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) The contents of the note",
+                        "type": "text/plain"
+                      },
+                      "key": "text",
+                      "value": "<string>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"ok\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cb245a15-a400-4f36-a8ba-e241767bcdfd",
+          "name": "Get notes for a user",
+          "request": {
+            "name": "Get notes for a user",
+            "description": {
+              "content": "Get the private notes that you have added for a user.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "user",
+                ":username",
+                "note"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "username",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://lichess.org/api/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://lichess.org/oauth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "af9fec08-1f54-46cf-a80b-17999d44ed4b",
+              "name": "The list of notes you have added for this user",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "user",
+                    ":username",
+                    "note"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "username",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"from\": {\n      \"name\": \"Bobby\",\n      \"id\": \"bobby\"\n    },\n    \"to\": {\n      \"name\": \"Mary\",\n      \"flair\": \"people.open-hands-medium-light-skin-tone\",\n      \"id\": \"mary\"\n    },\n    \"text\": \"this is a private note\",\n    \"date\": 1778812629766\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://lichess.org",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "6f2dfb16-5121-406c-ba2c-240db8cefec8",
+    "name": "Lichess.org API reference Account Users API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "# Introduction\nWelcome to the reference for the Lichess API! Lichess is free/libre,\nopen-source chess server powered by volunteers and donations.\n- Get help in the [Lichess Discord channel](https://discord.gg/lichess)\n- API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)\n- API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)\n- [Contribute to this documentation on Github](https://github.com/lichess-org/api)\n- Check out [Lichess widgets to embed in your website](https://lichess.org/developers)\n- [Download all Lichess rated games](https://database.lichess.org/)\n- [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)\n- [Download all evaluated positions](https://database.lichess.org/#evals)\n\n## Endpoint\nAll requests go to `https://lichess.org` (unless otherwise specified).\n\n## Clients\n- [Python general API](https://github.com/lichess-org/berserk)\n- [MicroPython general API](https://github.com/mkomon/uberserk)\n- [Python general API - async](https://pypi.org/project/async-lichess-sdk)\n- [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)\n- [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)\n- [Java general API](https://github.com/tors42/chariot)\n- [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)\n- [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)\n- [.NET general API](https://github.com/Dblike/LichessSharp)\n\n## Rate limiting\nAll requests are rate limited using various strategies,\nto ensure the API remains responsive for everyone.\nOnly make one request at a time.\nIf you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),\nyou have exceded one of the rate limits.\nIn most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.\nReduce your request frequency before retrying.\n\n## Streaming with ND-JSON\nSome API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.\n\nHere's a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.\n\n## Authentication\n### Which authentication method is right for me?\n[Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)\n\n### Personal Access Token\nPersonal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.\n- [Generate a personal access token](https://lichess.org/account/oauth/token)\n- `curl https://lichess.org/api/account -H \"Authorization: Bearer {token}\"`\n- [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)\n\n### Token Security\n- Keep your tokens secret. Do not share them in public repositories or public forums.\n- Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens' scope). You remain responsible for all activities on your account.\n- Do not hardcode tokens in your application's code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.\n- If you suspect a token has been compromised, revoke it immediately.\n\nTo see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).\n\n### Authorization Code Flow with PKCE\nThe authorization code flow with PKCE allows your users to **login with Lichess**.\nLichess supports unregistered and public clients (no client authentication, choose any unique client id).\nThe only accepted code challenge method is `S256`.\nAccess tokens are long-lived (expect one year), unless they are revoked.\nRefresh tokens are not supported.\n\nSee the [documentation for the OAuth endpoints](#tag/OAuth) or\nthe [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.\n\n- [Demo app](https://lichess-org.github.io/api-demo/)\n- [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)\n- [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)\n- [Java example](https://github.com/tors42/lichess-oauth-pkce-app)\n- [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)\n\n#### Real life examples\n- [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))\n- [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))\n- [English Chess Federation](https://ecf.octoknight.com/)\n- [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)\n\n### Token format\nAccess tokens and authorization codes match `^[A-Za-z0-9_]+$`.\nThe length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.\nBy convention tokens have a recognizable prefix, but do not rely on this.\n\n\nContact Support:\n Name: Lichess.org API\n Email: contact@lichess.org",
+      "type": "text/plain"
+    }
+  }
+}

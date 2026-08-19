@@ -1,0 +1,3880 @@
+{
+  "item": [
+    {
+      "id": "a8fb12e8-a403-4c80-83a4-a18e0538abd6",
+      "name": "Broadcasts",
+      "description": {
+        "content": "Relay chess events on Lichess.\n[Official broadcasts](https://lichess.org/broadcast) are maintained by Lichess,\nbut you can [create your own broadcasts](https://lichess.org/broadcast/new) to cover any live game or chess event.\nYou will need to publish PGN on a public URL so that Lichess can pull updates from it.\nAlternatively, you can push PGN updates to Lichess using [this API endpoint](#tag/broadcasts/POST/api/broadcast/round/{broadcastRoundId}/push).\n\nBroadcasts are organized in tournaments, which have several rounds, which have several games.\nYou must first create a tournament, then you can add rounds to them.\n",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "f5b6a653-a164-4aad-a027-eb248bc3f3b1",
+          "name": "Get official broadcasts",
+          "request": {
+            "name": "Get official broadcasts",
+            "description": {
+              "content": "Returns active (a round is scheduled or ongoing) official broadcasts sorted by tier. \nAfter that, returns finished broadcasts sorted by most recent sync time.\nBroadcasts are streamed as [ndjson](#description/streaming-with-nd-json).\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "broadcast"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "nb",
+                  "value": "20",
+                  "description": "Max number of broadcasts to fetch"
+                },
+                {
+                  "disabled": false,
+                  "key": "html",
+                  "value": "<boolean>",
+                  "description": "Convert the \"description\" field from markdown to HTML"
+                },
+                {
+                  "disabled": false,
+                  "key": "live",
+                  "value": "<boolean>",
+                  "description": "[Filter] only broadcasts where a round is ongoing, i.e. started and not finished"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/x-ndjson"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3af6dd91-598e-42ef-a84b-4551ae1b4c5f",
+              "name": "The list of official broadcasts.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "broadcast"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "nb",
+                      "value": "20"
+                    },
+                    {
+                      "key": "html",
+                      "value": "true"
+                    },
+                    {
+                      "key": "live",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/x-ndjson"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/x-ndjson"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c7ba462b-1cb3-4dff-965e-ec34daca63bb",
+          "name": "Get paginated top broadcast previews",
+          "request": {
+            "name": "Get paginated top broadcast previews",
+            "description": {
+              "content": "The same data, in the same order, as can be seen on [https://lichess.org/broadcast](/broadcast).\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "broadcast",
+                "top"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Which page to fetch. Only page 1 has \"active\" broadcasts."
+                },
+                {
+                  "disabled": false,
+                  "key": "html",
+                  "value": "<boolean>",
+                  "description": "Convert the \"description\" field from markdown to HTML"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3a8257dc-4c5b-49c3-9077-e4e05595771e",
+              "name": "Paginated top broadcast previews.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "broadcast",
+                    "top"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "html",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"active\": [\n    {\n      \"tour\": {\n        \"id\": \"gJm0i5k1\",\n        \"name\": \"Knight Invitational\",\n        \"slug\": \"knight-invitational\",\n        \"info\": {},\n        \"createdAt\": 1778812602837,\n        \"url\": \"https://lichess.org/broadcast/knight-invitational/gJm0i5k1\",\n        \"tier\": 5,\n        \"dates\": [\n          1778812603116\n        ]\n      },\n      \"round\": {\n        \"id\": \"2Ywx30MD\",\n        \"name\": \"Round 1\",\n        \"slug\": \"round-1\",\n        \"createdAt\": 1778812602924,\n        \"rated\": false,\n        \"ongoing\": true,\n        \"startsAt\": 1778816202858,\n        \"url\": \"https://lichess.org/broadcast/knight-invitational/round-1/2Ywx30MD\"\n      }\n    }\n  ],\n  \"upcoming\": [],\n  \"past\": {\n    \"currentPage\": 1,\n    \"maxPerPage\": 24,\n    \"currentPageResults\": [],\n    \"previousPage\": null,\n    \"nextPage\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6b6bca9c-0bb9-4ba1-a68d-ac779a111e0b",
+          "name": "Get broadcasts created by a user",
+          "request": {
+            "name": "Get broadcasts created by a user",
+            "description": {
+              "content": "Get all incoming, ongoing, and finished official broadcasts.\nThe broadcasts are sorted by created date, most recent first.\n\nIf you are authenticated as the user whose broadcasts you are requesting, you will also see your private and unlisted broadcasts.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "broadcast",
+                "by",
+                ":username"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "disabled": false,
+                  "key": "html",
+                  "value": "<boolean>",
+                  "description": "Convert the \"description\" field from markdown to HTML"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "username",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://lichess.org/api/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://lichess.org/oauth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "1614c775-f460-4d47-8356-2f15017a4b17",
+              "name": "A paginated list of the broadcasts created by a user.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "broadcast",
+                    "by",
+                    ":username"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "html",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "username",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"currentPage\": 1,\n  \"maxPerPage\": 24,\n  \"currentPageResults\": [\n    {\n      \"tour\": {\n        \"id\": \"iQ7zCznG\",\n        \"name\": \"Bobby's Tournament\",\n        \"slug\": \"bobbys-tournament\",\n        \"info\": {\n          \"format\": \"5-round Swiss\",\n          \"location\": \"Chess Club\"\n        },\n        \"createdAt\": 1778812603531,\n        \"url\": \"https://lichess.org/broadcast/bobbys-tournament/iQ7zCznG\",\n        \"communityOwner\": {\n          \"name\": \"Bobby\",\n          \"id\": \"bobby\"\n        }\n      }\n    }\n  ],\n  \"previousPage\": null,\n  \"nextPage\": null,\n  \"nbResults\": 1,\n  \"nbPages\": 1\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5d17799c-7323-453b-8735-529b498841d5",
+          "name": "Search broadcasts",
+          "request": {
+            "name": "Search broadcasts",
+            "description": {
+              "content": "Search across recent official broadcasts.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "broadcast",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "1",
+                  "description": "Which page to fetch."
+                },
+                {
+                  "disabled": false,
+                  "key": "q",
+                  "value": "<string>",
+                  "description": "Search term"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3990a39a-087c-45c2-8d6d-817a3fd7d50b",
+              "name": "Paginated top broadcast previews.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "broadcast",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "1"
+                    },
+                    {
+                      "key": "q",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"currentPage\": 1,\n  \"maxPerPage\": 24,\n  \"currentPageResults\": [\n    {\n      \"tour\": {\n        \"id\": \"gJm0i5k1\",\n        \"name\": \"Knight Invitational\",\n        \"slug\": \"knight-invitational\",\n        \"info\": {},\n        \"createdAt\": 1778812602837,\n        \"url\": \"https://lichess.org/broadcast/knight-invitational/gJm0i5k1\",\n        \"tier\": 5,\n        \"dates\": [\n          1778812603116\n        ]\n      },\n      \"round\": {\n        \"id\": \"0JjIup0K\",\n        \"name\": \"Final Round\",\n        \"slug\": \"final-round\",\n        \"createdAt\": 1778812603116,\n        \"rated\": false,\n        \"ongoing\": true,\n        \"startsAt\": 1778812603116,\n        \"url\": \"https://lichess.org/broadcast/knight-invitational/final-round/0JjIup0K\"\n      }\n    }\n  ],\n  \"previousPage\": null,\n  \"nextPage\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "37258cea-18f0-4d18-bf9a-90328b3428b0",
+          "name": "Create a broadcast tournament",
+          "request": {
+            "name": "Create a broadcast tournament",
+            "description": {
+              "content": "Create a new broadcast tournament to relay external games.\nThis endpoint accepts the same form data as the [web form](https://lichess.org/broadcast/new).\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "broadcast",
+                "new"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://lichess.org/api/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://lichess.org/oauth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "(Required) Name of the broadcast tournament.\n\nExample: `Sinquefield Cup`\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "info.format",
+                  "value": "<string>",
+                  "description": "Tournament format.\nExample: `\"8-player round-robin\" or \"5-round Swiss\"`\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "info.location",
+                  "value": "<string>",
+                  "description": "Tournament Location\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "info.tc",
+                  "value": "<string>",
+                  "description": "Time control.\nExample: `\"Classical\" or \"Rapid\" or \"Rapid & Blitz\"`\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "info.fideTC",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "info.timeZone",
+                  "value": "<string>",
+                  "description": "Timezone of the tournament. Example: `America/New_York`.\nSee [list of possible timezone identifiers](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) for more.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "info.players",
+                  "value": "<string>",
+                  "description": "Mention up to 4 of the best players participating.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "info.website",
+                  "value": "<uri>",
+                  "description": "Official website. External website URL\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "info.standings",
+                  "value": "<uri>",
+                  "description": "Official Standings. External website URL, e.g. chess-results.com, info64.org\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "markdown",
+                  "value": "<string>",
+                  "description": "Optional long description of the broadcast. Markdown is supported.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "showScores",
+                  "value": "false",
+                  "description": "Show players scores based on game results\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "showRatingDiffs",
+                  "value": "false",
+                  "description": "Show player's rating diffs\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "teamTable",
+                  "value": "false",
+                  "description": "Show a team leaderboard. Requires WhiteTeam and BlackTeam PGN tags.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "visibility",
+                  "value": "public",
+                  "description": "Who can view the broadcast.\n* `public`: Default. Anyone can view the broadcast\n* `unlisted`: Only people with the link can view the broadcast\n* `private`: Only the broadcast owner(s) can view the broadcast\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "players",
+                  "value": "<string>",
+                  "description": "Optional replace player names, ratings and titles.\n\nOne line per player, formatted as such:\n\n```txt\nplayer name / FIDE ID\n```\n\nExample:\n\n```txt\nMagnus Carlsen / 1503014\n```\n\nPlayer names ignore case and punctuation, and match all possible combinations of 2 words: \"Jorge Rick Vito\" will match \"Jorge Rick\", \"jorge vito\", \"Rick, Vito\", etc.\n\nIf the player is NM or WNM, you can:\n\n```txt\nplayer name / FIDE ID / title\n```\n\nAlternatively, you may set tags manually, like so:\n\n```txt\nplayer name / rating / title / new name\n```\n\nAll values are optional. Example:\n```txt\nMagnus Carlsen / 2863 / GM\nYouGotLittUp / 1890 / / Louis Litt\n```\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "teams",
+                  "value": "<string>",
+                  "description": "Optional: assign players to teams\n\nOne line per player, formatted as such:\n```txt\nTeam name; Fide Id or Player name\n```\n\nExample:\n```txt\nTeam Cats ; 3408230\nTeam Dogs ; Scooby Doo\n```\n\nBy default the PGN tags WhiteTeam and BlackTeam are used.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "tier",
+                  "value": "<integer>",
+                  "description": "Optional, for Lichess admins only, used to feature on /broadcast.\n\n* `3` for Official: normal tier\n* `4` for Official: high tier\n* `5` for Official: best tier\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "tiebreaks[]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "tiebreaks[]",
+                  "value": "<string>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "793d31cc-3746-4cce-b2b7-e634bd9d7cf0",
+              "name": "The broadcast tournament was successfully created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "broadcast",
+                    "new"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Name of the broadcast tournament.\n\nExample: `Sinquefield Cup`\n",
+                        "type": "text/plain"
+                      },
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Tournament format.\nExample: `\"8-player round-robin\" or \"5-round Swiss\"`\n",
+                        "type": "text/plain"
+                      },
+                      "key": "info.format",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Tournament Location\n",
+                        "type": "text/plain"
+                      },
+                      "key": "info.location",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Time control.\nExample: `\"Classical\" or \"Rapid\" or \"Rapid & Blitz\"`\n",
+                        "type": "text/plain"
+                      },
+                      "key": "info.tc",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "info.fideTC",
+                      "value": "standard"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Timezone of the tournament. Example: `America/New_York`.\nSee [list of possible timezone identifiers](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) for more.\n",
+                        "type": "text/plain"
+                      },
+                      "key": "info.timeZone",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Mention up to 4 of the best players participating.\n",
+                        "type": "text/plain"
+                      },
+                      "key": "info.players",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Official website. External website URL\n",
+                        "type": "text/plain"
+                      },
+                      "key": "info.website",
+                      "value": "<uri>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Official Standings. External website URL, e.g. chess-results.com, info64.org\n",
+                        "type": "text/plain"
+                      },
+                      "key": "info.standings",
+                      "value": "<uri>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Optional long description of the broadcast. Markdown is supported.\n",
+                        "type": "text/plain"
+                      },
+                      "key": "markdown",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Show players scores based on game results\n",
+                        "type": "text/plain"
+                      },
+                      "key": "showScores",
+                      "value": "false"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Show player's rating diffs\n",
+                        "type": "text/plain"
+                      },
+                      "key": "showRatingDiffs",
+                      "value": "false"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Show a team leaderboard. Requires WhiteTeam and BlackTeam PGN tags.\n",
+                        "type": "text/plain"
+                      },
+                      "key": "teamTable",
+                      "value": "false"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Who can view the broadcast.\n* `public`: Default. Anyone can view the broadcast\n* `unlisted`: Only people with the link can view the broadcast\n* `private`: Only the broadcast owner(s) can view the broadcast\n",
+                        "type": "text/plain"
+                      },
+                      "key": "visibility",
+                      "value": "public"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Optional replace player names, ratings and titles.\n\nOne line per player, formatted as such:\n\n```txt\nplayer name / FIDE ID\n```\n\nExample:\n\n```txt\nMagnus Carlsen / 1503014\n```\n\nPlayer names ignore case and punctuation, and match all possible combinations of 2 words: \"Jorge Rick Vito\" will match \"Jorge Rick\", \"jorge vito\", \"Rick, Vito\", etc.\n\nIf the player is NM or WNM, you can:\n\n```txt\nplayer name / FIDE ID / title\n```\n\nAlternatively, you may set tags manually, like so:\n\n```txt\nplayer name / rating / title / new name\n```\n\nAll values are optional. Example:\n```txt\nMagnus Carlsen / 2863 / GM\nYouGotLittUp / 1890 / / Louis Litt\n```\n",
+                        "type": "text/plain"
+                      },
+                      "key": "players",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Optional: assign players to teams\n\nOne line per player, formatted as such:\n```txt\nTeam name; Fide Id or Player name\n```\n\nExample:\n```txt\nTeam Cats ; 3408230\nTeam Dogs ; Scooby Doo\n```\n\nBy default the PGN tags WhiteTeam and BlackTeam are used.\n",
+                        "type": "text/plain"
+                      },
+                      "key": "teams",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Optional, for Lichess admins only, used to feature on /broadcast.\n\n* `3` for Official: normal tier\n* `4` for Official: high tier\n* `5` for Official: best tier\n",
+                        "type": "text/plain"
+                      },
+                      "key": "tier",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "tiebreaks[]",
+                      "value": "SB-C1"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "tiebreaks[]",
+                      "value": "BH-C1"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tour\": {\n    \"id\": \"gJm0i5k1\",\n    \"name\": \"Knight Invitational\",\n    \"slug\": \"knight-invitational\",\n    \"info\": {},\n    \"createdAt\": 1778812602837,\n    \"url\": \"https://lichess.org/broadcast/knight-invitational/gJm0i5k1\",\n    \"tier\": 5\n  },\n  \"rounds\": []\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4afb42d7-a761-4a38-9e70-4e6e74801975",
+              "name": "The creation of the broadcast tournament failed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "broadcast",
+                    "new"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Name of the broadcast tournament.\n\nExample: `Sinquefield Cup`\n",
+                        "type": "text/plain"
+                      },
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Tournament format.\nExample: `\"8-player round-robin\" or \"5-round Swiss\"`\n",
+                        "type": "text/plain"
+                      },
+                      "key": "info.format",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Tournament Location\n",
+                        "type": "text/plain"
+                      },
+                      "key": "info.location",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Time control.\nExample: `\"Classical\" or \"Rapid\" or \"Rapid & Blitz\"`\n",
+                        "type": "text/plain"
+                      },
+                      "key": "info.tc",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "info.fideTC",
+                      "value": "standard"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Timezone of the tournament. Example: `America/New_York`.\nSee [list of possible timezone identifiers](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) for more.\n",
+                        "type": "text/plain"
+                      },
+                      "key": "info.timeZone",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Mention up to 4 of the best players participating.\n",
+                        "type": "text/plain"
+                      },
+                      "key": "info.players",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Official website. External website URL\n",
+                        "type": "text/plain"
+                      },
+                      "key": "info.website",
+                      "value": "<uri>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Official Standings. External website URL, e.g. chess-results.com, info64.org\n",
+                        "type": "text/plain"
+                      },
+                      "key": "info.standings",
+                      "value": "<uri>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Optional long description of the broadcast. Markdown is supported.\n",
+                        "type": "text/plain"
+                      },
+                      "key": "markdown",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Show players scores based on game results\n",
+                        "type": "text/plain"
+                      },
+                      "key": "showScores",
+                      "value": "false"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Show player's rating diffs\n",
+                        "type": "text/plain"
+                      },
+                      "key": "showRatingDiffs",
+                      "value": "false"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Show a team leaderboard. Requires WhiteTeam and BlackTeam PGN tags.\n",
+                        "type": "text/plain"
+                      },
+                      "key": "teamTable",
+                      "value": "false"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Who can view the broadcast.\n* `public`: Default. Anyone can view the broadcast\n* `unlisted`: Only people with the link can view the broadcast\n* `private`: Only the broadcast owner(s) can view the broadcast\n",
+                        "type": "text/plain"
+                      },
+                      "key": "visibility",
+                      "value": "public"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Optional replace player names, ratings and titles.\n\nOne line per player, formatted as such:\n\n```txt\nplayer name / FIDE ID\n```\n\nExample:\n\n```txt\nMagnus Carlsen / 1503014\n```\n\nPlayer names ignore case and punctuation, and match all possible combinations of 2 words: \"Jorge Rick Vito\" will match \"Jorge Rick\", \"jorge vito\", \"Rick, Vito\", etc.\n\nIf the player is NM or WNM, you can:\n\n```txt\nplayer name / FIDE ID / title\n```\n\nAlternatively, you may set tags manually, like so:\n\n```txt\nplayer name / rating / title / new name\n```\n\nAll values are optional. Example:\n```txt\nMagnus Carlsen / 2863 / GM\nYouGotLittUp / 1890 / / Louis Litt\n```\n",
+                        "type": "text/plain"
+                      },
+                      "key": "players",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Optional: assign players to teams\n\nOne line per player, formatted as such:\n```txt\nTeam name; Fide Id or Player name\n```\n\nExample:\n```txt\nTeam Cats ; 3408230\nTeam Dogs ; Scooby Doo\n```\n\nBy default the PGN tags WhiteTeam and BlackTeam are used.\n",
+                        "type": "text/plain"
+                      },
+                      "key": "teams",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Optional, for Lichess admins only, used to feature on /broadcast.\n\n* `3` for Official: normal tier\n* `4` for Official: high tier\n* `5` for Official: best tier\n",
+                        "type": "text/plain"
+                      },
+                      "key": "tier",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "tiebreaks[]",
+                      "value": "SB-C1"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "tiebreaks[]",
+                      "value": "BH-C1"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"This request is invalid because [...]\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "daa0cfab-9792-4118-9ef8-96eb339a97a9",
+          "name": "Get a broadcast tournament",
+          "request": {
+            "name": "Get a broadcast tournament",
+            "description": {
+              "content": "Get information about a broadcast tournament.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "broadcast",
+                ":broadcastTournamentId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "broadcastTournamentId",
+                  "description": "(Required) The broadcast tournament ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "response": [
+            {
+              "id": "c3f26735-8bb8-47ef-9ed9-346ff4235ada",
+              "name": "The information about the broadcast tournament.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "broadcast",
+                    ":broadcastTournamentId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastTournamentId",
+                      "description": "(Required) The broadcast tournament ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"tour\": {\n    \"id\": \"gJm0i5k1\",\n    \"name\": \"Knight Invitational\",\n    \"slug\": \"knight-invitational\",\n    \"info\": {},\n    \"createdAt\": 1778812602837,\n    \"url\": \"https://lichess.org/broadcast/knight-invitational/gJm0i5k1\",\n    \"tier\": 5,\n    \"dates\": [\n      1778812603116\n    ]\n  },\n  \"rounds\": [\n    {\n      \"id\": \"2Ywx30MD\",\n      \"name\": \"Round 1\",\n      \"slug\": \"round-1\",\n      \"createdAt\": 1778812602924,\n      \"rated\": false,\n      \"ongoing\": true,\n      \"startsAt\": 1778816202858,\n      \"url\": \"https://lichess.org/broadcast/knight-invitational/round-1/2Ywx30MD\"\n    },\n    {\n      \"id\": \"bJEvCanZ\",\n      \"name\": \"Round 2\",\n      \"slug\": \"round-2\",\n      \"createdAt\": 1778812603074,\n      \"rated\": false,\n      \"ongoing\": true,\n      \"startsAt\": 1778819802858,\n      \"url\": \"https://lichess.org/broadcast/knight-invitational/round-2/bJEvCanZ\"\n    },\n    {\n      \"id\": \"cxolzwOn\",\n      \"name\": \"Round 3\",\n      \"slug\": \"round-3\",\n      \"createdAt\": 1778812603095,\n      \"rated\": false,\n      \"ongoing\": true,\n      \"startsAt\": 1778823402858,\n      \"url\": \"https://lichess.org/broadcast/knight-invitational/round-3/cxolzwOn\"\n    },\n    {\n      \"id\": \"0JjIup0K\",\n      \"name\": \"Final Round\",\n      \"slug\": \"final-round\",\n      \"createdAt\": 1778812603116,\n      \"rated\": false,\n      \"ongoing\": true,\n      \"startsAt\": 1778812603116,\n      \"url\": \"https://lichess.org/broadcast/knight-invitational/final-round/0JjIup0K\"\n    }\n  ],\n  \"defaultRoundId\": \"2Ywx30MD\",\n  \"photos\": {}\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "04034c0a-dd86-4e07-9c46-a5b561cb8013",
+          "name": "Get players of a broadcast",
+          "request": {
+            "name": "Get players of a broadcast",
+            "description": {
+              "content": "Get the list of players of a broadcast tournament, if available.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "broadcast",
+                ":broadcastTournamentId",
+                "players"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "broadcastTournamentId",
+                  "description": "(Required) The broadcast tournament ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "bb558f2f-b391-4d66-83bf-3afd35c16c9f",
+              "name": "The broadcast players",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "broadcast",
+                    ":broadcastTournamentId",
+                    "players"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastTournamentId",
+                      "description": "(Required) The broadcast tournament ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"name\": \"Player 1\",\n    \"fideId\": 123,\n    \"played\": 0\n  },\n  {\n    \"name\": \"Player 2\",\n    \"fideId\": 456,\n    \"played\": 0\n  },\n  {\n    \"name\": \"Player 3\",\n    \"played\": 0\n  },\n  {\n    \"name\": \"Player 4\",\n    \"played\": 0\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bb31a25d-0a5a-4d9f-ab49-feb1f9868325",
+          "name": "Get a player of a broadcast",
+          "request": {
+            "name": "Get a player of a broadcast",
+            "description": {
+              "content": "Get the details of a specific player and their games from a broadcast tournament.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "broadcast",
+                ":broadcastTournamentId",
+                "players",
+                ":playerId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "broadcastTournamentId",
+                  "description": "(Required) The broadcast tournament ID"
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "playerId",
+                  "description": "(Required) The unique player ID within the broadcast. This is usually their fideId. \nIf the player does not have a fideId, it is their name. Consult the [list of players for the broadcast](#tag/broadcasts/GET/broadcast/{broadcastTournamentId}/players) for which ID to use.\n"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "d714489d-8f53-4733-aa14-abfa775f6a7c",
+              "name": "The broadcast player",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "broadcast",
+                    ":broadcastTournamentId",
+                    "players",
+                    ":playerId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastTournamentId",
+                      "description": "(Required) The broadcast tournament ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "playerId",
+                      "description": "(Required) The unique player ID within the broadcast. This is usually their fideId. \nIf the player does not have a fideId, it is their name. Consult the [list of players for the broadcast](#tag/broadcasts/GET/broadcast/{broadcastTournamentId}/players) for which ID to use.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"name\": \"Player 1\",\n  \"fideId\": 123,\n  \"played\": 0,\n  \"games\": [\n    {\n      \"round\": \"0JjIup0K\",\n      \"id\": \"uHRiHXFM\",\n      \"opponent\": {\n        \"name\": \"Player 2\",\n        \"fideId\": 456\n      },\n      \"color\": \"white\",\n      \"fideTC\": \"standard\",\n      \"ongoing\": true\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8199a08d-cd1c-4b12-99ee-b50afcbb6fd6",
+              "name": "The player was not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "broadcast",
+                    ":broadcastTournamentId",
+                    "players",
+                    ":playerId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastTournamentId",
+                      "description": "(Required) The broadcast tournament ID"
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "playerId",
+                      "description": "(Required) The unique player ID within the broadcast. This is usually their fideId. \nIf the player does not have a fideId, it is their name. Consult the [list of players for the broadcast](#tag/broadcasts/GET/broadcast/{broadcastTournamentId}/players) for which ID to use.\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Not found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0702b021-2246-493c-a499-8e9a6cf0296d",
+          "name": "Get the team leaderboard of a broadcast",
+          "request": {
+            "name": "Get the team leaderboard of a broadcast",
+            "description": {
+              "content": "Get the team leaderboard of a broadcast tournament, if available.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "broadcast",
+                ":broadcastTournamentId",
+                "teams",
+                "standings"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "broadcastTournamentId",
+                  "description": "(Required) The broadcast tournament ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "19751997-afcb-401a-b6bb-0ce57619ab4a",
+              "name": "The team leaderboard",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "broadcast",
+                    ":broadcastTournamentId",
+                    "teams",
+                    "standings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastTournamentId",
+                      "description": "(Required) The broadcast tournament ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"name\": \"string\",\n    \"mp\": 6253.1099898464945,\n    \"gp\": 4077.0990450827117,\n    \"matches\": [\n      {\n        \"roundId\": \"string\",\n        \"opponent\": \"string\",\n        \"mp\": 7405.306559292953,\n        \"gp\": 5934.112567790669,\n        \"points\": \"0\"\n      },\n      {\n        \"roundId\": \"string\",\n        \"opponent\": \"string\",\n        \"mp\": 225.44224737221953,\n        \"gp\": 9590.949006421852,\n        \"points\": \"1/2\"\n      }\n    ],\n    \"players\": [\n      {\n        \"name\": \"Hernandez Riera, Jose\",\n        \"title\": \"WCM\",\n        \"rating\": 2149,\n        \"fideId\": 3408230,\n        \"team\": \"string\",\n        \"fed\": \"CHI\",\n        \"score\": 2.5,\n        \"played\": 7,\n        \"ratingDiffs\": {\n          \"rapid\": -5,\n          \"blitz\": 10\n        },\n        \"ratingsMap\": {\n          \"rapid\": 2500,\n          \"blitz\": 2450\n        },\n        \"performances\": {\n          \"standard\": 2138\n        },\n        \"tiebreaks\": [\n          {\n            \"extendedCode\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"description\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"points\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"extendedCode\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"description\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"points\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"rank\": 1\n      },\n      {\n        \"name\": \"Hernandez Riera, Jose\",\n        \"title\": \"NM\",\n        \"rating\": 2149,\n        \"fideId\": 3408230,\n        \"team\": \"string\",\n        \"fed\": \"CHI\",\n        \"score\": 2.5,\n        \"played\": 7,\n        \"ratingDiffs\": {\n          \"rapid\": -5,\n          \"blitz\": 10\n        },\n        \"ratingsMap\": {\n          \"rapid\": 2500,\n          \"blitz\": 2450\n        },\n        \"performances\": {\n          \"standard\": 2138\n        },\n        \"tiebreaks\": [\n          {\n            \"extendedCode\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"description\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"points\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"extendedCode\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"description\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"points\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"rank\": 1\n      }\n    ],\n    \"averageRating\": 2273\n  },\n  {\n    \"name\": \"string\",\n    \"mp\": 1433.8014623693884,\n    \"gp\": 561.7617238957373,\n    \"matches\": [\n      {\n        \"roundId\": \"string\",\n        \"opponent\": \"string\",\n        \"mp\": 1166.0471242300807,\n        \"gp\": 2908.1257778760914,\n        \"points\": \"1/2\"\n      },\n      {\n        \"roundId\": \"string\",\n        \"opponent\": \"string\",\n        \"mp\": 4571.394899610218,\n        \"gp\": 370.13169766388245,\n        \"points\": \"1\"\n      }\n    ],\n    \"players\": [\n      {\n        \"name\": \"Hernandez Riera, Jose\",\n        \"title\": \"WGM\",\n        \"rating\": 2149,\n        \"fideId\": 3408230,\n        \"team\": \"string\",\n        \"fed\": \"CHI\",\n        \"score\": 2.5,\n        \"played\": 7,\n        \"ratingDiffs\": {\n          \"rapid\": -5,\n          \"blitz\": 10\n        },\n        \"ratingsMap\": {\n          \"rapid\": 2500,\n          \"blitz\": 2450\n        },\n        \"performances\": {\n          \"standard\": 2138\n        },\n        \"tiebreaks\": [\n          {\n            \"extendedCode\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"description\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"points\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"extendedCode\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"description\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"points\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"rank\": 1\n      },\n      {\n        \"name\": \"Hernandez Riera, Jose\",\n        \"title\": \"BOT\",\n        \"rating\": 2149,\n        \"fideId\": 3408230,\n        \"team\": \"string\",\n        \"fed\": \"CHI\",\n        \"score\": 2.5,\n        \"played\": 7,\n        \"ratingDiffs\": {\n          \"rapid\": -5,\n          \"blitz\": 10\n        },\n        \"ratingsMap\": {\n          \"rapid\": 2500,\n          \"blitz\": 2450\n        },\n        \"performances\": {\n          \"standard\": 2138\n        },\n        \"tiebreaks\": [\n          {\n            \"extendedCode\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"description\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"points\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          },\n          {\n            \"extendedCode\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"description\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            },\n            \"points\": {\n              \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n            }\n          }\n        ],\n        \"rank\": 1\n      }\n    ],\n    \"averageRating\": 8017\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "23d7236d-aef4-4e5d-a209-8b3808f84220",
+              "name": "Broadcast tournament not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "broadcast",
+                    ":broadcastTournamentId",
+                    "teams",
+                    "standings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastTournamentId",
+                      "description": "(Required) The broadcast tournament ID"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "16f26687-1cc4-479f-a803-1e9a1b08aba1",
+          "name": "Update your broadcast tournament",
+          "request": {
+            "name": "Update your broadcast tournament",
+            "description": {
+              "content": "Update information about a broadcast tournament that you created.\nThis endpoint accepts the same form data as the web form.\nAll fields must be populated with data. Missing fields will override the broadcast with empty data.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "broadcast",
+                ":broadcastTournamentId",
+                "edit"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "broadcastTournamentId",
+                  "description": "(Required) The broadcast ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://lichess.org/api/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://lichess.org/oauth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>",
+                  "description": "(Required) Name of the broadcast tournament.\n\nExample: `Sinquefield Cup`\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "info.format",
+                  "value": "<string>",
+                  "description": "Tournament format.\nExample: `\"8-player round-robin\" or \"5-round Swiss\"`\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "info.location",
+                  "value": "<string>",
+                  "description": "Tournament Location\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "info.tc",
+                  "value": "<string>",
+                  "description": "Time control.\nExample: `\"Classical\" or \"Rapid\" or \"Rapid & Blitz\"`\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "info.fideTC",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "info.timeZone",
+                  "value": "<string>",
+                  "description": "Timezone of the tournament. Example: `America/New_York`.\nSee [list of possible timezone identifiers](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) for more.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "info.players",
+                  "value": "<string>",
+                  "description": "Mention up to 4 of the best players participating.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "info.website",
+                  "value": "<uri>",
+                  "description": "Official website. External website URL\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "info.standings",
+                  "value": "<uri>",
+                  "description": "Official Standings. External website URL, e.g. chess-results.com, info64.org\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "markdown",
+                  "value": "<string>",
+                  "description": "Optional long description of the broadcast. Markdown is supported.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "showScores",
+                  "value": "false",
+                  "description": "Show players scores based on game results\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "showRatingDiffs",
+                  "value": "false",
+                  "description": "Show player's rating diffs\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "teamTable",
+                  "value": "false",
+                  "description": "Show a team leaderboard. Requires WhiteTeam and BlackTeam PGN tags.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "visibility",
+                  "value": "public",
+                  "description": "Who can view the broadcast.\n* `public`: Default. Anyone can view the broadcast\n* `unlisted`: Only people with the link can view the broadcast\n* `private`: Only the broadcast owner(s) can view the broadcast\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "players",
+                  "value": "<string>",
+                  "description": "Optional replace player names, ratings and titles.\n\nOne line per player, formatted as such:\n\n```txt\nplayer name / FIDE ID\n```\n\nExample:\n\n```txt\nMagnus Carlsen / 1503014\n```\n\nPlayer names ignore case and punctuation, and match all possible combinations of 2 words: \"Jorge Rick Vito\" will match \"Jorge Rick\", \"jorge vito\", \"Rick, Vito\", etc.\n\nIf the player is NM or WNM, you can:\n\n```txt\nplayer name / FIDE ID / title\n```\n\nAlternatively, you may set tags manually, like so:\n\n```txt\nplayer name / rating / title / new name\n```\n\nAll values are optional. Example:\n```txt\nMagnus Carlsen / 2863 / GM\nYouGotLittUp / 1890 / / Louis Litt\n```\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "teams",
+                  "value": "<string>",
+                  "description": "Optional: assign players to teams\n\nOne line per player, formatted as such:\n```txt\nTeam name; Fide Id or Player name\n```\n\nExample:\n```txt\nTeam Cats ; 3408230\nTeam Dogs ; Scooby Doo\n```\n\nBy default the PGN tags WhiteTeam and BlackTeam are used.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "tier",
+                  "value": "<integer>",
+                  "description": "Optional, for Lichess admins only, used to feature on /broadcast.\n\n* `3` for Official: normal tier\n* `4` for Official: high tier\n* `5` for Official: best tier\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "tiebreaks[]",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "tiebreaks[]",
+                  "value": "<string>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "c343ccea-a17a-4a29-84a3-0aca9e1dd386",
+              "name": "The broadcast tournament was successfully edited.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "broadcast",
+                    ":broadcastTournamentId",
+                    "edit"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastTournamentId",
+                      "description": "(Required) The broadcast ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Name of the broadcast tournament.\n\nExample: `Sinquefield Cup`\n",
+                        "type": "text/plain"
+                      },
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Tournament format.\nExample: `\"8-player round-robin\" or \"5-round Swiss\"`\n",
+                        "type": "text/plain"
+                      },
+                      "key": "info.format",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Tournament Location\n",
+                        "type": "text/plain"
+                      },
+                      "key": "info.location",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Time control.\nExample: `\"Classical\" or \"Rapid\" or \"Rapid & Blitz\"`\n",
+                        "type": "text/plain"
+                      },
+                      "key": "info.tc",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "info.fideTC",
+                      "value": "standard"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Timezone of the tournament. Example: `America/New_York`.\nSee [list of possible timezone identifiers](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) for more.\n",
+                        "type": "text/plain"
+                      },
+                      "key": "info.timeZone",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Mention up to 4 of the best players participating.\n",
+                        "type": "text/plain"
+                      },
+                      "key": "info.players",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Official website. External website URL\n",
+                        "type": "text/plain"
+                      },
+                      "key": "info.website",
+                      "value": "<uri>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Official Standings. External website URL, e.g. chess-results.com, info64.org\n",
+                        "type": "text/plain"
+                      },
+                      "key": "info.standings",
+                      "value": "<uri>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Optional long description of the broadcast. Markdown is supported.\n",
+                        "type": "text/plain"
+                      },
+                      "key": "markdown",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Show players scores based on game results\n",
+                        "type": "text/plain"
+                      },
+                      "key": "showScores",
+                      "value": "false"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Show player's rating diffs\n",
+                        "type": "text/plain"
+                      },
+                      "key": "showRatingDiffs",
+                      "value": "false"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Show a team leaderboard. Requires WhiteTeam and BlackTeam PGN tags.\n",
+                        "type": "text/plain"
+                      },
+                      "key": "teamTable",
+                      "value": "false"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Who can view the broadcast.\n* `public`: Default. Anyone can view the broadcast\n* `unlisted`: Only people with the link can view the broadcast\n* `private`: Only the broadcast owner(s) can view the broadcast\n",
+                        "type": "text/plain"
+                      },
+                      "key": "visibility",
+                      "value": "public"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Optional replace player names, ratings and titles.\n\nOne line per player, formatted as such:\n\n```txt\nplayer name / FIDE ID\n```\n\nExample:\n\n```txt\nMagnus Carlsen / 1503014\n```\n\nPlayer names ignore case and punctuation, and match all possible combinations of 2 words: \"Jorge Rick Vito\" will match \"Jorge Rick\", \"jorge vito\", \"Rick, Vito\", etc.\n\nIf the player is NM or WNM, you can:\n\n```txt\nplayer name / FIDE ID / title\n```\n\nAlternatively, you may set tags manually, like so:\n\n```txt\nplayer name / rating / title / new name\n```\n\nAll values are optional. Example:\n```txt\nMagnus Carlsen / 2863 / GM\nYouGotLittUp / 1890 / / Louis Litt\n```\n",
+                        "type": "text/plain"
+                      },
+                      "key": "players",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Optional: assign players to teams\n\nOne line per player, formatted as such:\n```txt\nTeam name; Fide Id or Player name\n```\n\nExample:\n```txt\nTeam Cats ; 3408230\nTeam Dogs ; Scooby Doo\n```\n\nBy default the PGN tags WhiteTeam and BlackTeam are used.\n",
+                        "type": "text/plain"
+                      },
+                      "key": "teams",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Optional, for Lichess admins only, used to feature on /broadcast.\n\n* `3` for Official: normal tier\n* `4` for Official: high tier\n* `5` for Official: best tier\n",
+                        "type": "text/plain"
+                      },
+                      "key": "tier",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "tiebreaks[]",
+                      "value": "SB-C1"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "tiebreaks[]",
+                      "value": "BH-C1"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"ok\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f1bdea2b-4e41-4b95-bb0b-4dc084a93cf7",
+              "name": "The broadcast tournament update failed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "broadcast",
+                    ":broadcastTournamentId",
+                    "edit"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastTournamentId",
+                      "description": "(Required) The broadcast ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "(Required) Name of the broadcast tournament.\n\nExample: `Sinquefield Cup`\n",
+                        "type": "text/plain"
+                      },
+                      "key": "name",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Tournament format.\nExample: `\"8-player round-robin\" or \"5-round Swiss\"`\n",
+                        "type": "text/plain"
+                      },
+                      "key": "info.format",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Tournament Location\n",
+                        "type": "text/plain"
+                      },
+                      "key": "info.location",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Time control.\nExample: `\"Classical\" or \"Rapid\" or \"Rapid & Blitz\"`\n",
+                        "type": "text/plain"
+                      },
+                      "key": "info.tc",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "info.fideTC",
+                      "value": "standard"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Timezone of the tournament. Example: `America/New_York`.\nSee [list of possible timezone identifiers](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) for more.\n",
+                        "type": "text/plain"
+                      },
+                      "key": "info.timeZone",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Mention up to 4 of the best players participating.\n",
+                        "type": "text/plain"
+                      },
+                      "key": "info.players",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Official website. External website URL\n",
+                        "type": "text/plain"
+                      },
+                      "key": "info.website",
+                      "value": "<uri>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Official Standings. External website URL, e.g. chess-results.com, info64.org\n",
+                        "type": "text/plain"
+                      },
+                      "key": "info.standings",
+                      "value": "<uri>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Optional long description of the broadcast. Markdown is supported.\n",
+                        "type": "text/plain"
+                      },
+                      "key": "markdown",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Show players scores based on game results\n",
+                        "type": "text/plain"
+                      },
+                      "key": "showScores",
+                      "value": "false"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Show player's rating diffs\n",
+                        "type": "text/plain"
+                      },
+                      "key": "showRatingDiffs",
+                      "value": "false"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Show a team leaderboard. Requires WhiteTeam and BlackTeam PGN tags.\n",
+                        "type": "text/plain"
+                      },
+                      "key": "teamTable",
+                      "value": "false"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Who can view the broadcast.\n* `public`: Default. Anyone can view the broadcast\n* `unlisted`: Only people with the link can view the broadcast\n* `private`: Only the broadcast owner(s) can view the broadcast\n",
+                        "type": "text/plain"
+                      },
+                      "key": "visibility",
+                      "value": "public"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Optional replace player names, ratings and titles.\n\nOne line per player, formatted as such:\n\n```txt\nplayer name / FIDE ID\n```\n\nExample:\n\n```txt\nMagnus Carlsen / 1503014\n```\n\nPlayer names ignore case and punctuation, and match all possible combinations of 2 words: \"Jorge Rick Vito\" will match \"Jorge Rick\", \"jorge vito\", \"Rick, Vito\", etc.\n\nIf the player is NM or WNM, you can:\n\n```txt\nplayer name / FIDE ID / title\n```\n\nAlternatively, you may set tags manually, like so:\n\n```txt\nplayer name / rating / title / new name\n```\n\nAll values are optional. Example:\n```txt\nMagnus Carlsen / 2863 / GM\nYouGotLittUp / 1890 / / Louis Litt\n```\n",
+                        "type": "text/plain"
+                      },
+                      "key": "players",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Optional: assign players to teams\n\nOne line per player, formatted as such:\n```txt\nTeam name; Fide Id or Player name\n```\n\nExample:\n```txt\nTeam Cats ; 3408230\nTeam Dogs ; Scooby Doo\n```\n\nBy default the PGN tags WhiteTeam and BlackTeam are used.\n",
+                        "type": "text/plain"
+                      },
+                      "key": "teams",
+                      "value": "<string>"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Optional, for Lichess admins only, used to feature on /broadcast.\n\n* `3` for Official: normal tier\n* `4` for Official: high tier\n* `5` for Official: best tier\n",
+                        "type": "text/plain"
+                      },
+                      "key": "tier",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "tiebreaks[]",
+                      "value": "SB-C1"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "tiebreaks[]",
+                      "value": "BH-C1"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"This request is invalid because [...]\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9212b40b-ff4b-4dd3-81c3-916ca6495957",
+          "name": "Create a broadcast round",
+          "request": {
+            "name": "Create a broadcast round",
+            "description": {
+              "content": "Create a new broadcast round to relay external games.\nThis endpoint accepts the same form data as the web form.\n\nChoose one between `syncUrl`, `syncUrls`, `syncIds` and `syncUsers`, if it is missing, the broadcast needs to be fed by [pushing PGN to it](#tag/broadcasts/POST/api/broadcast/round/{broadcastRoundId}/push)\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "broadcast",
+                ":broadcastTournamentId",
+                "new"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "broadcastTournamentId",
+                  "description": "(Required) The broadcast tournament ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://lichess.org/api/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://lichess.org/oauth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "syncSource",
+                  "value": "push"
+                },
+                {
+                  "disabled": false,
+                  "key": "startsAt",
+                  "value": "<long>"
+                },
+                {
+                  "disabled": false,
+                  "key": "startsAfterPrevious",
+                  "value": "false"
+                },
+                {
+                  "disabled": false,
+                  "key": "delay",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "new"
+                },
+                {
+                  "disabled": false,
+                  "key": "rated",
+                  "value": "true"
+                },
+                {
+                  "disabled": false,
+                  "key": "customScoring.white.win",
+                  "value": "<number>"
+                },
+                {
+                  "disabled": false,
+                  "key": "customScoring.white.draw",
+                  "value": "<number>"
+                },
+                {
+                  "disabled": false,
+                  "key": "customScoring.black.win",
+                  "value": "<number>"
+                },
+                {
+                  "disabled": false,
+                  "key": "customScoring.black.draw",
+                  "value": "<number>"
+                },
+                {
+                  "disabled": false,
+                  "key": "period",
+                  "value": "<integer>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "587d6975-5878-455a-8b47-bd6e99c07751",
+              "name": "The broadcast round was successfully created.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "broadcast",
+                    ":broadcastTournamentId",
+                    "new"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastTournamentId",
+                      "description": "(Required) The broadcast tournament ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "key": "name",
+                      "value": "string"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "syncSource",
+                      "value": "push"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "startsAt",
+                      "value": "<long>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "startsAfterPrevious",
+                      "value": "false"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "delay",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "status",
+                      "value": "new"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "rated",
+                      "value": "true"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "customScoring.white.win",
+                      "value": "0.3745268497143939"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "customScoring.white.draw",
+                      "value": "6.797436907948261"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "customScoring.black.win",
+                      "value": "5.354087519796396"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "customScoring.black.draw",
+                      "value": "4.13611313169053"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "period",
+                      "value": "<integer>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"round\": {\n    \"id\": \"0JjIup0K\",\n    \"name\": \"Final Round\",\n    \"slug\": \"final-round\",\n    \"createdAt\": 1778812603116,\n    \"rated\": false,\n    \"ongoing\": true,\n    \"startsAt\": 1778812603116,\n    \"url\": \"https://lichess.org/broadcast/knight-invitational/final-round/0JjIup0K\"\n  },\n  \"tour\": {\n    \"id\": \"gJm0i5k1\",\n    \"name\": \"Knight Invitational\",\n    \"slug\": \"knight-invitational\",\n    \"info\": {},\n    \"createdAt\": 1778812602837,\n    \"url\": \"https://lichess.org/broadcast/knight-invitational/gJm0i5k1\",\n    \"tier\": 5,\n    \"dates\": [\n      1778816202858\n    ]\n  },\n  \"study\": {\n    \"writeable\": true,\n    \"features\": {\n      \"chat\": true,\n      \"computer\": true,\n      \"explorer\": true\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fc67ff1b-3a47-485d-ac82-13e86f75c156",
+              "name": "The creation of the broadcast failed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "broadcast",
+                    ":broadcastTournamentId",
+                    "new"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastTournamentId",
+                      "description": "(Required) The broadcast tournament ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "key": "name",
+                      "value": "string"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "syncSource",
+                      "value": "push"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "startsAt",
+                      "value": "<long>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "startsAfterPrevious",
+                      "value": "false"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "delay",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "status",
+                      "value": "new"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "rated",
+                      "value": "true"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "customScoring.white.win",
+                      "value": "0.3745268497143939"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "customScoring.white.draw",
+                      "value": "6.797436907948261"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "customScoring.black.win",
+                      "value": "5.354087519796396"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "customScoring.black.draw",
+                      "value": "4.13611313169053"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "period",
+                      "value": "<integer>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"This request is invalid because [...]\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ad272e9e-c31a-471a-ac43-5fe37e9b107c",
+          "name": "Get a broadcast round",
+          "request": {
+            "name": "Get a broadcast round",
+            "description": {
+              "content": "Get information about a broadcast round.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "broadcast",
+                ":broadcastTournamentSlug",
+                ":broadcastRoundSlug",
+                ":broadcastRoundId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "broadcastTournamentSlug",
+                  "description": "(Required) The broadcast tournament slug. Only used for SEO, the slug can be safely replaced by `-`. Only the `broadcastRoundId` is actually used."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "broadcastRoundSlug",
+                  "description": "(Required) The broadcast round slug. Only used for SEO, the slug can be safely replaced by `-`. Only the `broadcastRoundId` is actually used."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "broadcastRoundId",
+                  "description": "(Required) The broadcast Round ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3ea968ab-2488-4543-a6a9-74bbcc6cb2f3",
+              "name": "The information about the broadcast round.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "broadcast",
+                    ":broadcastTournamentSlug",
+                    ":broadcastRoundSlug",
+                    ":broadcastRoundId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastTournamentSlug",
+                      "description": "(Required) The broadcast tournament slug. Only used for SEO, the slug can be safely replaced by `-`. Only the `broadcastRoundId` is actually used."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastRoundSlug",
+                      "description": "(Required) The broadcast round slug. Only used for SEO, the slug can be safely replaced by `-`. Only the `broadcastRoundId` is actually used."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastRoundId",
+                      "description": "(Required) The broadcast Round ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"round\": {\n    \"id\": \"0JjIup0K\",\n    \"name\": \"Final Round\",\n    \"slug\": \"final-round\",\n    \"createdAt\": 1778812603116,\n    \"rated\": false,\n    \"ongoing\": true,\n    \"startsAt\": 1778812603116,\n    \"url\": \"https://lichess.org/broadcast/knight-invitational-2/final-round/0JjIup0K\"\n  },\n  \"tour\": {\n    \"id\": \"gJm0i5k1\",\n    \"name\": \"Knight Invitational 2\",\n    \"slug\": \"knight-invitational-2\",\n    \"info\": {},\n    \"createdAt\": 1778812602837,\n    \"url\": \"https://lichess.org/broadcast/knight-invitational-2/gJm0i5k1\",\n    \"dates\": [\n      1778812603116\n    ],\n    \"communityOwner\": {\n      \"name\": \"Admin\",\n      \"id\": \"admin\"\n    }\n  },\n  \"study\": {\n    \"writeable\": false,\n    \"features\": {\n      \"chat\": true,\n      \"computer\": true,\n      \"explorer\": true\n    }\n  },\n  \"games\": [\n    {\n      \"id\": \"uHRiHXFM\",\n      \"name\": \"Player 1 - Player 2\",\n      \"fen\": \"rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2\",\n      \"players\": [\n        {\n          \"name\": \"Player 1\",\n          \"fideId\": 123\n        },\n        {\n          \"name\": \"Player 2\",\n          \"fideId\": 456\n        }\n      ],\n      \"lastMove\": \"e7e5\",\n      \"thinkTime\": 0,\n      \"status\": \"*\"\n    },\n    {\n      \"id\": \"ZiN3hBIO\",\n      \"name\": \"Player 3 - Player 4\",\n      \"fen\": \"rnbqkbnr/ppp1pppp/8/3p4/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 0 2\",\n      \"players\": [\n        {\n          \"name\": \"Player 3\"\n        },\n        {\n          \"name\": \"Player 4\"\n        }\n      ],\n      \"lastMove\": \"d7d5\",\n      \"thinkTime\": 0,\n      \"status\": \"*\"\n    }\n  ],\n  \"photos\": {},\n  \"isSubscribed\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bb7790f4-eef2-4148-b5d2-7eea4af2c74c",
+          "name": "Update a broadcast round",
+          "request": {
+            "name": "Update a broadcast round",
+            "description": {
+              "content": "Update information about a broadcast round.\nThis endpoint accepts the same form data as the web form.\nAll fields must be populated with data. Missing fields will override the broadcast with empty data.\nFor instance, if you omit `startDate`, then any pre-existing start date will be removed.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "broadcast",
+                "round",
+                ":broadcastRoundId",
+                "edit"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "patch",
+                  "value": "<boolean>",
+                  "description": "Only update the provided fields, leaving others unchanged"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "broadcastRoundId",
+                  "description": "(Required) The broadcast round ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://lichess.org/api/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://lichess.org/oauth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            },
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "name",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "syncSource",
+                  "value": "push"
+                },
+                {
+                  "disabled": false,
+                  "key": "startsAt",
+                  "value": "<long>"
+                },
+                {
+                  "disabled": false,
+                  "key": "startsAfterPrevious",
+                  "value": "false"
+                },
+                {
+                  "disabled": false,
+                  "key": "delay",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "status",
+                  "value": "new"
+                },
+                {
+                  "disabled": false,
+                  "key": "rated",
+                  "value": "true"
+                },
+                {
+                  "disabled": false,
+                  "key": "customScoring.white.win",
+                  "value": "<number>"
+                },
+                {
+                  "disabled": false,
+                  "key": "customScoring.white.draw",
+                  "value": "<number>"
+                },
+                {
+                  "disabled": false,
+                  "key": "customScoring.black.win",
+                  "value": "<number>"
+                },
+                {
+                  "disabled": false,
+                  "key": "customScoring.black.draw",
+                  "value": "<number>"
+                },
+                {
+                  "disabled": false,
+                  "key": "period",
+                  "value": "<integer>"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "09abffa9-54fb-4f2a-adc8-94565b6b97e8",
+              "name": "The broadcast round was successfully edited.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "broadcast",
+                    "round",
+                    ":broadcastRoundId",
+                    "edit"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "patch",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastRoundId",
+                      "description": "(Required) The broadcast round ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "key": "name",
+                      "value": "string"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "syncSource",
+                      "value": "push"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "startsAt",
+                      "value": "<long>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "startsAfterPrevious",
+                      "value": "false"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "delay",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "status",
+                      "value": "new"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "rated",
+                      "value": "true"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "customScoring.white.win",
+                      "value": "0.3745268497143939"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "customScoring.white.draw",
+                      "value": "6.797436907948261"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "customScoring.black.win",
+                      "value": "5.354087519796396"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "customScoring.black.draw",
+                      "value": "4.13611313169053"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "period",
+                      "value": "<integer>"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"round\": {\n    \"id\": \"0JjIup0K\",\n    \"name\": \"Final Round 2\",\n    \"slug\": \"final-round-2\",\n    \"createdAt\": 1778812603116,\n    \"rated\": false,\n    \"ongoing\": true,\n    \"startsAt\": 1778812603116,\n    \"url\": \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K\"\n  },\n  \"tour\": {\n    \"id\": \"gJm0i5k1\",\n    \"name\": \"Knight Invitational 2\",\n    \"slug\": \"knight-invitational-2\",\n    \"info\": {},\n    \"createdAt\": 1778812602837,\n    \"url\": \"https://lichess.org/broadcast/knight-invitational-2/gJm0i5k1\",\n    \"dates\": [\n      1778812603116\n    ],\n    \"communityOwner\": {\n      \"name\": \"Admin\",\n      \"id\": \"admin\"\n    }\n  },\n  \"study\": {\n    \"writeable\": true,\n    \"features\": {\n      \"chat\": true,\n      \"computer\": true,\n      \"explorer\": true\n    }\n  },\n  \"games\": [\n    {\n      \"id\": \"uHRiHXFM\",\n      \"name\": \"Player 1 - Player 2\",\n      \"fen\": \"rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2\",\n      \"players\": [\n        {\n          \"name\": \"Player 1\",\n          \"fideId\": 123\n        },\n        {\n          \"name\": \"Player 2\",\n          \"fideId\": 456\n        }\n      ],\n      \"lastMove\": \"e7e5\",\n      \"thinkTime\": 0,\n      \"status\": \"*\"\n    },\n    {\n      \"id\": \"ZiN3hBIO\",\n      \"name\": \"Player 3 - Player 4\",\n      \"fen\": \"rnbqkbnr/ppp1pppp/8/3p4/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 0 2\",\n      \"players\": [\n        {\n          \"name\": \"Player 3\"\n        },\n        {\n          \"name\": \"Player 4\"\n        }\n      ],\n      \"lastMove\": \"d7d5\",\n      \"thinkTime\": 0,\n      \"status\": \"*\"\n    }\n  ],\n  \"photos\": {},\n  \"isSubscribed\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8cf55991-f271-4532-bcf8-3ce5b8676383",
+              "name": "The broadcast round update failed.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "broadcast",
+                    "round",
+                    ":broadcastRoundId",
+                    "edit"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "patch",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastRoundId",
+                      "description": "(Required) The broadcast round ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "key": "name",
+                      "value": "string"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "syncSource",
+                      "value": "push"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "startsAt",
+                      "value": "<long>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "startsAfterPrevious",
+                      "value": "false"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "delay",
+                      "value": "<integer>"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "status",
+                      "value": "new"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "rated",
+                      "value": "true"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "customScoring.white.win",
+                      "value": "0.3745268497143939"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "customScoring.white.draw",
+                      "value": "6.797436907948261"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "customScoring.black.win",
+                      "value": "5.354087519796396"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "customScoring.black.draw",
+                      "value": "4.13611313169053"
+                    },
+                    {
+                      "disabled": false,
+                      "key": "period",
+                      "value": "<integer>"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"This request is invalid because [...]\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f819c8f6-7cba-4450-91e1-28d546fd63fa",
+          "name": "Reset a broadcast round",
+          "request": {
+            "name": "Reset a broadcast round",
+            "description": {
+              "content": "Remove any games from the broadcast round and reset it to its initial state.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "broadcast",
+                "round",
+                ":broadcastRoundId",
+                "reset"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "broadcastRoundId",
+                  "description": "(Required) The broadcast round ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://lichess.org/api/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://lichess.org/oauth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "b377a197-12ad-4282-9ecb-252ca05ab395",
+              "name": "The broadcast round was successfully reset.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "broadcast",
+                    "round",
+                    ":broadcastRoundId",
+                    "reset"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastRoundId",
+                      "description": "(Required) The broadcast round ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"ok\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f8630772-5d8d-4e5d-a425-fbc3f53a099a",
+          "name": "Push PGN to a broadcast round",
+          "request": {
+            "name": "Push PGN to a broadcast round",
+            "description": {
+              "content": "Update a broadcast with new PGN.\nOnly for broadcasts without a source URL.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "broadcast",
+                "round",
+                ":broadcastRoundId",
+                "push"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "broadcastRoundId",
+                  "description": "(Required) The broadcast round ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "text/plain"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://lichess.org/api/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://lichess.org/oauth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "<string>"
+            }
+          },
+          "response": [
+            {
+              "id": "ae649972-8615-4528-9724-8d55974eb93d",
+              "name": "The broadcast was successfully updated.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "broadcast",
+                    "round",
+                    ":broadcastRoundId",
+                    "push"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastRoundId",
+                      "description": "(Required) The broadcast round ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<string>"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"games\": [\n    {\n      \"tags\": {\n        \"White\": \"Player 1\",\n        \"WhiteFideId\": \"123\",\n        \"Black\": \"Player 2\",\n        \"BlackFideId\": \"456\",\n        \"Result\": \"*\",\n        \"Event\": \"Knight Invitational\"\n      },\n      \"moves\": 2\n    },\n    {\n      \"tags\": {\n        \"White\": \"Player 3\",\n        \"Black\": \"Player 4\",\n        \"Result\": \"*\",\n        \"Event\": \"Knight Invitational\"\n      },\n      \"moves\": 2\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8f3bd2c1-e05f-4bde-bfd6-ea8105324c68",
+              "name": "There was a problem with the pushed PGN.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "broadcast",
+                    "round",
+                    ":broadcastRoundId",
+                    "push"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "broadcastRoundId",
+                      "description": "(Required) The broadcast round ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<string>"
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Cannot parse moves\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2d30b1f0-4de0-4ee9-aeb5-497f46f1e137",
+          "name": "Stream an ongoing broadcast round as PGN",
+          "request": {
+            "name": "Stream an ongoing broadcast round as PGN",
+            "description": {
+              "content": "This streaming endpoint first sends all games of a broadcast round in PGN format.\nThen, it waits for new moves to be played. As soon as it happens, the entire PGN of the game is sent to the stream.\nThe stream will also send PGNs when games are added to the round.\nThis is the best way to get updates about an ongoing round. Streaming means no polling,\nand no pollings means no latency, and minimum impact on the server.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "stream",
+                "broadcast",
+                "round",
+                "{{broadcastRoundId}}.pgn"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "clocks",
+                  "value": "true",
+                  "description": "Include clock comments in the PGN moves, when available.\nExample: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "comments",
+                  "value": "true",
+                  "description": "Include analysis comments in the PGN moves, when available.\nExample: `12. Bxf6 { [%eval 0.23] }`\n"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/x-chess-pgn"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "6e0777b4-862d-4a71-857e-ee2dad81e823",
+              "name": "The PGN representation of the round games, then the PGNs of games as they are updated.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "stream",
+                    "broadcast",
+                    "round",
+                    "{{broadcastRoundId}}.pgn"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "clocks",
+                      "value": "true"
+                    },
+                    {
+                      "key": "comments",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/x-chess-pgn"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/x-chess-pgn"
+                }
+              ],
+              "body": "[Event \"Knight Invitational\"]\n[Site \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/uHRiHXFM\"]\n[Date \"2026.05.15\"]\n[White \"Player 1\"]\n[Black \"Player 2\"]\n[Result \"*\"]\n[WhiteFideId \"123\"]\n[BlackFideId \"456\"]\n[Variant \"Standard\"]\n[ECO \"C20\"]\n[Opening \"King's Pawn Game\"]\n[UTCDate \"2026.05.15\"]\n[UTCTime \"02:36:43\"]\n[BroadcastName \"Knight Invitational 2\"]\n[BroadcastURL \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K\"]\n[GameURL \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/uHRiHXFM\"]\n\n1. e4 e5 *\n\n\n[Event \"Knight Invitational\"]\n[Site \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/ZiN3hBIO\"]\n[Date \"2026.05.15\"]\n[White \"Player 3\"]\n[Black \"Player 4\"]\n[Result \"*\"]\n[Variant \"Standard\"]\n[ECO \"D00\"]\n[Opening \"Queen's Pawn Game\"]\n[UTCDate \"2026.05.15\"]\n[UTCTime \"02:36:43\"]\n[BroadcastName \"Knight Invitational 2\"]\n[BroadcastURL \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K\"]\n[GameURL \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/ZiN3hBIO\"]\n\n1. d4 d5 *\n",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "54c905d8-7842-4bcc-b820-78fe37043ab3",
+          "name": "Export one round as PGN",
+          "request": {
+            "name": "Export one round as PGN",
+            "description": {
+              "content": "Download all games of a single round of a broadcast tournament in PGN format.\nYou *could* poll this endpoint to get updates about a tournament, but it would be slow,\nand very inefficient.\nInstead, consider [streaming the tournament](#tag/broadcasts/GET/api/stream/broadcast/round/{broadcastRoundId}.pgn) to get\na new PGN every time a game is updated, in real-time.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "broadcast",
+                "round",
+                "{{broadcastRoundId}}.pgn"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "clocks",
+                  "value": "true",
+                  "description": "Include clock comments in the PGN moves, when available.\nExample: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "comments",
+                  "value": "true",
+                  "description": "Include analysis comments in the PGN moves, when available.\nExample: `12. Bxf6 { [%eval 0.23] }`\n"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/x-chess-pgn"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "98b00311-6bb0-4330-9039-0622d048fe1c",
+              "name": "The PGN representation of the round.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "broadcast",
+                    "round",
+                    "{{broadcastRoundId}}.pgn"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "clocks",
+                      "value": "true"
+                    },
+                    {
+                      "key": "comments",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/x-chess-pgn"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/x-chess-pgn"
+                }
+              ],
+              "body": "[Event \"Knight Invitational\"]\n[Site \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/uHRiHXFM\"]\n[Date \"2026.05.15\"]\n[White \"Player 1\"]\n[Black \"Player 2\"]\n[Result \"*\"]\n[WhiteFideId \"123\"]\n[BlackFideId \"456\"]\n[Variant \"Standard\"]\n[ECO \"C20\"]\n[Opening \"King's Pawn Game\"]\n[UTCDate \"2026.05.15\"]\n[UTCTime \"02:36:43\"]\n[BroadcastName \"Knight Invitational 2\"]\n[BroadcastURL \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K\"]\n[GameURL \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/uHRiHXFM\"]\n\n1. e4 e5 *\n\n\n[Event \"Knight Invitational\"]\n[Site \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/ZiN3hBIO\"]\n[Date \"2026.05.15\"]\n[White \"Player 3\"]\n[Black \"Player 4\"]\n[Result \"*\"]\n[Variant \"Standard\"]\n[ECO \"D00\"]\n[Opening \"Queen's Pawn Game\"]\n[UTCDate \"2026.05.15\"]\n[UTCTime \"02:36:43\"]\n[BroadcastName \"Knight Invitational 2\"]\n[BroadcastURL \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K\"]\n[GameURL \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/ZiN3hBIO\"]\n\n1. d4 d5 *\n",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "28b81ad4-5a08-466d-b6c4-aea9032ec692",
+          "name": "Export all rounds as PGN",
+          "request": {
+            "name": "Export all rounds as PGN",
+            "description": {
+              "content": "Download all games of all rounds of a broadcast in PGN format.\nIf a `study:read` [OAuth token](#tag/OAuth) is provided,\nthe private rounds where the user is a contributor will be available.\nYou may want to [download only the games of a single round](#tag/broadcasts/GET/api/broadcast/round/{broadcastRoundId}.pgn) instead.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "broadcast",
+                "{{broadcastTournamentId}}.pgn"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "clocks",
+                  "value": "true",
+                  "description": "Include clock comments in the PGN moves, when available.\nExample: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "comments",
+                  "value": "true",
+                  "description": "Include analysis comments in the PGN moves, when available.\nExample: `12. Bxf6 { [%eval 0.23] }`\n"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/x-chess-pgn"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://lichess.org/api/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://lichess.org/oauth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "fb1333d0-f312-4c90-a35d-18c03aadbe03",
+              "name": "The PGN representation of the broadcast.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "broadcast",
+                    "{{broadcastTournamentId}}.pgn"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "clocks",
+                      "value": "true"
+                    },
+                    {
+                      "key": "comments",
+                      "value": "true"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/x-chess-pgn"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/x-chess-pgn"
+                }
+              ],
+              "body": "[Event \"Round 1: Chapter 1\"]\n[Site \"https://lichess.org/broadcast/knight-invitational-2/round-1/2Ywx30MD/NemhNt04\"]\n[Date \"2026.05.15\"]\n[Result \"*\"]\n[Variant \"Standard\"]\n[ECO \"?\"]\n[Opening \"?\"]\n[UTCDate \"2026.05.15\"]\n[UTCTime \"02:36:42\"]\n[BroadcastName \"Knight Invitational 2\"]\n[BroadcastURL \"https://lichess.org/broadcast/knight-invitational-2/round-1/2Ywx30MD\"]\n[GameURL \"https://lichess.org/broadcast/knight-invitational-2/round-1/2Ywx30MD/NemhNt04\"]\n\n *\n\n\n[Event \"Round 2: Chapter 1\"]\n[Site \"https://lichess.org/broadcast/knight-invitational-2/round-2/bJEvCanZ/5JK4PVm6\"]\n[Date \"2026.05.15\"]\n[Result \"*\"]\n[Variant \"Standard\"]\n[ECO \"?\"]\n[Opening \"?\"]\n[UTCDate \"2026.05.15\"]\n[UTCTime \"02:36:43\"]\n[BroadcastName \"Knight Invitational 2\"]\n[BroadcastURL \"https://lichess.org/broadcast/knight-invitational-2/round-2/bJEvCanZ\"]\n[GameURL \"https://lichess.org/broadcast/knight-invitational-2/round-2/bJEvCanZ/5JK4PVm6\"]\n\n *\n\n\n[Event \"Round 3: Chapter 1\"]\n[Site \"https://lichess.org/broadcast/knight-invitational-2/round-3/cxolzwOn/T3ClNdwy\"]\n[Date \"2026.05.15\"]\n[Result \"*\"]\n[Variant \"Standard\"]\n[ECO \"?\"]\n[Opening \"?\"]\n[UTCDate \"2026.05.15\"]\n[UTCTime \"02:36:43\"]\n[BroadcastName \"Knight Invitational 2\"]\n[BroadcastURL \"https://lichess.org/broadcast/knight-invitational-2/round-3/cxolzwOn\"]\n[GameURL \"https://lichess.org/broadcast/knight-invitational-2/round-3/cxolzwOn/T3ClNdwy\"]\n\n *\n\n\n[Event \"Knight Invitational\"]\n[Site \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/uHRiHXFM\"]\n[Date \"2026.05.15\"]\n[White \"Player 1\"]\n[Black \"Player 2\"]\n[Result \"*\"]\n[WhiteFideId \"123\"]\n[BlackFideId \"456\"]\n[Variant \"Standard\"]\n[ECO \"C20\"]\n[Opening \"King's Pawn Game\"]\n[UTCDate \"2026.05.15\"]\n[UTCTime \"02:36:43\"]\n[BroadcastName \"Knight Invitational 2\"]\n[BroadcastURL \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K\"]\n[GameURL \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/uHRiHXFM\"]\n\n1. e4 e5 *\n\n\n[Event \"Knight Invitational\"]\n[Site \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/ZiN3hBIO\"]\n[Date \"2026.05.15\"]\n[White \"Player 3\"]\n[Black \"Player 4\"]\n[Result \"*\"]\n[Variant \"Standard\"]\n[ECO \"D00\"]\n[Opening \"Queen's Pawn Game\"]\n[UTCDate \"2026.05.15\"]\n[UTCTime \"02:36:43\"]\n[BroadcastName \"Knight Invitational 2\"]\n[BroadcastURL \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K\"]\n[GameURL \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/ZiN3hBIO\"]\n\n1. d4 d5 *\n",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "449aecfa-6ac4-4a0d-8b53-bf0aaf313810",
+          "name": "Get your broadcast rounds",
+          "request": {
+            "name": "Get your broadcast rounds",
+            "description": {
+              "content": "Stream all broadcast rounds you are a member of.\nAlso includes broadcasts rounds you did not create, but were invited to.\nAlso includes broadcasts rounds where you're a non-writing member. See the `writeable` flag in the response.\nRounds are ordered by rank, which is roughly chronological, most recent first, slightly pondered with popularity.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "broadcast",
+                "my-rounds"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "nb",
+                  "value": "<integer>",
+                  "description": "How many rounds to get"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/x-ndjson"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://lichess.org/api/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://lichess.org/oauth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "c0f32fc0-f44c-49ed-8767-639b63b733d8",
+              "name": "The broadcast rounds with their tournament and a `study.writeable` flag.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "broadcast",
+                    "my-rounds"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "nb",
+                      "value": "20"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/x-ndjson"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/x-ndjson"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://lichess.org",
+      "key": "baseUrl"
+    },
+    {
+      "disabled": false,
+      "description": {
+        "content": "(Required) The broadcast round ID",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "<string>",
+      "key": "broadcastRoundId"
+    },
+    {
+      "disabled": false,
+      "description": {
+        "content": "(Required) The broadcast tournament ID",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "<string>",
+      "key": "broadcastTournamentId"
+    }
+  ],
+  "info": {
+    "_postman_id": "372871c3-eb25-4226-8e64-4695caff5787",
+    "name": "Lichess.org API reference Account Broadcasts API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "# Introduction\nWelcome to the reference for the Lichess API! Lichess is free/libre,\nopen-source chess server powered by volunteers and donations.\n- Get help in the [Lichess Discord channel](https://discord.gg/lichess)\n- API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)\n- API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)\n- [Contribute to this documentation on Github](https://github.com/lichess-org/api)\n- Check out [Lichess widgets to embed in your website](https://lichess.org/developers)\n- [Download all Lichess rated games](https://database.lichess.org/)\n- [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)\n- [Download all evaluated positions](https://database.lichess.org/#evals)\n\n## Endpoint\nAll requests go to `https://lichess.org` (unless otherwise specified).\n\n## Clients\n- [Python general API](https://github.com/lichess-org/berserk)\n- [MicroPython general API](https://github.com/mkomon/uberserk)\n- [Python general API - async](https://pypi.org/project/async-lichess-sdk)\n- [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)\n- [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)\n- [Java general API](https://github.com/tors42/chariot)\n- [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)\n- [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)\n- [.NET general API](https://github.com/Dblike/LichessSharp)\n\n## Rate limiting\nAll requests are rate limited using various strategies,\nto ensure the API remains responsive for everyone.\nOnly make one request at a time.\nIf you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),\nyou have exceded one of the rate limits.\nIn most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.\nReduce your request frequency before retrying.\n\n## Streaming with ND-JSON\nSome API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.\n\nHere's a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.\n\n## Authentication\n### Which authentication method is right for me?\n[Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)\n\n### Personal Access Token\nPersonal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.\n- [Generate a personal access token](https://lichess.org/account/oauth/token)\n- `curl https://lichess.org/api/account -H \"Authorization: Bearer {token}\"`\n- [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)\n\n### Token Security\n- Keep your tokens secret. Do not share them in public repositories or public forums.\n- Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens' scope). You remain responsible for all activities on your account.\n- Do not hardcode tokens in your application's code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.\n- If you suspect a token has been compromised, revoke it immediately.\n\nTo see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).\n\n### Authorization Code Flow with PKCE\nThe authorization code flow with PKCE allows your users to **login with Lichess**.\nLichess supports unregistered and public clients (no client authentication, choose any unique client id).\nThe only accepted code challenge method is `S256`.\nAccess tokens are long-lived (expect one year), unless they are revoked.\nRefresh tokens are not supported.\n\nSee the [documentation for the OAuth endpoints](#tag/OAuth) or\nthe [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.\n\n- [Demo app](https://lichess-org.github.io/api-demo/)\n- [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)\n- [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)\n- [Java example](https://github.com/tors42/lichess-oauth-pkce-app)\n- [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)\n\n#### Real life examples\n- [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))\n- [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))\n- [English Chess Federation](https://ecf.octoknight.com/)\n- [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)\n\n### Token format\nAccess tokens and authorization codes match `^[A-Za-z0-9_]+$`.\nThe length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.\nBy convention tokens have a recognizable prefix, but do not rely on this.\n\n\nContact Support:\n Name: Lichess.org API\n Email: contact@lichess.org",
+      "type": "text/plain"
+    }
+  }
+}

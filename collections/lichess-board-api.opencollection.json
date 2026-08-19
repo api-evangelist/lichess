@@ -1,0 +1,407 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lichess.org API reference Account Board API",
+    "version": "2.0.144"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Board",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Stream incoming events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/stream/event",
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Stream the events reaching a lichess user in real time as [ndjson](#description/streaming-with-nd-json).\n\nAn empty line is sent every 7 seconds for keep alive purposes.\n\nEach non-empty line is a JSON object containing a `type` field. Possible values are:\n- `gameStart` Start of a game\n- `gameFinish` Completion of a game\n- `challenge` A player sends you a challenge or you challenge someone\n- `challengeCanceled` A player cancels their challenge to you\n- `challengeDeclined` The opponent declines you"
+        },
+        {
+          "info": {
+            "name": "Create a seek",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/board/seek",
+            "body": {
+              "type": "form-urlencoded",
+              "data": []
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Create a public seek, to start a game with a random player.\n\n### Real-time seek\n\nSpecify the `time` and `increment` clock values.\nThe response is streamed but doesn't contain any information.\n\n**Keep the connection open to keep the seek active**.\n\nIf the client closes the connection, the seek is canceled. This way, if the client terminates, the user won't be paired in a game they wouldn't play.\nWhen the seek is accepted, or expires, the server closes the connection.\n\n**Make sure to also have an "
+        },
+        {
+          "info": {
+            "name": "Stream Board game state",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/board/game/stream/:gameId",
+            "params": [
+              {
+                "name": "gameId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Stream the state of a game being played with the Board API, as [ndjson](#description/streaming-with-nd-json).\n\nUse this endpoint to get updates about the game in real-time, with a single request.\n\nEach line is a JSON object containing a `type` field. Possible values are:\n  - `gameFull` Full game data. All values are immutable, except for the `state` field.\n  - `gameState` Current state of the game. Immutable values not included. Sent when a move is played, a draw is offered, or when the game end"
+        },
+        {
+          "info": {
+            "name": "Make a Board move",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/board/game/:gameId/move/:move",
+            "params": [
+              {
+                "name": "gameId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "move",
+                "value": "",
+                "type": "path",
+                "description": "The move to play, in UCI format"
+              },
+              {
+                "name": "offeringDraw",
+                "value": "",
+                "type": "query",
+                "description": "Whether to offer (or agree to) a draw"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Make a move in a game being played with the Board API.\nThe move can also contain a draw offer/agreement.\n"
+        },
+        {
+          "info": {
+            "name": "Fetch the player chat",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/board/game/:gameId/chat",
+            "params": [
+              {
+                "name": "gameId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Get the messages posted in the private game chat, i.e. the chat between the 2 players of the game.\n\nGames can also have a public spectator chat.\n"
+        },
+        {
+          "info": {
+            "name": "Write in the chat",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/board/game/:gameId/chat",
+            "params": [
+              {
+                "name": "gameId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "room",
+                  "value": ""
+                },
+                {
+                  "name": "text",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Post a message to the player or spectator chat, in a game being played with the Board API.\n"
+        },
+        {
+          "info": {
+            "name": "Abort a game",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/board/game/:gameId/abort",
+            "params": [
+              {
+                "name": "gameId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Abort a game being played with the Board API.\n"
+        },
+        {
+          "info": {
+            "name": "Resign a game",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/board/game/:gameId/resign",
+            "params": [
+              {
+                "name": "gameId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Resign a game being played with the Board API.\n"
+        },
+        {
+          "info": {
+            "name": "Handle draw offers",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/board/game/:gameId/draw/:accept",
+            "params": [
+              {
+                "name": "gameId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "accept",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Create/accept/decline draw offers.\n- `yes`: Offer a draw, or accept the opponent's draw offer.\n- `no`: Decline a draw offer from the opponent.\n"
+        },
+        {
+          "info": {
+            "name": "Handle takeback offers",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/board/game/:gameId/takeback/:accept",
+            "params": [
+              {
+                "name": "gameId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "accept",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Create/accept/decline takebacks.\n- `yes`: Propose a takeback, or accept the opponent's takeback offer.\n- `no`: Decline a takeback offer from the opponent.\n"
+        },
+        {
+          "info": {
+            "name": "Claim victory of a game",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/board/game/:gameId/claim-victory",
+            "params": [
+              {
+                "name": "gameId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Claim victory when the opponent has left the game for a while.\n"
+        },
+        {
+          "info": {
+            "name": "Claim draw of a game",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/board/game/:gameId/claim-draw",
+            "params": [
+              {
+                "name": "gameId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Claim draw when the opponent has left the game for a while.\n"
+        },
+        {
+          "info": {
+            "name": "Berserk a tournament game",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/board/game/:gameId/berserk",
+            "params": [
+              {
+                "name": "gameId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Go berserk on an arena tournament game. Halves the clock time, grants an extra point upon winning.\nOnly available in arena tournaments that allow berserk, and before each player has made a move.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

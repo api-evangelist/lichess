@@ -1,0 +1,1528 @@
+{
+  "item": [
+    {
+      "id": "003861d2-532f-48ab-87f9-5a1ded6815e3",
+      "name": "Puzzles",
+      "description": {
+        "content": "Fetch and solve [puzzles](https://lichess.org/training), view your puzzle history and dashboard.\n\nOur collection of puzzles is in the public domain, you can [download it here](https://database.lichess.org/#puzzles).\nFor a list of our [puzzle themes](https://lichess.org/training/themes) with their description, check out the [theme translation file](https://github.com/ornicar/lila/blob/master/translation/source/puzzleTheme.xml).\n",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "38dd1f3f-2b23-479e-aa8d-304fc2cb4747",
+          "name": "Get the daily puzzle",
+          "request": {
+            "name": "Get the daily puzzle",
+            "description": {
+              "content": "Get the daily Lichess puzzle in JSON format.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "puzzle",
+                "daily"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1fc9cae6-c772-42ba-9ce1-9e062109e3bc",
+              "name": "The daily puzzle.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "puzzle",
+                    "daily"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"game\": {\n    \"id\": \"MmhaEJoJ\",\n    \"perf\": {\n      \"key\": \"classical\",\n      \"name\": \"Classical\"\n    },\n    \"rated\": true,\n    \"players\": [\n      {\n        \"name\": \"MuhCiri\",\n        \"id\": \"muhciri\",\n        \"color\": \"white\",\n        \"rating\": 1915\n      },\n      {\n        \"name\": \"saadatinia\",\n        \"id\": \"saadatinia\",\n        \"color\": \"black\",\n        \"rating\": 1798\n      }\n    ],\n    \"pgn\": \"e4 e5 Nf3 Nc6 Bc4 h6 c3 f5 d3 fxe4\",\n    \"clock\": \"15+15\"\n  },\n  \"puzzle\": {\n    \"id\": \"u3GaW\",\n    \"rating\": 1938,\n    \"plays\": 127146,\n    \"solution\": [\n      \"f3e5\",\n      \"g8f6\",\n      \"e5f7\",\n      \"d8e7\",\n      \"f7h8\"\n    ],\n    \"themes\": [\n      \"opening\",\n      \"long\",\n      \"fork\",\n      \"advantage\"\n    ],\n    \"fen\": \"r1bqkbnr/pppp2p1/2n4p/4p3/2B1p3/2PP1N2/PP3PPP/RNBQK2R w KQkq - 0 1\",\n    \"lastMove\": \"f5e4\",\n    \"initialPly\": 9\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "88d12a55-0b61-4232-9ada-73889e9f2898",
+          "name": "Get a puzzle by its ID",
+          "request": {
+            "name": "Get a puzzle by its ID",
+            "description": {
+              "content": "Get a single Lichess puzzle in JSON format.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "puzzle",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The puzzle ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "accb5d9e-deb3-4b79-bfdf-a9721b771540",
+              "name": "The requested puzzle.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "puzzle",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The puzzle ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"game\": {\n    \"id\": \"AHGPPS44\",\n    \"perf\": {\n      \"key\": \"blitz\",\n      \"name\": \"Blitz\"\n    },\n    \"rated\": true,\n    \"players\": [\n      {\n        \"name\": \"EricRosen\",\n        \"title\": \"IM\",\n        \"flair\": \"travel-places.ambulance\",\n        \"patron\": true,\n        \"patronColor\": 10,\n        \"id\": \"ericrosen\",\n        \"color\": \"white\",\n        \"rating\": 2642\n      },\n      {\n        \"name\": \"Anton_Volovikov\",\n        \"title\": \"FM\",\n        \"id\": \"anton_volovikov\",\n        \"color\": \"black\",\n        \"rating\": 2619\n      }\n    ],\n    \"pgn\": \"d4 d5 Bf4 Bf5 Nf3 e6 c4 Nf6 Nc3 Bd6 Bg3 Nbd7 e3 O-O c5 Bxg3 hxg3 h6 Bd3 Ne4 Qc2 Ndf6 Nd2 Nxc3 Bxf5 exf5 bxc3 Ne4 Nxe4 fxe4 Rb1 b6 Rh5 bxc5 Rb5 cxd4 cxd4 c6 Qxc6 Rc8 Qxd5 Qf6 Qxe4 Rc1+ Ke2 Qa6 Qd5 Rc2+ Kf3 g6 Rxh6 Qf6+ Ke4\",\n    \"clock\": \"3+0\"\n  },\n  \"puzzle\": {\n    \"id\": \"PSjmf\",\n    \"rating\": 2652,\n    \"plays\": 806,\n    \"solution\": [\n      \"g8g7\",\n      \"d5e5\",\n      \"f6e5\"\n    ],\n    \"themes\": [\n      \"endgame\",\n      \"master\",\n      \"short\",\n      \"masterVsMaster\",\n      \"crushing\"\n    ],\n    \"fen\": \"5rk1/p4p2/5qpR/1R1Q4/3PK3/4P1P1/P1r2PP1/8 b - - 1 1\",\n    \"lastMove\": \"f3e4\",\n    \"initialPly\": 52\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5eee1079-3d48-4073-bada-343682381e53",
+          "name": "Get a new puzzle",
+          "request": {
+            "name": "Get a new puzzle",
+            "description": {
+              "content": "Get a random Lichess puzzle in JSON format.\n\nIf authenticated, only returns puzzles that the user has never seen before.\n\n**DO NOT** use this endpoint to enumerate puzzles for mass download. Instead, download the [full public puzzle database](https://database.lichess.org/#puzzles).\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "puzzle",
+                "next"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "angle",
+                  "value": "<string>",
+                  "description": "The theme or opening to filter puzzles with.\n\nAvailable themes are listed in [the lichess source code](https://github.com/ornicar/lila/blob/master/translation/source/puzzleTheme.xml) and [the lichess training themes hyperlinks](https://lichess.org/training/themes).\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "difficulty",
+                  "value": "<string>",
+                  "description": "The desired puzzle difficulty, relative to the authenticated user puzzle rating, or 1500 if anonymous."
+                },
+                {
+                  "disabled": false,
+                  "key": "color",
+                  "value": "<string>",
+                  "description": "The color to play. Better left empty to automatically get 50% white."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://lichess.org/api/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://lichess.org/oauth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a2dd90c9-d22d-457f-a557-f1a57db91832",
+              "name": "The requested puzzle.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "puzzle",
+                    "next"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "angle",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "difficulty",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "color",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"game\": {\n    \"id\": \"mAe3fKx5\",\n    \"perf\": {\n      \"key\": \"blitz\",\n      \"name\": \"Blitz\"\n    },\n    \"rated\": true,\n    \"players\": [\n      {\n        \"name\": \"Lenshrr\",\n        \"id\": \"lenshrr\",\n        \"color\": \"white\",\n        \"rating\": 1948\n      },\n      {\n        \"name\": \"Wmendes\",\n        \"id\": \"wmendes\",\n        \"color\": \"black\",\n        \"rating\": 1938\n      }\n    ],\n    \"pgn\": \"e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 Nc3 Nf6 e5 Nd5 Nxd5 exd5 Nf3 d6 Be2 dxe5 dxe5 Be7 O-O O-O Bf4 Be6 Qb3 Rb8 Rad1 Qa5 Nd4 Nxd4 Rxd4 Rfc8 Qg3 Rc2 Bh6 Bf8 Bg4 Rxb2 Bxe6 fxe6 Rg4 g6 Bc1 Rxa2 h4 Rc8 h5 Rc3 f3 Qc5+ Kh2 Rxc1 hxg6 h6 g7 Be7 Qf4 Rxf1\",\n    \"clock\": \"5+0\"\n  },\n  \"puzzle\": {\n    \"id\": \"SLR3a\",\n    \"rating\": 1894,\n    \"plays\": 13601,\n    \"solution\": [\n      \"f4f7\",\n      \"g8f7\",\n      \"g7g8q\"\n    ],\n    \"themes\": [\n      \"advancedPawn\",\n      \"short\",\n      \"attraction\",\n      \"promotion\",\n      \"endgame\",\n      \"mateIn2\"\n    ],\n    \"initialPly\": 57\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e299098c-19cf-43b6-bd0f-37afb7ca4ab5",
+          "name": "Get multiple puzzles at once",
+          "request": {
+            "name": "Get multiple puzzles at once",
+            "description": {
+              "content": "Get a batch of random Lichess puzzles in JSON format.\n\nIf authenticated, only returns puzzles that the user has never seen before.\n\n**DO NOT** use this endpoint to enumerate puzzles for mass download. Instead, download the [full public puzzle database](https://database.lichess.org/#puzzles).\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "puzzle",
+                "batch",
+                ":angle"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "difficulty",
+                  "value": "<string>",
+                  "description": "The desired puzzle difficulty, relative to the authenticated user puzzle rating, or 1500 if anonymous."
+                },
+                {
+                  "disabled": false,
+                  "key": "nb",
+                  "value": "15",
+                  "description": "How many puzzles to fetch. Just set it to `1` if you only need one puzzle.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "color",
+                  "value": "<string>",
+                  "description": "The color to play. Better left empty to automatically get 50% white.\nCurrently only works when `nb=1`.\n"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "angle",
+                  "description": "(Required) The theme or opening to filter puzzles with. Recommended: `mix`.\n\nAvailable themes are listed in [the lichess source code](https://github.com/ornicar/lila/blob/master/translation/source/puzzleTheme.xml) and [the lichess training themes hyperlinks](https://lichess.org/training/themes).\n"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://lichess.org/api/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://lichess.org/oauth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "0c8c0dba-2158-4354-93a6-d4be34ef1c91",
+              "name": "The requested puzzles.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "puzzle",
+                    "batch",
+                    ":angle"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "difficulty",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "nb",
+                      "value": "10"
+                    },
+                    {
+                      "key": "color",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "angle",
+                      "description": "(Required) The theme or opening to filter puzzles with. Recommended: `mix`.\n\nAvailable themes are listed in [the lichess source code](https://github.com/ornicar/lila/blob/master/translation/source/puzzleTheme.xml) and [the lichess training themes hyperlinks](https://lichess.org/training/themes).\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"puzzles\": [\n    {\n      \"game\": {\n        \"id\": \"lzdAM1jJ\",\n        \"perf\": {\n          \"key\": \"classical\",\n          \"name\": \"Classical\"\n        },\n        \"rated\": true,\n        \"players\": [\n          {\n            \"name\": \"Abubakar\",\n            \"flair\": \"people.woman-mountain-biking-dark-skin-tone\",\n            \"id\": \"abubakar\",\n            \"color\": \"white\",\n            \"rating\": 1698\n          },\n          {\n            \"name\": \"Ivan\",\n            \"title\": \"WGM\",\n            \"id\": \"ivan\",\n            \"color\": \"black\",\n            \"rating\": 1637\n          }\n        ],\n        \"pgn\": \"d4 d6 c4 Nd7 e3 e5 Nf3 h6 Bd3 Ngf6 Bc2 Be7 O-O c6 Ne1 Nf8 g3 g5 dxe5 dxe5 Qxd8+ Bxd8 c5 Bh3 Ng2 h5 Nd2 h4 Nf3 hxg3 fxg3 e4 Nxg5 Bxg2 Kxg2 Ne6 Nxe4 Nxe4 Bxe4 Nxc5 Bc2 Be7 b4 Ne6 Bb3 Bxb4 Bb2 Rh5 Bd1 Rd5 a3 Bc5 e4\",\n        \"clock\": \"15+15\"\n      },\n      \"puzzle\": {\n        \"id\": \"6ewuj\",\n        \"rating\": 1123,\n        \"plays\": 24845,\n        \"solution\": [\n          \"d5d2\",\n          \"g2h1\",\n          \"d2b2\"\n        ],\n        \"themes\": [\n          \"middlegame\",\n          \"fork\",\n          \"advantage\",\n          \"short\"\n        ],\n        \"initialPly\": 52\n      }\n    },\n    {\n      \"game\": {\n        \"id\": \"6OH3Wycp\",\n        \"perf\": {\n          \"key\": \"rapid\",\n          \"name\": \"Rapid\"\n        },\n        \"rated\": true,\n        \"players\": [\n          {\n            \"name\": \"Hui\",\n            \"patron\": true,\n            \"patronColor\": 1,\n            \"id\": \"hui\",\n            \"color\": \"white\",\n            \"rating\": 1954\n          },\n          {\n            \"name\": \"Pedro\",\n            \"flair\": \"people.person-walking-dark-skin-tone\",\n            \"patron\": true,\n            \"patronColor\": 1,\n            \"id\": \"pedro\",\n            \"color\": \"black\",\n            \"rating\": 1823\n          }\n        ],\n        \"pgn\": \"e4 c5 Bc4 e6 Qh5 Nf6 Qf3 Nc6 Nc3 Nd4 Qd1 d5 exd5 exd5 Bb5+ Nxb5 Nxb5 Bd7 a4 a6 Nc3 d4 Qe2+ Be7 Ne4 Nxe4 Qxe4 Bc6 Qg4 O-O d3 Qd5 f3 Rfe8 Ne2 Qe5 Kf2 Bd6 Ng3 Qe7 Bd2 Bd7 Qg5 Bxg3+ Qxg3\",\n        \"clock\": \"15+10\"\n      },\n      \"puzzle\": {\n        \"id\": \"1ygt6\",\n        \"rating\": 1124,\n        \"plays\": 3186,\n        \"solution\": [\n          \"e7e2\",\n          \"f2g1\",\n          \"e2d2\"\n        ],\n        \"themes\": [\n          \"middlegame\",\n          \"fork\",\n          \"short\",\n          \"crushing\"\n        ],\n        \"initialPly\": 44\n      }\n    }\n  ],\n  \"glicko\": {\n    \"rating\": 1756,\n    \"deviation\": 51.98\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3002eeb9-968d-4643-99ba-c8294a39e1ab",
+          "name": "Solve multiple puzzles at once",
+          "request": {
+            "name": "Solve multiple puzzles at once",
+            "description": {
+              "content": "Set puzzles as solved and update ratings.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "puzzle",
+                "batch",
+                ":angle"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "nb",
+                  "value": "0",
+                  "description": "When > 0, the response includes a new puzzle batch with that many puzzles.\n\nThis is equivalent to calling [/api/puzzle/batch/{angle}](#tag/puzzles/GET/api/puzzle/batch/{angle}),\nand can sometimes save a request.\n"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "angle",
+                  "description": "(Required) The theme or opening of the solved puzzles.\n\nAvailable themes are listed in [the lichess source code](https://github.com/ornicar/lila/blob/master/translation/source/puzzleTheme.xml) and [the lichess training themes hyperlinks](https://lichess.org/training/themes).\n"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://lichess.org/api/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://lichess.org/oauth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"solutions\": [\n    {\n      \"id\": \"<string>\",\n      \"win\": \"<boolean>\",\n      \"rated\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"win\": \"<boolean>\",\n      \"rated\": \"<boolean>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f5b8625e-faba-44bb-b700-2d99cee1da9d",
+              "name": "The solved puzzles, named `rounds`, and a new puzzle batch named `puzzles`.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "puzzle",
+                    "batch",
+                    ":angle"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "nb",
+                      "value": "1"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "angle",
+                      "description": "(Required) The theme or opening of the solved puzzles.\n\nAvailable themes are listed in [the lichess source code](https://github.com/ornicar/lila/blob/master/translation/source/puzzleTheme.xml) and [the lichess training themes hyperlinks](https://lichess.org/training/themes).\n"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"solutions\": [\n    {\n      \"id\": \"<string>\",\n      \"win\": \"<boolean>\",\n      \"rated\": \"<boolean>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"win\": \"<boolean>\",\n      \"rated\": \"<boolean>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"puzzles\": [\n    {\n      \"game\": {\n        \"id\": \"vgDNN1oc\",\n        \"perf\": {\n          \"key\": \"rapid\",\n          \"name\": \"Rapid\"\n        },\n        \"rated\": true,\n        \"players\": [\n          {\n            \"name\": \"Hui\",\n            \"patron\": true,\n            \"patronColor\": 1,\n            \"id\": \"hui\",\n            \"color\": \"white\",\n            \"rating\": 1890\n          },\n          {\n            \"name\": \"Guang\",\n            \"flair\": \"people.rightwards-hand-medium-skin-tone\",\n            \"id\": \"guang\",\n            \"color\": \"black\",\n            \"rating\": 1873\n          }\n        ],\n        \"pgn\": \"e4 e5 Nf3 d6 d4 Bg4 dxe5 Bxf3 gxf3 Be7 exd6 Bxd6 f4 Nc6 Nc3 Nge7 a3 O-O Rg1 Ng6 Nd5 Nce7 Qg4 Nxd5 exd5 Qe7+ Be2 Qe4 f5 Qxg4 Rxg4 Ne5 Re4 Rae8 Bd2 Nd7 Rxe8 Rxe8 Be3 b6 O-O-O Bxh2 Bb5 Re7 Bg5 f6 Be3 Ne5 Rh1 Ng4 Be2 h5\",\n        \"clock\": \"10+0\"\n      },\n      \"puzzle\": {\n        \"id\": \"2wzBW\",\n        \"rating\": 1374,\n        \"plays\": 12470,\n        \"solution\": [\n          \"e2g4\",\n          \"h5g4\",\n          \"h1h2\"\n        ],\n        \"themes\": [\n          \"endgame\",\n          \"advantage\",\n          \"short\",\n          \"capturingDefender\"\n        ],\n        \"initialPly\": 51\n      }\n    },\n    {\n      \"game\": {\n        \"id\": \"YwJ3U1fZ\",\n        \"perf\": {\n          \"key\": \"rapid\",\n          \"name\": \"Rapid\"\n        },\n        \"rated\": true,\n        \"players\": [\n          {\n            \"name\": \"Jiang\",\n            \"flair\": \"people.woman-cook-medium-light-skin-tone\",\n            \"id\": \"jiang\",\n            \"color\": \"white\",\n            \"rating\": 2084\n          },\n          {\n            \"name\": \"Svetlana\",\n            \"id\": \"svetlana\",\n            \"color\": \"black\",\n            \"rating\": 2043\n          }\n        ],\n        \"pgn\": \"d4 Nf6 c4 e6 Nf3 d5 g3 dxc4 Ne5 Bb4+ Nc3 b5 Bg2 Nd5 O-O f6 e4 Nxc3 bxc3 Bxc3\",\n        \"clock\": \"10+0\"\n      },\n      \"puzzle\": {\n        \"id\": \"4seCY\",\n        \"rating\": 1377,\n        \"plays\": 22179,\n        \"solution\": [\n          \"d1h5\",\n          \"g7g6\",\n          \"e5g6\",\n          \"h7g6\",\n          \"h5h8\"\n        ],\n        \"themes\": [\n          \"middlegame\",\n          \"long\",\n          \"advantage\"\n        ],\n        \"initialPly\": 19\n      }\n    }\n  ],\n  \"glicko\": {\n    \"rating\": 1756.46,\n    \"deviation\": 54.13\n  },\n  \"rounds\": [\n    {\n      \"id\": \"6ewuj\",\n      \"win\": true,\n      \"ratingDiff\": 0\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b6f8f097-0c5f-4588-a8f8-f79e1dbd6725",
+          "name": "Get your puzzle activity",
+          "request": {
+            "name": "Get your puzzle activity",
+            "description": {
+              "content": "Download your puzzle activity in [ndjson](#description/streaming-with-nd-json) format.\nPuzzle activity is sorted by reverse chronological order (most recent first)\nWe recommend streaming the response, for it can be very long.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "puzzle",
+                "activity"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "max",
+                  "value": "<integer>",
+                  "description": "How many entries to download. Leave empty to download all activity."
+                },
+                {
+                  "disabled": false,
+                  "key": "before",
+                  "value": "<integer>",
+                  "description": "Download entries before this timestamp. Defaults to now. Use `before` and `max` for pagination."
+                },
+                {
+                  "disabled": false,
+                  "key": "since",
+                  "value": "<integer>",
+                  "description": "Download entries since this timestamp. Defaults to account creation date."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/x-ndjson"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://lichess.org/api/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://lichess.org/oauth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "12295d9a-80e6-409b-9dc5-762c8b9781f6",
+              "name": "The puzzle activity of the logged in user.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "puzzle",
+                    "activity"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "max",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "before",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "since",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/x-ndjson"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/x-ndjson"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ba577d5d-4439-46a0-bebe-653e564c6a1b",
+          "name": "Get puzzles to replay",
+          "request": {
+            "name": "Get puzzles to replay",
+            "description": {
+              "content": "Gets the puzzle IDs of remaining puzzles to re-attempt in JSON format.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "puzzle",
+                "replay",
+                ":days",
+                ":theme"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "days",
+                  "description": "(Required) How many days to look back when aggregating puzzle results. 30 is sensible."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "theme",
+                  "description": "(Required) The theme or opening to filter puzzles with."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://lichess.org/api/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://lichess.org/oauth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "af8a6032-16b1-4849-8f4a-ff0a587ccbfb",
+              "name": "The requested puzzles to replay.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "puzzle",
+                    "replay",
+                    ":days",
+                    ":theme"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "days",
+                      "description": "(Required) How many days to look back when aggregating puzzle results. 30 is sensible."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "theme",
+                      "description": "(Required) The theme or opening to filter puzzles with."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"replay\": {\n    \"days\": 90,\n    \"theme\": \"mix\",\n    \"nb\": 3,\n    \"remaining\": [\n      \"EMJ4a\",\n      \"9bZjC\",\n      \"5JGeN\"\n    ]\n  },\n  \"angle\": {\n    \"key\": \"mix\",\n    \"name\": \"Puzzle Themes\",\n    \"desc\": \"A mix of everything. You don't know what to expect, so be ready for anything! Just like in real games.\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f9d1944c-3197-4f92-8283-e83adfcc61b0",
+              "name": "No puzzles to replay were found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "puzzle",
+                    "replay",
+                    ":days",
+                    ":theme"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "days",
+                      "description": "(Required) How many days to look back when aggregating puzzle results. 30 is sensible."
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "theme",
+                      "description": "(Required) The theme or opening to filter puzzles with."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"No puzzles to replay\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "68c0a79b-4997-442b-b7cc-5c7947416e04",
+          "name": "Get your puzzle dashboard",
+          "request": {
+            "name": "Get your puzzle dashboard",
+            "description": {
+              "content": "Download your [puzzle dashboard](https://lichess.org/training/dashboard/30/dashboard) as JSON.\nAlso includes all puzzle themes played, with aggregated results.\nAllows re-creating the [improvement/strengths](https://lichess.org/training/dashboard/30/improvementAreas) interfaces.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "puzzle",
+                "dashboard",
+                ":days"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "days",
+                  "description": "(Required) How many days to look back when aggregating puzzle results. 30 is sensible."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://lichess.org/api/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://lichess.org/oauth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "0e219f95-e5fe-4a1d-ac4f-2c70de58f308",
+              "name": "The puzzle dashboard of the logged in user.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "puzzle",
+                    "dashboard",
+                    ":days"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "days",
+                      "description": "(Required) How many days to look back when aggregating puzzle results. 30 is sensible."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"days\": 30,\n  \"global\": {\n    \"nb\": 11,\n    \"firstWins\": 8,\n    \"replayWins\": 0,\n    \"puzzleRatingAvg\": 1489,\n    \"performance\": 1716\n  },\n  \"themes\": {\n    \"middlegame\": {\n      \"theme\": \"Middlegame\",\n      \"results\": {\n        \"nb\": 8,\n        \"firstWins\": 6,\n        \"replayWins\": 0,\n        \"puzzleRatingAvg\": 1529,\n        \"performance\": 1779\n      }\n    },\n    \"fork\": {\n      \"theme\": \"Fork\",\n      \"results\": {\n        \"nb\": 2,\n        \"firstWins\": 2,\n        \"replayWins\": 0,\n        \"puzzleRatingAvg\": 1150,\n        \"performance\": 1650\n      }\n    },\n    \"opening\": {\n      \"theme\": \"Opening\",\n      \"results\": {\n        \"nb\": 2,\n        \"firstWins\": 1,\n        \"replayWins\": 0,\n        \"puzzleRatingAvg\": 1112,\n        \"performance\": 1112\n      }\n    },\n    \"kingsideAttack\": {\n      \"theme\": \"Kingside attack\",\n      \"results\": {\n        \"nb\": 2,\n        \"firstWins\": 1,\n        \"replayWins\": 0,\n        \"puzzleRatingAvg\": 1336,\n        \"performance\": 1336\n      }\n    },\n    \"discoveredAttack\": {\n      \"theme\": \"Discovered attack\",\n      \"results\": {\n        \"nb\": 2,\n        \"firstWins\": 1,\n        \"replayWins\": 0,\n        \"puzzleRatingAvg\": 1801,\n        \"performance\": 1801\n      }\n    },\n    \"endgame\": {\n      \"theme\": \"Endgame\",\n      \"results\": {\n        \"nb\": 1,\n        \"firstWins\": 1,\n        \"replayWins\": 0,\n        \"puzzleRatingAvg\": 1922,\n        \"performance\": 2422\n      }\n    },\n    \"pin\": {\n      \"theme\": \"Pin\",\n      \"results\": {\n        \"nb\": 1,\n        \"firstWins\": 1,\n        \"replayWins\": 0,\n        \"puzzleRatingAvg\": 1487,\n        \"performance\": 1987\n      }\n    },\n    \"defensiveMove\": {\n      \"theme\": \"Defensive move\",\n      \"results\": {\n        \"nb\": 1,\n        \"firstWins\": 1,\n        \"replayWins\": 0,\n        \"puzzleRatingAvg\": 1403,\n        \"performance\": 1903\n      }\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b6af13f8-9c41-49e7-ba37-191a0068876b",
+          "name": "Get the storm dashboard of a player",
+          "request": {
+            "name": "Get the storm dashboard of a player",
+            "description": {
+              "content": "Download the [storm dashboard](https://lichess.org/storm/dashboard/mrbasso) of any player as JSON.\nContains the aggregated highscores, and the history of storm runs aggregated by days.\nUse `?days=0` if you only care about the highscores.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "storm",
+                "dashboard",
+                ":username"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "days",
+                  "value": "30",
+                  "description": "How many days of history to return"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "username",
+                  "description": "(Required) Username of the player"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "38aa6898-fcf1-463c-b249-663eaa95d0fe",
+              "name": "The storm dashboard of a player.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "storm",
+                    "dashboard",
+                    ":username"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "days",
+                      "value": "30"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "username",
+                      "description": "(Required) Username of the player"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"high\": {\n    \"day\": 0,\n    \"week\": 0,\n    \"month\": 0,\n    \"allTime\": 33\n  },\n  \"days\": [\n    {\n      \"_id\": \"2025/2/8\",\n      \"score\": 1,\n      \"moves\": 1,\n      \"errors\": 0,\n      \"combo\": 1,\n      \"time\": 180,\n      \"highest\": 1020,\n      \"runs\": 1\n    },\n    {\n      \"_id\": \"2025/1/23\",\n      \"score\": 17,\n      \"moves\": 35,\n      \"errors\": 3,\n      \"combo\": 17,\n      \"time\": 164,\n      \"highest\": 1314,\n      \"runs\": 1\n    },\n    {\n      \"_id\": \"2024/12/11\",\n      \"score\": 16,\n      \"moves\": 41,\n      \"errors\": 6,\n      \"combo\": 20,\n      \"time\": 141,\n      \"highest\": 1315,\n      \"runs\": 1\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "04cb7e19-162b-48c4-a902-56b3650dc6f0",
+          "name": "Create and join a puzzle race",
+          "request": {
+            "name": "Create and join a puzzle race",
+            "description": {
+              "content": "Create a new private [puzzle race](https://lichess.org/racer).\nThe Lichess user who creates the race must join the race page,\nand manually start the race when enough players have joined.\n- <https://lichess.org/racer>\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "racer"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://lichess.org/api/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://lichess.org/oauth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "f037eeea-6b14-4c18-8ca5-f5659c94c9b2",
+              "name": "The new puzzle race.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "racer"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"KgOHb\",\n  \"url\": \"https://lichess.org/racer/KgOHb\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b129ea46-0849-4548-bbf2-c6467ef4290b",
+          "name": "Get puzzle race results",
+          "request": {
+            "name": "Get puzzle race results",
+            "description": {
+              "content": "Get the results of a [puzzle race](https://lichess.org/racer).\nReturns information about players, puzzles, and the current status of the race.\n- <https://lichess.org/racer>\n\nNote that Lichess puzzle races are not persisted, and are only available\nfor 30 minutes. After that delay, they are permanently deleted.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "racer",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The puzzle race ID"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://lichess.org/api/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://lichess.org/oauth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "0dceee01-8e11-4dc5-acb1-631f98aba0e5",
+              "name": "The puzzle race results.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "racer",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The puzzle race ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"nkEw7\",\n  \"owner\": \"lichess\",\n  \"players\": [\n    {\n      \"name\": \"Hossienshirmohamady\",\n      \"flair\": \"activity.yo-yo\",\n      \"id\": \"hossienshirmohamady\",\n      \"score\": 62\n    },\n    {\n      \"name\": \"Dswift1_Makar-1\",\n      \"flair\": \"activity.lichess-variant-crazyhouse\",\n      \"id\": \"dswift1_makar-1\",\n      \"score\": 41\n    },\n    {\n      \"name\": \"ManavKumar1865\",\n      \"id\": \"manavkumar1865\",\n      \"score\": 50\n    },\n    {\n      \"name\": \"sir_john_doe\",\n      \"id\": \"sir_john_doe\",\n      \"score\": 40\n    },\n    {\n      \"name\": \"BubblyBakerHound\",\n      \"score\": 6\n    },\n    {\n      \"name\": \"ttrv\",\n      \"flair\": \"activity.trophy\",\n      \"patron\": true,\n      \"patronColor\": 10,\n      \"id\": \"ttrv\",\n      \"score\": 37\n    },\n    {\n      \"name\": \"FairyGliedt\",\n      \"id\": \"fairygliedt\",\n      \"score\": 11\n    },\n    {\n      \"name\": \"BecomingWillingRuyLopez\",\n      \"score\": 29\n    },\n    {\n      \"name\": \"EternalDrummerSalmon\",\n      \"score\": 0\n    },\n    {\n      \"name\": \"AdroitLiterateCoder\",\n      \"score\": 0\n    }\n  ],\n  \"puzzles\": [\n    {\n      \"id\": \"oiHY2\",\n      \"fen\": \"1r6/7R/1n2p2p/p2kN3/3P3P/PPp5/2P5/2K5 b - - 1 38\",\n      \"line\": \"d5d4 e5c6 d4e4 c6b8\",\n      \"rating\": 1016\n    },\n    {\n      \"id\": \"3EzyJ\",\n      \"fen\": \"8/p3r1pp/1pp5/2p5/3k4/2RP4/PP3KPP/8 b - - 5 38\",\n      \"line\": \"e7e3 c3c4 d4d3 c4c3 d3d2 c3e3\",\n      \"rating\": 1031\n    },\n    {\n      \"id\": \"uclhP\",\n      \"fen\": \"1n1r2k1/N2Prppp/1p6/2p5/2P1p3/P6B/1P3P2/3R1K2 b - - 0 29\",\n      \"line\": \"b8d7 a7c6 g8f8 c6d8\",\n      \"rating\": 1062\n    },\n    {\n      \"id\": \"A6eYH\",\n      \"fen\": \"r4r2/1p2q3/p1p1p1pQ/3nP3/P5k1/4P3/1P4K1/R4R2 b - - 1 31\",\n      \"line\": \"e7g5 h6h3\",\n      \"rating\": 1088\n    },\n    {\n      \"id\": \"KCUmn\",\n      \"fen\": \"r1bq1rk1/pppnBppp/2n1p3/3p4/3P3Q/1N1B1P2/PPP3PP/R3K1NR b KQ - 0 11\",\n      \"line\": \"d8e7 h4h7\",\n      \"rating\": 1129\n    },\n    {\n      \"id\": \"V6fYA\",\n      \"fen\": \"5rk1/pp1b2pp/2p4b/2nprp2/5N1P/P1NB1PP1/1PP5/1K2RR2 b - - 1 22\",\n      \"line\": \"f8d8 e1e5 h6f4 g3f4 c5d3 c2d3\",\n      \"rating\": 1161\n    },\n    {\n      \"id\": \"BLlhu\",\n      \"fen\": \"r4rk1/1b1n1ppp/p2p4/1pqN1PP1/8/5Q2/PPPR3P/2K2B1R b - - 4 17\",\n      \"line\": \"d7b6 d5e7 g8h8 f3b7\",\n      \"rating\": 1190\n    },\n    {\n      \"id\": \"wGzcz\",\n      \"fen\": \"r1b2rk1/5pp1/1q2pn1p/n2p4/1ppP2N1/4P1P1/PPQ2PP1/1BR1RNK1 b - - 4 19\",\n      \"line\": \"b4b3 g4f6 g7f6 c2h7\",\n      \"rating\": 1272\n    },\n    {\n      \"id\": \"koNaI\",\n      \"fen\": \"4r3/pk1nr3/1pp1q2p/4n3/4QB2/1PP5/P5PP/3R1R1K b - - 9 35\",\n      \"line\": \"e5g4 e4e6 e7e6 d1d7\",\n      \"rating\": 1291\n    },\n    {\n      \"id\": \"UrPl5\",\n      \"fen\": \"1k5r/p6P/1p4p1/1Pp1Pr2/2P5/5NP1/1P4K1/7R b - - 4 31\",\n      \"line\": \"f5h5 h1h5 g6h5 f3g5\",\n      \"rating\": 1309\n    },\n    {\n      \"id\": \"UOc8p\",\n      \"fen\": \"r3qr2/6pk/3b1p1p/1p1P1N2/p1n3RQ/4P2P/3R1PP1/6K1 b - - 9 30\",\n      \"line\": \"f8f7 g4g7 f7g7 h4h6 h7g8 h6g7\",\n      \"rating\": 1327\n    },\n    {\n      \"id\": \"lz9D3\",\n      \"fen\": \"8/pp6/8/2P5/1Pk4p/P7/6K1/8 b - - 2 45\",\n      \"line\": \"c4b3 b4b5 b3c4 c5c6 b7c6 b5c6\",\n      \"rating\": 1414\n    },\n    {\n      \"id\": \"6kFcn\",\n      \"fen\": \"r1b2r2/5pkp/1qpQ1np1/2n1p3/p3P1P1/P1N2N1P/1PP1BP2/2KR3R b - - 0 17\",\n      \"line\": \"c5e4 c3e4 f6e4 d6e5\",\n      \"rating\": 1431\n    },\n    {\n      \"id\": \"6tr7c\",\n      \"fen\": \"2q1r1k1/5pp1/2p4p/3p1N2/3PR2P/2P3P1/2Q2PK1/8 b - - 0 31\",\n      \"line\": \"e8e4 c2e4 d5e4 f5e7 g8h7 e7c8\",\n      \"rating\": 1445\n    },\n    {\n      \"id\": \"mkyEZ\",\n      \"fen\": \"3k1r2/1p3p2/p2P1Q2/P1p5/2P1P3/8/P5PK/2q5 b - - 2 39\",\n      \"line\": \"d8d7 f6e7 d7c6 e7c7\",\n      \"rating\": 1459\n    },\n    {\n      \"id\": \"fX84W\",\n      \"fen\": \"2b2rk1/4b1pp/1q3p2/1p1BN3/1p3Q2/7P/PPP3PK/5R2 b - - 1 25\",\n      \"line\": \"g8h8 e5g6 h7g6 f4h4\",\n      \"rating\": 1479\n    },\n    {\n      \"id\": \"MI2jt\",\n      \"fen\": \"5rk1/1rpq2b1/Q1np2pp/3Npp2/2P1P3/3P2P1/P3NPBP/5RK1 b - - 0 20\",\n      \"line\": \"b7a7 a6c6 d7c6 d5e7 g8h8 e7c6\",\n      \"rating\": 1559\n    },\n    {\n      \"id\": \"Yz0fD\",\n      \"fen\": \"r1bqkb1r/pp1n1ppp/5n2/1B1pp3/3P4/2N1PN2/PP3PPP/R1BQK2R b KQkq - 1 7\",\n      \"line\": \"f8d6 d4e5 d6e5 f3e5\",\n      \"rating\": 1575\n    },\n    {\n      \"id\": \"gLXCp\",\n      \"fen\": \"r1b2rk1/ppq3b1/2pp4/4pP2/3P2p1/2PB2Pn/PP1N2K1/R2Q2BR b - - 0 24\",\n      \"line\": \"c8f5 d3f5 f8f5 d1g4 h3f4 g3f4\",\n      \"rating\": 1588\n    },\n    {\n      \"id\": \"jAqV7\",\n      \"fen\": \"6k1/1ppr1pp1/pb5B/8/P1Q5/2P4P/1P3qPK/R7 b - - 0 30\",\n      \"line\": \"g7h6 c4g4 g8f8 g4d7 f2f4 h2h1\",\n      \"rating\": 1604\n    },\n    {\n      \"id\": \"EhkBX\",\n      \"fen\": \"3r2k1/pp4pp/5p2/q2Rp3/2Q5/1P6/P3RPPP/6K1 b - - 0 27\",\n      \"line\": \"a5d5 e2d2 d5c4 d2d8 g8f7 b3c4\",\n      \"rating\": 1615\n    },\n    {\n      \"id\": \"ECY0A\",\n      \"fen\": \"4rrk1/1p3p2/5q2/p2pp3/4N3/1BPP2R1/Pb3PP1/1N4K1 b - - 1 27\",\n      \"line\": \"f6g7 e4f6 g8h8 g3h3 g7h6 h3h6\",\n      \"rating\": 1695\n    },\n    {\n      \"id\": \"XmDE6\",\n      \"fen\": \"rR4k1/p1p1brp1/2q2pNp/2n1p3/3p2Q1/3P2BP/2P2PP1/1R4K1 b - - 5 24\",\n      \"line\": \"a8b8 b1b8 e7f8 b8f8 f7f8 g6e7\",\n      \"rating\": 1707\n    },\n    {\n      \"id\": \"RWGfE\",\n      \"fen\": \"3rkbr1/pp3p1p/5p2/2p5/2P1P1b1/q2n1N2/P1QBB1PP/1R3K1R b - - 11 19\",\n      \"line\": \"b7b6 b1b3 a3a4 e2d3 g4f3 g2f3\",\n      \"rating\": 1726\n    },\n    {\n      \"id\": \"52zOY\",\n      \"fen\": \"8/p1r2k1p/1p3p2/1P1p4/1QbBnPqN/6P1/P6P/4R1K1 b - - 2 40\",\n      \"line\": \"e4g3 h2g3 g4g3 h4g2\",\n      \"rating\": 1737\n    },\n    {\n      \"id\": \"fT2rI\",\n      \"fen\": \"8/4n1p1/p2BPk1p/PB1p4/1P1P4/2P2K2/3b4/8 b - - 0 45\",\n      \"line\": \"a6b5 d6e7 f6e7 a5a6\",\n      \"rating\": 1753\n    },\n    {\n      \"id\": \"YGDJo\",\n      \"fen\": \"5n2/p1n5/1pP1kqp1/7p/1P3N2/P1Q1P3/7K/8 b - - 13 40\",\n      \"line\": \"e6f5 e3e4 f5f4 c3f6\",\n      \"rating\": 1829\n    },\n    {\n      \"id\": \"rH2VZ\",\n      \"fen\": \"r3kb1r/1pp2pp1/p1n2q1p/4N3/Q2PB1b1/2P1P1P1/PP3PP1/R3K2R b KQkq - 1 13\",\n      \"line\": \"g4d7 e5d7 e8d7 d4d5 b7b5 d5c6\",\n      \"rating\": 1875\n    },\n    {\n      \"id\": \"aKemL\",\n      \"fen\": \"r1b1kbnr/ppppqppp/6n1/1N2P3/3P4/8/PPP1QPPP/R1B1KB1R b KQkq - 4 8\",\n      \"line\": \"d7d6 b5c7 e8d8 c7a8\",\n      \"rating\": 1899\n    },\n    {\n      \"id\": \"pYMPH\",\n      \"fen\": \"r1bqkb1r/p1pn3p/2p1pp2/3p2B1/3N4/3P4/PPP2PPP/RN1QK2R b KQkq - 1 9\",\n      \"line\": \"f6g5 d1h5 e8e7 d4c6 e7d6 c6d8\",\n      \"rating\": 1925\n    },\n    {\n      \"id\": \"zwwhE\",\n      \"fen\": \"r7/2P2pkp/4p1p1/8/3bN3/1R4PP/5PK1/8 b - - 0 39\",\n      \"line\": \"a8c8 e4d6 c8c7 d6e8 g7g8 e8c7\",\n      \"rating\": 1940\n    },\n    {\n      \"id\": \"pe36T\",\n      \"fen\": \"6k1/pbp1R1pp/1p6/8/2P3P1/1PKB4/P4r2/8 b - - 4 36\",\n      \"line\": \"f2f7 e7e8 f7f8 d3h7 g8f7 h7g6\",\n      \"rating\": 1967\n    },\n    {\n      \"id\": \"J1B1v\",\n      \"fen\": \"6k1/4rp2/6p1/1p1p4/3q4/3PpR1Q/2r3PP/4R2K b - - 1 29\",\n      \"line\": \"c2f2 h3c8 g8g7 f3h3 d4h4 h3h4\",\n      \"rating\": 1988\n    },\n    {\n      \"id\": \"GkNRd\",\n      \"fen\": \"3r1rk1/1p2bppp/p1q1b3/2p5/4B3/4BP2/PPP3PP/R1QR2K1 b - - 5 17\",\n      \"line\": \"e6d5 d1d5 d8d5 c2c4 d5d6 e4c6\",\n      \"rating\": 2007\n    },\n    {\n      \"id\": \"SvmVG\",\n      \"fen\": \"r2r1k2/p4ppp/3p2n1/6Q1/3N4/2P5/Pq3PPP/1R2R1K1 b - - 1 21\",\n      \"line\": \"d8e8 e1e8 a8e8 d4e6 e8e6 g5d8 e6e8 d8e8 f8e8 b1b2\",\n      \"rating\": 2018\n    },\n    {\n      \"id\": \"Z9d0B\",\n      \"fen\": \"r3kb1r/pp3ppp/2p1pq2/3P1n2/5N2/3Q1P2/PPPB2PP/R4RK1 b kq - 0 15\",\n      \"line\": \"c6d5 d3b5 e8d8 b5b7\",\n      \"rating\": 2036\n    },\n    {\n      \"id\": \"vdTvR\",\n      \"fen\": \"3r1r1k/p3q1p1/1pQb2Pp/3Rp1p1/4P3/3R1PB1/P5K1/8 b - - 11 37\",\n      \"line\": \"e7f6 d5d6 d8d6 c6d6 f6d6 d3d6\",\n      \"rating\": 2048\n    },\n    {\n      \"id\": \"glKGa\",\n      \"fen\": \"8/p6p/1pk2pp1/2p1pP2/2NnP1PP/PP2K3/8/8 b - - 1 34\",\n      \"line\": \"d4b3 f5g6 h7g6 h4h5 g6h5 g4h5\",\n      \"rating\": 2067\n    },\n    {\n      \"id\": \"G7VSz\",\n      \"fen\": \"8/1p4R1/4p3/3rPkp1/8/4K1P1/5P2/8 b - - 4 40\",\n      \"line\": \"b7b6 f2f4 g5f4 g3f4 d5e5 f4e5\",\n      \"rating\": 2076\n    },\n    {\n      \"id\": \"sF6cP\",\n      \"fen\": \"3rr1k1/2p2ppp/pp2bq2/2n5/7P/2N5/PPPR1QP1/1K3B1R b - - 0 22\",\n      \"line\": \"e6a2 b1a2 d8d2 f2d2\",\n      \"rating\": 2089\n    },\n    {\n      \"id\": \"7YkHn\",\n      \"fen\": \"4r1k1/p4pN1/1p1qr2p/2pn4/1P1p3R/P4PP1/3Q1PK1/7R b - - 0 28\",\n      \"line\": \"e6e2 g7e8 e2d2 e8d6\",\n      \"rating\": 2104\n    },\n    {\n      \"id\": \"j7Rjj\",\n      \"fen\": \"1rb1kb1r/3pqp1p/pn3P2/4p1QB/1p6/1P2B3/6PP/5RK1 b k - 0 23\",\n      \"line\": \"e7e6 h5f7 e6f7 g5e5 e8d8 e5b8\",\n      \"rating\": 2111\n    },\n    {\n      \"id\": \"fgreb\",\n      \"fen\": \"6k1/2r4p/1pP5/1P3p2/4p3/2R5/1r3P1P/3R2K1 b - - 1 33\",\n      \"line\": \"b2b5 d1d7 c7d7 c6d7 b5d5 c3c8\",\n      \"rating\": 2120\n    },\n    {\n      \"id\": \"paaOW\",\n      \"fen\": \"2BQ4/6Rp/4P3/2Pp1p1k/br1P4/1p2q3/7K/8 b - - 0 40\",\n      \"line\": \"b4d4 g7h7 h5g4 h7h4 g4f3 h4h3 f3f2 h3e3\",\n      \"rating\": 2135\n    },\n    {\n      \"id\": \"NBV0m\",\n      \"fen\": \"r2q1rk1/ppp2pb1/3nb1pp/8/8/2NB1N2/PP1Q1PPP/3RR1K1 b - - 1 15\",\n      \"line\": \"d6c4 d3c4 e6c4 d2f4\",\n      \"rating\": 2143\n    },\n    {\n      \"id\": \"W8D1X\",\n      \"fen\": \"5r2/4N3/p1R1p3/1k1p4/P2P2qr/6P1/1P3P2/5RK1 b - - 0 37\",\n      \"line\": \"b5a4 c6b6 g4g3 f2g3 f8f1 g1f1\",\n      \"rating\": 2154\n    },\n    {\n      \"id\": \"HYmzY\",\n      \"fen\": \"3r3k/5p1p/3P4/8/R3Q3/1P2p3/K1Pq4/8 b - - 8 37\",\n      \"line\": \"d8d6 e4e5 h8g8 a4a8 d6d8 e5g5\",\n      \"rating\": 2169\n    },\n    {\n      \"id\": \"QqJEy\",\n      \"fen\": \"r7/7k/p4Qp1/1p3b2/4p3/2P2q2/PPB5/1K1R4 b - - 2 32\",\n      \"line\": \"e4e3 d1d7 h7h6 f6h4 f3h5 h4f4\",\n      \"rating\": 2180\n    },\n    {\n      \"id\": \"9v76Q\",\n      \"fen\": \"2k5/pb3P2/1pnqp2p/3p3P/P1pP1Pr1/2P5/2PQ4/1R1KR3 b - - 0 28\",\n      \"line\": \"d6f4 d2e2 f4f7 e2g4\",\n      \"rating\": 2196\n    },\n    {\n      \"id\": \"HIjI8\",\n      \"fen\": \"7r/2pk2pp/p7/P5B1/3Q3P/P4q2/2P1rP2/1R4K1 b - - 4 26\",\n      \"line\": \"d7e6 d4c4 e6f5 c4f7 f5g4 b1b4 e2e4 f7e6\",\n      \"rating\": 2211\n    },\n    {\n      \"id\": \"hIwiE\",\n      \"fen\": \"8/7p/8/5pPP/2p1k3/8/2K5/8 b - - 0 52\",\n      \"line\": \"e4e5 h5h6 e5f4 g5g6\",\n      \"rating\": 2224\n    },\n    {\n      \"id\": \"jN5Ts\",\n      \"fen\": \"r4rk1/1R1R3p/5ppq/8/p2QP3/2P5/2P2P2/5K2 b - - 1 33\",\n      \"line\": \"a4a3 d4c4 g8h8 c4c7 h6h1 f1e2 h1e4 e2d2\",\n      \"rating\": 2242\n    },\n    {\n      \"id\": \"6tSB4\",\n      \"fen\": \"2r1k2r/3b3p/1p2Rpp1/p7/3p1PQ1/6PK/P1q4P/1N2R3 b k - 0 32\",\n      \"line\": \"d7e6 g4e6 e8f8 e6f6 f8g8 f6e6\",\n      \"rating\": 2252\n    },\n    {\n      \"id\": \"M98Hk\",\n      \"fen\": \"7r/1pq3kp/3pB1pR/2pPb1P1/5r2/pP1Q4/P1P5/1K5R b - - 5 27\",\n      \"line\": \"c7e7 h6h7 h8h7 h1h7 g7f8 h7e7\",\n      \"rating\": 2273\n    },\n    {\n      \"id\": \"z57yq\",\n      \"fen\": \"8/2r3k1/3R2R1/1p2P1p1/6Pp/4r2P/6K1/8 b - - 11 48\",\n      \"line\": \"g7f7 d6f6 f7e8 g6g8 e8d7 f6d6 d7e7 g8g7 e7f8 g7c7\",\n      \"rating\": 2282\n    },\n    {\n      \"id\": \"zPOBo\",\n      \"fen\": \"8/8/7p/1BKPkp1P/b5p1/8/6P1/8 b - - 1 43\",\n      \"line\": \"f5f4 b5a4 f4f3 g2g3 f3f2 a4b5\",\n      \"rating\": 2297\n    },\n    {\n      \"id\": \"6b1KE\",\n      \"fen\": \"r4rk1/pp3ppp/5n1B/7q/2PP4/3B1b2/P1PQ1P1P/R3K1R1 b Q - 2 15\",\n      \"line\": \"h5h2 g1g7 g8h8 d2g5 a8e8 e1d2 h2f2 d2c3 f6e4 d3e4 f2d4 c3d4\",\n      \"rating\": 2309\n    },\n    {\n      \"id\": \"EAPaS\",\n      \"fen\": \"6k1/p6p/1b3N2/1Q4K1/4q3/P5P1/2P1p2P/6r1 b - - 1 38\",\n      \"line\": \"g8g7 b5d7 g7f8 d7c8 f8f7 c8g8\",\n      \"rating\": 2337\n    },\n    {\n      \"id\": \"PJswp\",\n      \"fen\": \"6k1/2p3b1/p3p1q1/1pBrPp2/1Pn1NP2/2P2QR1/P4PKP/2r5 b - - 7 35\",\n      \"line\": \"g6h6 e4f6 g8f7 f6d5 c4d2 f3e3\",\n      \"rating\": 2354\n    },\n    {\n      \"id\": \"fg9uw\",\n      \"fen\": \"r3n1k1/p5bp/1pq3p1/2p5/8/1PP2N2/PB2Q1PP/2R2K2 b - - 1 22\",\n      \"line\": \"e8d6 e2e6 g8h8 c1d1 c6e4 e6d6\",\n      \"rating\": 2361\n    },\n    {\n      \"id\": \"UaOV4\",\n      \"fen\": \"r1bq1k1r/pppp1Bpp/2n5/4P1B1/1bQ5/2n2N2/P4PPP/R4K1R b - - 3 12\",\n      \"line\": \"d7d5 c4f4 d8d7 f7e6 f8e8 e6d7\",\n      \"rating\": 2374\n    },\n    {\n      \"id\": \"6q7pY\",\n      \"fen\": \"8/8/2p5/pp3p1p/2kPpPpP/P1P3P1/1PK5/8 b - - 3 52\",\n      \"line\": \"e4e3 b2b3 c4d5 c2d3 e3e2 c3c4\",\n      \"rating\": 2386\n    },\n    {\n      \"id\": \"WU2iW\",\n      \"fen\": \"rnb1rk2/ppp4p/6pb/q3P3/2B1Q3/2P5/P5PP/3R1RK1 b - - 0 20\",\n      \"line\": \"c8f5 f1f5 f8g7 f5f7 g7h8 e4h4 a5b6 g1h1\",\n      \"rating\": 2399\n    },\n    {\n      \"id\": \"ruvnu\",\n      \"fen\": \"2k2Q2/p5p1/2r5/1p3p1p/4q2b/1PP4P/P3p1PB/4R2K b - - 7 35\",\n      \"line\": \"c8b7 f8b8 b7a6 h2g1 c6b6 g1b6\",\n      \"rating\": 2413\n    },\n    {\n      \"id\": \"09L17\",\n      \"fen\": \"8/8/1p1P1k2/p4P1p/1P2K3/8/8/8 b - - 0 55\",\n      \"line\": \"a5b4 e4d5 b4b3 d6d7 f6e7 d5c6 b3b2 f5f6 e7f7 d7d8q b2b1q d8e7 f7g6 e7g7 g6f5 g7h7 f5f6 h7b1\",\n      \"rating\": 2424\n    },\n    {\n      \"id\": \"sXZNJ\",\n      \"fen\": \"2r3k1/p2P1ppp/5q2/Q2p4/3np3/B3P1Pb/P3BP1P/3R3K b - - 0 28\",\n      \"line\": \"h3d7 e3d4 f6f2 a5e1\",\n      \"rating\": 2444\n    },\n    {\n      \"id\": \"M2T99\",\n      \"fen\": \"8/k7/3K4/2Q2p2/8/8/6P1/4q3 b - - 1 54\",\n      \"line\": \"a7a6 d6c7 e1g3 c5d6 g3d6 c7d6\",\n      \"rating\": 2458\n    },\n    {\n      \"id\": \"yLsF4\",\n      \"fen\": \"r1b2r2/ppq3k1/2nRp3/5pR1/4Q3/PP4P1/4P2P/7K b - - 0 24\",\n      \"line\": \"g7f6 e4f5 f6e7 g5g7 e7d6 f5d3\",\n      \"rating\": 2476\n    },\n    {\n      \"id\": \"N1FQs\",\n      \"fen\": \"5nk1/p4rpp/1p2p3/4P1QP/1P3P2/P1q5/2pR2P1/2B4K b - - 3 31\",\n      \"line\": \"f7d7 d2d7 f8d7 h5h6 g8f7 h6g7\",\n      \"rating\": 2496\n    }\n  ],\n  \"startsAt\": 1758635599928,\n  \"finishesAt\": 1758635689928\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cc7552f4-f2f6-48bf-afe6-ff74d95e4202",
+              "name": "The puzzle race was not found, or is no longer available.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "racer",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The puzzle race ID"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"Not found.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://lichess.org",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "f2c68192-526d-4072-9c1d-109cde982aa1",
+    "name": "Lichess.org API reference Account Puzzles API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "# Introduction\nWelcome to the reference for the Lichess API! Lichess is free/libre,\nopen-source chess server powered by volunteers and donations.\n- Get help in the [Lichess Discord channel](https://discord.gg/lichess)\n- API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)\n- API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)\n- [Contribute to this documentation on Github](https://github.com/lichess-org/api)\n- Check out [Lichess widgets to embed in your website](https://lichess.org/developers)\n- [Download all Lichess rated games](https://database.lichess.org/)\n- [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)\n- [Download all evaluated positions](https://database.lichess.org/#evals)\n\n## Endpoint\nAll requests go to `https://lichess.org` (unless otherwise specified).\n\n## Clients\n- [Python general API](https://github.com/lichess-org/berserk)\n- [MicroPython general API](https://github.com/mkomon/uberserk)\n- [Python general API - async](https://pypi.org/project/async-lichess-sdk)\n- [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)\n- [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)\n- [Java general API](https://github.com/tors42/chariot)\n- [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)\n- [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)\n- [.NET general API](https://github.com/Dblike/LichessSharp)\n\n## Rate limiting\nAll requests are rate limited using various strategies,\nto ensure the API remains responsive for everyone.\nOnly make one request at a time.\nIf you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),\nyou have exceded one of the rate limits.\nIn most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.\nReduce your request frequency before retrying.\n\n## Streaming with ND-JSON\nSome API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.\n\nHere's a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.\n\n## Authentication\n### Which authentication method is right for me?\n[Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)\n\n### Personal Access Token\nPersonal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.\n- [Generate a personal access token](https://lichess.org/account/oauth/token)\n- `curl https://lichess.org/api/account -H \"Authorization: Bearer {token}\"`\n- [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)\n\n### Token Security\n- Keep your tokens secret. Do not share them in public repositories or public forums.\n- Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens' scope). You remain responsible for all activities on your account.\n- Do not hardcode tokens in your application's code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.\n- If you suspect a token has been compromised, revoke it immediately.\n\nTo see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).\n\n### Authorization Code Flow with PKCE\nThe authorization code flow with PKCE allows your users to **login with Lichess**.\nLichess supports unregistered and public clients (no client authentication, choose any unique client id).\nThe only accepted code challenge method is `S256`.\nAccess tokens are long-lived (expect one year), unless they are revoked.\nRefresh tokens are not supported.\n\nSee the [documentation for the OAuth endpoints](#tag/OAuth) or\nthe [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.\n\n- [Demo app](https://lichess-org.github.io/api-demo/)\n- [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)\n- [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)\n- [Java example](https://github.com/tors42/lichess-oauth-pkce-app)\n- [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)\n\n#### Real life examples\n- [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))\n- [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))\n- [English Chess Federation](https://ecf.octoknight.com/)\n- [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)\n\n### Token format\nAccess tokens and authorization codes match `^[A-Za-z0-9_]+$`.\nThe length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.\nBy convention tokens have a recognizable prefix, but do not rely on this.\n\n\nContact Support:\n Name: Lichess.org API\n Email: contact@lichess.org",
+      "type": "text/plain"
+    }
+  }
+}

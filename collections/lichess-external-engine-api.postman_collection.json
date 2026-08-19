@@ -1,0 +1,1037 @@
+{
+  "item": [
+    {
+      "id": "9d2a511b-0638-46d5-9f12-7e7c58f1d776",
+      "name": "External engine",
+      "description": {
+        "content": "**This API is in alpha and subject to change.**\n\nUse or provide external engine analysis.\n\nExternal engines can provide analysis on pages like the\n[analysis board](https://lichess.org/analysis), running as a service\noutside of the browser, or even on a different machine.\n",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "184279d1-1301-4ecd-a85a-de1897a110e5",
+          "name": "List external engines",
+          "request": {
+            "name": "List external engines",
+            "description": {
+              "content": "Lists all external engines that have been registered for the user,\nand the credentials required to use them.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "external-engine"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://lichess.org/api/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://lichess.org/oauth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "20b2a3f1-579d-4754-b13b-f40cbb2d3559",
+              "name": "A list of external engines.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "external-engine"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"eei_NU53ONEmZqij\",\n    \"name\": \"Stockfish 17\",\n    \"userId\": \"bobby\",\n    \"maxThreads\": 8,\n    \"maxHash\": 2048,\n    \"variants\": [\n      \"chess\"\n    ],\n    \"providerData\": null,\n    \"clientSecret\": \"ees_K6cAs9Fo2kblqep4\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7bf8178e-4ebd-45f8-b992-71679e751533",
+          "name": "Create external engine",
+          "request": {
+            "name": "Create external engine",
+            "description": {
+              "content": "Registers a new external engine for the user. It can then be selected\nand used on the analysis board.\nAfter registering, the provider should start waiting for analyis requests.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "external-engine"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://lichess.org/api/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://lichess.org/oauth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"maxThreads\": \"<integer>\",\n  \"maxHash\": \"<integer>\",\n  \"providerSecret\": \"<string>\",\n  \"variants\": [\n    \"chess\",\n    \"chess\"\n  ],\n  \"providerData\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "b11be707-2a12-475d-8a21-4daf95ea5c02",
+              "name": "The registered engine.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "external-engine"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Stockfish 15\",\n  \"maxThreads\": 8,\n  \"maxHash\": 2048,\n  \"providerSecret\": \"Dee3uwieZei9ahpaici9bee2yahsai0K\",\n  \"variants\": [\n    \"chess\",\n    \"chess\"\n  ],\n  \"providerData\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"eei_NU53ONEmZqij\",\n  \"name\": \"Stockfish 17\",\n  \"userId\": \"bobby\",\n  \"maxThreads\": 8,\n  \"maxHash\": 2048,\n  \"variants\": [\n    \"chess\"\n  ],\n  \"providerData\": null,\n  \"clientSecret\": \"ees_K6cAs9Fo2kblqep4\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ff7fbcc1-a671-4a4d-b50a-bbccb2388dd0",
+          "name": "Get external engine",
+          "request": {
+            "name": "Get external engine",
+            "description": {
+              "content": "Get properties and credentials of an external engine.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "external-engine",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The external engine id."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://lichess.org/api/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://lichess.org/oauth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "de2b2fc1-5116-4ea5-a916-34d69d834a66",
+              "name": "A registered engine.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "external-engine",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The external engine id."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"eei_NU53ONEmZqij\",\n  \"name\": \"Stockfish 17\",\n  \"userId\": \"bobby\",\n  \"maxThreads\": 8,\n  \"maxHash\": 2048,\n  \"variants\": [\n    \"chess\"\n  ],\n  \"providerData\": null,\n  \"clientSecret\": \"ees_K6cAs9Fo2kblqep4\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c6a7528f-58d8-4dd9-becb-d31f5179569e",
+          "name": "Update external engine",
+          "request": {
+            "name": "Update external engine",
+            "description": {
+              "content": "Updates the properties of an external engine.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "external-engine",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The external engine id."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://lichess.org/api/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://lichess.org/oauth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"maxThreads\": \"<integer>\",\n  \"maxHash\": \"<integer>\",\n  \"providerSecret\": \"<string>\",\n  \"variants\": [\n    \"chess\",\n    \"chess\"\n  ],\n  \"providerData\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e8ab23fd-ed12-49be-8f4d-597ece28d0c1",
+              "name": "A registered engine.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "external-engine",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The external engine id."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Stockfish 15\",\n  \"maxThreads\": 8,\n  \"maxHash\": 2048,\n  \"providerSecret\": \"Dee3uwieZei9ahpaici9bee2yahsai0K\",\n  \"variants\": [\n    \"chess\",\n    \"chess\"\n  ],\n  \"providerData\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"eei_NU53ONEmZqij\",\n  \"name\": \"Stockfish 17.1\",\n  \"userId\": \"bobby\",\n  \"maxThreads\": 8,\n  \"maxHash\": 2048,\n  \"variants\": [\n    \"chess\"\n  ],\n  \"providerData\": null,\n  \"clientSecret\": \"ees_K6cAs9Fo2kblqep4\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6a4356c9-f9e5-4264-b531-836e10e1da06",
+          "name": "Delete external engine",
+          "request": {
+            "name": "Delete external engine",
+            "description": {
+              "content": "Unregisters an external engine.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "external-engine",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The external engine id."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://lichess.org/api/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://lichess.org/oauth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "972b65e6-1566-4ad2-ab6f-b9e0494f6d18",
+              "name": "Engine successfully deleted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "external-engine",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The external engine id."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"ok\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "33f8db76-c43c-425e-8bfd-dda6119bb6ba",
+          "name": "Analyse with external engine",
+          "request": {
+            "name": "Analyse with external engine",
+            "description": {
+              "content": "**Endpoint: `https://engine.lichess.ovh/api/external-engine/{id}/analyse`**\nRequest analysis from an external engine.\nResponse content is streamed as [newline delimited JSON](#description/streaming-with-nd-json).\nThe properties are based on the [UCI specification](https://backscattering.de/chess/uci/#engine).\nAnalysis stops when the client goes away, the requested limit\nis reached, or the provider goes away.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "api",
+                "external-engine",
+                ":id",
+                "analyse"
+              ],
+              "host": [
+                "engine",
+                "lichess",
+                "ovh"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) The external engine id."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/x-ndjson"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clientSecret\": \"<string>\",\n  \"work\": {\n    \"hash\": \"<integer>\",\n    \"initialFen\": \"<string>\",\n    \"moves\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"movetime\": \"<integer>\",\n    \"multiPv\": \"<integer>\",\n    \"sessionId\": \"<string>\",\n    \"threads\": \"<integer>\",\n    \"variant\": \"chess\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "dad92f15-6662-467c-8537-1bdf68d38e2c",
+              "name": "Stream of analysis output",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "api",
+                    "external-engine",
+                    ":id",
+                    "analyse"
+                  ],
+                  "host": [
+                    "engine",
+                    "lichess",
+                    "ovh"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) The external engine id."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/x-ndjson"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"clientSecret\": \"ees_mdF2hK0hlKGSPeC6\",\n  \"work\": {\n    \"hash\": 4076,\n    \"initialFen\": \"string\",\n    \"moves\": [\n      \"string\",\n      \"string\"\n    ],\n    \"movetime\": 3378,\n    \"multiPv\": 2,\n    \"sessionId\": \"string\",\n    \"threads\": 9778,\n    \"variant\": \"chess\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/x-ndjson"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a233bfef-8c9b-4d65-b575-de6c611046eb",
+          "name": "Acquire analysis request",
+          "request": {
+            "name": "Acquire analysis request",
+            "description": {
+              "content": "**Endpoint: `https://engine.lichess.ovh/api/external-engine/work`**\nWait for an analysis requests to any of the external engines that\nhave been registered with the given `secret`.\nUses long polling.\nAfter acquiring a request, the provider should immediately\n[start streaming the results](#tag/external-engine/POST/api/external-engine/work/{id}).\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "api",
+                "external-engine",
+                "work"
+              ],
+              "host": [
+                "engine",
+                "lichess",
+                "ovh"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"providerSecret\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "4162ea58-6595-4874-8e2f-b6464274ab90",
+              "name": "Analysis has been requested",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "api",
+                    "external-engine",
+                    "work"
+                  ],
+                  "host": [
+                    "engine",
+                    "lichess",
+                    "ovh"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"providerSecret\": \"Dee3uwieZei9ahpaici9bee2yahsai0K\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"ygxzCoNU0wUXodLm\",\n  \"work\": {\n    \"sessionId\": \"1\",\n    \"threads\": 1,\n    \"hash\": 2048,\n    \"depth\": 1,\n    \"multiPv\": 1,\n    \"variant\": \"chess\",\n    \"initialFen\": \"rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1\",\n    \"moves\": [\n      \"e2e4\",\n      \"g8f6\"\n    ]\n  },\n  \"engine\": {\n    \"id\": \"eei_dw2szwYp76C9\",\n    \"name\": \"Stockfish 17.1\",\n    \"clientSecret\": \"ees_EjQe0iSY6TGhsvCW\",\n    \"userId\": \"bobby\",\n    \"maxThreads\": 8,\n    \"maxHash\": 2048,\n    \"variants\": [\n      \"chess\"\n    ],\n    \"providerData\": null\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "13d114b1-12a0-40ac-9e01-ade2c69ea1e1",
+              "name": "No pending analysis",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "api",
+                    "external-engine",
+                    "work"
+                  ],
+                  "host": [
+                    "engine",
+                    "lichess",
+                    "ovh"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"providerSecret\": \"Dee3uwieZei9ahpaici9bee2yahsai0K\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "02cbd2d2-1d23-4b3b-ba3d-b8ae06903afd",
+          "name": "Answer analysis request",
+          "request": {
+            "name": "Answer analysis request",
+            "description": {
+              "content": "**Endpoint: `https://engine.lichess.ovh/api/external-engine/work/{id}`**\nSubmit a stream of analysis as [UCI output](https://backscattering.de/chess/uci/#engine-info).\n* The engine should always be in `UCI_Chess960` mode.\n* `UCI_AnalyseMode` enabled if available.\n* It produces `info` with at least:\n  - `depth`\n  - `multipv` (between 1 and 5)\n  - `score`\n  - `nodes`\n  - `time`\n  - `pv`\nThe server may close the connection at any time, indicating that\nthe requester has gone away and analysis should be stopped.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "api",
+                "external-engine",
+                "work",
+                ":id"
+              ],
+              "host": [
+                "engine",
+                "lichess",
+                "ovh"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "text/plain"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "<string>"
+            }
+          },
+          "response": [
+            {
+              "id": "9f2ad58f-c0e2-4804-a9e2-9936c0037a70",
+              "name": "Thanks",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "api",
+                    "external-engine",
+                    "work",
+                    ":id"
+                  ],
+                  "host": [
+                    "engine",
+                    "lichess",
+                    "ovh"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "info multipv 1 depth 20 seldepth 30 time 1373 nodes 1494341 score cp 47 hashfull 594 nps 1088376 tbhits 0 pv d2d4 d7d5 c2c4 e7e6 b1c3 f8b4 c4d5 e6d5 g1f3 g8f6 c1g5 h7h6 g5f6 d8f6 d1b3 c7c5 e2e3 b8c6 d4c5 e8g8 f1d3"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://lichess.org",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "afcbed88-a221-414a-9762-b3681c3cd007",
+    "name": "Lichess.org API reference Account External engine API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "# Introduction\nWelcome to the reference for the Lichess API! Lichess is free/libre,\nopen-source chess server powered by volunteers and donations.\n- Get help in the [Lichess Discord channel](https://discord.gg/lichess)\n- API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)\n- API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)\n- [Contribute to this documentation on Github](https://github.com/lichess-org/api)\n- Check out [Lichess widgets to embed in your website](https://lichess.org/developers)\n- [Download all Lichess rated games](https://database.lichess.org/)\n- [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)\n- [Download all evaluated positions](https://database.lichess.org/#evals)\n\n## Endpoint\nAll requests go to `https://lichess.org` (unless otherwise specified).\n\n## Clients\n- [Python general API](https://github.com/lichess-org/berserk)\n- [MicroPython general API](https://github.com/mkomon/uberserk)\n- [Python general API - async](https://pypi.org/project/async-lichess-sdk)\n- [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)\n- [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)\n- [Java general API](https://github.com/tors42/chariot)\n- [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)\n- [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)\n- [.NET general API](https://github.com/Dblike/LichessSharp)\n\n## Rate limiting\nAll requests are rate limited using various strategies,\nto ensure the API remains responsive for everyone.\nOnly make one request at a time.\nIf you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),\nyou have exceded one of the rate limits.\nIn most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.\nReduce your request frequency before retrying.\n\n## Streaming with ND-JSON\nSome API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.\n\nHere's a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.\n\n## Authentication\n### Which authentication method is right for me?\n[Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)\n\n### Personal Access Token\nPersonal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.\n- [Generate a personal access token](https://lichess.org/account/oauth/token)\n- `curl https://lichess.org/api/account -H \"Authorization: Bearer {token}\"`\n- [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)\n\n### Token Security\n- Keep your tokens secret. Do not share them in public repositories or public forums.\n- Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens' scope). You remain responsible for all activities on your account.\n- Do not hardcode tokens in your application's code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.\n- If you suspect a token has been compromised, revoke it immediately.\n\nTo see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).\n\n### Authorization Code Flow with PKCE\nThe authorization code flow with PKCE allows your users to **login with Lichess**.\nLichess supports unregistered and public clients (no client authentication, choose any unique client id).\nThe only accepted code challenge method is `S256`.\nAccess tokens are long-lived (expect one year), unless they are revoked.\nRefresh tokens are not supported.\n\nSee the [documentation for the OAuth endpoints](#tag/OAuth) or\nthe [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.\n\n- [Demo app](https://lichess-org.github.io/api-demo/)\n- [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)\n- [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)\n- [Java example](https://github.com/tors42/lichess-oauth-pkce-app)\n- [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)\n\n#### Real life examples\n- [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))\n- [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))\n- [English Chess Federation](https://ecf.octoknight.com/)\n- [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)\n\n### Token format\nAccess tokens and authorization codes match `^[A-Za-z0-9_]+$`.\nThe length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.\nBy convention tokens have a recognizable prefix, but do not rely on this.\n\n\nContact Support:\n Name: Lichess.org API\n Email: contact@lichess.org",
+      "type": "text/plain"
+    }
+  }
+}

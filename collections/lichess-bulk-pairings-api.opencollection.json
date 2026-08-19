@@ -1,0 +1,281 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lichess.org API reference Account Bulk pairings API",
+    "version": "2.0.144"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Bulk pairings",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "View your bulk pairings",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/bulk-pairing",
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Get a list of bulk pairings you created.\n"
+        },
+        {
+          "info": {
+            "name": "Create a bulk pairing",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/bulk-pairing",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "players",
+                  "value": ""
+                },
+                {
+                  "name": "clock.limit",
+                  "value": ""
+                },
+                {
+                  "name": "clock.increment",
+                  "value": ""
+                },
+                {
+                  "name": "days",
+                  "value": ""
+                },
+                {
+                  "name": "pairAt",
+                  "value": ""
+                },
+                {
+                  "name": "startClocksAt",
+                  "value": ""
+                },
+                {
+                  "name": "rated",
+                  "value": ""
+                },
+                {
+                  "name": "variant",
+                  "value": ""
+                },
+                {
+                  "name": "fen",
+                  "value": ""
+                },
+                {
+                  "name": "message",
+                  "value": ""
+                },
+                {
+                  "name": "rules",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Schedule many games at once, up to 24h in advance.\nOAuth tokens are required for all paired players, with the `challenge:write` scope.\nYou can schedule up to 500 games every 10 minutes. [Contact us](mailto:contact@lichess.org) if you need higher limits.\nIf games have a real-time clock, each player must have only one pairing.\nFor correspondence games, players can have multiple pairings within the same bulk.\n\n**The entire bulk is rejected if:**\n  - a token is missing\n  - a token is present more th"
+        },
+        {
+          "info": {
+            "name": "Manually start clocks",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/bulk-pairing/:id/start-clocks",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Immediately start all clocks of the games of a bulk pairing.\nThis overrides the `startClocksAt` value of an existing bulk pairing.\nIf the games have not yet been created (`bulk.pairAt` is in the future), then this does nothing.\nIf the clocks have already started (`bulk.startClocksAt` is in the past), then this does nothing.\n"
+        },
+        {
+          "info": {
+            "name": "Show a bulk pairing",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/bulk-pairing/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Get a single bulk pairing by its ID.\n"
+        },
+        {
+          "info": {
+            "name": "Cancel a bulk pairing",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://lichess.org/api/bulk-pairing/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Cancel and delete a bulk pairing that is scheduled in the future.\nIf the games have already been created, then this does nothing.\nCanceling a bulk pairing does not refund the rate limit cost of that bulk pairing.\n"
+        },
+        {
+          "info": {
+            "name": "Export games of a bulk pairing",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/bulk-pairing/:id/games",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "moves",
+                "value": "",
+                "type": "query",
+                "description": "Include the PGN moves."
+              },
+              {
+                "name": "pgnInJson",
+                "value": "",
+                "type": "query",
+                "description": "Include the full PGN within the JSON response, in a `pgn` field."
+              },
+              {
+                "name": "tags",
+                "value": "",
+                "type": "query",
+                "description": "Include the PGN tags."
+              },
+              {
+                "name": "clocks",
+                "value": "",
+                "type": "query",
+                "description": "Include clock status when available.\nEither as PGN comments: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\nOr in a `clocks` JSON field, as centisecond integers, depending on the response type.\n"
+              },
+              {
+                "name": "evals",
+                "value": "",
+                "type": "query",
+                "description": "Include analysis evaluations and comments, when available.\nEither as PGN comments: `12. Bxf6 { [%eval 0.23] } a3 { [%eval -1.09] }`\nOr in an `analysis` JSON field, depending on the response type.\n"
+              },
+              {
+                "name": "accuracy",
+                "value": "",
+                "type": "query",
+                "description": "Include [accuracy percent](https://lichess.org/page/accuracy) of each player, when available. Only available in JSON.\n"
+              },
+              {
+                "name": "opening",
+                "value": "",
+                "type": "query",
+                "description": "Include the opening name.\nExample: `[Opening \"King's Gambit Accepted, King's Knight Gambit\"]`\n"
+              },
+              {
+                "name": "division",
+                "value": "",
+                "type": "query",
+                "description": "Plies which mark the beginning of the middlegame and endgame.\nOnly available in JSON\n"
+              },
+              {
+                "name": "literate",
+                "value": "",
+                "type": "query",
+                "description": "Insert textual annotations in the PGN about the opening, analysis variations, mistakes, and game termination.\nExample: `5... g4? { (-0.98 → 0.60) Mistake. Best move was h6. } (5... h6 6. d4 Ne7 7. g3 d5 8. exd5 fxg3 9. hxg3 c6 10. dxc6)`\n"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Download games of a bulk in PGN or [ndjson](#description/streaming-with-nd-json) format, depending on the request `Accept` header.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

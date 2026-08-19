@@ -1,0 +1,463 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lichess.org API reference Account Teams API",
+    "version": "2.0.144"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Teams",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get team swiss tournaments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/team/:teamId/swiss",
+            "params": [
+              {
+                "name": "teamId",
+                "value": "coders",
+                "type": "path"
+              },
+              {
+                "name": "max",
+                "value": "",
+                "type": "query",
+                "description": "How many tournaments to download."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "[Filter] Only swiss tournaments in this current state.\n"
+              },
+              {
+                "name": "createdBy",
+                "value": "",
+                "type": "query",
+                "description": "[Filter] Only swiss tournaments created by a given user.\n"
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "[Filter] Only swiss tournaments with a given name.\n"
+              }
+            ]
+          },
+          "docs": "Get all swiss tournaments of a team.\nTournaments are sorted by reverse chronological order of start date (last starting first).\nTournaments are streamed as [ndjson](#description/streaming-with-nd-json).\n"
+        },
+        {
+          "info": {
+            "name": "Get a single team",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/team/:teamId",
+            "params": [
+              {
+                "name": "teamId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Public info about a team. Includes the list of publicly visible leaders."
+        },
+        {
+          "info": {
+            "name": "Get popular teams",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/team/all",
+            "params": [
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Paginator of the most popular teams.\n"
+        },
+        {
+          "info": {
+            "name": "Teams of a player",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/team/of/:username",
+            "params": [
+              {
+                "name": "username",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "All the teams a player is a member of.\nTeams that hide their player list are only included if you also belong to the team.\n"
+        },
+        {
+          "info": {
+            "name": "Search teams",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/team/search",
+            "params": [
+              {
+                "name": "text",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Paginator of team search results for a keyword.\n"
+        },
+        {
+          "info": {
+            "name": "Get members of a team",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/team/:teamId/users",
+            "params": [
+              {
+                "name": "teamId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "full",
+                "value": "",
+                "type": "query",
+                "description": "Full user documents with performance ratings.\nThis limits the response to 1,000 users.\n"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Members are sorted by reverse chronological order of joining the team (most recent first).\nOAuth is only required if the list of members is private.\nUp to 5,000 users are streamed as [ndjson](#description/streaming-with-nd-json).\n"
+        },
+        {
+          "info": {
+            "name": "Get team Arena tournaments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/team/:teamId/arena",
+            "params": [
+              {
+                "name": "teamId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the team"
+              },
+              {
+                "name": "max",
+                "value": "",
+                "type": "query",
+                "description": "How many tournaments to download."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "[Filter] Only arena tournaments in this current state.\n"
+              },
+              {
+                "name": "createdBy",
+                "value": "",
+                "type": "query",
+                "description": "[Filter] Only arena tournaments created by a given user.\n"
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "[Filter] Only arena tournaments with a given name.\n"
+              }
+            ]
+          },
+          "docs": "Get all Arena tournaments relevant to a team.\nTournaments are sorted by reverse chronological order of start date (last starting first).\nTournaments are streamed as [ndjson](#description/streaming-with-nd-json).\n"
+        },
+        {
+          "info": {
+            "name": "Join a team",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/team/:teamId/join",
+            "params": [
+              {
+                "name": "teamId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "message",
+                  "value": ""
+                },
+                {
+                  "name": "password",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Join a team.\nIf the team requires a password but the `password` field is incorrect,\nthen the call fails with `403 Forbidden`.\nSimilarly, if the team join policy requires a confirmation but the\n`message` parameter is not given, then the call fails with\n`403 Forbidden`.\n"
+        },
+        {
+          "info": {
+            "name": "Leave a team",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/team/:teamId/quit",
+            "params": [
+              {
+                "name": "teamId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Leave a team.\n- <https://lichess.org/team>\n"
+        },
+        {
+          "info": {
+            "name": "Get join requests",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/team/:teamId/requests",
+            "params": [
+              {
+                "name": "teamId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "declined",
+                "value": "",
+                "type": "query",
+                "description": "Get the declined join requests"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Get pending join requests of your team"
+        },
+        {
+          "info": {
+            "name": "Accept join request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/team/:teamId/request/:userId/accept",
+            "params": [
+              {
+                "name": "teamId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Accept someone's request to join your team"
+        },
+        {
+          "info": {
+            "name": "Decline join request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/team/:teamId/request/:userId/decline",
+            "params": [
+              {
+                "name": "teamId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Decline someone's request to join your team"
+        },
+        {
+          "info": {
+            "name": "Kick a user from your team",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/team/:teamId/kick/:userId",
+            "params": [
+              {
+                "name": "teamId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "userId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Kick a member out of one of your teams.\n- <https://lichess.org/team>\n"
+        },
+        {
+          "info": {
+            "name": "Message all members",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/team/:teamId/pm-all",
+            "params": [
+              {
+                "name": "teamId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "message",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Send a private message to all members of a team.\nYou must be a team leader with the \"Messages\" permission.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

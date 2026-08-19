@@ -1,0 +1,29 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lichess.org API reference Account Simuls API",
+    "version": "2.0.144"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Simuls",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get current simuls",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/simul"
+          },
+          "docs": "Get recently created, started, finished, simuls.\nCreated and finished simul lists are not exhaustives, only those with\nstrong enough host will be listed, the same filter is used to display simuls on https://lichess.org/simul.\nWhen [authenticated with OAuth2](#description/authentication), the pending list will be populated with your created, but unstarted simuls.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

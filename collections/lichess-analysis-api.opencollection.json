@@ -1,0 +1,49 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lichess.org API reference Account Analysis API",
+    "version": "2.0.144"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Analysis",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get cloud evaluation of a position.",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/cloud-eval",
+            "params": [
+              {
+                "name": "fen",
+                "value": "r1bqkbnr/pppp1ppp/2n5/1B2p3/4P3/5N2/PPPP1PPP/RNBQK2R b KQkq - 3 3",
+                "type": "query",
+                "description": "X-FEN of the position"
+              },
+              {
+                "name": "multiPv",
+                "value": "",
+                "type": "query",
+                "description": "Number of variations"
+              },
+              {
+                "name": "variant",
+                "value": "",
+                "type": "query",
+                "description": "Variant"
+              }
+            ]
+          },
+          "docs": "Get the cached evaluation of a position, if available.\nOpening positions have more chances of being available. There are about 320 million positions in the database.\nUp to 5 variations may be available. Variants are supported.\nUse this endpoint to fetch a few positions here and there.\nIf you want to download a lot of positions, [get the full list](https://database.lichess.org/#evals) from our exported database.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

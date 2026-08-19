@@ -1,0 +1,310 @@
+{
+  "item": [
+    {
+      "id": "18f2bae4-5a37-428e-83da-d01f96eef63f",
+      "name": "FIDE",
+      "description": {
+        "content": "FIDE players and federations from [their public download](https://ratings.fide.com/download_lists.phtml).\n\n<https://lichess.org/fide>\n",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "503ea5c2-bbe5-43ae-a7ac-d3d6ceb5db43",
+          "name": "Get a FIDE player",
+          "request": {
+            "name": "Get a FIDE player",
+            "description": {
+              "content": "Get information about a FIDE player.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "fide",
+                "player",
+                ":playerId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "playerId",
+                  "description": "(Required) The FIDE player ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "13b0be93-9509-443f-b84b-aef5dba2a758",
+              "name": "The information about the FIDE player.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "fide",
+                    "player",
+                    ":playerId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "playerId",
+                      "description": "(Required) The FIDE player ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": 35009192,\n  \"name\": \"Erigaisi Arjun\",\n  \"federation\": \"IND\",\n  \"year\": 2003,\n  \"title\": \"GM\",\n  \"standard\": 2751,\n  \"rapid\": 2741,\n  \"blitz\": 2776,\n  \"gender\": \"M\",\n  \"photo\": {\n    \"small\": \"https://image.lichess1.org/display?fmt=webp&h=100&op=thumbnail&path=ZtNkAl1_0MHT.webp&w=100&sig=8a2122f91eab6c3f0528bce8ea5854fd561bbcde\",\n    \"medium\": \"https://image.lichess1.org/display?fmt=webp&h=500&op=thumbnail&path=ZtNkAl1_0MHT.webp&w=500&sig=f2faf575e19147ee8b1d2b573f1fd2e18fab88e7\",\n    \"credit\": \"Brigham Aldrich\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6b0f51d1-ffc2-4330-81d5-894d01494c8f",
+          "name": "Get ratings history of a FIDE player",
+          "request": {
+            "name": "Get ratings history of a FIDE player",
+            "description": {
+              "content": "Historical standard, rapid and blitz ratings of a FIDE player\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "fide",
+                "player",
+                ":playerId",
+                "ratings"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<integer>",
+                  "key": "playerId",
+                  "description": "(Required) The FIDE player ID."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5da7c77a-5462-4362-8031-fe843a3a5c7f",
+              "name": "The rating histories",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "fide",
+                    "player",
+                    ":playerId",
+                    "ratings"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<integer>",
+                      "key": "playerId",
+                      "description": "(Required) The FIDE player ID."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"blitz\": [],\n  \"rapid\": [\n    2015081568,\n    2022091568,\n    2022101620,\n    2024021620,\n    2024031772,\n    2025121772\n  ],\n  \"standard\": [\n    2015021577,\n    2015071577,\n    2015081679,\n    2015111679,\n    2015121616,\n    2016071616,\n    2016081618,\n    2016101618,\n    2016111685,\n    2017031685,\n    2017041692,\n    2017061692,\n    2017071698,\n    2017081698,\n    2017091720,\n    2024021720,\n    2024031832,\n    2025121832\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3a8ba3d8-511f-4ee7-a0e5-91d9e75d6e82",
+          "name": "Search FIDE players",
+          "request": {
+            "name": "Search FIDE players",
+            "description": {
+              "content": "List of FIDE players search results for a query.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "fide",
+                "player"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "q",
+                  "value": "<string>",
+                  "description": "(Required) The search query."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1d711b17-f452-496a-b09a-9afe114b79a4",
+              "name": "The list of FIDE players.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "fide",
+                    "player"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "q",
+                      "value": "Erigaisi Arjun"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": 35009192,\n    \"name\": \"Erigaisi Arjun\",\n    \"federation\": \"IND\",\n    \"year\": 2003,\n    \"title\": \"GM\",\n    \"standard\": 2751,\n    \"rapid\": 2741,\n    \"blitz\": 2776,\n    \"gender\": \"M\",\n    \"photo\": {\n      \"small\": \"https://image.lichess1.org/display?fmt=webp&h=100&op=thumbnail&path=ZtNkAl1_0MHT.webp&w=100&sig=8a2122f91eab6c3f0528bce8ea5854fd561bbcde\",\n      \"medium\": \"https://image.lichess1.org/display?fmt=webp&h=500&op=thumbnail&path=ZtNkAl1_0MHT.webp&w=500&sig=f2faf575e19147ee8b1d2b573f1fd2e18fab88e7\",\n      \"credit\": \"Brigham Aldrich\"\n    }\n  },\n  {\n    \"id\": 35009060,\n    \"name\": \"Erigaisi Keerthana\",\n    \"federation\": \"IND\",\n    \"year\": 2002,\n    \"gender\": \"F\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://lichess.org",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "9c70a7fd-f303-4cbf-8ee6-6200b2aef8eb",
+    "name": "Lichess.org API reference Account FIDE API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "# Introduction\nWelcome to the reference for the Lichess API! Lichess is free/libre,\nopen-source chess server powered by volunteers and donations.\n- Get help in the [Lichess Discord channel](https://discord.gg/lichess)\n- API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)\n- API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)\n- [Contribute to this documentation on Github](https://github.com/lichess-org/api)\n- Check out [Lichess widgets to embed in your website](https://lichess.org/developers)\n- [Download all Lichess rated games](https://database.lichess.org/)\n- [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)\n- [Download all evaluated positions](https://database.lichess.org/#evals)\n\n## Endpoint\nAll requests go to `https://lichess.org` (unless otherwise specified).\n\n## Clients\n- [Python general API](https://github.com/lichess-org/berserk)\n- [MicroPython general API](https://github.com/mkomon/uberserk)\n- [Python general API - async](https://pypi.org/project/async-lichess-sdk)\n- [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)\n- [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)\n- [Java general API](https://github.com/tors42/chariot)\n- [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)\n- [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)\n- [.NET general API](https://github.com/Dblike/LichessSharp)\n\n## Rate limiting\nAll requests are rate limited using various strategies,\nto ensure the API remains responsive for everyone.\nOnly make one request at a time.\nIf you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),\nyou have exceded one of the rate limits.\nIn most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.\nReduce your request frequency before retrying.\n\n## Streaming with ND-JSON\nSome API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.\n\nHere's a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.\n\n## Authentication\n### Which authentication method is right for me?\n[Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)\n\n### Personal Access Token\nPersonal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.\n- [Generate a personal access token](https://lichess.org/account/oauth/token)\n- `curl https://lichess.org/api/account -H \"Authorization: Bearer {token}\"`\n- [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)\n\n### Token Security\n- Keep your tokens secret. Do not share them in public repositories or public forums.\n- Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens' scope). You remain responsible for all activities on your account.\n- Do not hardcode tokens in your application's code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.\n- If you suspect a token has been compromised, revoke it immediately.\n\nTo see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).\n\n### Authorization Code Flow with PKCE\nThe authorization code flow with PKCE allows your users to **login with Lichess**.\nLichess supports unregistered and public clients (no client authentication, choose any unique client id).\nThe only accepted code challenge method is `S256`.\nAccess tokens are long-lived (expect one year), unless they are revoked.\nRefresh tokens are not supported.\n\nSee the [documentation for the OAuth endpoints](#tag/OAuth) or\nthe [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.\n\n- [Demo app](https://lichess-org.github.io/api-demo/)\n- [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)\n- [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)\n- [Java example](https://github.com/tors42/lichess-oauth-pkce-app)\n- [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)\n\n#### Real life examples\n- [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))\n- [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))\n- [English Chess Federation](https://ecf.octoknight.com/)\n- [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)\n\n### Token format\nAccess tokens and authorization codes match `^[A-Za-z0-9_]+$`.\nThe length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.\nBy convention tokens have a recognizable prefix, but do not rely on this.\n\n\nContact Support:\n Name: Lichess.org API\n Email: contact@lichess.org",
+      "type": "text/plain"
+    }
+  }
+}

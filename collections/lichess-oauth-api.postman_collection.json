@@ -1,0 +1,601 @@
+{
+  "item": [
+    {
+      "id": "b7e7f46e-0998-4f58-a6f3-6f618ba0b4c0",
+      "name": "OAuth",
+      "description": {
+        "content": "Obtaining and revoking OAuth tokens.\n\n[Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md).\n",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "32ac79cd-76c1-49c1-b2d9-8b0b4de35de5",
+          "name": "Request authorization code",
+          "request": {
+            "name": "Request authorization code",
+            "description": {
+              "content": "OAuth2 authorization endpoint.\nStart the OAuth2 Authorization Code Flow with PKCE by securely\ngenerating two random strings unique to each authorization\nrequest:\n\n* `code_verifier`\n* `state`\n\nStore these in session storage. Make sure not to reveal `code_verifier`\nto eavesdroppers. Do not show it in URLs, do not abuse `state` to store\nit, do not send it over insecure connections. However it is fine if\nthe user themselves can extract `code_verifier`, which will always be\npossible for fully client-side apps.\nThen send the user to this endpoint. They will be prompted to grant\nauthorization and then be redirected back to the given `redirect_uri`.\nIf the authorization failed, the following query string parameters will\nbe appended to the redirection:\n\n* `error`, in particular with value `access_denied` if the user\n   cancelled authorization\n* `error_description` to aid debugging\n* `state`, exactly as passed in the `state` parameter\n\nIf the authorization succeeded, the following query string parameters\nwill be appended to the redirection:\n\n* `code`, containing a fresh short-lived authorization code\n* `state`, exactly as passed in the `state` parameter\n\nNext, to defend against cross site request forgery, check that the\nreturned `state` matches the `state` you originally generated.\n\nFinally, continue by using the authorization code to\n[obtain an access token](#tag/oauth/POST/api/token).\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "oauth"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "response_type",
+                  "value": "<string>",
+                  "description": "(Required) Must be `code`."
+                },
+                {
+                  "disabled": false,
+                  "key": "client_id",
+                  "value": "<string>",
+                  "description": "(Required) Arbitrary identifier that uniquely identifies your application."
+                },
+                {
+                  "disabled": false,
+                  "key": "redirect_uri",
+                  "value": "<string>",
+                  "description": "(Required) The absolute URL that the user should be redirected to with the authorization result."
+                },
+                {
+                  "disabled": false,
+                  "key": "code_challenge_method",
+                  "value": "<string>",
+                  "description": "(Required) Must be `S256`."
+                },
+                {
+                  "disabled": false,
+                  "key": "code_challenge",
+                  "value": "<string>",
+                  "description": "(Required) Compute `BASE64URL(SHA256(code_verifier))`."
+                },
+                {
+                  "disabled": false,
+                  "key": "scope",
+                  "value": "<string>",
+                  "description": "Space separated list of requested OAuth scopes, if any."
+                },
+                {
+                  "disabled": false,
+                  "key": "username",
+                  "value": "<string>",
+                  "description": "Hint that you want the user to log in with a specific Lichess username."
+                },
+                {
+                  "disabled": false,
+                  "key": "state",
+                  "value": "<string>",
+                  "description": "Arbitrary state that will be returned verbatim with the authorization result."
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "88dbe04c-cf49-45fa-9f10-db79e7308d26",
+              "name": "Authorization prompt will be displayed to the user.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "oauth"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "response_type",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "client_id",
+                      "value": "example.com"
+                    },
+                    {
+                      "key": "redirect_uri",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "code_challenge_method",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "code_challenge",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "scope",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "username",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "state",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "bd2a6f1a-7b3e-45c0-bdf0-9762d925713e",
+          "name": "Obtain access token",
+          "request": {
+            "name": "Obtain access token",
+            "description": {
+              "content": "OAuth2 token endpoint. Exchanges an authorization code for an access token.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "token"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "disabled": false,
+                  "key": "grant_type",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "code",
+                  "value": "<string>",
+                  "description": "The authorization code that was sent in the `code` parameter to your `redirect_uri`."
+                },
+                {
+                  "disabled": false,
+                  "key": "code_verifier",
+                  "value": "<string>",
+                  "description": "A `code_challenge` was used to request the authorization code. This must be the `code_verifier` it was derived from."
+                },
+                {
+                  "disabled": false,
+                  "key": "redirect_uri",
+                  "value": "<string>",
+                  "description": "Must match the `redirect_uri` used to request the authorization code."
+                },
+                {
+                  "disabled": false,
+                  "key": "client_id",
+                  "value": "<string>",
+                  "description": "Must match the `client_id` used to request the authorization code."
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "eff53a38-2842-46c9-8374-a39b72a1495c",
+              "name": "Access token successfully obtained.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "token"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "key": "grant_type",
+                      "value": "authorization_code"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The authorization code that was sent in the `code` parameter to your `redirect_uri`.",
+                        "type": "text/plain"
+                      },
+                      "key": "code",
+                      "value": "liu_iS1uOZg99Htmo58ex2jKgYziUfzsnAl0"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "A `code_challenge` was used to request the authorization code. This must be the `code_verifier` it was derived from.",
+                        "type": "text/plain"
+                      },
+                      "key": "code_verifier",
+                      "value": "Ry1rbGdOMTQtUjhOc0lmTnFKak1LTHV0NjlRMll2aXYtTThkQnlJRkRpaGwyQjh0ZDNFdzFPSG9KUlY4M1NrRzJ5ZHhUdjVZR08zLTZOT3dCN2xLfjZOXzU2WHk4SENP"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Must match the `redirect_uri` used to request the authorization code.",
+                        "type": "text/plain"
+                      },
+                      "key": "redirect_uri",
+                      "value": "http://example.com/"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Must match the `client_id` used to request the authorization code.",
+                        "type": "text/plain"
+                      },
+                      "key": "client_id",
+                      "value": "example.com"
+                    }
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"token_type\": \"Bearer\",\n  \"access_token\": \"lio_EXAMPLE_TOKEN_REDACTED_FOR_SECRET_SCAN\",\n  \"expires_in\": 31536000\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3fde384c-5031-4f4a-ba79-b4eb1b7288b7",
+              "name": "Failed to obtain access token.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "token"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "urlencoded",
+                  "urlencoded": [
+                    {
+                      "disabled": false,
+                      "key": "grant_type",
+                      "value": "authorization_code"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "The authorization code that was sent in the `code` parameter to your `redirect_uri`.",
+                        "type": "text/plain"
+                      },
+                      "key": "code",
+                      "value": "liu_iS1uOZg99Htmo58ex2jKgYziUfzsnAl0"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "A `code_challenge` was used to request the authorization code. This must be the `code_verifier` it was derived from.",
+                        "type": "text/plain"
+                      },
+                      "key": "code_verifier",
+                      "value": "Ry1rbGdOMTQtUjhOc0lmTnFKak1LTHV0NjlRMll2aXYtTThkQnlJRkRpaGwyQjh0ZDNFdzFPSG9KUlY4M1NrRzJ5ZHhUdjVZR08zLTZOT3dCN2xLfjZOXzU2WHk4SENP"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Must match the `redirect_uri` used to request the authorization code.",
+                        "type": "text/plain"
+                      },
+                      "key": "redirect_uri",
+                      "value": "http://example.com/"
+                    },
+                    {
+                      "disabled": false,
+                      "description": {
+                        "content": "Must match the `client_id` used to request the authorization code.",
+                        "type": "text/plain"
+                      },
+                      "key": "client_id",
+                      "value": "example.com"
+                    }
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"error\": \"invalid_grant\",\n  \"error_description\": \"hash of code_verifier does not match code_challenge\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "56a6c5cd-c641-47e8-9a3f-f07d708e5b4f",
+          "name": "Revoke access token",
+          "request": {
+            "name": "Revoke access token",
+            "description": {
+              "content": "Revokes the access token sent as Bearer for this request.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "token"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "method": "DELETE",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://lichess.org/api/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://lichess.org/oauth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "55fbe146-2239-409e-bd51-f3e41b7b769c",
+              "name": "Access token revoked.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "token"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a83a9597-b9b7-4d58-891c-6f78dfa8e6c4",
+          "name": "Test multiple OAuth tokens",
+          "request": {
+            "name": "Test multiple OAuth tokens",
+            "description": {
+              "content": "For up to 1000 OAuth tokens,\nreturns their associated user ID and scopes,\nor `null` if the token is invalid.\nThe method is `POST` so a longer list of tokens can be sent in the request body.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "token",
+                "test"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "text/plain"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "<string>"
+            }
+          },
+          "response": [
+            {
+              "id": "30470f60-46a6-4e89-8ac8-789d415bca36",
+              "name": "The representation of the OAuth tokens.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "token",
+                    "test"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "lip_jose,lip_badToken\n"
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"lip_jose\": {\n    \"userId\": \"jose\",\n    \"scopes\": \"preference:read,preference:write,email:read,challenge:read,challenge:write,challenge:bulk,study:read,study:write,tournament:write,racer:write,puzzle:read,puzzle:write,team:read,team:write,team:lead,follow:read,follow:write,msg:write,board:play,bot:play,engine:read,engine:write,web:mod\",\n    \"expires\": null\n  },\n  \"lip_badToken\": null\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://lichess.org",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "7952c98b-42f7-4f90-b6a8-d9c1da2e81eb",
+    "name": "Lichess.org API reference Account OAuth API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "# Introduction\nWelcome to the reference for the Lichess API! Lichess is free/libre,\nopen-source chess server powered by volunteers and donations.\n- Get help in the [Lichess Discord channel](https://discord.gg/lichess)\n- API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)\n- API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)\n- [Contribute to this documentation on Github](https://github.com/lichess-org/api)\n- Check out [Lichess widgets to embed in your website](https://lichess.org/developers)\n- [Download all Lichess rated games](https://database.lichess.org/)\n- [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)\n- [Download all evaluated positions](https://database.lichess.org/#evals)\n\n## Endpoint\nAll requests go to `https://lichess.org` (unless otherwise specified).\n\n## Clients\n- [Python general API](https://github.com/lichess-org/berserk)\n- [MicroPython general API](https://github.com/mkomon/uberserk)\n- [Python general API - async](https://pypi.org/project/async-lichess-sdk)\n- [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)\n- [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)\n- [Java general API](https://github.com/tors42/chariot)\n- [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)\n- [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)\n- [.NET general API](https://github.com/Dblike/LichessSharp)\n\n## Rate limiting\nAll requests are rate limited using various strategies,\nto ensure the API remains responsive for everyone.\nOnly make one request at a time.\nIf you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),\nyou have exceded one of the rate limits.\nIn most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.\nReduce your request frequency before retrying.\n\n## Streaming with ND-JSON\nSome API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.\n\nHere's a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.\n\n## Authentication\n### Which authentication method is right for me?\n[Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)\n\n### Personal Access Token\nPersonal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.\n- [Generate a personal access token](https://lichess.org/account/oauth/token)\n- `curl https://lichess.org/api/account -H \"Authorization: Bearer {token}\"`\n- [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)\n\n### Token Security\n- Keep your tokens secret. Do not share them in public repositories or public forums.\n- Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens' scope). You remain responsible for all activities on your account.\n- Do not hardcode tokens in your application's code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.\n- If you suspect a token has been compromised, revoke it immediately.\n\nTo see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).\n\n### Authorization Code Flow with PKCE\nThe authorization code flow with PKCE allows your users to **login with Lichess**.\nLichess supports unregistered and public clients (no client authentication, choose any unique client id).\nThe only accepted code challenge method is `S256`.\nAccess tokens are long-lived (expect one year), unless they are revoked.\nRefresh tokens are not supported.\n\nSee the [documentation for the OAuth endpoints](#tag/OAuth) or\nthe [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.\n\n- [Demo app](https://lichess-org.github.io/api-demo/)\n- [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)\n- [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)\n- [Java example](https://github.com/tors42/lichess-oauth-pkce-app)\n- [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)\n\n#### Real life examples\n- [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))\n- [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))\n- [English Chess Federation](https://ecf.octoknight.com/)\n- [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)\n\n### Token format\nAccess tokens and authorization codes match `^[A-Za-z0-9_]+$`.\nThe length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.\nBy convention tokens have a recognizable prefix, but do not rely on this.\n\n\nContact Support:\n Name: Lichess.org API\n Email: contact@lichess.org",
+      "type": "text/plain"
+    }
+  }
+}

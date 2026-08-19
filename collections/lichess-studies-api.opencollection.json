@@ -1,0 +1,466 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lichess.org API reference Account Studies API",
+    "version": "2.0.144"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Studies",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Export one study chapter",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/study/:studyId/:chapterId.pgn",
+            "params": [
+              {
+                "name": "studyId",
+                "value": "",
+                "type": "path",
+                "description": "The study ID"
+              },
+              {
+                "name": "chapterId",
+                "value": "",
+                "type": "path",
+                "description": "The chapter ID"
+              },
+              {
+                "name": "clocks",
+                "value": "",
+                "type": "query",
+                "description": "Include clock comments in the PGN moves, when available.\nExample: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\n"
+              },
+              {
+                "name": "comments",
+                "value": "",
+                "type": "query",
+                "description": "Include analysis and annotator comments in the PGN moves, when available.\nExample: `12. Bxf6 { [%eval 0.23] } a3 { White is in a pickle. }`\n"
+              },
+              {
+                "name": "variations",
+                "value": "",
+                "type": "query",
+                "description": "Include non-mainline moves, when available.\nExample: `4. d4 Bb4+ (4... Nc6 5. Nf3 Bb4+ 6. Bd2 (6. Nbd2 O-O 7. O-O) 6... Bd6) 5. Nd2`\n"
+              },
+              {
+                "name": "orientation",
+                "value": "",
+                "type": "query",
+                "description": "Add a `Orientation` PGN tag with the chapter predefined orientation.\nExample: `[Orientation \"white\"]`\n"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Download one study chapter in PGN format.\nIf authenticated, then all public, unlisted, and private study chapters are read.\nIf not, only public (non-unlisted) study chapters are read.\n"
+        },
+        {
+          "info": {
+            "name": "Export all chapters",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/study/:studyId.pgn",
+            "params": [
+              {
+                "name": "studyId",
+                "value": "",
+                "type": "path",
+                "description": "The study ID"
+              },
+              {
+                "name": "clocks",
+                "value": "",
+                "type": "query",
+                "description": "Include clock comments in the PGN moves, when available.\nExample: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\n"
+              },
+              {
+                "name": "comments",
+                "value": "",
+                "type": "query",
+                "description": "Include analysis and annotator comments in the PGN moves, when available.\nExample: `12. Bxf6 { [%eval 0.23] } a3 { White is in a pickle. }`\n"
+              },
+              {
+                "name": "variations",
+                "value": "",
+                "type": "query",
+                "description": "Include non-mainline moves, when available.\nExample: `4. d4 Bb4+ (4... Nc6 5. Nf3 Bb4+ 6. Bd2 (6. Nbd2 O-O 7. O-O) 6... Bd6) 5. Nd2`\n"
+              },
+              {
+                "name": "orientation",
+                "value": "",
+                "type": "query",
+                "description": "Add a `Orientation` PGN tag with the chapter predefined orientation.\nExample: `[Orientation \"white\"]`\n"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Download all chapters of a study in PGN format.\nIf authenticated, then all public, unlisted, and private study chapters are read.\nIf not, only public (non-unlisted) study chapters are read.\n"
+        },
+        {
+          "info": {
+            "name": "Study metadata",
+            "type": "http"
+          },
+          "http": {
+            "method": "HEAD",
+            "url": "https://lichess.org/api/study/:studyId.pgn",
+            "params": [
+              {
+                "name": "studyId",
+                "value": "",
+                "type": "path",
+                "description": "The study ID"
+              }
+            ]
+          },
+          "docs": "Only get the study headers, including `Last-Modified`.\n"
+        },
+        {
+          "info": {
+            "name": "Create a new Study",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/study",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "name",
+                  "value": ""
+                },
+                {
+                  "name": "visibility",
+                  "value": ""
+                },
+                {
+                  "name": "computer",
+                  "value": ""
+                },
+                {
+                  "name": "explorer",
+                  "value": ""
+                },
+                {
+                  "name": "cloneable",
+                  "value": ""
+                },
+                {
+                  "name": "shareable",
+                  "value": ""
+                },
+                {
+                  "name": "chat",
+                  "value": ""
+                },
+                {
+                  "name": "sticky",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Create a [study](https://lichess.org/study), and a new empty chapter within it.\nYou can make up to 30 new studies per day.\n"
+        },
+        {
+          "info": {
+            "name": "Import PGN into a study",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/study/:studyId/import-pgn",
+            "params": [
+              {
+                "name": "studyId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the study"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "pgn",
+                  "value": ""
+                },
+                {
+                  "name": "name",
+                  "value": ""
+                },
+                {
+                  "name": "orientation",
+                  "value": ""
+                },
+                {
+                  "name": "variant",
+                  "value": ""
+                },
+                {
+                  "name": "mode",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Imports arbitrary PGN into an existing [study](https://lichess.org/study). Creates a new chapter in the study.\nIf the PGN contains multiple games (separated by 2 or more newlines)\nthen multiple chapters will be created within the study.\nNote that a study can contain at most 64 chapters.\n"
+        },
+        {
+          "info": {
+            "name": "Update PGN tags of a study chapter",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/study/:studyId/:chapterId/tags",
+            "params": [
+              {
+                "name": "studyId",
+                "value": "",
+                "type": "path",
+                "description": "The study ID"
+              },
+              {
+                "name": "chapterId",
+                "value": "",
+                "type": "path",
+                "description": "The chapter ID"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "pgn",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Add, update and delete the PGN tags of a study.\nBy providing a list of PGN tags in the usual PGN format, you can:\n- Add new tags if the chapter doesn't have them yet\n- Update existing chapter tags\n- Delete existing chapter tags, by providing a tag with an empty value.\n\nThe chapter keeps the tags that you don't provide.\n"
+        },
+        {
+          "info": {
+            "name": "Update the moves of a study chapter",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/study/:studyId/:chapterId/moves",
+            "params": [
+              {
+                "name": "studyId",
+                "value": "",
+                "type": "path",
+                "description": "The study ID"
+              },
+              {
+                "name": "chapterId",
+                "value": "",
+                "type": "path",
+                "description": "The chapter ID"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "pgn",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Replaces the moves tree of a study chapter.\nNo tags will be modified.\n"
+        },
+        {
+          "info": {
+            "name": "Export all studies of a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/study/by/:username/export.pgn",
+            "params": [
+              {
+                "name": "username",
+                "value": "",
+                "type": "path",
+                "description": "The user whose studies we export"
+              },
+              {
+                "name": "clocks",
+                "value": "",
+                "type": "query",
+                "description": "Include clock comments in the PGN moves, when available.\nExample: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\n"
+              },
+              {
+                "name": "comments",
+                "value": "",
+                "type": "query",
+                "description": "Include analysis and annotator comments in the PGN moves, when available.\nExample: `12. Bxf6 { [%eval 0.23] } a3 { White is in a pickle. }`\n"
+              },
+              {
+                "name": "variations",
+                "value": "",
+                "type": "query",
+                "description": "Include non-mainline moves, when available.\nExample: `4. d4 Bb4+ (4... Nc6 5. Nf3 Bb4+ 6. Bd2 (6. Nbd2 O-O 7. O-O) 6... Bd6) 5. Nd2`\n"
+              },
+              {
+                "name": "orientation",
+                "value": "",
+                "type": "query",
+                "description": "Add a `Orientation` PGN tag with the chapter predefined orientation.\nExample: `[Orientation \"white\"]`\n"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Download all chapters of all studies of a user in PGN format.\nIf authenticated, then all public, unlisted, and private studies are included.\nIf not, only public (non-unlisted) studies are included.\n"
+        },
+        {
+          "info": {
+            "name": "List studies of a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/study/by/:username",
+            "params": [
+              {
+                "name": "username",
+                "value": "",
+                "type": "path",
+                "description": "The user whose studies we list"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Get metadata (name and dates) of all studies of a user.\nIf authenticated, then all public, unlisted, and private studies are included.\nIf not, only public (non-unlisted) studies are included.\nStudies are streamed as [ndjson](#description/streaming-with-nd-json).\n"
+        },
+        {
+          "info": {
+            "name": "Delete a study chapter",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://lichess.org/api/study/:studyId/:chapterId",
+            "params": [
+              {
+                "name": "studyId",
+                "value": "",
+                "type": "path",
+                "description": "The study ID"
+              },
+              {
+                "name": "chapterId",
+                "value": "",
+                "type": "path",
+                "description": "The chapter ID"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Delete a chapter of a study you own. This is definitive.\nA study must have at least one chapter; so if you delete the last chapter,\nan empty one will be automatically created to replace it.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

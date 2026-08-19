@@ -1,0 +1,147 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lichess.org API reference Account OAuth API",
+    "version": "2.0.144"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "OAuth",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Request authorization code",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/oauth",
+            "params": [
+              {
+                "name": "response_type",
+                "value": "",
+                "type": "query",
+                "description": "Must be `code`."
+              },
+              {
+                "name": "client_id",
+                "value": "example.com",
+                "type": "query",
+                "description": "Arbitrary identifier that uniquely identifies your application."
+              },
+              {
+                "name": "redirect_uri",
+                "value": "",
+                "type": "query",
+                "description": "The absolute URL that the user should be redirected to with the authorization result."
+              },
+              {
+                "name": "code_challenge_method",
+                "value": "",
+                "type": "query",
+                "description": "Must be `S256`."
+              },
+              {
+                "name": "code_challenge",
+                "value": "",
+                "type": "query",
+                "description": "Compute `BASE64URL(SHA256(code_verifier))`."
+              },
+              {
+                "name": "scope",
+                "value": "",
+                "type": "query",
+                "description": "Space separated list of requested OAuth scopes, if any."
+              },
+              {
+                "name": "username",
+                "value": "",
+                "type": "query",
+                "description": "Hint that you want the user to log in with a specific Lichess username."
+              },
+              {
+                "name": "state",
+                "value": "",
+                "type": "query",
+                "description": "Arbitrary state that will be returned verbatim with the authorization result."
+              }
+            ]
+          },
+          "docs": "OAuth2 authorization endpoint.\nStart the OAuth2 Authorization Code Flow with PKCE by securely\ngenerating two random strings unique to each authorization\nrequest:\n\n* `code_verifier`\n* `state`\n\nStore these in session storage. Make sure not to reveal `code_verifier`\nto eavesdroppers. Do not show it in URLs, do not abuse `state` to store\nit, do not send it over insecure connections. However it is fine if\nthe user themselves can extract `code_verifier`, which will always be\npossible for fully client-"
+        },
+        {
+          "info": {
+            "name": "Obtain access token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/token",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "grant_type",
+                  "value": ""
+                },
+                {
+                  "name": "code",
+                  "value": ""
+                },
+                {
+                  "name": "code_verifier",
+                  "value": ""
+                },
+                {
+                  "name": "redirect_uri",
+                  "value": ""
+                },
+                {
+                  "name": "client_id",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "docs": "OAuth2 token endpoint. Exchanges an authorization code for an access token.\n"
+        },
+        {
+          "info": {
+            "name": "Revoke access token",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://lichess.org/api/token",
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Revokes the access token sent as Bearer for this request."
+        },
+        {
+          "info": {
+            "name": "Test multiple OAuth tokens",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/token/test"
+          },
+          "docs": "For up to 1000 OAuth tokens,\nreturns their associated user ID and scopes,\nor `null` if the token is invalid.\nThe method is `POST` so a longer list of tokens can be sent in the request body.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,211 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lichess.org API reference Account External engine API",
+    "version": "2.0.144"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "External engine",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List external engines",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/external-engine",
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Lists all external engines that have been registered for the user,\nand the credentials required to use them.\n"
+        },
+        {
+          "info": {
+            "name": "Create external engine",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/external-engine",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Registers a new external engine for the user. It can then be selected\nand used on the analysis board.\nAfter registering, the provider should start waiting for analyis requests.\n"
+        },
+        {
+          "info": {
+            "name": "Get external engine",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/external-engine/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "eei_aTKImBJOnv6j",
+                "type": "path",
+                "description": "The external engine id."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Get properties and credentials of an external engine.\n"
+        },
+        {
+          "info": {
+            "name": "Update external engine",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://lichess.org/api/external-engine/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "eei_aTKImBJOnv6j",
+                "type": "path",
+                "description": "The external engine id."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Updates the properties of an external engine.\n"
+        },
+        {
+          "info": {
+            "name": "Delete external engine",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://lichess.org/api/external-engine/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "eei_aTKImBJOnv6j",
+                "type": "path",
+                "description": "The external engine id."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Unregisters an external engine.\n"
+        },
+        {
+          "info": {
+            "name": "Analyse with external engine",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/external-engine/:id/analyse",
+            "params": [
+              {
+                "name": "id",
+                "value": "eei_aTKImBJOnv6j",
+                "type": "path",
+                "description": "The external engine id."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "**Endpoint: `https://engine.lichess.ovh/api/external-engine/{id}/analyse`**\nRequest analysis from an external engine.\nResponse content is streamed as [newline delimited JSON](#description/streaming-with-nd-json).\nThe properties are based on the [UCI specification](https://backscattering.de/chess/uci/#engine).\nAnalysis stops when the client goes away, the requested limit\nis reached, or the provider goes away.\n"
+        },
+        {
+          "info": {
+            "name": "Acquire analysis request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/external-engine/work",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "**Endpoint: `https://engine.lichess.ovh/api/external-engine/work`**\nWait for an analysis requests to any of the external engines that\nhave been registered with the given `secret`.\nUses long polling.\nAfter acquiring a request, the provider should immediately\n[start streaming the results](#tag/external-engine/POST/api/external-engine/work/{id}).\n"
+        },
+        {
+          "info": {
+            "name": "Answer analysis request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/external-engine/work/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "**Endpoint: `https://engine.lichess.ovh/api/external-engine/work/{id}`**\nSubmit a stream of analysis as [UCI output](https://backscattering.de/chess/uci/#engine-info).\n* The engine should always be in `UCI_Chess960` mode.\n* `UCI_AnalyseMode` enabled if available.\n* It produces `info` with at least:\n  - `depth`\n  - `multipv` (between 1 and 5)\n  - `score`\n  - `nodes`\n  - `time`\n  - `pv`\nThe server may close the connection at any time, indicating that\nthe requester has gone away and analysis should"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

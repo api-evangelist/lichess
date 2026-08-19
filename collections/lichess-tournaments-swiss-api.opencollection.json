@@ -1,0 +1,556 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lichess.org API reference Account Tournaments (Swiss) API",
+    "version": "2.0.144"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tournaments (Swiss)",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create a new Swiss tournament",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/swiss/new/:teamId",
+            "params": [
+              {
+                "name": "teamId",
+                "value": "",
+                "type": "path",
+                "description": "ID of the team"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "name",
+                  "value": ""
+                },
+                {
+                  "name": "clock.limit",
+                  "value": ""
+                },
+                {
+                  "name": "clock.increment",
+                  "value": ""
+                },
+                {
+                  "name": "nbRounds",
+                  "value": ""
+                },
+                {
+                  "name": "startsAt",
+                  "value": ""
+                },
+                {
+                  "name": "roundInterval",
+                  "value": ""
+                },
+                {
+                  "name": "variant",
+                  "value": ""
+                },
+                {
+                  "name": "position",
+                  "value": ""
+                },
+                {
+                  "name": "description",
+                  "value": ""
+                },
+                {
+                  "name": "rated",
+                  "value": ""
+                },
+                {
+                  "name": "password",
+                  "value": ""
+                },
+                {
+                  "name": "forbiddenPairings",
+                  "value": ""
+                },
+                {
+                  "name": "manualPairings",
+                  "value": ""
+                },
+                {
+                  "name": "chatFor",
+                  "value": ""
+                },
+                {
+                  "name": "conditions.minRating.rating",
+                  "value": ""
+                },
+                {
+                  "name": "conditions.maxRating.rating",
+                  "value": ""
+                },
+                {
+                  "name": "conditions.nbRatedGame.nb",
+                  "value": ""
+                },
+                {
+                  "name": "conditions.playYourGames",
+                  "value": ""
+                },
+                {
+                  "name": "conditions.allowList",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Create a Swiss tournament for your team.\nThis endpoint mirrors the Swiss tournament form from your team pagee.\nYou can create up to 12 tournaments per day.\nAdditional restrictions:\n  - clock.limit + clock.increment > 0\n  - 15s and 0+1 variant tournaments cannot be rated\n"
+        },
+        {
+          "info": {
+            "name": "Get info about a Swiss tournament",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/swiss/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Swiss tournament ID."
+              }
+            ]
+          },
+          "docs": "Get detailed info about a Swiss tournament.\n"
+        },
+        {
+          "info": {
+            "name": "Update a Swiss tournament",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/swiss/:id/edit",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The tournament ID."
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "name",
+                  "value": ""
+                },
+                {
+                  "name": "clock.limit",
+                  "value": ""
+                },
+                {
+                  "name": "clock.increment",
+                  "value": ""
+                },
+                {
+                  "name": "nbRounds",
+                  "value": ""
+                },
+                {
+                  "name": "startsAt",
+                  "value": ""
+                },
+                {
+                  "name": "roundInterval",
+                  "value": ""
+                },
+                {
+                  "name": "variant",
+                  "value": ""
+                },
+                {
+                  "name": "position",
+                  "value": ""
+                },
+                {
+                  "name": "description",
+                  "value": ""
+                },
+                {
+                  "name": "rated",
+                  "value": ""
+                },
+                {
+                  "name": "password",
+                  "value": ""
+                },
+                {
+                  "name": "forbiddenPairings",
+                  "value": ""
+                },
+                {
+                  "name": "manualPairings",
+                  "value": ""
+                },
+                {
+                  "name": "chatFor",
+                  "value": ""
+                },
+                {
+                  "name": "conditions.minRating.rating",
+                  "value": ""
+                },
+                {
+                  "name": "conditions.maxRating.rating",
+                  "value": ""
+                },
+                {
+                  "name": "conditions.nbRatedGame.nb",
+                  "value": ""
+                },
+                {
+                  "name": "conditions.playYourGames",
+                  "value": ""
+                },
+                {
+                  "name": "conditions.allowList",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Update a Swiss tournament.\nBe mindful not to make important changes to ongoing tournaments.\nAdditional restrictions:\n  - clock.limit + clock.increment > 0\n  - 15s and 0+1 variant tournaments cannot be rated\n"
+        },
+        {
+          "info": {
+            "name": "Manually schedule the next round",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/swiss/:id/schedule-next-round",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The tournament ID."
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "date",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Manually schedule the next round date and time of a Swiss tournament.\nThis sets the `roundInterval` field to `99999999`, i.e. manual scheduling.\nAll further rounds will need to be manually scheduled, unless the `roundInterval` field is changed back to automatic scheduling.\n"
+        },
+        {
+          "info": {
+            "name": "Join a Swiss tournament",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/swiss/:id/join",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The tournament ID."
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "password",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Join a Swiss tournament, possibly with a password.\n"
+        },
+        {
+          "info": {
+            "name": "Pause or leave a swiss tournament",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/swiss/:id/withdraw",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The tournament ID."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Leave a future Swiss tournament, or take a break on an ongoing Swiss tournament.\nIt's possible to join again later. Points are preserved.\n"
+        },
+        {
+          "info": {
+            "name": "Terminate a Swiss tournament",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/swiss/:id/terminate",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The Swiss tournament ID."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Terminate a Swiss tournament\n"
+        },
+        {
+          "info": {
+            "name": "Export TRF of a Swiss tournament",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/swiss/:id.trf",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The tournament ID."
+              }
+            ]
+          },
+          "docs": "Download a tournament in the Tournament Report File format, the FIDE standard.\nDocumentation: <https://www.fide.com/FIDE/handbook/C04Annex2_TRF16.pdf>\nExample: <https://lichess.org/swiss/j8rtJ5GL.trf>\n"
+        },
+        {
+          "info": {
+            "name": "Export games of a Swiss tournament",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/swiss/:id/games",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The tournament ID."
+              },
+              {
+                "name": "player",
+                "value": "",
+                "type": "query",
+                "description": "Only the games played by a given player"
+              },
+              {
+                "name": "moves",
+                "value": "",
+                "type": "query",
+                "description": "Include the PGN moves."
+              },
+              {
+                "name": "pgnInJson",
+                "value": "",
+                "type": "query",
+                "description": "Include the full PGN within the JSON response, in a `pgn` field."
+              },
+              {
+                "name": "tags",
+                "value": "",
+                "type": "query",
+                "description": "Include the PGN tags."
+              },
+              {
+                "name": "clocks",
+                "value": "",
+                "type": "query",
+                "description": "Include clock status when available.\nEither as PGN comments: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\nOr in a `clocks` JSON field, as centisecond integers, depending on the response type.\n"
+              },
+              {
+                "name": "evals",
+                "value": "",
+                "type": "query",
+                "description": "Include analysis evaluations and comments, when available.\nEither as PGN comments: `12. Bxf6 { [%eval 0.23] } a3 { [%eval -1.09] }`\nOr in an `analysis` JSON field, depending on the response type.\n"
+              },
+              {
+                "name": "accuracy",
+                "value": "",
+                "type": "query",
+                "description": "Include [accuracy percent](https://lichess.org/page/accuracy) of each player, when available. Only available in JSON.\n"
+              },
+              {
+                "name": "opening",
+                "value": "",
+                "type": "query",
+                "description": "Include the opening name.\nExample: `[Opening \"King's Gambit Accepted, King's Knight Gambit\"]`\n"
+              },
+              {
+                "name": "division",
+                "value": "",
+                "type": "query",
+                "description": "Plies which mark the beginning of the middlegame and endgame.\nOnly available in JSON\n"
+              }
+            ]
+          },
+          "docs": "Download games of a swiss tournament in PGN or [ndjson](#description/streaming-with-nd-json) format.\nGames are sorted by chronological order.\nThe game stream is throttled, depending on who is making the request:\n  - Anonymous request: 20 games per second\n  - [OAuth2 authenticated](#description/authentication) request: 30 games per second\n"
+        },
+        {
+          "info": {
+            "name": "Get results of a swiss tournament",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/swiss/:id/results",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The tournament ID."
+              },
+              {
+                "name": "nb",
+                "value": "",
+                "type": "query",
+                "description": "Max number of players to fetch"
+              }
+            ]
+          },
+          "docs": "Players of a swiss tournament, with their score and performance, sorted by rank (best first).\nPlayers are streamed as [ndjson](#description/streaming-with-nd-json).\nIf called on an ongoing tournament, results can be inconsistent\ndue to ranking changes while the players are being streamed.\nUse on finished tournaments for guaranteed consistency.\n"
+        },
+        {
+          "info": {
+            "name": "Get team swiss tournaments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/team/:teamId/swiss",
+            "params": [
+              {
+                "name": "teamId",
+                "value": "coders",
+                "type": "path"
+              },
+              {
+                "name": "max",
+                "value": "",
+                "type": "query",
+                "description": "How many tournaments to download."
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query",
+                "description": "[Filter] Only swiss tournaments in this current state.\n"
+              },
+              {
+                "name": "createdBy",
+                "value": "",
+                "type": "query",
+                "description": "[Filter] Only swiss tournaments created by a given user.\n"
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "[Filter] Only swiss tournaments with a given name.\n"
+              }
+            ]
+          },
+          "docs": "Get all swiss tournaments of a team.\nTournaments are sorted by reverse chronological order of start date (last starting first).\nTournaments are streamed as [ndjson](#description/streaming-with-nd-json).\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

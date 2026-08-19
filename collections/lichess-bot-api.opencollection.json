@@ -1,0 +1,394 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lichess.org API reference Account Bot API",
+    "version": "2.0.144"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Bot",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Stream incoming events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/stream/event",
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Stream the events reaching a lichess user in real time as [ndjson](#description/streaming-with-nd-json).\n\nAn empty line is sent every 7 seconds for keep alive purposes.\n\nEach non-empty line is a JSON object containing a `type` field. Possible values are:\n- `gameStart` Start of a game\n- `gameFinish` Completion of a game\n- `challenge` A player sends you a challenge or you challenge someone\n- `challengeCanceled` A player cancels their challenge to you\n- `challengeDeclined` The opponent declines you"
+        },
+        {
+          "info": {
+            "name": "Get online bots",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/bot/online",
+            "params": [
+              {
+                "name": "nb",
+                "value": "",
+                "type": "query",
+                "description": "How many bot users to fetch"
+              }
+            ]
+          },
+          "docs": "Stream the [online bot users](https://lichess.org/player/bots), as [ndjson](#description/streaming-with-nd-json)."
+        },
+        {
+          "info": {
+            "name": "Upgrade to Bot account",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/bot/account/upgrade",
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Upgrade a lichess player account into a Bot account. Only Bot accounts can use the Bot API.\nThe account **cannot have played any game** before becoming a Bot account. The upgrade is **irreversible**. The account will only be able to play as a Bot.\nTo upgrade an account to Bot, use the [official lichess-bot client](https://github.com/lichess-bot-devs/lichess-bot), or follow these steps:\n- Create an [API access token](https://lichess.org/account/oauth/token/create?scopes[]=bot:play) with \"Play bot"
+        },
+        {
+          "info": {
+            "name": "Stream Bot game state",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/bot/game/stream/:gameId",
+            "params": [
+              {
+                "name": "gameId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Stream the state of a game being played with the Bot API, as [ndjson](#description/streaming-with-nd-json).\nUse this endpoint to get updates about the game in real-time, with a single request.\nEach line is a JSON object containing a `type` field. Possible values are:\n- `gameFull` Full game data. All values are immutable, except for the `state` field.\n- `gameState` Current state of the game. Immutable values not included.\n- `chatLine` Chat message sent by a user (or the bot itself) in the `room` "
+        },
+        {
+          "info": {
+            "name": "Make a Bot move",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/bot/game/:gameId/move/:move",
+            "params": [
+              {
+                "name": "gameId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "move",
+                "value": "",
+                "type": "path",
+                "description": "The move to play, in UCI format"
+              },
+              {
+                "name": "offeringDraw",
+                "value": "",
+                "type": "query",
+                "description": "Whether to offer (or agree to) a draw"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Make a move in a game being played with the Bot API.\nThe move can also contain a draw offer/agreement.\n"
+        },
+        {
+          "info": {
+            "name": "Fetch the game chat",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/bot/game/:gameId/chat",
+            "params": [
+              {
+                "name": "gameId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Get the messages posted in the game chat\n"
+        },
+        {
+          "info": {
+            "name": "Write in the chat",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/bot/game/:gameId/chat",
+            "params": [
+              {
+                "name": "gameId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "room",
+                  "value": ""
+                },
+                {
+                  "name": "text",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Post a message to the player or spectator chat, in a game being played with the Bot API.\n"
+        },
+        {
+          "info": {
+            "name": "Abort a game",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/bot/game/:gameId/abort",
+            "params": [
+              {
+                "name": "gameId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Abort a game being played with the Bot API.\n"
+        },
+        {
+          "info": {
+            "name": "Resign a game",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/bot/game/:gameId/resign",
+            "params": [
+              {
+                "name": "gameId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Resign a game being played with the Bot API.\n"
+        },
+        {
+          "info": {
+            "name": "Handle draw offers",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/bot/game/:gameId/draw/:accept",
+            "params": [
+              {
+                "name": "gameId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "accept",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Create/accept/decline draw offers with the Bot API.\n- `yes`: Offer a draw, or accept the opponent's draw offer.\n- `no`: Decline a draw offer from the opponent.\n"
+        },
+        {
+          "info": {
+            "name": "Handle takeback offers",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/bot/game/:gameId/takeback/:accept",
+            "params": [
+              {
+                "name": "gameId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "accept",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Create/accept/decline takebacks with the Bot API.\n- `yes`: Propose a takeback, or accept the opponent's takeback offer.\n- `no`: Decline a takeback offer from the opponent.\n"
+        },
+        {
+          "info": {
+            "name": "Claim victory of a game",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/bot/game/:gameId/claim-victory",
+            "params": [
+              {
+                "name": "gameId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Claim victory when the opponent has left the game for a while.\n"
+        },
+        {
+          "info": {
+            "name": "Claim draw of a game",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/bot/game/:gameId/claim-draw",
+            "params": [
+              {
+                "name": "gameId",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Claim draw when the opponent has left the game for a while.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

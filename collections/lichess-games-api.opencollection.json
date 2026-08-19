@@ -1,0 +1,705 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Lichess.org API reference Account Games API",
+    "version": "2.0.144"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Games",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Export one game",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/game/export/:gameId",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "gameId",
+                "value": "",
+                "type": "path",
+                "description": "The game ID"
+              },
+              {
+                "name": "moves",
+                "value": "",
+                "type": "query",
+                "description": "Include the PGN moves."
+              },
+              {
+                "name": "pgnInJson",
+                "value": "",
+                "type": "query",
+                "description": "Include the full PGN within the JSON response, in a `pgn` field."
+              },
+              {
+                "name": "tags",
+                "value": "",
+                "type": "query",
+                "description": "Include the PGN tags."
+              },
+              {
+                "name": "clocks",
+                "value": "",
+                "type": "query",
+                "description": "Include clock status when available.\nEither as PGN comments: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\nOr in a `clocks` JSON field, as centisecond integers, depending on the response type.\n"
+              },
+              {
+                "name": "evals",
+                "value": "",
+                "type": "query",
+                "description": "Include analysis evaluations and comments, when available.\nEither as PGN comments: `12. Bxf6 { [%eval 0.23] } a3 { [%eval -1.09] }`\nOr in an `analysis` JSON field, depending on the response type.\n"
+              },
+              {
+                "name": "accuracy",
+                "value": "",
+                "type": "query",
+                "description": "Include [accuracy percent](https://lichess.org/page/accuracy) of each player, when available. Only available in JSON.\n"
+              },
+              {
+                "name": "opening",
+                "value": "",
+                "type": "query",
+                "description": "Include the opening name.\nExample: `[Opening \"King's Gambit Accepted, King's Knight Gambit\"]`\n"
+              },
+              {
+                "name": "division",
+                "value": "",
+                "type": "query",
+                "description": "Plies which mark the beginning of the middlegame and endgame.\nOnly available in JSON\n"
+              },
+              {
+                "name": "literate",
+                "value": "",
+                "type": "query",
+                "description": "Insert textual annotations in the PGN about the opening, analysis variations, mistakes, and game termination.\nExample: `5... g4? { (-0.98 → 0.60) Mistake. Best move was h6. } (5... h6 6. d4 Ne7 7. g3 d5 8. exd5 fxg3 9. hxg3 c6 10. dxc6)`\n"
+              },
+              {
+                "name": "withBookmarked",
+                "value": "",
+                "type": "query",
+                "description": "Add a `bookmarked: true` JSON field when the logged in user has bookmarked the game.\nThe response type must be set to `application/x-ndjson` by the request `Accept` header.\n"
+              }
+            ]
+          },
+          "docs": "Download one game in either PGN or JSON format.\nOngoing games are delayed by 3 moves, as to prevent cheat bots from using this API.\n"
+        },
+        {
+          "info": {
+            "name": "Fetch the spectator game chat",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/game/:gameId/chat",
+            "params": [
+              {
+                "name": "gameId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get the messages posted in the public spectator chat of a game.\n\nGames also have a private players chat, which only the 2 players can see.\n"
+        },
+        {
+          "info": {
+            "name": "Export ongoing game of a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/user/:username/current-game",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "username",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "moves",
+                "value": "",
+                "type": "query",
+                "description": "Include the PGN moves."
+              },
+              {
+                "name": "pgnInJson",
+                "value": "",
+                "type": "query",
+                "description": "Include the full PGN within the JSON response, in a `pgn` field."
+              },
+              {
+                "name": "tags",
+                "value": "",
+                "type": "query",
+                "description": "Include the PGN tags."
+              },
+              {
+                "name": "clocks",
+                "value": "",
+                "type": "query",
+                "description": "Include clock status when available.\nEither as PGN comments: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\nOr in a `clocks` JSON field, as centisecond integers, depending on the response type.\n"
+              },
+              {
+                "name": "evals",
+                "value": "",
+                "type": "query",
+                "description": "Include analysis evaluations and comments, when available.\nEither as PGN comments: `12. Bxf6 { [%eval 0.23] } a3 { [%eval -1.09] }`\nOr in an `analysis` JSON field, depending on the response type.\n"
+              },
+              {
+                "name": "accuracy",
+                "value": "",
+                "type": "query",
+                "description": "Include [accuracy percent](https://lichess.org/page/accuracy) of each player, when available. Only available in JSON.\n"
+              },
+              {
+                "name": "opening",
+                "value": "",
+                "type": "query",
+                "description": "Include the opening name.\nExample: `[Opening \"King's Gambit Accepted, King's Knight Gambit\"]`\n"
+              },
+              {
+                "name": "division",
+                "value": "",
+                "type": "query",
+                "description": "Plies which mark the beginning of the middlegame and endgame.\nOnly available in JSON\n"
+              },
+              {
+                "name": "literate",
+                "value": "",
+                "type": "query",
+                "description": "Insert textual annotations in the PGN about the opening, analysis variations, mistakes, and game termination.\nExample: `5... g4? { (-0.98 → 0.60) Mistake. Best move was h6. } (5... h6 6. d4 Ne7 7. g3 d5 8. exd5 fxg3 9. hxg3 c6 10. dxc6)`\n"
+              }
+            ]
+          },
+          "docs": "Download the ongoing game, or the last game played, of a user.\nAvailable in either PGN or JSON format.\nOngoing games are delayed by 3 moves, as to prevent cheat bots from using this API.\n"
+        },
+        {
+          "info": {
+            "name": "Export games of a user",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/games/user/:username",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "username",
+                "value": "",
+                "type": "path",
+                "description": "The user name."
+              },
+              {
+                "name": "since",
+                "value": "",
+                "type": "query",
+                "description": "Download games played since this timestamp. Defaults to account creation date."
+              },
+              {
+                "name": "until",
+                "value": "",
+                "type": "query",
+                "description": "Download games played until this timestamp. Defaults to now."
+              },
+              {
+                "name": "max",
+                "value": "",
+                "type": "query",
+                "description": "How many games to download. Leave empty to download all games."
+              },
+              {
+                "name": "vs",
+                "value": "",
+                "type": "query",
+                "description": "[Filter] Only games played against this opponent"
+              },
+              {
+                "name": "rated",
+                "value": "",
+                "type": "query",
+                "description": "[Filter] Only rated (`true`) or casual (`false`) games"
+              },
+              {
+                "name": "perfType",
+                "value": "",
+                "type": "query",
+                "description": "[Filter] Only games in these speeds or variants.\nMultiple perf types can be specified, separated by a comma.\nExample: blitz,rapid,classical\n"
+              },
+              {
+                "name": "color",
+                "value": "",
+                "type": "query",
+                "description": "[Filter] Only games played as this color."
+              },
+              {
+                "name": "analysed",
+                "value": "",
+                "type": "query",
+                "description": "[Filter] Only games with or without a computer analysis available"
+              },
+              {
+                "name": "moves",
+                "value": "",
+                "type": "query",
+                "description": "Include the PGN moves."
+              },
+              {
+                "name": "pgnInJson",
+                "value": "",
+                "type": "query",
+                "description": "Include the full PGN within the JSON response, in a `pgn` field. The response type must be set to `application/x-ndjson` by the request `Accept` header."
+              },
+              {
+                "name": "tags",
+                "value": "",
+                "type": "query",
+                "description": "Include the PGN tags."
+              },
+              {
+                "name": "clocks",
+                "value": "",
+                "type": "query",
+                "description": "Include clock status when available.\nEither as PGN comments: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\nOr in a `clocks` JSON field, as centisecond integers, depending on the response type.\n"
+              },
+              {
+                "name": "evals",
+                "value": "",
+                "type": "query",
+                "description": "Include analysis evaluations and comments, when available.\nEither as PGN comments: `12. Bxf6 { [%eval 0.23] } a3 { [%eval -1.09] }`\nOr in an `analysis` JSON field, depending on the response type.\n"
+              },
+              {
+                "name": "accuracy",
+                "value": "",
+                "type": "query",
+                "description": "Include [accuracy percent](https://lichess.org/page/accuracy) of each player, when available. Only available in JSON.\n"
+              },
+              {
+                "name": "opening",
+                "value": "",
+                "type": "query",
+                "description": "Include the opening name.\nExample: `[Opening \"King's Gambit Accepted, King's Knight Gambit\"]`\n"
+              },
+              {
+                "name": "division",
+                "value": "",
+                "type": "query",
+                "description": "Plies which mark the beginning of the middlegame and endgame.\nOnly available in JSON\n"
+              },
+              {
+                "name": "ongoing",
+                "value": "",
+                "type": "query",
+                "description": "Ongoing games are delayed by a few seconds ranging from 3 to 60 depending on the time control, as to prevent cheat bots from using this API."
+              },
+              {
+                "name": "finished",
+                "value": "",
+                "type": "query",
+                "description": "Include finished games. Set to `false` to only get ongoing games."
+              },
+              {
+                "name": "literate",
+                "value": "",
+                "type": "query",
+                "description": "Insert textual annotations in the PGN about the opening, analysis variations, mistakes, and game termination.\nExample: `5... g4? { (-0.98 → 0.60) Mistake. Best move was h6. } (5... h6 6. d4 Ne7 7. g3 d5 8. exd5 fxg3 9. hxg3 c6 10. dxc6)`\n"
+              },
+              {
+                "name": "lastFen",
+                "value": "",
+                "type": "query",
+                "description": "Include the X-FEN notation of the last position of the game.\nThe response type must be set to `application/x-ndjson` by the request `Accept` header.\n"
+              },
+              {
+                "name": "withBookmarked",
+                "value": "",
+                "type": "query",
+                "description": "Add a `bookmarked: true` JSON field when the logged in user has bookmarked the game.\nThe response type must be set to `application/x-ndjson` by the request `Accept` header.\n"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort order of the games."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Download all games of any user in PGN or [ndjson](#description/streaming-with-nd-json) format.\nGames are sorted by reverse chronological order (most recent first).\nWe recommend streaming the response, for it can be very long.\n<https://lichess.org/@/german11> for instance has more than 500,000 games.\nThe game stream is throttled, depending on who is making the request:\n  - Anonymous request: 20 games per second\n  - [OAuth2 authenticated](#description/authentication) request: 30 games per second\n "
+        },
+        {
+          "info": {
+            "name": "Export games by IDs",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/games/export/_ids",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "moves",
+                "value": "",
+                "type": "query",
+                "description": "Include the PGN moves."
+              },
+              {
+                "name": "pgnInJson",
+                "value": "",
+                "type": "query",
+                "description": "Include the full PGN within the JSON response, in a `pgn` field."
+              },
+              {
+                "name": "tags",
+                "value": "",
+                "type": "query",
+                "description": "Include the PGN tags."
+              },
+              {
+                "name": "clocks",
+                "value": "",
+                "type": "query",
+                "description": "Include clock status when available.\nEither as PGN comments: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\nOr in a `clocks` JSON field, as centisecond integers, depending on the response type.\n"
+              },
+              {
+                "name": "evals",
+                "value": "",
+                "type": "query",
+                "description": "Include analysis evaluations and comments, when available.\nEither as PGN comments: `12. Bxf6 { [%eval 0.23] } a3 { [%eval -1.09] }`\nOr in an `analysis` JSON field, depending on the response type.\n"
+              },
+              {
+                "name": "accuracy",
+                "value": "",
+                "type": "query",
+                "description": "Include [accuracy percent](https://lichess.org/page/accuracy) of each player, when available. Only available in JSON.\n"
+              },
+              {
+                "name": "opening",
+                "value": "",
+                "type": "query",
+                "description": "Include the opening name.\nExample: `[Opening \"King's Gambit Accepted, King's Knight Gambit\"]`\n"
+              },
+              {
+                "name": "division",
+                "value": "",
+                "type": "query",
+                "description": "Plies which mark the beginning of the middlegame and endgame.\nOnly available in JSON\n"
+              },
+              {
+                "name": "literate",
+                "value": "",
+                "type": "query",
+                "description": "Insert textual annotations in the PGN about the opening, analysis variations, mistakes, and game termination.\nExample: `5... g4? { (-0.98 → 0.60) Mistake. Best move was h6. } (5... h6 6. d4 Ne7 7. g3 d5 8. exd5 fxg3 9. hxg3 c6 10. dxc6)`\n"
+              }
+            ]
+          },
+          "docs": "Download games by IDs in PGN or [ndjson](#description/streaming-with-nd-json) format, depending on the request `Accept` header.\nGames are sorted by reverse chronological order (most recent first)\nThe method is `POST` so a longer list of IDs can be sent in the request body.\n300 IDs can be submitted.\nOngoing games are delayed by 3 moves, as to prevent cheat bots from using this API.\n"
+        },
+        {
+          "info": {
+            "name": "Stream games of users",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/stream/games-by-users",
+            "params": [
+              {
+                "name": "withCurrentGames",
+                "value": "",
+                "type": "query",
+                "description": "Include the already started games at the beginning of the stream."
+              }
+            ]
+          },
+          "docs": "Stream the games played between a list of users, in real time.\nOnly games where **both players** are part of the list are included.\nThe stream emits an event each time a game is started or finished.\nTo also get all current ongoing games at the beginning of the stream, use the `withCurrentGames` flag.\nGames are streamed as [ndjson](#description/streaming-with-nd-json).\nMaximum number of users: 300.\nThe method is `POST` so a longer list of IDs can be sent in the request body.\n"
+        },
+        {
+          "info": {
+            "name": "Stream games by IDs",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/stream/games/:streamId",
+            "params": [
+              {
+                "name": "streamId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Creates a stream of games from an arbitrary streamId, and a list of game IDs.\nThe stream first outputs the games that already exists, then emits an event each time a game is started or finished.\nGames are streamed as [ndjson](#description/streaming-with-nd-json).\nMaximum number of games: 500 for anonymous requests, or 1000 for [OAuth2 authenticated](#description/authentication) requests.\nWhile the stream is open, it is possible to [add new game IDs to watch](#tag/games/POST/api/stream/games/{str"
+        },
+        {
+          "info": {
+            "name": "Add game IDs to stream",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/stream/games/:streamId/add",
+            "params": [
+              {
+                "name": "streamId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Add new game IDs for [an existing stream](#tag/games/POST/api/stream/games/{streamId}) to watch.\nThe stream will immediately outputs the games that already exists, then emit an event each time a game is started or finished.\n"
+        },
+        {
+          "info": {
+            "name": "Get my ongoing games",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/account/playing",
+            "params": [
+              {
+                "name": "nb",
+                "value": "",
+                "type": "query",
+                "description": "Max number of games to fetch"
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Get the ongoing games of the current user.\nReal-time and correspondence games are included.\nThe most urgent games are listed first.\n"
+        },
+        {
+          "info": {
+            "name": "Stream moves of a game",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/stream/game/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Stream positions and moves of any ongoing game, in [ndjson](#description/streaming-with-nd-json).\nA description of the game is sent as a first message.\nThen a message is sent each time a move is played.\nFinally, a description of the game is sent when it finishes, and the stream is closed.\nOngoing games are delayed by 3 moves, as to prevent cheat bots from using this API.\nNo more than 8 game streams can be opened at the same time from the same IP address.\n"
+        },
+        {
+          "info": {
+            "name": "Import one game",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://lichess.org/api/import",
+            "body": {
+              "type": "form-urlencoded",
+              "data": [
+                {
+                  "name": "pgn",
+                  "value": ""
+                }
+              ]
+            },
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Import a game from PGN. See <https://lichess.org/paste>.\nRate limiting: 200 games per hour for OAuth requests, 100 games per hour for anonymous requests.\nTo broadcast ongoing games, consider [pushing to a broadcast instead](#tag/broadcasts/POST/api/broadcast/round/{broadcastRoundId}/push).\nTo analyse a position or a line, just construct an analysis board URL (most standard tags supported if URL-encoded):\n[https://lichess.org/analysis/pgn/e4_e5_Nf3_Nc6_Bc4_Bc5_Bxf7+](https://lichess.org/analysis/"
+        },
+        {
+          "info": {
+            "name": "Export your imported games",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/games/export/imports",
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Download all games imported by you. Games are exported in PGN format."
+        },
+        {
+          "info": {
+            "name": "Export your bookmarked games",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://lichess.org/api/games/export/bookmarks",
+            "headers": [
+              {
+                "name": "Accept",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "since",
+                "value": "",
+                "type": "query",
+                "description": "Download games bookmarked since this timestamp. Defaults to account creation date."
+              },
+              {
+                "name": "until",
+                "value": "",
+                "type": "query",
+                "description": "Download games bookmarked until this timestamp. Defaults to now."
+              },
+              {
+                "name": "max",
+                "value": "",
+                "type": "query",
+                "description": "How many bookmarked games to download. Leave empty to download all bookmarked games."
+              },
+              {
+                "name": "moves",
+                "value": "",
+                "type": "query",
+                "description": "Include the PGN moves."
+              },
+              {
+                "name": "pgnInJson",
+                "value": "",
+                "type": "query",
+                "description": "Include the full PGN within the JSON response, in a `pgn` field. The response type must be set to `application/x-ndjson` by the request `Accept` header."
+              },
+              {
+                "name": "tags",
+                "value": "",
+                "type": "query",
+                "description": "Include the PGN tags."
+              },
+              {
+                "name": "clocks",
+                "value": "",
+                "type": "query",
+                "description": "Include clock status when available.\nEither as PGN comments: `2. exd5 { [%clk 1:01:27] } e5 { [%clk 1:01:28] }`\nOr in a `clocks` JSON field, as centisecond integers, depending on the response type.\n"
+              },
+              {
+                "name": "evals",
+                "value": "",
+                "type": "query",
+                "description": "Include analysis evaluations and comments, when available.\nEither as PGN comments: `12. Bxf6 { [%eval 0.23] } a3 { [%eval -1.09] }`\nOr in an `analysis` JSON field, depending on the response type.\n"
+              },
+              {
+                "name": "accuracy",
+                "value": "",
+                "type": "query",
+                "description": "Include [accuracy percent](https://lichess.org/page/accuracy) of each player, when available. Only available in JSON.\n"
+              },
+              {
+                "name": "opening",
+                "value": "",
+                "type": "query",
+                "description": "Include the opening name.\nExample: `[Opening \"King's Gambit Accepted, King's Knight Gambit\"]`\n"
+              },
+              {
+                "name": "division",
+                "value": "",
+                "type": "query",
+                "description": "Plies which mark the beginning of the middlegame and endgame.\nOnly available in JSON\n"
+              },
+              {
+                "name": "literate",
+                "value": "",
+                "type": "query",
+                "description": "Insert textual annotations in the PGN about the opening, analysis variations, mistakes, and game termination.\nExample: `5... g4? { (-0.98 → 0.60) Mistake. Best move was h6. } (5... h6 6. d4 Ne7 7. g3 d5 8. exd5 fxg3 9. hxg3 c6 10. dxc6)`\n"
+              },
+              {
+                "name": "lastFen",
+                "value": "",
+                "type": "query",
+                "description": "Include the X-FEN notation of the last position of the game.\nThe response type must be set to `application/x-ndjson` by the request `Accept` header.\n"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query",
+                "description": "Sort order of the bookmarks."
+              }
+            ],
+            "auth": {
+              "type": "oauth2",
+              "flow": "authorization_code",
+              "authorizationUrl": "https://lichess.org/oauth",
+              "accessTokenUrl": "https://lichess.org/api/token",
+              "credentials": {
+                "clientId": "{{clientId}}",
+                "clientSecret": "{{clientSecret}}"
+              }
+            }
+          },
+          "docs": "Download all games bookmarked by you, in PGN or [ndjson](#description/streaming-with-nd-json) format.\nGames are sorted by reverse chronological order (most recent first).\nWe recommend streaming the response, for it can be very long.\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,324 @@
+{
+  "item": [
+    {
+      "id": "1d44b82c-df2a-4994-8c31-2cd9f2ca7c42",
+      "name": "Tablebase",
+      "description": {
+        "content": "Lookup positions from the [Lichess tablebase server](https://lichess.org/blog/W3WeMyQAACQAdfAL/7-piece-syzygy-tablebases-are-complete).\n\n> [!important]\n> The hostname for these endpoints is `tablebase.lichess.org` and not `lichess.org`.\n",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "e099f7da-9ff1-4502-8c47-5bc1c4ac550f",
+          "name": "Tablebase lookup",
+          "request": {
+            "name": "Tablebase lookup",
+            "description": {
+              "content": "**Endpoint: <https://tablebase.lichess.org>**\n\nExample: `curl http://tablebase.lichess.org/standard?fen=4k3/6KP/8/8/8/8/7p/8_w_-_-_0_1`\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "standard"
+              ],
+              "host": [
+                "tablebase",
+                "lichess",
+                "org"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "fen",
+                  "value": "<string>",
+                  "description": "(Required) X-FEN of the position. Underscores allowed."
+                },
+                {
+                  "disabled": false,
+                  "key": "dtc",
+                  "value": "<string>",
+                  "description": "When to query the tablebase for `dtc` values. The default is\n`auxiliary`, i.e., only when the position is not covered by one of the\nother tablebases.\n"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "96294143-19bb-42cb-b991-e8b90f616fb3",
+              "name": "The tablebase information for the position in standard chess.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "standard"
+                  ],
+                  "host": [
+                    "tablebase",
+                    "lichess",
+                    "org"
+                  ],
+                  "query": [
+                    {
+                      "key": "fen",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dtc",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"checkmate\": false,\n  \"stalemate\": false,\n  \"variant_win\": false,\n  \"variant_loss\": false,\n  \"insufficient_material\": false,\n  \"dtz\": 1,\n  \"precise_dtz\": 1,\n  \"dtm\": 17,\n  \"dtw\": null,\n  \"dtc\": null,\n  \"category\": \"win\",\n  \"moves\": [\n    {\n      \"uci\": \"h7h8q\",\n      \"san\": \"h8=Q+\",\n      \"zeroing\": true,\n      \"conversion\": true,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": -2,\n      \"precise_dtz\": -2,\n      \"dtm\": -16,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"loss\"\n    },\n    {\n      \"uci\": \"h7h8r\",\n      \"san\": \"h8=R+\",\n      \"zeroing\": true,\n      \"conversion\": true,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": -2,\n      \"precise_dtz\": -2,\n      \"dtm\": -26,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"loss\"\n    },\n    {\n      \"uci\": \"g7g8\",\n      \"san\": \"Kg8\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": 0,\n      \"precise_dtz\": 0,\n      \"dtm\": 0,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"draw\"\n    },\n    {\n      \"uci\": \"g7f6\",\n      \"san\": \"Kf6\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": 1,\n      \"precise_dtz\": 1,\n      \"dtm\": 19,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"win\"\n    },\n    {\n      \"uci\": \"g7g6\",\n      \"san\": \"Kg6\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": 1,\n      \"precise_dtz\": 1,\n      \"dtm\": 19,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"win\"\n    },\n    {\n      \"uci\": \"g7h6\",\n      \"san\": \"Kh6\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": 1,\n      \"precise_dtz\": 1,\n      \"dtm\": 19,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"win\"\n    },\n    {\n      \"uci\": \"g7h8\",\n      \"san\": \"Kh8\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": 1,\n      \"precise_dtz\": 1,\n      \"dtm\": 19,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"win\"\n    },\n    {\n      \"uci\": \"h7h8n\",\n      \"san\": \"h8=N\",\n      \"zeroing\": true,\n      \"conversion\": true,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": 1,\n      \"precise_dtz\": 1,\n      \"dtm\": 19,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"win\"\n    },\n    {\n      \"uci\": \"h7h8b\",\n      \"san\": \"h8=B\",\n      \"zeroing\": true,\n      \"conversion\": true,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": 1,\n      \"precise_dtz\": 1,\n      \"dtm\": 15,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"win\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5be8e350-937d-4496-947a-c9bc81b1a7e2",
+          "name": "Tablebase lookup for Atomic chess",
+          "request": {
+            "name": "Tablebase lookup for Atomic chess",
+            "description": {
+              "content": "**Endpoint: <https://tablebase.lichess.org>**\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "atomic"
+              ],
+              "host": [
+                "tablebase",
+                "lichess",
+                "org"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "fen",
+                  "value": "<string>",
+                  "description": "(Required) X-FEN of the position. Underscores allowed."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "42305cec-2f59-4084-bc4c-8cfd2ef20056",
+              "name": "The tablebase information for the position in atomic chess.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "atomic"
+                  ],
+                  "host": [
+                    "tablebase",
+                    "lichess",
+                    "org"
+                  ],
+                  "query": [
+                    {
+                      "key": "fen",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"checkmate\": false,\n  \"stalemate\": false,\n  \"variant_win\": false,\n  \"variant_loss\": false,\n  \"insufficient_material\": false,\n  \"dtz\": null,\n  \"precise_dtz\": null,\n  \"dtm\": null,\n  \"dtw\": null,\n  \"dtc\": null,\n  \"category\": \"unknown\",\n  \"moves\": [\n    {\n      \"uci\": \"a6b5\",\n      \"san\": \"Bxb5\",\n      \"zeroing\": true,\n      \"conversion\": true,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"b4c3\",\n      \"san\": \"Bxc3\",\n      \"zeroing\": true,\n      \"conversion\": true,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"d4c3\",\n      \"san\": \"Qxc3\",\n      \"zeroing\": true,\n      \"conversion\": true,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"d4d3\",\n      \"san\": \"Qxd3+\",\n      \"zeroing\": true,\n      \"conversion\": true,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"d4e3\",\n      \"san\": \"Qxe3\",\n      \"zeroing\": true,\n      \"conversion\": true,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"e6e5\",\n      \"san\": \"e5\",\n      \"zeroing\": true,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"f7f6\",\n      \"san\": \"f6\",\n      \"zeroing\": true,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"g7g6\",\n      \"san\": \"g6\",\n      \"zeroing\": true,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"f7f5\",\n      \"san\": \"f5\",\n      \"zeroing\": true,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"g7g5\",\n      \"san\": \"g5\",\n      \"zeroing\": true,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"h5h4\",\n      \"san\": \"h4\",\n      \"zeroing\": true,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"d4d6\",\n      \"san\": \"Qd6\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"b4c5\",\n      \"san\": \"Bc5\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"b4d6\",\n      \"san\": \"Bd6\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"b4e7\",\n      \"san\": \"Be7\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"b4f8\",\n      \"san\": \"Bf8\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"g8h6\",\n      \"san\": \"Nh6\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"a6b7\",\n      \"san\": \"Bb7\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"a6c8\",\n      \"san\": \"Bc8\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"a8b8\",\n      \"san\": \"Rb8\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"a8c8\",\n      \"san\": \"Rc8\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"a8d8\",\n      \"san\": \"Rd8\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"h8h6\",\n      \"san\": \"Rh6\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"h8h7\",\n      \"san\": \"Rh7\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"g8e7\",\n      \"san\": \"Ne7\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"b4a3\",\n      \"san\": \"Ba3\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"g8f6\",\n      \"san\": \"Nf6\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"d4c4\",\n      \"san\": \"Qc4\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"d4e4\",\n      \"san\": \"Qe4\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"d4f4\",\n      \"san\": \"Qf4\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"d4g4\",\n      \"san\": \"Qg4\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"d4h4\",\n      \"san\": \"Qh4\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"d4c5\",\n      \"san\": \"Qc5\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"d4d5\",\n      \"san\": \"Qd5\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"d4e5\",\n      \"san\": \"Qe5\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"b4a5\",\n      \"san\": \"Ba5\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"d4f6\",\n      \"san\": \"Qf6\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"e8e7\",\n      \"san\": \"Ke7\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"e8d8\",\n      \"san\": \"Kd8\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"e8f8\",\n      \"san\": \"Kf8\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"e8c8\",\n      \"san\": \"O-O-O\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "97c2f281-717a-4059-a029-2acece3eb725",
+          "name": "Tablebase lookup for Antichess",
+          "request": {
+            "name": "Tablebase lookup for Antichess",
+            "description": {
+              "content": "**Endpoint: <https://tablebase.lichess.org>**\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "antichess"
+              ],
+              "host": [
+                "tablebase",
+                "lichess",
+                "org"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "fen",
+                  "value": "<string>",
+                  "description": "(Required) X-FEN of the position. Underscores allowed."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b735e567-b293-4bb1-bd2e-d58f5d3e4efb",
+              "name": "The tablebase information for the position in antichess.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "antichess"
+                  ],
+                  "host": [
+                    "tablebase",
+                    "lichess",
+                    "org"
+                  ],
+                  "query": [
+                    {
+                      "key": "fen",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"checkmate\": false,\n  \"stalemate\": false,\n  \"variant_win\": false,\n  \"variant_loss\": false,\n  \"insufficient_material\": false,\n  \"dtz\": null,\n  \"precise_dtz\": null,\n  \"dtm\": null,\n  \"dtw\": null,\n  \"dtc\": null,\n  \"category\": \"unknown\",\n  \"moves\": [\n    {\n      \"uci\": \"f7f6\",\n      \"san\": \"f6\",\n      \"zeroing\": true,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"h7h6\",\n      \"san\": \"h6\",\n      \"zeroing\": true,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"f7f5\",\n      \"san\": \"f5\",\n      \"zeroing\": true,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"h7h5\",\n      \"san\": \"h5\",\n      \"zeroing\": true,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"g8f6\",\n      \"san\": \"Nf6\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"g8h6\",\n      \"san\": \"Nh6\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"e7d6\",\n      \"san\": \"Kd6\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"e7e6\",\n      \"san\": \"Ke6\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"e7f6\",\n      \"san\": \"Kf6\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"e7d7\",\n      \"san\": \"Kd7\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"e7d8\",\n      \"san\": \"Kd8\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"e7e8\",\n      \"san\": \"Ke8\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    },\n    {\n      \"uci\": \"e7f8\",\n      \"san\": \"Kf8\",\n      \"zeroing\": false,\n      \"conversion\": false,\n      \"checkmate\": false,\n      \"stalemate\": false,\n      \"variant_win\": false,\n      \"variant_loss\": false,\n      \"insufficient_material\": false,\n      \"dtz\": null,\n      \"precise_dtz\": null,\n      \"dtm\": null,\n      \"dtw\": null,\n      \"dtc\": null,\n      \"category\": \"unknown\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://lichess.org",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "0cf1a501-41f8-482f-b73c-9c1bd1f194fb",
+    "name": "Lichess.org API reference Account Tablebase API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "# Introduction\nWelcome to the reference for the Lichess API! Lichess is free/libre,\nopen-source chess server powered by volunteers and donations.\n- Get help in the [Lichess Discord channel](https://discord.gg/lichess)\n- API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)\n- API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)\n- [Contribute to this documentation on Github](https://github.com/lichess-org/api)\n- Check out [Lichess widgets to embed in your website](https://lichess.org/developers)\n- [Download all Lichess rated games](https://database.lichess.org/)\n- [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)\n- [Download all evaluated positions](https://database.lichess.org/#evals)\n\n## Endpoint\nAll requests go to `https://lichess.org` (unless otherwise specified).\n\n## Clients\n- [Python general API](https://github.com/lichess-org/berserk)\n- [MicroPython general API](https://github.com/mkomon/uberserk)\n- [Python general API - async](https://pypi.org/project/async-lichess-sdk)\n- [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)\n- [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)\n- [Java general API](https://github.com/tors42/chariot)\n- [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)\n- [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)\n- [.NET general API](https://github.com/Dblike/LichessSharp)\n\n## Rate limiting\nAll requests are rate limited using various strategies,\nto ensure the API remains responsive for everyone.\nOnly make one request at a time.\nIf you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),\nyou have exceded one of the rate limits.\nIn most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.\nReduce your request frequency before retrying.\n\n## Streaming with ND-JSON\nSome API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.\n\nHere's a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.\n\n## Authentication\n### Which authentication method is right for me?\n[Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)\n\n### Personal Access Token\nPersonal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.\n- [Generate a personal access token](https://lichess.org/account/oauth/token)\n- `curl https://lichess.org/api/account -H \"Authorization: Bearer {token}\"`\n- [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)\n\n### Token Security\n- Keep your tokens secret. Do not share them in public repositories or public forums.\n- Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens' scope). You remain responsible for all activities on your account.\n- Do not hardcode tokens in your application's code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.\n- If you suspect a token has been compromised, revoke it immediately.\n\nTo see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).\n\n### Authorization Code Flow with PKCE\nThe authorization code flow with PKCE allows your users to **login with Lichess**.\nLichess supports unregistered and public clients (no client authentication, choose any unique client id).\nThe only accepted code challenge method is `S256`.\nAccess tokens are long-lived (expect one year), unless they are revoked.\nRefresh tokens are not supported.\n\nSee the [documentation for the OAuth endpoints](#tag/OAuth) or\nthe [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.\n\n- [Demo app](https://lichess-org.github.io/api-demo/)\n- [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)\n- [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)\n- [Java example](https://github.com/tors42/lichess-oauth-pkce-app)\n- [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)\n\n#### Real life examples\n- [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))\n- [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))\n- [English Chess Federation](https://ecf.octoknight.com/)\n- [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)\n\n### Token format\nAccess tokens and authorization codes match `^[A-Za-z0-9_]+$`.\nThe length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.\nBy convention tokens have a recognizable prefix, but do not rely on this.\n\n\nContact Support:\n Name: Lichess.org API\n Email: contact@lichess.org",
+      "type": "text/plain"
+    }
+  }
+}

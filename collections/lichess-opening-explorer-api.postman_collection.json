@@ -1,0 +1,818 @@
+{
+  "item": [
+    {
+      "id": "da3bed67-8a31-4e0e-b10f-6aad7ec5dcc8",
+      "name": "Opening Explorer",
+      "description": {
+        "content": "Lookup positions from the [Lichess opening explorer](https://lichess.org/analysis#explorer).\n\nRuns <https://github.com/lichess-org/lila-openingexplorer>.\n\n> [!important]\n> The hostname for these endpoints is `explorer.lichess.org` and not `lichess.org`.\n",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "3258d6ba-9534-4c19-a18d-9918e6e18c92",
+          "name": "Masters database",
+          "request": {
+            "name": "Masters database",
+            "description": {
+              "content": "**Endpoint: <https://explorer.lichess.org/masters>**\n\nExample: `curl https://explorer.lichess.org/masters?play=d2d4,d7d5,c2c4,c7c6,c4d5`\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "masters"
+              ],
+              "host": [
+                "explorer",
+                "lichess",
+                "org"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "fen",
+                  "value": "<string>",
+                  "description": "X-FEN of the root position"
+                },
+                {
+                  "disabled": false,
+                  "key": "play",
+                  "value": "",
+                  "description": "Comma separated sequence of legal moves in UCI notation.\nPlay additional moves starting from `fen`.\nRequired to find an opening name, if `fen` is not an exact match\nfor a named position.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "since",
+                  "value": "1952",
+                  "description": "Include only games from this year or later"
+                },
+                {
+                  "disabled": false,
+                  "key": "until",
+                  "value": "<integer>",
+                  "description": "Include only games from this year or earlier"
+                },
+                {
+                  "disabled": false,
+                  "key": "moves",
+                  "value": "12",
+                  "description": "Number of most common moves to display"
+                },
+                {
+                  "disabled": false,
+                  "key": "topGames",
+                  "value": "15",
+                  "description": "Number of top games to display"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://lichess.org/api/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://lichess.org/oauth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "e63fbe7e-64e6-4bf1-9e57-4b01b3007bc0",
+              "name": "Opening statistics and game references for the position.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "masters"
+                  ],
+                  "host": [
+                    "explorer",
+                    "lichess",
+                    "org"
+                  ],
+                  "query": [
+                    {
+                      "key": "fen",
+                      "value": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+                    },
+                    {
+                      "key": "play",
+                      "value": "d2d4,d7d5,c2c4,c7c6,c4d5"
+                    },
+                    {
+                      "key": "since",
+                      "value": "1952"
+                    },
+                    {
+                      "key": "until",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "moves",
+                      "value": "12"
+                    },
+                    {
+                      "key": "topGames",
+                      "value": "15"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"white\": 1927,\n  \"draws\": 5215,\n  \"black\": 1469,\n  \"moves\": [\n    {\n      \"uci\": \"c6d5\",\n      \"san\": \"cxd5\",\n      \"averageRating\": 2412,\n      \"white\": 1927,\n      \"draws\": 5215,\n      \"black\": 1468,\n      \"game\": null,\n      \"opening\": null\n    },\n    {\n      \"uci\": \"g8f6\",\n      \"san\": \"Nf6\",\n      \"averageRating\": 2515,\n      \"white\": 0,\n      \"draws\": 0,\n      \"black\": 1,\n      \"game\": {\n        \"id\": \"1EErB5jc\",\n        \"winner\": \"black\",\n        \"black\": {\n          \"name\": \"Dobrov, Vladimir\",\n          \"rating\": 2515\n        },\n        \"white\": {\n          \"name\": \"Drozdovskij, Yuri\",\n          \"rating\": 2509\n        },\n        \"year\": 2006,\n        \"month\": \"2006-01\"\n      },\n      \"opening\": {\n        \"eco\": \"D06\",\n        \"name\": \"Queen's Gambit Declined: Marshall Defense, Tan Gambit\"\n      }\n    }\n  ],\n  \"topGames\": [\n    {\n      \"uci\": \"c6d5\",\n      \"id\": \"kN6d9l2i\",\n      \"winner\": \"black\",\n      \"black\": {\n        \"name\": \"Anand, V.\",\n        \"rating\": 2785\n      },\n      \"white\": {\n        \"name\": \"Carlsen, M.\",\n        \"rating\": 2881\n      },\n      \"year\": 2014,\n      \"month\": \"2014-06\"\n    },\n    {\n      \"uci\": \"c6d5\",\n      \"id\": \"qeYPJL2y\",\n      \"winner\": \"white\",\n      \"black\": {\n        \"name\": \"Carlsen, M.\",\n        \"rating\": 2843\n      },\n      \"white\": {\n        \"name\": \"So, W.\",\n        \"rating\": 2778\n      },\n      \"year\": 2018,\n      \"month\": \"2018-06\"\n    },\n    {\n      \"uci\": \"c6d5\",\n      \"id\": \"VpWYyv3g\",\n      \"winner\": null,\n      \"black\": {\n        \"name\": \"Carlsen, M..\",\n        \"rating\": 2847\n      },\n      \"white\": {\n        \"name\": \"So, W..\",\n        \"rating\": 2770\n      },\n      \"year\": 2021,\n      \"month\": \"2021-03\"\n    },\n    {\n      \"uci\": \"c6d5\",\n      \"id\": \"nlh6QPSg\",\n      \"winner\": \"white\",\n      \"black\": {\n        \"name\": \"Vachier Lagrave, Maxime\",\n        \"rating\": 2778\n      },\n      \"white\": {\n        \"name\": \"Caruana, Fabiano\",\n        \"rating\": 2835\n      },\n      \"year\": 2020,\n      \"month\": \"2020-06\"\n    },\n    {\n      \"uci\": \"c6d5\",\n      \"id\": \"IYy7abvG\",\n      \"winner\": \"black\",\n      \"black\": {\n        \"name\": \"Caruana, Fabiano\",\n        \"rating\": 2835\n      },\n      \"white\": {\n        \"name\": \"So, Wesley\",\n        \"rating\": 2770\n      },\n      \"year\": 2020,\n      \"month\": \"2020-06\"\n    },\n    {\n      \"uci\": \"c6d5\",\n      \"id\": \"sKEBcLbM\",\n      \"winner\": null,\n      \"black\": {\n        \"name\": \"Carlsen, M.\",\n        \"rating\": 2832\n      },\n      \"white\": {\n        \"name\": \"Grischuk, A.\",\n        \"rating\": 2761\n      },\n      \"year\": 2017,\n      \"month\": \"2017-06\"\n    },\n    {\n      \"uci\": \"c6d5\",\n      \"id\": \"ambcPQzJ\",\n      \"winner\": \"white\",\n      \"black\": {\n        \"name\": \"Nakamura, Hikaru\",\n        \"rating\": 2775\n      },\n      \"white\": {\n        \"name\": \"Aronian, Levon\",\n        \"rating\": 2813\n      },\n      \"year\": 2013,\n      \"month\": \"2013-05\"\n    },\n    {\n      \"uci\": \"c6d5\",\n      \"id\": \"7x23lu2J\",\n      \"winner\": \"black\",\n      \"black\": {\n        \"name\": \"Karjakin, Sergey\",\n        \"rating\": 2771\n      },\n      \"white\": {\n        \"name\": \"Aronian, L.\",\n        \"rating\": 2815\n      },\n      \"year\": 2014,\n      \"month\": \"2014-06\"\n    },\n    {\n      \"uci\": \"c6d5\",\n      \"id\": \"FLar3fv2\",\n      \"winner\": \"white\",\n      \"black\": {\n        \"name\": \"Duda, Jan Krzysztof\",\n        \"rating\": 2757\n      },\n      \"white\": {\n        \"name\": \"Caruana, Fabiano\",\n        \"rating\": 2828\n      },\n      \"year\": 2020,\n      \"month\": \"2020-10\"\n    },\n    {\n      \"uci\": \"c6d5\",\n      \"id\": \"mOtWn31m\",\n      \"winner\": \"black\",\n      \"black\": {\n        \"name\": \"Nakamura, Hi\",\n        \"rating\": 2804\n      },\n      \"white\": {\n        \"name\": \"Caruana, F.\",\n        \"rating\": 2776\n      },\n      \"year\": 2025,\n      \"month\": \"2025-05\"\n    },\n    {\n      \"uci\": \"c6d5\",\n      \"id\": \"2O6imBL4\",\n      \"winner\": \"black\",\n      \"black\": {\n        \"name\": \"Aronian, L.\",\n        \"rating\": 2764\n      },\n      \"white\": {\n        \"name\": \"Mamedyarov, S.\",\n        \"rating\": 2808\n      },\n      \"year\": 2018,\n      \"month\": \"2018-06\"\n    },\n    {\n      \"uci\": \"c6d5\",\n      \"id\": \"4DG6brd6\",\n      \"winner\": null,\n      \"black\": {\n        \"name\": \"Caruana, Fabiano\",\n        \"rating\": 2835\n      },\n      \"white\": {\n        \"name\": \"Nakamura, Hikaru\",\n        \"rating\": 2736\n      },\n      \"year\": 2020,\n      \"month\": \"2020-05\"\n    },\n    {\n      \"uci\": \"c6d5\",\n      \"id\": \"LNwpnUi7\",\n      \"winner\": null,\n      \"black\": {\n        \"name\": \"Vachier Lagrave, M.\",\n        \"rating\": 2779\n      },\n      \"white\": {\n        \"name\": \"Nakamura, Hi\",\n        \"rating\": 2777\n      },\n      \"year\": 2018,\n      \"month\": \"2018-10\"\n    },\n    {\n      \"uci\": \"c6d5\",\n      \"id\": \"f7QMeZlL\",\n      \"winner\": \"black\",\n      \"black\": {\n        \"name\": \"Carlsen, M.\",\n        \"rating\": 2840\n      },\n      \"white\": {\n        \"name\": \"Vallejo Pons, F.\",\n        \"rating\": 2711\n      },\n      \"year\": 2016,\n      \"month\": \"2016-12\"\n    },\n    {\n      \"uci\": \"c6d5\",\n      \"id\": \"vZzIG6Vo\",\n      \"winner\": \"white\",\n      \"black\": {\n        \"name\": \"Nakamura, Hikaru\",\n        \"rating\": 2774\n      },\n      \"white\": {\n        \"name\": \"Ivanchuk, Vassily\",\n        \"rating\": 2776\n      },\n      \"year\": 2011,\n      \"month\": \"2011-06\"\n    }\n  ],\n  \"opening\": {\n    \"eco\": \"D10\",\n    \"name\": \"Slav Defense: Exchange Variation\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "feddef34-2682-4479-b12d-abc9bcd02726",
+          "name": "Lichess games",
+          "request": {
+            "name": "Lichess games",
+            "description": {
+              "content": "**Endpoint: <https://explorer.lichess.org/lichess>**\n\nAggregated rated games from all Lichess players.\n\nExample: `curl https://explorer.lichess.org/lichess?variant=standard&speeds=blitz,rapid,classical&ratings=2200,2500&fen=rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR%20w%20KQkq%20-%200%201`\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "lichess"
+              ],
+              "host": [
+                "explorer",
+                "lichess",
+                "org"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "variant",
+                  "value": "standard",
+                  "description": "Variant"
+                },
+                {
+                  "disabled": false,
+                  "key": "fen",
+                  "value": "<string>",
+                  "description": "X-FEN or EPD of the root position"
+                },
+                {
+                  "disabled": false,
+                  "key": "play",
+                  "value": "",
+                  "description": "Comma separated sequence of legal moves in UCI notation.\nPlay additional moves starting from `fen`.\nRequired to find an opening name, if `fen` is not an exact match\nfor a named position.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "speeds",
+                  "value": "<string>",
+                  "description": "Comma separated list of game speeds to filter by"
+                },
+                {
+                  "disabled": false,
+                  "key": "speeds",
+                  "value": "<string>",
+                  "description": "Comma separated list of game speeds to filter by"
+                },
+                {
+                  "disabled": false,
+                  "key": "ratings",
+                  "value": "<integer>",
+                  "description": "Comma separated list of ratings groups to filter by.\nEach group ranges from its value to the next higher\ngroup in the enum (`0` from 0 to 999, `1000` from 1000 to 1199,\n..., `2500` from 2500 to any rating above).\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "ratings",
+                  "value": "<integer>",
+                  "description": "Comma separated list of ratings groups to filter by.\nEach group ranges from its value to the next higher\ngroup in the enum (`0` from 0 to 999, `1000` from 1000 to 1199,\n..., `2500` from 2500 to any rating above).\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "since",
+                  "value": "1952-01",
+                  "description": "Include only games from this month or later"
+                },
+                {
+                  "disabled": false,
+                  "key": "until",
+                  "value": "3000-12",
+                  "description": "Include only games from this month or earlier"
+                },
+                {
+                  "disabled": false,
+                  "key": "moves",
+                  "value": "12",
+                  "description": "Number of most common moves to display"
+                },
+                {
+                  "disabled": false,
+                  "key": "topGames",
+                  "value": "4",
+                  "description": "Maximum number of top games to display.\n\nDue to the way banned users are handled internally, the response may\ncontain fewer games than expected.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "recentGames",
+                  "value": "4",
+                  "description": "Maximum number of recent games to display.\n\nDue to the way banned users are handled internally, the response may\ncontain fewer games than expected.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "history",
+                  "value": "false",
+                  "description": "Optionally retrieve history"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://lichess.org/api/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://lichess.org/oauth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "e84ab9f1-f5bc-463f-84d6-3bb746c6b63d",
+              "name": "Opening statistics and game references for the position.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "lichess"
+                  ],
+                  "host": [
+                    "explorer",
+                    "lichess",
+                    "org"
+                  ],
+                  "query": [
+                    {
+                      "key": "variant",
+                      "value": "standard"
+                    },
+                    {
+                      "key": "fen",
+                      "value": "rnbqkbnr/ppp1pppp/8/3pP3/8/8/PPPP1PPP/RNBQKBNR b KQkq - 0 2"
+                    },
+                    {
+                      "key": "play",
+                      "value": "d2d4,d7d5,c2c4,c7c6,c4d5"
+                    },
+                    {
+                      "key": "speeds",
+                      "value": "blitz"
+                    },
+                    {
+                      "key": "speeds",
+                      "value": "bullet"
+                    },
+                    {
+                      "key": "ratings",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "ratings",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "since",
+                      "value": "1952-01"
+                    },
+                    {
+                      "key": "until",
+                      "value": "3000-12"
+                    },
+                    {
+                      "key": "moves",
+                      "value": "12"
+                    },
+                    {
+                      "key": "topGames",
+                      "value": "4"
+                    },
+                    {
+                      "key": "recentGames",
+                      "value": "4"
+                    },
+                    {
+                      "key": "history",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"white\": 5061745,\n  \"draws\": 492487,\n  \"black\": 4458129,\n  \"moves\": [\n    {\n      \"uci\": \"c6d5\",\n      \"san\": \"cxd5\",\n      \"averageRating\": 1806,\n      \"white\": 4517660,\n      \"draws\": 450366,\n      \"black\": 4016728,\n      \"game\": null,\n      \"opening\": null\n    },\n    {\n      \"uci\": \"d8d5\",\n      \"san\": \"Qxd5\",\n      \"averageRating\": 1662,\n      \"white\": 236785,\n      \"draws\": 17561,\n      \"black\": 170379,\n      \"game\": null,\n      \"opening\": null\n    },\n    {\n      \"uci\": \"g8f6\",\n      \"san\": \"Nf6\",\n      \"averageRating\": 1973,\n      \"white\": 195502,\n      \"draws\": 17425,\n      \"black\": 184987,\n      \"game\": null,\n      \"opening\": {\n        \"eco\": \"D06\",\n        \"name\": \"Queen's Gambit Declined: Marshall Defense, Tan Gambit\"\n      }\n    },\n    {\n      \"uci\": \"e7e6\",\n      \"san\": \"e6\",\n      \"averageRating\": 1839,\n      \"white\": 40807,\n      \"draws\": 2695,\n      \"black\": 32332,\n      \"game\": null,\n      \"opening\": null\n    },\n    {\n      \"uci\": \"d8a5\",\n      \"san\": \"Qa5+\",\n      \"averageRating\": 1436,\n      \"white\": 19458,\n      \"draws\": 1221,\n      \"black\": 13712,\n      \"game\": null,\n      \"opening\": null\n    },\n    {\n      \"uci\": \"c8f5\",\n      \"san\": \"Bf5\",\n      \"averageRating\": 1705,\n      \"white\": 17503,\n      \"draws\": 1118,\n      \"black\": 15374,\n      \"game\": null,\n      \"opening\": null\n    },\n    {\n      \"uci\": \"c6c5\",\n      \"san\": \"c5\",\n      \"averageRating\": 1802,\n      \"white\": 11081,\n      \"draws\": 678,\n      \"black\": 6174,\n      \"game\": null,\n      \"opening\": null\n    },\n    {\n      \"uci\": \"g7g6\",\n      \"san\": \"g6\",\n      \"averageRating\": 1861,\n      \"white\": 3867,\n      \"draws\": 325,\n      \"black\": 3561,\n      \"game\": null,\n      \"opening\": null\n    },\n    {\n      \"uci\": \"c8g4\",\n      \"san\": \"Bg4\",\n      \"averageRating\": 1866,\n      \"white\": 3775,\n      \"draws\": 255,\n      \"black\": 3715,\n      \"game\": null,\n      \"opening\": null\n    },\n    {\n      \"uci\": \"e7e5\",\n      \"san\": \"e5\",\n      \"averageRating\": 1820,\n      \"white\": 2796,\n      \"draws\": 156,\n      \"black\": 2555,\n      \"game\": null,\n      \"opening\": null\n    },\n    {\n      \"uci\": \"a7a6\",\n      \"san\": \"a6\",\n      \"averageRating\": 1877,\n      \"white\": 2180,\n      \"draws\": 139,\n      \"black\": 1876,\n      \"game\": null,\n      \"opening\": null\n    },\n    {\n      \"uci\": \"b8d7\",\n      \"san\": \"Nd7\",\n      \"averageRating\": 1627,\n      \"white\": 2302,\n      \"draws\": 119,\n      \"black\": 1574,\n      \"game\": null,\n      \"opening\": null\n    }\n  ],\n  \"recentGames\": [\n    {\n      \"uci\": \"c6d5\",\n      \"id\": \"PFRcQXaV\",\n      \"winner\": \"white\",\n      \"speed\": \"bullet\",\n      \"mode\": \"rated\",\n      \"black\": {\n        \"name\": \"chaotic_logic\",\n        \"rating\": 2611\n      },\n      \"white\": {\n        \"name\": \"AritzMancha\",\n        \"rating\": 2626\n      },\n      \"year\": 2026,\n      \"month\": \"2026-01\"\n    },\n    {\n      \"uci\": \"c6d5\",\n      \"id\": \"1Eu0KMO6\",\n      \"winner\": \"white\",\n      \"speed\": \"blitz\",\n      \"mode\": \"rated\",\n      \"black\": {\n        \"name\": \"Helmy-Saber2\",\n        \"rating\": 2160\n      },\n      \"white\": {\n        \"name\": \"denk_er\",\n        \"rating\": 2222\n      },\n      \"year\": 2026,\n      \"month\": \"2026-01\"\n    },\n    {\n      \"uci\": \"c6d5\",\n      \"id\": \"Oykwl4gi\",\n      \"winner\": \"white\",\n      \"speed\": \"blitz\",\n      \"mode\": \"rated\",\n      \"black\": {\n        \"name\": \"JonKi1002\",\n        \"rating\": 1831\n      },\n      \"white\": {\n        \"name\": \"KonstantinXCII\",\n        \"rating\": 1940\n      },\n      \"year\": 2026,\n      \"month\": \"2026-01\"\n    },\n    {\n      \"uci\": \"c6d5\",\n      \"id\": \"ayG0PtAu\",\n      \"winner\": \"black\",\n      \"speed\": \"bullet\",\n      \"mode\": \"rated\",\n      \"black\": {\n        \"name\": \"IlyaGaon\",\n        \"rating\": 1364\n      },\n      \"white\": {\n        \"name\": \"hitomii\",\n        \"rating\": 1413\n      },\n      \"year\": 2026,\n      \"month\": \"2026-01\"\n    }\n  ],\n  \"topGames\": [\n    {\n      \"uci\": \"g8f6\",\n      \"id\": \"EqJcFS1j\",\n      \"winner\": \"white\",\n      \"speed\": \"ultraBullet\",\n      \"mode\": \"rated\",\n      \"black\": {\n        \"name\": \"toivok\",\n        \"rating\": 2708\n      },\n      \"white\": {\n        \"name\": \"penguingim1\",\n        \"rating\": 2969\n      },\n      \"year\": 2018,\n      \"month\": \"2018-04\"\n    },\n    {\n      \"uci\": \"c6d5\",\n      \"id\": \"Z8bSC15J\",\n      \"winner\": \"black\",\n      \"speed\": \"rapid\",\n      \"mode\": \"rated\",\n      \"black\": {\n        \"name\": \"ShadowsOfPain\",\n        \"rating\": 2971\n      },\n      \"white\": {\n        \"name\": \"rightup\",\n        \"rating\": 2630\n      },\n      \"year\": 2025,\n      \"month\": \"2025-07\"\n    },\n    {\n      \"uci\": \"c6d5\",\n      \"id\": \"IGCORYDn\",\n      \"winner\": null,\n      \"speed\": \"rapid\",\n      \"mode\": \"rated\",\n      \"black\": {\n        \"name\": \"torombot\",\n        \"rating\": 2987\n      },\n      \"white\": {\n        \"name\": \"the_magnificent_bob\",\n        \"rating\": 2981\n      },\n      \"year\": 2024,\n      \"month\": \"2024-03\"\n    }\n  ],\n  \"opening\": {\n    \"eco\": \"D10\",\n    \"name\": \"Slav Defense: Exchange Variation\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "80a2054f-dd2e-4813-890e-d4a29853a936",
+          "name": "Player games",
+          "request": {
+            "name": "Player games",
+            "description": {
+              "content": "**Endpoint: <https://explorer.lichess.org/player>**\n\nGames of a Lichess player.\n\nResponds with a stream of [newline delimited JSON](#description/streaming-with-nd-json). Will start indexing\non demand, immediately respond with the current results, and stream\nmore updates until indexing is complete. The stream is throttled\nand deduplicated. Empty lines may be sent to avoid timeouts.\n\nWill index new games at most once per minute, and revisit previously\nongoing games at most once every day.\n\nExample: `curl https://explorer.lichess.org/player?player=revoof&color=white&play=d2d4,d7d5&recentGames=1`\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "player"
+              ],
+              "host": [
+                "explorer",
+                "lichess",
+                "org"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "player",
+                  "value": "<string>",
+                  "description": "(Required) Username or ID of the player"
+                },
+                {
+                  "disabled": false,
+                  "key": "color",
+                  "value": "<string>",
+                  "description": "(Required) Look for games with *player* on the given side"
+                },
+                {
+                  "disabled": false,
+                  "key": "variant",
+                  "value": "standard",
+                  "description": "Variant"
+                },
+                {
+                  "disabled": false,
+                  "key": "fen",
+                  "value": "<string>",
+                  "description": "X-FEN of the root position"
+                },
+                {
+                  "disabled": false,
+                  "key": "play",
+                  "value": "",
+                  "description": "Comma separated sequence of legal moves in UCI notation.\nPlay additional moves starting from `fen`.\nRequired to find an opening name, if `fen` is not an exact match\nfor a named position.\n"
+                },
+                {
+                  "disabled": false,
+                  "key": "speeds",
+                  "value": "<string>",
+                  "description": "Comma separated list of game speeds to look for"
+                },
+                {
+                  "disabled": false,
+                  "key": "speeds",
+                  "value": "<string>",
+                  "description": "Comma separated list of game speeds to look for"
+                },
+                {
+                  "disabled": false,
+                  "key": "modes",
+                  "value": "<string>",
+                  "description": "Comma separated list of modes"
+                },
+                {
+                  "disabled": false,
+                  "key": "modes",
+                  "value": "<string>",
+                  "description": "Comma separated list of modes"
+                },
+                {
+                  "disabled": false,
+                  "key": "since",
+                  "value": "1952-01",
+                  "description": "Include only games from this month or later"
+                },
+                {
+                  "disabled": false,
+                  "key": "until",
+                  "value": "3000-12",
+                  "description": "Include only games from this month or earlier"
+                },
+                {
+                  "disabled": false,
+                  "key": "moves",
+                  "value": "<integer>",
+                  "description": "Number of most common moves to display"
+                },
+                {
+                  "disabled": false,
+                  "key": "recentGames",
+                  "value": "8",
+                  "description": "Number of recent games to display"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/x-ndjson"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://lichess.org/api/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://lichess.org/oauth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "79a19eff-130a-4435-a7af-f7c25df73dad",
+              "name": "Opening statistics and game references for the position.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "player"
+                  ],
+                  "host": [
+                    "explorer",
+                    "lichess",
+                    "org"
+                  ],
+                  "query": [
+                    {
+                      "key": "player",
+                      "value": "revoof"
+                    },
+                    {
+                      "key": "color",
+                      "value": "white"
+                    },
+                    {
+                      "key": "variant",
+                      "value": "standard"
+                    },
+                    {
+                      "key": "fen",
+                      "value": "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+                    },
+                    {
+                      "key": "play",
+                      "value": "d2d4,d7d5"
+                    },
+                    {
+                      "key": "speeds",
+                      "value": "blitz"
+                    },
+                    {
+                      "key": "speeds",
+                      "value": "bullet"
+                    },
+                    {
+                      "key": "modes",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "modes",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "since",
+                      "value": "1952-01"
+                    },
+                    {
+                      "key": "until",
+                      "value": "3000-12"
+                    },
+                    {
+                      "key": "moves",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "recentGames",
+                      "value": "8"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/x-ndjson"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/x-ndjson"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a23d3a11-fe74-46f6-b30f-8e29b23b1adc",
+          "name": "OTB master game",
+          "request": {
+            "name": "OTB master game",
+            "description": {
+              "content": "**Endpoint: `https://explorer.lichess.org/masters/pgn/{gameId}`**\n\nExample: `curl https://explorer.lichess.org/masters/pgn/aAbqI4ey`\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "protocol": "https",
+              "path": [
+                "masters",
+                "pgn",
+                ":gameId"
+              ],
+              "host": [
+                "explorer",
+                "lichess",
+                "org"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "gameId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/x-chess-pgn"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "oauth2",
+              "oauth2": [
+                {
+                  "key": "scope",
+                  "value": "preference:read preference:write email:read engine:read engine:write challenge:read challenge:write challenge:bulk study:read study:write tournament:write racer:write puzzle:read puzzle:write team:read team:write team:lead follow:read follow:write msg:write board:play bot:play web:mod"
+                },
+                {
+                  "key": "accessTokenUrl",
+                  "value": "https://lichess.org/api/token"
+                },
+                {
+                  "key": "authUrl",
+                  "value": "https://lichess.org/oauth"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "authorization_code"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "3c85b7d5-0f3e-472a-aad1-ac7139a9f816",
+              "name": "The PGN representation of the game.",
+              "originalRequest": {
+                "url": {
+                  "protocol": "https",
+                  "path": [
+                    "masters",
+                    "pgn",
+                    ":gameId"
+                  ],
+                  "host": [
+                    "explorer",
+                    "lichess",
+                    "org"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "gameId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: oauth2",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<token>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/x-chess-pgn"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "Access-Control-Allow-Origin",
+                  "value": "'*'",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/x-chess-pgn"
+                }
+              ],
+              "body": "[Event \"Wch Blitz\"]\n[Site \"Astana\"]\n[Date \"2012.07.10\"]\n[Round \"23\"]\n[White \"Carlsen, Magnus\"]\n[Black \"Chadaev, Nikolay\"]\n[Result \"1-0\"]\n[WhiteElo \"2837\"]\n[BlackElo \"2580\"]\n\n1. e4 e5 2. f4 d5 3. exd5 exf4 4. Nf3 Nf6 5. c4 c6 6. d4 cxd5 7. c5 Nc6 8. Bb5 Be7 9. O-O O-O 10. Bxf4 Bg4 11. Nc3 Ne4 12. Qd3 Bf5 13. Qe3 Bf6 14. Bxc6 bxc6 15. Ne5 Bxe5 16. Bxe5 Bg6 17. Nxe4 Bxe4 18. Qg3 f6 19. Bd6 Re8 20. b4 Bg6 21. a4 a6 22. h4 Qd7 23. h5 Bxh5 24. Rxf6 Qg4 25. Qxg4 Bxg4 26. Rf4 Bh5 27. Raf1 h6 28. Be5 Ra7 29. b5 axb5 30. axb5 cxb5 31. c6 Raa8 32. c7 Kh7 33. Rb1 Be2 34. Rf7 Rg8 35. Re7 Bc4 36. Kh2 Rae8 37. Rd7 Ra8 38. Rb2 Raf8 39. g4 Ra8 40. Rf2 b4 41. Rff7 h5 42. Rxg7+ Rxg7 43. Rxg7+ 1-0\n",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://lichess.org",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "ad22639d-462f-4c65-bb4a-bc2d35fab687",
+    "name": "Lichess.org API reference Account Opening Explorer API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "# Introduction\nWelcome to the reference for the Lichess API! Lichess is free/libre,\nopen-source chess server powered by volunteers and donations.\n- Get help in the [Lichess Discord channel](https://discord.gg/lichess)\n- API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)\n- API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)\n- [Contribute to this documentation on Github](https://github.com/lichess-org/api)\n- Check out [Lichess widgets to embed in your website](https://lichess.org/developers)\n- [Download all Lichess rated games](https://database.lichess.org/)\n- [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)\n- [Download all evaluated positions](https://database.lichess.org/#evals)\n\n## Endpoint\nAll requests go to `https://lichess.org` (unless otherwise specified).\n\n## Clients\n- [Python general API](https://github.com/lichess-org/berserk)\n- [MicroPython general API](https://github.com/mkomon/uberserk)\n- [Python general API - async](https://pypi.org/project/async-lichess-sdk)\n- [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)\n- [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)\n- [Java general API](https://github.com/tors42/chariot)\n- [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)\n- [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)\n- [.NET general API](https://github.com/Dblike/LichessSharp)\n\n## Rate limiting\nAll requests are rate limited using various strategies,\nto ensure the API remains responsive for everyone.\nOnly make one request at a time.\nIf you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),\nyou have exceded one of the rate limits.\nIn most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.\nReduce your request frequency before retrying.\n\n## Streaming with ND-JSON\nSome API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.\n\nHere's a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.\n\n## Authentication\n### Which authentication method is right for me?\n[Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)\n\n### Personal Access Token\nPersonal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.\n- [Generate a personal access token](https://lichess.org/account/oauth/token)\n- `curl https://lichess.org/api/account -H \"Authorization: Bearer {token}\"`\n- [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)\n\n### Token Security\n- Keep your tokens secret. Do not share them in public repositories or public forums.\n- Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens' scope). You remain responsible for all activities on your account.\n- Do not hardcode tokens in your application's code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.\n- If you suspect a token has been compromised, revoke it immediately.\n\nTo see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).\n\n### Authorization Code Flow with PKCE\nThe authorization code flow with PKCE allows your users to **login with Lichess**.\nLichess supports unregistered and public clients (no client authentication, choose any unique client id).\nThe only accepted code challenge method is `S256`.\nAccess tokens are long-lived (expect one year), unless they are revoked.\nRefresh tokens are not supported.\n\nSee the [documentation for the OAuth endpoints](#tag/OAuth) or\nthe [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.\n\n- [Demo app](https://lichess-org.github.io/api-demo/)\n- [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)\n- [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)\n- [Java example](https://github.com/tors42/lichess-oauth-pkce-app)\n- [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)\n\n#### Real life examples\n- [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))\n- [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))\n- [English Chess Federation](https://ecf.octoknight.com/)\n- [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)\n\n### Token format\nAccess tokens and authorization codes match `^[A-Za-z0-9_]+$`.\nThe length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.\nBy convention tokens have a recognizable prefix, but do not rely on this.\n\n\nContact Support:\n Name: Lichess.org API\n Email: contact@lichess.org",
+      "type": "text/plain"
+    }
+  }
+}
