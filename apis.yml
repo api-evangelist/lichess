@@ -105,6 +105,8 @@ apis:
   humanURL: https://lichess.org/api
   baseURL: https://lichess.org
   tags:
+  - Boards
+  tags_raw:
   - Board
   properties:
   - type: OpenAPI
@@ -413,6 +415,8 @@ apis:
   humanURL: https://lichess.org/api
   baseURL: https://lichess.org
   tags:
+  - Authentication
+  tags_raw:
   - OAuth
   properties:
   - type: OpenAPI
@@ -598,6 +602,8 @@ apis:
   humanURL: https://lichess.org/api
   baseURL: https://lichess.org
   tags:
+  - Team
+  tags_raw:
   - Teams
   properties:
   - type: OpenAPI
@@ -707,6 +713,8 @@ apis:
   humanURL: https://lichess.org/api
   baseURL: https://lichess.org
   tags:
+  - User
+  tags_raw:
   - Users
   properties:
   - type: OpenAPI
@@ -725,6 +733,17 @@ apis:
     url: rules/lichess-rules.yml
 name: Lichess
 tags:
+  - Chess
+  - Games
+  - Open-Source
+  - Non-Profit
+  - Tournaments
+  - Puzzles
+  - Bots
+  - Streaming
+  - ND-JSON
+  - Authentication
+tags_raw:
   - Chess
   - Games
   - Open Source
