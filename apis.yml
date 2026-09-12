@@ -785,6 +785,8 @@ accessModel:
 image: https://lichess1.org/assets/logo/lichess-pad12.svg
 access: 3rd-Party
 common:
+  - type: Website
+    url: https://www.lichess.org/
   - type: PostmanWorkspace
     url: https://www.postman.com/kinlaneapi/lichess/overview
   - type: AgenticAccess
