@@ -405,34 +405,6 @@ apis:
     url: json-ld/lichess-context.jsonld
   - type: SpectralRuleset
     url: rules/lichess-rules.yml
-- aid: lichess:lichess-oauth-api
-  name: Lichess OAuth API
-  description: >-
-    Obtaining and revoking OAuth tokens.
-
-
-    [Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md).
-  humanURL: https://lichess.org/api
-  baseURL: https://lichess.org
-  tags:
-  - Authentication
-  tags_raw:
-  - OAuth
-  properties:
-  - type: OpenAPI
-    url: openapi/lichess-oauth-api-openapi.yml
-  - type: Documentation
-    url: https://lichess.org/api
-  - type: AsyncAPI
-    url: asyncapi/lichess-asyncapi.yml
-  - type: JSONSchema
-    url: json-schema/lichess-game-schema.json
-  - type: JSONSchema
-    url: json-schema/lichess-user-schema.json
-  - type: JSONLD
-    url: json-ld/lichess-context.jsonld
-  - type: SpectralRuleset
-    url: rules/lichess-rules.yml
 - aid: lichess:lichess-opening-explorer-api
   name: Lichess Opening Explorer API
   description: >-
@@ -719,6 +691,32 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/lichess-users-api-openapi.yml
+  - type: Documentation
+    url: https://lichess.org/api
+  - type: AsyncAPI
+    url: asyncapi/lichess-asyncapi.yml
+  - type: JSONSchema
+    url: json-schema/lichess-game-schema.json
+  - type: JSONSchema
+    url: json-schema/lichess-user-schema.json
+  - type: JSONLD
+    url: json-ld/lichess-context.jsonld
+  - type: SpectralRuleset
+    url: rules/lichess-rules.yml
+- aid: lichess:lichess-oauth-api
+  name: Lichess O Auth API
+  description: >-
+    Obtaining and revoking OAuth tokens.
+
+
+    [Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md).
+  humanURL: https://lichess.org/api
+  baseURL: https://lichess.org
+  tags:
+  - OAuth
+  properties:
+  - type: OpenAPI
+    url: openapi/lichess-oauth-api-openapi.yml
   - type: Documentation
     url: https://lichess.org/api
   - type: AsyncAPI
