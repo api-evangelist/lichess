@@ -228,6 +228,8 @@ apis:
   humanURL: https://lichess.org/api
   baseURL: https://lichess.org
   tags:
+  - Broadcast
+  tags_raw:
   - Broadcasts
   properties:
   - type: OpenAPI
@@ -713,6 +715,8 @@ apis:
   humanURL: https://lichess.org/api
   baseURL: https://lichess.org
   tags:
+  - Authentication
+  tags_raw:
   - OAuth
   properties:
   - type: OpenAPI
