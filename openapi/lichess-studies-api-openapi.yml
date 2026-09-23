@@ -1,7 +1,7 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   version: 2.0.144
-  title: Lichess.org API reference Account Studies API
+  title: Lichess.org API reference Studies API
   contact:
     name: Lichess.org API
     url: https://lichess.org/api
@@ -13,159 +13,7 @@ info:
     url: https://www.gnu.org/licenses/agpl-3.0.txt
   description: '# Introduction
 
-    Welcome to the reference for the Lichess API! Lichess is free/libre,
-
-    open-source chess server powered by volunteers and donations.
-
-    - Get help in the [Lichess Discord channel](https://discord.gg/lichess)
-
-    - API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)
-
-    - API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)
-
-    - [Contribute to this documentation on Github](https://github.com/lichess-org/api)
-
-    - Check out [Lichess widgets to embed in your website](https://lichess.org/developers)
-
-    - [Download all Lichess rated games](https://database.lichess.org/)
-
-    - [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)
-
-    - [Download all evaluated positions](https://database.lichess.org/#evals)
-
-
-    ## Endpoint
-
-    All requests go to `https://lichess.org` (unless otherwise specified).
-
-
-    ## Clients
-
-    - [Python general API](https://github.com/lichess-org/berserk)
-
-    - [MicroPython general API](https://github.com/mkomon/uberserk)
-
-    - [Python general API - async](https://pypi.org/project/async-lichess-sdk)
-
-    - [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)
-
-    - [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)
-
-    - [Java general API](https://github.com/tors42/chariot)
-
-    - [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)
-
-    - [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)
-
-    - [.NET general API](https://github.com/Dblike/LichessSharp)
-
-
-    ## Rate limiting
-
-    All requests are rate limited using various strategies,
-
-    to ensure the API remains responsive for everyone.
-
-    Only make one request at a time.
-
-    If you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),
-
-    you have exceded one of the rate limits.
-
-    In most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.
-
-    Reduce your request frequency before retrying.
-
-
-    ## Streaming with ND-JSON
-
-    Some API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.
-
-
-    Here''s a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.
-
-
-    ## Authentication
-
-    ### Which authentication method is right for me?
-
-    [Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)
-
-
-    ### Personal Access Token
-
-    Personal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.
-
-    - [Generate a personal access token](https://lichess.org/account/oauth/token)
-
-    - `curl https://lichess.org/api/account -H "Authorization: Bearer {token}"`
-
-    - [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)
-
-
-    ### Token Security
-
-    - Keep your tokens secret. Do not share them in public repositories or public forums.
-
-    - Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens'' scope). You remain responsible for all activities on your account.
-
-    - Do not hardcode tokens in your application''s code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.
-
-    - If you suspect a token has been compromised, revoke it immediately.
-
-
-    To see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).
-
-
-    ### Authorization Code Flow with PKCE
-
-    The authorization code flow with PKCE allows your users to **login with Lichess**.
-
-    Lichess supports unregistered and public clients (no client authentication, choose any unique client id).
-
-    The only accepted code challenge method is `S256`.
-
-    Access tokens are long-lived (expect one year), unless they are revoked.
-
-    Refresh tokens are not supported.
-
-
-    See the [documentation for the OAuth endpoints](#tag/OAuth) or
-
-    the [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.
-
-
-    - [Demo app](https://lichess-org.github.io/api-demo/)
-
-    - [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)
-
-    - [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)
-
-    - [Java example](https://github.com/tors42/lichess-oauth-pkce-app)
-
-    - [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)
-
-
-    #### Real life examples
-
-    - [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))
-
-    - [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))
-
-    - [English Chess Federation](https://ecf.octoknight.com/)
-
-    - [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)
-
-
-    ### Token format
-
-    Access tokens and authorization codes match `^[A-Za-z0-9_]+$`.
-
-    The length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.
-
-    By convention tokens have a recognizable prefix, but do not rely on this.
-
-    '
+    Welcome to the reference for the Lichess API!'
 servers:
 - url: https://lichess.org
 - url: https://lichess.dev
@@ -176,11 +24,7 @@ servers:
 - url: http://l.org
 tags:
 - name: Studies
-  description: 'Access Lichess studies.
-
-    <https://lichess.org/study>
-
-    '
+  description: Access Lichess studies.
 paths:
   /api/study/{studyId}/{chapterId}.pgn:
     get:
@@ -190,9 +34,7 @@ paths:
 
         If authenticated, then all public, unlisted, and private study chapters are read.
 
-        If not, only public (non-unlisted) study chapters are read.
-
-        '
+        If not, only public (non-unlisted) study chapters are read.'
       tags:
       - Studies
       security:
@@ -270,9 +112,7 @@ paths:
 
         If authenticated, then all public, unlisted, and private study chapters are read.
 
-        If not, only public (non-unlisted) study chapters are read.
-
-        '
+        If not, only public (non-unlisted) study chapters are read.'
       tags:
       - Studies
       security:
@@ -346,9 +186,7 @@ paths:
     head:
       operationId: studyAllChaptersHead
       summary: Study metadata
-      description: 'Only get the study headers, including `Last-Modified`.
-
-        '
+      description: Only get the study headers, including `Last-Modified`.
       tags:
       - Studies
       security: []
@@ -377,11 +215,9 @@ paths:
     post:
       operationId: apiStudyPost
       summary: Create a new Study
-      description: 'Create a [study](https://lichess.org/study), and a new empty chapter within it.
+      description: 'Create a study, and a new empty chapter within it.
 
-        You can make up to 30 new studies per day.
-
-        '
+        You can make up to 30 new studies per day.'
       tags:
       - Studies
       security:
@@ -470,15 +306,13 @@ paths:
     post:
       operationId: apiStudyImportPGN
       summary: Import PGN into a study
-      description: 'Imports arbitrary PGN into an existing [study](https://lichess.org/study). Creates a new chapter in the study.
+      description: 'Imports arbitrary PGN into an existing study. Creates a new chapter in the study.
 
         If the PGN contains multiple games (separated by 2 or more newlines)
 
         then multiple chapters will be created within the study.
 
-        Note that a study can contain at most 64 chapters.
-
-        '
+        Note that a study can contain at most 64 chapters.'
       tags:
       - Studies
       security:
@@ -574,9 +408,7 @@ paths:
         - Delete existing chapter tags, by providing a tag with an empty value.
 
 
-        The chapter keeps the tags that you don''t provide.
-
-        '
+        The chapter keeps the tags that you don''t provide.'
       tags:
       - Studies
       security:
@@ -633,9 +465,7 @@ paths:
       summary: Update the moves of a study chapter
       description: 'Replaces the moves tree of a study chapter.
 
-        No tags will be modified.
-
-        '
+        No tags will be modified.'
       tags:
       - Studies
       security:
@@ -696,9 +526,7 @@ paths:
 
         If authenticated, then all public, unlisted, and private studies are included.
 
-        If not, only public (non-unlisted) studies are included.
-
-        '
+        If not, only public (non-unlisted) studies are included.'
       tags:
       - Studies
       security:
@@ -768,9 +596,7 @@ paths:
 
         If not, only public (non-unlisted) studies are included.
 
-        Studies are streamed as [ndjson](#description/streaming-with-nd-json).
-
-        '
+        Studies are streamed as ndjson.'
       tags:
       - Studies
       security:
@@ -825,9 +651,7 @@ paths:
 
         A study must have at least one chapter; so if you delete the last chapter,
 
-        an empty one will be automatically created to replace it.
-
-        '
+        an empty one will be automatically created to replace it.'
       responses:
         '204':
           description: Chapter successfully deleted
@@ -838,6 +662,92 @@ paths:
                 default: '''*'''
 components:
   schemas:
+    StudyMetadata:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The study ID
+        name:
+          type: string
+          description: The study name
+        createdAt:
+          type: integer
+          format: int64
+          description: The study creation date
+        updatedAt:
+          type: integer
+          format: int64
+          description: The study last update date
+      required:
+      - id
+      - name
+      - createdAt
+      - updatedAt
+      example:
+        id: WTvnkWAL
+        name: Guess the move
+        createdAt: 1463756350225
+        updatedAt: 1469965025205
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The cause of the error.
+      required:
+      - error
+      example:
+        error: This request is invalid because [...]
+    StudyPgn:
+      type: string
+      example: '[Event "All about the Sicilian Defense: Dragon Variation"]
+
+        [Site "https://lichess.org/study/8c8bmUfy/qwnXMwVC"]
+
+        [Result "*"]
+
+        [UTCDate "2017.06.25"]
+
+        [UTCTime "10:12:04"]
+
+        [Variant "Standard"]
+
+        [ECO "B76"]
+
+        [Opening "Sicilian Defense: Dragon Variation, Yugoslav Attack, Panov Variation"]
+
+        [Annotator "https://lichess.org/@/Francesco_Super"]
+
+
+        { This chapter will go over the Dragon Variation, a very common variation used by Black and it is the most aggressive variation in the Sicilian defense. }
+
+        1. e4 c5 2. Nf3 { Simple developing move to control the d4 square } { [%csl Gd4,Gc5][%cal Gf3d4,Gc5d4] } 2... d6 { [%cal Gd6e5] } (2... e6 3. d4 cxd4 4. Nxd4 Nf6 5. e5 (5. Nc3 { [%cal Ge4e5] }) 5... Qa5+) 3. d4 { Whites want the exchange of pawns } { [%cal Gc5d4] } 3... cxd4 { [%cal Gf3d4] } 4. Nxd4 { Whites are now ahead in development but blacks still have the two central pawns whereas whites only one. } { [%csl Ge7,Gd6,Ge4] } 4... Nf6 { Blacks are now developing their knight and threatening the e4 pawn } { [%csl Ge4][%cal Gf6e4] } 5. Nc3 { The e4 pawn is now protected by the c3 knight } { [%csl Ge4,Bc3][%cal Rf6e4,Bc3e4] } 5... g6 { This is the DRAGON VARIATION. g6 allows the dark-squared bishop to develop and move to g7, controlling the long dark-squared diagonal } { [%csl Gd4] } 6. Be3 { [%cal Gd1d2,Gf2f3,Ge1c1,Gg2g4,Gh2h4,Gg4g5] } (6. Be2 Bg7 7. O-O Nc6 8. Be3 { [%cal Ge3d4] } (8. f3 Nxe4 { [%cal Gg7d4,Gc6d4] } 9. Nxc6 Qb6+ { [%cal Gb6c6,Gb6g1] } 10. Kh1 Nxc3 { [%cal Gc3d1,Gc3e2] } 11. bxc3 bxc6 { [%cal Gc8a6] }) 8... O-O 9. Nb3 a6 { [%cal Gb7b5,Gb5b4,Ge2c4] }) 6... Bg7 (6... Ng4 { [%cal Gg4e3] } 7. Bb5+ { [%cal Gb5e8,Gb8d7,Gc8d7,Gd1g4] } 7... Nc6 8. Nxc6 bxc6 9. Bxc6+ { [%cal Gc6a8] }) 7. f3 { The key opening moves for White, who attempt to castle queenside , whereas f3 strengthens the pawn structure, connecting e4 to the h2 and g2, while White also plan pushing to g4 and possibly h4. } { [%csl Bf3,Be3][%cal Rg2g4,Rh2h4,Rg4g5] } 7... O-O (7... h5 { Is operating against g4. }) 8. Qd2 { [%csl Gh6,Gg7][%cal Ge1c1,Ga1d1,Re3h6,Rd2h6] } 8... Nc6 { [%csl Gc6,Gh6][%cal Gb8c6,Ge1c1,Ga7a6,Ge3h6] } 9. g4 (9. Bh6 { [%cal Ge3d4] } 9... Bxh6 10. Qxh6 Nxd4) 9... Be6 10. Nxe6 fxe6 { [%cal Gf8f1] } 11. O-O-O Ne5 12. Be2 { [%csl Gf3][%cal Re5f3,Bd1h1,Bg1d1] } 12... Qc7 { [%csl Gc4][%cal Ge5c4,Gc4e3,Gc4d2,Bf8c8,Yc7c3] } 13. h4 Nc4 *
+
+        '
+    VariantKey:
+      type: string
+      enum:
+      - standard
+      - chess960
+      - crazyhouse
+      - antichess
+      - atomic
+      - horde
+      - kingOfTheHill
+      - racingKings
+      - threeCheck
+      - fromPosition
+      example: standard
+      default: standard
+    StudyUserSelection:
+      type: string
+      enum:
+      - nobody
+      - owner
+      - contributor
+      - member
+      - everyone
     StudyImportPgnChapters:
       type: object
       properties:
@@ -880,92 +790,6 @@ components:
           - name: Chadaev, Nikolay
             rating: 2580
           status: 1-0
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-          description: The cause of the error.
-      required:
-      - error
-      example:
-        error: This request is invalid because [...]
-    StudyPgn:
-      type: string
-      example: '[Event "All about the Sicilian Defense: Dragon Variation"]
-
-        [Site "https://lichess.org/study/8c8bmUfy/qwnXMwVC"]
-
-        [Result "*"]
-
-        [UTCDate "2017.06.25"]
-
-        [UTCTime "10:12:04"]
-
-        [Variant "Standard"]
-
-        [ECO "B76"]
-
-        [Opening "Sicilian Defense: Dragon Variation, Yugoslav Attack, Panov Variation"]
-
-        [Annotator "https://lichess.org/@/Francesco_Super"]
-
-
-        { This chapter will go over the Dragon Variation, a very common variation used by Black and it is the most aggressive variation in the Sicilian defense. }
-
-        1. e4 c5 2. Nf3 { Simple developing move to control the d4 square } { [%csl Gd4,Gc5][%cal Gf3d4,Gc5d4] } 2... d6 { [%cal Gd6e5] } (2... e6 3. d4 cxd4 4. Nxd4 Nf6 5. e5 (5. Nc3 { [%cal Ge4e5] }) 5... Qa5+) 3. d4 { Whites want the exchange of pawns } { [%cal Gc5d4] } 3... cxd4 { [%cal Gf3d4] } 4. Nxd4 { Whites are now ahead in development but blacks still have the two central pawns whereas whites only one. } { [%csl Ge7,Gd6,Ge4] } 4... Nf6 { Blacks are now developing their knight and threatening the e4 pawn } { [%csl Ge4][%cal Gf6e4] } 5. Nc3 { The e4 pawn is now protected by the c3 knight } { [%csl Ge4,Bc3][%cal Rf6e4,Bc3e4] } 5... g6 { This is the DRAGON VARIATION. g6 allows the dark-squared bishop to develop and move to g7, controlling the long dark-squared diagonal } { [%csl Gd4] } 6. Be3 { [%cal Gd1d2,Gf2f3,Ge1c1,Gg2g4,Gh2h4,Gg4g5] } (6. Be2 Bg7 7. O-O Nc6 8. Be3 { [%cal Ge3d4] } (8. f3 Nxe4 { [%cal Gg7d4,Gc6d4] } 9. Nxc6 Qb6+ { [%cal Gb6c6,Gb6g1] } 10. Kh1 Nxc3 { [%cal Gc3d1,Gc3e2] } 11. bxc3 bxc6 { [%cal Gc8a6] }) 8... O-O 9. Nb3 a6 { [%cal Gb7b5,Gb5b4,Ge2c4] }) 6... Bg7 (6... Ng4 { [%cal Gg4e3] } 7. Bb5+ { [%cal Gb5e8,Gb8d7,Gc8d7,Gd1g4] } 7... Nc6 8. Nxc6 bxc6 9. Bxc6+ { [%cal Gc6a8] }) 7. f3 { The key opening moves for White, who attempt to castle queenside , whereas f3 strengthens the pawn structure, connecting e4 to the h2 and g2, while White also plan pushing to g4 and possibly h4. } { [%csl Bf3,Be3][%cal Rg2g4,Rh2h4,Rg4g5] } 7... O-O (7... h5 { Is operating against g4. }) 8. Qd2 { [%csl Gh6,Gg7][%cal Ge1c1,Ga1d1,Re3h6,Rd2h6] } 8... Nc6 { [%csl Gc6,Gh6][%cal Gb8c6,Ge1c1,Ga7a6,Ge3h6] } 9. g4 (9. Bh6 { [%cal Ge3d4] } 9... Bxh6 10. Qxh6 Nxd4) 9... Be6 10. Nxe6 fxe6 { [%cal Gf8f1] } 11. O-O-O Ne5 12. Be2 { [%csl Gf3][%cal Re5f3,Bd1h1,Bg1d1] } 12... Qc7 { [%csl Gc4][%cal Ge5c4,Gc4e3,Gc4d2,Bf8c8,Yc7c3] } 13. h4 Nc4 *
-
-        '
-    StudyMetadata:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The study ID
-        name:
-          type: string
-          description: The study name
-        createdAt:
-          type: integer
-          format: int64
-          description: The study creation date
-        updatedAt:
-          type: integer
-          format: int64
-          description: The study last update date
-      required:
-      - id
-      - name
-      - createdAt
-      - updatedAt
-      example:
-        id: WTvnkWAL
-        name: Guess the move
-        createdAt: 1463756350225
-        updatedAt: 1469965025205
-    VariantKey:
-      type: string
-      enum:
-      - standard
-      - chess960
-      - crazyhouse
-      - antichess
-      - atomic
-      - horde
-      - kingOfTheHill
-      - racingKings
-      - threeCheck
-      - fromPosition
-      example: standard
-      default: standard
-    StudyUserSelection:
-      type: string
-      enum:
-      - nobody
-      - owner
-      - contributor
-      - member
-      - everyone
   securitySchemes:
     OAuth2:
       type: oauth2

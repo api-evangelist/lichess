@@ -1,7 +1,7 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   version: 2.0.144
-  title: Lichess.org API reference Account Challenges API
+  title: Lichess.org API reference Challenges API
   contact:
     name: Lichess.org API
     url: https://lichess.org/api
@@ -13,159 +13,7 @@ info:
     url: https://www.gnu.org/licenses/agpl-3.0.txt
   description: '# Introduction
 
-    Welcome to the reference for the Lichess API! Lichess is free/libre,
-
-    open-source chess server powered by volunteers and donations.
-
-    - Get help in the [Lichess Discord channel](https://discord.gg/lichess)
-
-    - API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)
-
-    - API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)
-
-    - [Contribute to this documentation on Github](https://github.com/lichess-org/api)
-
-    - Check out [Lichess widgets to embed in your website](https://lichess.org/developers)
-
-    - [Download all Lichess rated games](https://database.lichess.org/)
-
-    - [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)
-
-    - [Download all evaluated positions](https://database.lichess.org/#evals)
-
-
-    ## Endpoint
-
-    All requests go to `https://lichess.org` (unless otherwise specified).
-
-
-    ## Clients
-
-    - [Python general API](https://github.com/lichess-org/berserk)
-
-    - [MicroPython general API](https://github.com/mkomon/uberserk)
-
-    - [Python general API - async](https://pypi.org/project/async-lichess-sdk)
-
-    - [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)
-
-    - [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)
-
-    - [Java general API](https://github.com/tors42/chariot)
-
-    - [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)
-
-    - [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)
-
-    - [.NET general API](https://github.com/Dblike/LichessSharp)
-
-
-    ## Rate limiting
-
-    All requests are rate limited using various strategies,
-
-    to ensure the API remains responsive for everyone.
-
-    Only make one request at a time.
-
-    If you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),
-
-    you have exceded one of the rate limits.
-
-    In most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.
-
-    Reduce your request frequency before retrying.
-
-
-    ## Streaming with ND-JSON
-
-    Some API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.
-
-
-    Here''s a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.
-
-
-    ## Authentication
-
-    ### Which authentication method is right for me?
-
-    [Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)
-
-
-    ### Personal Access Token
-
-    Personal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.
-
-    - [Generate a personal access token](https://lichess.org/account/oauth/token)
-
-    - `curl https://lichess.org/api/account -H "Authorization: Bearer {token}"`
-
-    - [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)
-
-
-    ### Token Security
-
-    - Keep your tokens secret. Do not share them in public repositories or public forums.
-
-    - Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens'' scope). You remain responsible for all activities on your account.
-
-    - Do not hardcode tokens in your application''s code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.
-
-    - If you suspect a token has been compromised, revoke it immediately.
-
-
-    To see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).
-
-
-    ### Authorization Code Flow with PKCE
-
-    The authorization code flow with PKCE allows your users to **login with Lichess**.
-
-    Lichess supports unregistered and public clients (no client authentication, choose any unique client id).
-
-    The only accepted code challenge method is `S256`.
-
-    Access tokens are long-lived (expect one year), unless they are revoked.
-
-    Refresh tokens are not supported.
-
-
-    See the [documentation for the OAuth endpoints](#tag/OAuth) or
-
-    the [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.
-
-
-    - [Demo app](https://lichess-org.github.io/api-demo/)
-
-    - [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)
-
-    - [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)
-
-    - [Java example](https://github.com/tors42/lichess-oauth-pkce-app)
-
-    - [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)
-
-
-    #### Real life examples
-
-    - [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))
-
-    - [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))
-
-    - [English Chess Federation](https://ecf.octoknight.com/)
-
-    - [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)
-
-
-    ### Token format
-
-    Access tokens and authorization codes match `^[A-Za-z0-9_]+$`.
-
-    The length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.
-
-    By convention tokens have a recognizable prefix, but do not rely on this.
-
-    '
+    Welcome to the reference for the Lichess API!'
 servers:
 - url: https://lichess.org
 - url: https://lichess.dev
@@ -179,17 +27,13 @@ tags:
   description: 'Send and receive challenges to play.
 
 
-    To create a lot of challenges, consider [bulk pairing](#tag/bulk-pairings/POST/api/bulk-pairing) instead.
-
-    '
+    To create a lot of challenges, consider bulk pairing instead.'
 paths:
   /api/challenge:
     get:
       operationId: challengeList
       summary: List your challenges
-      description: 'Get a list of challenges created by or targeted at you.
-
-        '
+      description: Get a list of challenges created by or targeted at you.
       tags:
       - Challenges
       security:
@@ -227,15 +71,13 @@ paths:
       summary: Create a challenge
       description: 'Challenge someone to play. The targeted player can choose to accept or decline.
 
-        If the challenge is accepted, you will be notified on the [event stream](#tag/board/GET/api/board/game/stream/{gameId})
+        If the challenge is accepted, you will be notified on the event stream
 
         that a new game has started. The game ID will be the same as the challenge ID.
 
         Challenges for realtime games (not correspondence) expire after 20s if not accepted.
 
-        To prevent that, use the `keepAliveStream` flag described below.
-
-        '
+        To prevent that, use the `keepAliveStream` flag described below.'
       tags:
       - Challenges
       security:
@@ -359,9 +201,7 @@ paths:
     get:
       operationId: challengeShow
       summary: Show one challenge
-      description: 'Get details about a challenge, even if it has been recently accepted, canceled or declined.
-
-        '
+      description: Get details about a challenge, even if it has been recently accepted, canceled or declined.
       tags:
       - Challenges
       security:
@@ -395,9 +235,7 @@ paths:
       summary: Accept a challenge
       description: 'Accept an incoming challenge.
 
-        You should receive a `gameStart` event on the [incoming events stream](#tag/board/GET/api/board/game/stream/{gameId}).
-
-        '
+        You should receive a `gameStart` event on the incoming events stream.'
       tags:
       - Challenges
       security:
@@ -445,9 +283,7 @@ paths:
     post:
       operationId: challengeDecline
       summary: Decline a challenge
-      description: 'Decline an incoming challenge.
-
-        '
+      description: Decline an incoming challenge.
       tags:
       - Challenges
       security:
@@ -514,9 +350,7 @@ paths:
 
         Note that the ID of a game is the same as the ID of the challenge that created it.
 
-        Works for user challenges and open challenges alike.
-
-        '
+        Works for user challenges and open challenges alike.'
       tags:
       - Challenges
       security:
@@ -563,9 +397,7 @@ paths:
       summary: Challenge the AI
       description: 'Start a game with Lichess AI.
 
-        You will be notified on the [event stream](#tag/board/GET/api/board/game/stream/{gameId}) that a new game has started.
-
-        '
+        You will be notified on the event stream that a new game has started.'
       tags:
       - Challenges
       security:
@@ -685,13 +517,11 @@ paths:
 
         Open challenges expire after 24h.
 
-        If the challenge creation is [authenticated with OAuth2](#description/authentication),
+        If the challenge creation is authenticated with OAuth2,
 
-        then you can use the [challenge cancel endpoint](#tag/challenges/POST/api/challenge/{challengeId}/cancel) to cancel it.
+        then you can use the challenge cancel endpoint to cancel it.
 
-        To directly pair 2 known players, use [this endpoint](#tag/bulk-pairings/GET/api/bulk-pairing) instead.
-
-        '
+        To directly pair 2 known players, use this endpoint instead.'
       tags:
       - Challenges
       security: []
@@ -798,9 +628,7 @@ paths:
         If the clocks have already started, the call will have no effect.
 
 
-        For AI games with only one player, omit the `token2` parameter.
-
-        '
+        For AI games with only one player, omit the `token2` parameter.'
       tags:
       - Challenges
       security:
@@ -843,9 +671,7 @@ paths:
     post:
       operationId: roundAddTime
       summary: Add time to the opponent clock
-      description: 'Add seconds to the opponent''s clock. Can be used to create games with time odds.
-
-        '
+      description: Add seconds to the opponent's clock. Can be used to create games with time odds.
       tags:
       - Challenges
       security:
@@ -885,13 +711,11 @@ paths:
     post:
       operationId: adminChallengeTokens
       summary: Admin challenge tokens
-      description: '**This endpoint can only be used by Lichess administrators. It will not work if you do not have the appropriate permissions.** Tournament organizers should instead use [OAuth](#tag/OAuth) to obtain `challenge:write` tokens from users in order to perform bulk pairing.*
+      description: '**This endpoint can only be used by Lichess administrators. It will not work if you do not have the appropriate permissions.** Tournament organizers should instead use OAuth to obtain `challenge:write` tokens from users in order to perform bulk pairing.*
 
         Create and obtain `challenge:write` tokens for multiple users.
 
-        If a similar token already exists for a user, it is reused. This endpoint is idempotent.
-
-        '
+        If a similar token already exists for a user, it is reused. This endpoint is idempotent.'
       tags:
       - Challenges
       security:
@@ -940,28 +764,16 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    PatronColor:
-      type: integer
-      description: 'Players can choose a color for their Patron wings.
-
-        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
-
-
-        The presence of this field indicates the player is an active Patron.
-
-        '
-      minimum: 1
-      maximum: 10
-    FromPositionFEN:
-      type: string
-      description: Custom initial position (in X-FEN). Variant must be standard, fromPosition, or chess960 (if a valid 960 starting position), and the game cannot be rated.
-      default: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
-    ChallengeColor:
-      type: string
-      enum:
-      - white
-      - black
-      - random
+    GameStatus:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/GameStatusId'
+        name:
+          $ref: '#/components/schemas/GameStatusName'
+      required:
+      - id
+      - name
     Variant:
       type: object
       properties:
@@ -974,27 +786,50 @@ components:
       required:
       - key
       - name
-    Patron:
-      type: boolean
-      deprecated: true
-      description: 'Use patronColor value instead to determine if player is a patron.
-
-        '
-    VariantKey:
+    GameStatusName:
       type: string
       enum:
-      - standard
-      - chess960
-      - crazyhouse
-      - antichess
-      - atomic
-      - horde
-      - kingOfTheHill
-      - racingKings
-      - threeCheck
-      - fromPosition
-      example: standard
-      default: standard
+      - created
+      - started
+      - aborted
+      - mate
+      - resign
+      - stalemate
+      - timeout
+      - draw
+      - outoftime
+      - cheat
+      - noStart
+      - unknownFinish
+      - insufficientMaterialClaim
+      - variantEnd
+    GameStatusId:
+      type: integer
+      enum:
+      - 10
+      - 20
+      - 25
+      - 30
+      - 31
+      - 32
+      - 33
+      - 34
+      - 35
+      - 36
+      - 37
+      - 38
+      - 39
+      - 60
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The cause of the error.
+      required:
+      - error
+      example:
+        error: This request is invalid because [...]
     ChallengeUser:
       type: object
       properties:
@@ -1021,172 +856,71 @@ components:
       required:
       - id
       - name
+    Patron:
+      type: boolean
+      deprecated: true
+      description: 'Use patronColor value instead to determine if player is a patron.
+
+        '
     GameColor:
       type: string
       enum:
       - white
       - black
-    NotFound:
-      properties:
-        error:
-          type: string
-      required:
-      - error
-      example:
-        error: Not found.
-    ChallengeOpenJson:
-      type: object
-      properties:
-        id:
-          type: string
-        url:
-          type: string
-          format: uri
-        status:
-          $ref: '#/components/schemas/ChallengeStatus'
-        challenger:
-          type: 'null'
-        destUser:
-          type: 'null'
-        variant:
-          $ref: '#/components/schemas/Variant'
-        rated:
-          type: boolean
-        speed:
-          $ref: '#/components/schemas/Speed'
-        timeControl:
-          $ref: '#/components/schemas/TimeControl'
-        color:
-          $ref: '#/components/schemas/ChallengeColor'
-        finalColor:
-          $ref: '#/components/schemas/GameColor'
-        perf:
-          type: object
-          properties:
-            icon:
-              type: string
-            name:
-              type: string
-        initialFen:
-          type: string
-        urlWhite:
-          type: string
-          format: uri
-        urlBlack:
-          type: string
-          format: uri
-        open:
-          type: object
-          properties:
-            userIds:
-              description: An optional array of two user ids. If set, only these users will be allowed to join the game. The first username gets the white pieces.
-              type: array
-              items:
-                type: string
-              minItems: 2
-              maxItems: 2
-      required:
-      - id
-      - url
-      - status
-      - challenger
-      - destUser
-      - variant
-      - rated
-      - speed
-      - timeControl
-      - color
-      - perf
-      - urlWhite
-      - urlBlack
-      - open
+    FromPositionFEN:
+      type: string
+      description: Custom initial position (in X-FEN). Variant must be standard, fromPosition, or chess960 (if a valid 960 starting position), and the game cannot be rated.
+      default: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+    TimeControl:
+      oneOf:
+      - type: object
+        title: Real-time
+        properties:
+          type:
+            type: string
+            const: clock
+          limit:
+            type: integer
+          increment:
+            type: integer
+          show:
+            example: 5+2
+            type: string
+        additionalProperties: false
+      - type: object
+        title: Correspondence
+        properties:
+          type:
+            type: string
+            const: correspondence
+          daysPerTurn:
+            type: integer
+        additionalProperties: false
+      - type: object
+        title: Unlimited
+        properties:
+          type:
+            type: string
+            const: unlimited
+        additionalProperties: false
     Ok:
       properties:
         ok:
           type: boolean
       required:
       - ok
-    PerfType:
-      type: string
-      enum:
-      - ultraBullet
-      - bullet
-      - blitz
-      - rapid
-      - classical
-      - correspondence
-      - chess960
-      - crazyhouse
-      - antichess
-      - atomic
-      - horde
-      - kingOfTheHill
-      - racingKings
-      - threeCheck
-    GameStatusId:
+    PatronColor:
       type: integer
-      enum:
-      - 10
-      - 20
-      - 25
-      - 30
-      - 31
-      - 32
-      - 33
-      - 34
-      - 35
-      - 36
-      - 37
-      - 38
-      - 39
-      - 60
-    Flair:
-      type: string
-      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-          description: The cause of the error.
-      required:
-      - error
-      example:
-        error: This request is invalid because [...]
-    ChallengeStatus:
-      type: string
-      enum:
-      - created
-      - offline
-      - canceled
-      - declined
-      - accepted
-    GameStatusName:
-      type: string
-      enum:
-      - created
-      - started
-      - aborted
-      - mate
-      - resign
-      - stalemate
-      - timeout
-      - draw
-      - outoftime
-      - cheat
-      - noStart
-      - unknownFinish
-      - insufficientMaterialClaim
-      - variantEnd
-    Speed:
-      type: string
-      enum:
-      - ultraBullet
-      - bullet
-      - blitz
-      - rapid
-      - classical
-      - correspondence
+      description: 'Players can choose a color for their Patron wings.
+
+        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
+
+
+        The presence of this field indicates the player is an active Patron.
+
+        '
+      minimum: 1
+      maximum: 10
     ChallengeJson:
       type: object
       properties:
@@ -1283,6 +1017,81 @@ components:
           icon: 
           name: Rapid
         direction: out
+    ChallengeOpenJson:
+      type: object
+      properties:
+        id:
+          type: string
+        url:
+          type: string
+          format: uri
+        status:
+          $ref: '#/components/schemas/ChallengeStatus'
+        challenger:
+          type: 'null'
+        destUser:
+          type: 'null'
+        variant:
+          $ref: '#/components/schemas/Variant'
+        rated:
+          type: boolean
+        speed:
+          $ref: '#/components/schemas/Speed'
+        timeControl:
+          $ref: '#/components/schemas/TimeControl'
+        color:
+          $ref: '#/components/schemas/ChallengeColor'
+        finalColor:
+          $ref: '#/components/schemas/GameColor'
+        perf:
+          type: object
+          properties:
+            icon:
+              type: string
+            name:
+              type: string
+        initialFen:
+          type: string
+        urlWhite:
+          type: string
+          format: uri
+        urlBlack:
+          type: string
+          format: uri
+        open:
+          type: object
+          properties:
+            userIds:
+              description: An optional array of two user ids. If set, only these users will be allowed to join the game. The first username gets the white pieces.
+              type: array
+              items:
+                type: string
+              minItems: 2
+              maxItems: 2
+      required:
+      - id
+      - url
+      - status
+      - challenger
+      - destUser
+      - variant
+      - rated
+      - speed
+      - timeControl
+      - color
+      - perf
+      - urlWhite
+      - urlBlack
+      - open
+    Speed:
+      type: string
+      enum:
+      - ultraBullet
+      - bullet
+      - blitz
+      - rapid
+      - classical
+      - correspondence
     GameSource:
       type: string
       enum:
@@ -1299,38 +1108,17 @@ components:
       - pool
       - arena
       - swiss
-    TimeControl:
-      oneOf:
-      - type: object
-        title: Real-time
-        properties:
-          type:
-            type: string
-            const: clock
-          limit:
-            type: integer
-          increment:
-            type: integer
-          show:
-            example: 5+2
-            type: string
-        additionalProperties: false
-      - type: object
-        title: Correspondence
-        properties:
-          type:
-            type: string
-            const: correspondence
-          daysPerTurn:
-            type: integer
-        additionalProperties: false
-      - type: object
-        title: Unlimited
-        properties:
-          type:
-            type: string
-            const: unlimited
-        additionalProperties: false
+    ChallengeStatus:
+      type: string
+      enum:
+      - created
+      - offline
+      - canceled
+      - declined
+      - accepted
+    Flair:
+      type: string
+      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
     Title:
       type: string
       enum:
@@ -1347,73 +1135,57 @@ components:
       - LM
       - BOT
       description: only appears if the user is a titled player or a bot user
-    GameStatus:
-      type: object
+    NotFound:
       properties:
-        id:
-          $ref: '#/components/schemas/GameStatusId'
-        name:
-          $ref: '#/components/schemas/GameStatusName'
+        error:
+          type: string
       required:
-      - id
-      - name
+      - error
+      example:
+        error: Not found.
+    PerfType:
+      type: string
+      enum:
+      - ultraBullet
+      - bullet
+      - blitz
+      - rapid
+      - classical
+      - correspondence
+      - chess960
+      - crazyhouse
+      - antichess
+      - atomic
+      - horde
+      - kingOfTheHill
+      - racingKings
+      - threeCheck
+    VariantKey:
+      type: string
+      enum:
+      - standard
+      - chess960
+      - crazyhouse
+      - antichess
+      - atomic
+      - horde
+      - kingOfTheHill
+      - racingKings
+      - threeCheck
+      - fromPosition
+      example: standard
+      default: standard
+    ChallengeColor:
+      type: string
+      enum:
+      - white
+      - black
+      - random
   examples:
+    challenges-startClocks.json:
+      value:
+        ok: true
     challenges-addTimeToOpponent.json:
-      value:
-        ok: true
-    challenges-listYourChallenges.json:
-      value:
-        in:
-        - id: 0y3rsNn7
-          url: https://lichess.org/0y3rsNn7
-          status: created
-          challenger:
-            name: Bobby
-            id: bobby
-            rating: 1804
-          destUser:
-            name: Mary
-            flair: people.open-hands-medium-light-skin-tone
-            id: mary
-            rating: 1083
-          variant:
-            key: standard
-            name: Standard
-            short: Std
-          rated: false
-          speed: correspondence
-          timeControl:
-            type: unlimited
-          color: random
-          finalColor: black
-          perf:
-            icon: 
-            name: Correspondence
-          direction: in
-        out: []
-    challenges-acceptChallenge.json:
-      value:
-        ok: true
-    challenges-challengeAi.json:
-      value:
-        id: bJmjyqRp
-        variant:
-          key: standard
-          name: Standard
-          short: Std
-        speed: correspondence
-        perf: correspondence
-        rated: false
-        source: ai
-        createdAt: 1778812610240
-        fen: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
-        turns: 0
-        status:
-          id: 20
-          name: started
-        player: white
-        fullId: bJmjyqRpVbRl
-    challenges-cancelChallenge.json:
       value:
         ok: true
     challenges-createChallenge.json:
@@ -1444,40 +1216,9 @@ components:
           icon: 
           name: Correspondence
         direction: out
-    challenges-startClocks.json:
+    challenges-cancelChallenge.json:
       value:
         ok: true
-    challenges-adminChallengeTokens.json:
-      value:
-        bobby: lip_bobby_secret
-        boris: lip_boris_secret
-        mary: lip_mary_secret
-    challenges-declineChallenge.json:
-      value:
-        ok: true
-    challenges-openEndedChallenge.json:
-      value:
-        id: aiq0evtm
-        url: https://lichess.org/aiq0evtm
-        status: created
-        challenger: null
-        destUser: null
-        variant:
-          key: standard
-          name: Standard
-          short: Std
-        rated: false
-        speed: correspondence
-        timeControl:
-          type: unlimited
-        color: random
-        finalColor: white
-        perf:
-          icon: 
-          name: Correspondence
-        open: {}
-        urlWhite: https://lichess.org/aiq0evtm?color=white
-        urlBlack: https://lichess.org/aiq0evtm?color=black
     challenges-showOneChallenge.json:
       value:
         id: 0y3rsNn7
@@ -1506,6 +1247,89 @@ components:
           icon: 
           name: Correspondence
         direction: in
+    challenges-challengeAi.json:
+      value:
+        id: bJmjyqRp
+        variant:
+          key: standard
+          name: Standard
+          short: Std
+        speed: correspondence
+        perf: correspondence
+        rated: false
+        source: ai
+        createdAt: 1778812610240
+        fen: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+        turns: 0
+        status:
+          id: 20
+          name: started
+        player: white
+        fullId: bJmjyqRpVbRl
+    challenges-adminChallengeTokens.json:
+      value:
+        bobby: lip_bobby_secret
+        boris: lip_boris_secret
+        mary: lip_mary_secret
+    challenges-listYourChallenges.json:
+      value:
+        in:
+        - id: 0y3rsNn7
+          url: https://lichess.org/0y3rsNn7
+          status: created
+          challenger:
+            name: Bobby
+            id: bobby
+            rating: 1804
+          destUser:
+            name: Mary
+            flair: people.open-hands-medium-light-skin-tone
+            id: mary
+            rating: 1083
+          variant:
+            key: standard
+            name: Standard
+            short: Std
+          rated: false
+          speed: correspondence
+          timeControl:
+            type: unlimited
+          color: random
+          finalColor: black
+          perf:
+            icon: 
+            name: Correspondence
+          direction: in
+        out: []
+    challenges-openEndedChallenge.json:
+      value:
+        id: aiq0evtm
+        url: https://lichess.org/aiq0evtm
+        status: created
+        challenger: null
+        destUser: null
+        variant:
+          key: standard
+          name: Standard
+          short: Std
+        rated: false
+        speed: correspondence
+        timeControl:
+          type: unlimited
+        color: random
+        finalColor: white
+        perf:
+          icon: 
+          name: Correspondence
+        open: {}
+        urlWhite: https://lichess.org/aiq0evtm?color=white
+        urlBlack: https://lichess.org/aiq0evtm?color=black
+    challenges-acceptChallenge.json:
+      value:
+        ok: true
+    challenges-declineChallenge.json:
+      value:
+        ok: true
   securitySchemes:
     OAuth2:
       type: oauth2

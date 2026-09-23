@@ -1,7 +1,7 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   version: 2.0.144
-  title: Lichess.org API reference Account Tournaments (Swiss) API
+  title: Lichess.org API reference Tournaments (Swiss) API
   contact:
     name: Lichess.org API
     url: https://lichess.org/api
@@ -13,159 +13,7 @@ info:
     url: https://www.gnu.org/licenses/agpl-3.0.txt
   description: '# Introduction
 
-    Welcome to the reference for the Lichess API! Lichess is free/libre,
-
-    open-source chess server powered by volunteers and donations.
-
-    - Get help in the [Lichess Discord channel](https://discord.gg/lichess)
-
-    - API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)
-
-    - API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)
-
-    - [Contribute to this documentation on Github](https://github.com/lichess-org/api)
-
-    - Check out [Lichess widgets to embed in your website](https://lichess.org/developers)
-
-    - [Download all Lichess rated games](https://database.lichess.org/)
-
-    - [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)
-
-    - [Download all evaluated positions](https://database.lichess.org/#evals)
-
-
-    ## Endpoint
-
-    All requests go to `https://lichess.org` (unless otherwise specified).
-
-
-    ## Clients
-
-    - [Python general API](https://github.com/lichess-org/berserk)
-
-    - [MicroPython general API](https://github.com/mkomon/uberserk)
-
-    - [Python general API - async](https://pypi.org/project/async-lichess-sdk)
-
-    - [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)
-
-    - [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)
-
-    - [Java general API](https://github.com/tors42/chariot)
-
-    - [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)
-
-    - [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)
-
-    - [.NET general API](https://github.com/Dblike/LichessSharp)
-
-
-    ## Rate limiting
-
-    All requests are rate limited using various strategies,
-
-    to ensure the API remains responsive for everyone.
-
-    Only make one request at a time.
-
-    If you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),
-
-    you have exceded one of the rate limits.
-
-    In most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.
-
-    Reduce your request frequency before retrying.
-
-
-    ## Streaming with ND-JSON
-
-    Some API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.
-
-
-    Here''s a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.
-
-
-    ## Authentication
-
-    ### Which authentication method is right for me?
-
-    [Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)
-
-
-    ### Personal Access Token
-
-    Personal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.
-
-    - [Generate a personal access token](https://lichess.org/account/oauth/token)
-
-    - `curl https://lichess.org/api/account -H "Authorization: Bearer {token}"`
-
-    - [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)
-
-
-    ### Token Security
-
-    - Keep your tokens secret. Do not share them in public repositories or public forums.
-
-    - Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens'' scope). You remain responsible for all activities on your account.
-
-    - Do not hardcode tokens in your application''s code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.
-
-    - If you suspect a token has been compromised, revoke it immediately.
-
-
-    To see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).
-
-
-    ### Authorization Code Flow with PKCE
-
-    The authorization code flow with PKCE allows your users to **login with Lichess**.
-
-    Lichess supports unregistered and public clients (no client authentication, choose any unique client id).
-
-    The only accepted code challenge method is `S256`.
-
-    Access tokens are long-lived (expect one year), unless they are revoked.
-
-    Refresh tokens are not supported.
-
-
-    See the [documentation for the OAuth endpoints](#tag/OAuth) or
-
-    the [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.
-
-
-    - [Demo app](https://lichess-org.github.io/api-demo/)
-
-    - [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)
-
-    - [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)
-
-    - [Java example](https://github.com/tors42/lichess-oauth-pkce-app)
-
-    - [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)
-
-
-    #### Real life examples
-
-    - [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))
-
-    - [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))
-
-    - [English Chess Federation](https://ecf.octoknight.com/)
-
-    - [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)
-
-
-    ### Token format
-
-    Access tokens and authorization codes match `^[A-Za-z0-9_]+$`.
-
-    The length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.
-
-    By convention tokens have a recognizable prefix, but do not rely on this.
-
-    '
+    Welcome to the reference for the Lichess API!'
 servers:
 - url: https://lichess.org
 - url: https://lichess.dev
@@ -178,15 +26,23 @@ tags:
 - name: Tournaments (Swiss)
   description: 'Access Swiss tournaments played on Lichess.
 
-    [Read more about Swiss tournaments.](https://lichess.org/swiss).
-
-    '
+    Read more about Swiss tournaments..'
 paths:
   /api/swiss/new/{teamId}:
     post:
       operationId: apiSwissNew
       summary: Create a new Swiss tournament
-      description: "Create a Swiss tournament for your team.\nThis endpoint mirrors the Swiss tournament form from your team pagee.\nYou can create up to 12 tournaments per day.\nAdditional restrictions:\n  - clock.limit + clock.increment > 0\n  - 15s and 0+1 variant tournaments cannot be rated\n"
+      description: 'Create a Swiss tournament for your team.
+
+        This endpoint mirrors the Swiss tournament form from your team pagee.
+
+        You can create up to 12 tournaments per day.
+
+        Additional restrictions:
+
+        - clock.limit + clock.increment > 0
+
+        - 15s and 0+1 variant tournaments cannot be rated'
       tags:
       - Tournaments (Swiss)
       security:
@@ -459,9 +315,7 @@ paths:
     get:
       operationId: swiss
       summary: Get info about a Swiss tournament
-      description: 'Get detailed info about a Swiss tournament.
-
-        '
+      description: Get detailed info about a Swiss tournament.
       tags:
       - Tournaments (Swiss)
       security: []
@@ -481,7 +335,15 @@ paths:
     post:
       operationId: apiSwissUpdate
       summary: Update a Swiss tournament
-      description: "Update a Swiss tournament.\nBe mindful not to make important changes to ongoing tournaments.\nAdditional restrictions:\n  - clock.limit + clock.increment > 0\n  - 15s and 0+1 variant tournaments cannot be rated\n"
+      description: 'Update a Swiss tournament.
+
+        Be mindful not to make important changes to ongoing tournaments.
+
+        Additional restrictions:
+
+        - clock.limit + clock.increment > 0
+
+        - 15s and 0+1 variant tournaments cannot be rated'
       tags:
       - Tournaments (Swiss)
       security:
@@ -744,9 +606,7 @@ paths:
 
         This sets the `roundInterval` field to `99999999`, i.e. manual scheduling.
 
-        All further rounds will need to be manually scheduled, unless the `roundInterval` field is changed back to automatic scheduling.
-
-        '
+        All further rounds will need to be manually scheduled, unless the `roundInterval` field is changed back to automatic scheduling.'
       tags:
       - Tournaments (Swiss)
       security:
@@ -796,9 +656,7 @@ paths:
     post:
       operationId: apiSwissJoin
       summary: Join a Swiss tournament
-      description: 'Join a Swiss tournament, possibly with a password.
-
-        '
+      description: Join a Swiss tournament, possibly with a password.
       tags:
       - Tournaments (Swiss)
       security:
@@ -846,9 +704,7 @@ paths:
       summary: Pause or leave a swiss tournament
       description: 'Leave a future Swiss tournament, or take a break on an ongoing Swiss tournament.
 
-        It''s possible to join again later. Points are preserved.
-
-        '
+        It''s possible to join again later. Points are preserved.'
       tags:
       - Tournaments (Swiss)
       security:
@@ -878,9 +734,6 @@ paths:
     post:
       operationId: apiSwissTerminate
       summary: Terminate a Swiss tournament
-      description: 'Terminate a Swiss tournament
-
-        '
       tags:
       - Tournaments (Swiss)
       security:
@@ -918,11 +771,9 @@ paths:
       summary: Export TRF of a Swiss tournament
       description: 'Download a tournament in the Tournament Report File format, the FIDE standard.
 
-        Documentation: <https://www.fide.com/FIDE/handbook/C04Annex2_TRF16.pdf>
+        Documentation:
 
-        Example: <https://lichess.org/swiss/j8rtJ5GL.trf>
-
-        '
+        Example:'
       tags:
       - Tournaments (Swiss)
       security: []
@@ -949,7 +800,15 @@ paths:
     get:
       operationId: gamesBySwiss
       summary: Export games of a Swiss tournament
-      description: "Download games of a swiss tournament in PGN or [ndjson](#description/streaming-with-nd-json) format.\nGames are sorted by chronological order.\nThe game stream is throttled, depending on who is making the request:\n  - Anonymous request: 20 games per second\n  - [OAuth2 authenticated](#description/authentication) request: 30 games per second\n"
+      description: 'Download games of a swiss tournament in PGN or ndjson format.
+
+        Games are sorted by chronological order.
+
+        The game stream is throttled, depending on who is making the request:
+
+        - Anonymous request: 20 games per second
+
+        - OAuth2 authenticated request: 30 games per second'
       tags:
       - Tournaments (Swiss)
       security: []
@@ -1057,15 +916,13 @@ paths:
       summary: Get results of a swiss tournament
       description: 'Players of a swiss tournament, with their score and performance, sorted by rank (best first).
 
-        Players are streamed as [ndjson](#description/streaming-with-nd-json).
+        Players are streamed as ndjson.
 
         If called on an ongoing tournament, results can be inconsistent
 
         due to ranking changes while the players are being streamed.
 
-        Use on finished tournaments for guaranteed consistency.
-
-        '
+        Use on finished tournaments for guaranteed consistency.'
       tags:
       - Tournaments (Swiss)
       security: []
@@ -1134,9 +991,7 @@ paths:
 
         Tournaments are sorted by reverse chronological order of start date (last starting first).
 
-        Tournaments are streamed as [ndjson](#description/streaming-with-nd-json).
-
-        '
+        Tournaments are streamed as ndjson.'
       tags:
       - Tournaments (Swiss)
       security: []
@@ -1192,6 +1047,277 @@ paths:
                   $ref: '#/components/examples/teams-getTeamSwissTournaments.json'
 components:
   schemas:
+    GameOpening:
+      type: object
+      properties:
+        eco:
+          type: string
+        name:
+          type: string
+        ply:
+          type: integer
+      required:
+      - eco
+      - name
+      - ply
+    SwissStatus:
+      type: string
+      description: The current state of the swiss tournament
+      enum:
+      - created
+      - started
+      - finished
+    GameStatusName:
+      type: string
+      enum:
+      - created
+      - started
+      - aborted
+      - mate
+      - resign
+      - stalemate
+      - timeout
+      - draw
+      - outoftime
+      - cheat
+      - noStart
+      - unknownFinish
+      - insufficientMaterialClaim
+      - variantEnd
+    GamePgn:
+      type: string
+      example: '[Event "Rated Blitz game"]
+
+        [Site "https://lichess.org/fY44h4OY"]
+
+        [Date "2018.03.29"]
+
+        [Round "-"]
+
+        [White "pveldman"]
+
+        [Black "thibault"]
+
+        [Result "1-0"]
+
+        [UTCDate "2018.03.29"]
+
+        [UTCTime "01:38:15"]
+
+        [WhiteElo "1610"]
+
+        [BlackElo "1601"]
+
+        [WhiteRatingDiff "+10"]
+
+        [BlackRatingDiff "-10"]
+
+        [Variant "Standard"]
+
+        [TimeControl "180+0"]
+
+        [ECO "C62"]
+
+        [Opening "Ruy Lopez: Steinitz Defense"]
+
+        [Termination "Normal"]
+
+
+        1. e4 { [%clk 0:03:00] } e5 { [%clk 0:03:00] } 2. Nf3 { [%clk 0:02:59] } Nc6 { [%clk 0:02:58] } 3. Bb5 { [%clk 0:02:57] } d6 { [%clk 0:02:55] } 4. h3 { [%clk 0:02:54] } Nf6 { [%clk 0:02:52] } 5. Bxc6+ { [%clk 0:02:52] } bxc6 { [%clk 0:02:49] } 6. d3 { [%clk 0:02:51] } Be7 { [%clk 0:02:46] } 7. O-O { [%clk 0:02:47] } O-O { [%clk 0:02:45] } 8. b3 { [%clk 0:02:45] } d5 { [%clk 0:02:45] } 9. exd5 { [%clk 0:02:33] } cxd5 { [%clk 0:02:40] } 10. Nxe5 { [%clk 0:02:31] } Qd6 { [%clk 0:02:38] } 1-0
+
+        '
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The cause of the error.
+      required:
+      - error
+      example:
+        error: This request is invalid because [...]
+    GamePlayers:
+      type: object
+      properties:
+        white:
+          $ref: '#/components/schemas/GamePlayerUser'
+        black:
+          $ref: '#/components/schemas/GamePlayerUser'
+      required:
+      - white
+      - black
+    LightUser:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        flair:
+          $ref: '#/components/schemas/Flair'
+        title:
+          $ref: '#/components/schemas/Title'
+        patron:
+          $ref: '#/components/schemas/Patron'
+        patronColor:
+          $ref: '#/components/schemas/PatronColor'
+      required:
+      - id
+      - name
+    Verdicts:
+      type: object
+      properties:
+        accepted:
+          type: boolean
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/Verdict'
+      required:
+      - accepted
+      - list
+    Patron:
+      type: boolean
+      deprecated: true
+      description: 'Use patronColor value instead to determine if player is a patron.
+
+        '
+    SwissFromPositionFEN:
+      type: string
+      description: Custom initial position (in X-FEN). Variant must be standard and the game cannot be rated.
+      default: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+    SwissUnauthorisedEdit:
+      properties:
+        error:
+          type: string
+      example:
+        error: This user cannot edit this swiss
+    GameColor:
+      type: string
+      enum:
+      - white
+      - black
+    GameMoveAnalysis:
+      type: object
+      properties:
+        eval:
+          type: integer
+          description: Evaluation in centipawns
+        mate:
+          type: integer
+          description: Number of moves until forced mate
+        best:
+          type: string
+          example: c2c3
+          description: Best move in UCI notation (only if played move was inaccurate)
+        variation:
+          type: string
+          example: c3 Nc6 d4 Qb6 Be2 Nge7 Na3 cxd4 cxd4 Nf5
+          description: Best variation in SAN notation (only if played move was inaccurate)
+        judgment:
+          type: object
+          description: Judgment annotation (only if played move was inaccurate)
+          properties:
+            name:
+              type: string
+              enum:
+              - Inaccuracy
+              - Mistake
+              - Blunder
+            comment:
+              type: string
+              example: Blunder. Nxg6 was best.
+    Ok:
+      properties:
+        ok:
+          type: boolean
+      required:
+      - ok
+    SwissTournament:
+      type: object
+      properties:
+        id:
+          type: string
+        createdBy:
+          type: string
+        startsAt:
+          type: string
+        name:
+          type: string
+        clock:
+          type: object
+          properties:
+            limit:
+              type: number
+            increment:
+              type: number
+          required:
+          - limit
+          - increment
+        variant:
+          type: string
+        round:
+          type: number
+        nbRounds:
+          type: number
+        nbPlayers:
+          type: number
+        nbOngoing:
+          type: number
+        status:
+          $ref: '#/components/schemas/SwissStatus'
+        stats:
+          type: object
+          properties:
+            games:
+              type: number
+            whiteWins:
+              type: number
+            blackWins:
+              type: number
+            draws:
+              type: number
+            byes:
+              type: number
+            absences:
+              type: number
+            averageRating:
+              type: number
+          required:
+          - games
+          - whiteWins
+          - blackWins
+          - draws
+          - byes
+          - absences
+          - averageRating
+        rated:
+          type: boolean
+        verdicts:
+          $ref: '#/components/schemas/Verdicts'
+        nextRound:
+          type: object
+          properties:
+            at:
+              type: string
+              format: date-time
+            in:
+              type: integer
+              description: The number of seconds until the next round starts.
+      required:
+      - id
+      - createdBy
+      - startsAt
+      - name
+      - clock
+      - variant
+      - round
+      - nbRounds
+      - nbPlayers
+      - nbOngoing
+      - status
+      - rated
+      - verdicts
     GameJson:
       type: object
       properties:
@@ -1286,234 +1412,6 @@ components:
         '
       minimum: 1
       maximum: 10
-    Verdicts:
-      type: object
-      properties:
-        accepted:
-          type: boolean
-        list:
-          type: array
-          items:
-            $ref: '#/components/schemas/Verdict'
-      required:
-      - accepted
-      - list
-    SwissFromPositionFEN:
-      type: string
-      description: Custom initial position (in X-FEN). Variant must be standard and the game cannot be rated.
-      default: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
-    Patron:
-      type: boolean
-      deprecated: true
-      description: 'Use patronColor value instead to determine if player is a patron.
-
-        '
-    VariantKey:
-      type: string
-      enum:
-      - standard
-      - chess960
-      - crazyhouse
-      - antichess
-      - atomic
-      - horde
-      - kingOfTheHill
-      - racingKings
-      - threeCheck
-      - fromPosition
-      example: standard
-      default: standard
-    GameMoveAnalysis:
-      type: object
-      properties:
-        eval:
-          type: integer
-          description: Evaluation in centipawns
-        mate:
-          type: integer
-          description: Number of moves until forced mate
-        best:
-          type: string
-          example: c2c3
-          description: Best move in UCI notation (only if played move was inaccurate)
-        variation:
-          type: string
-          example: c3 Nc6 d4 Qb6 Be2 Nge7 Na3 cxd4 cxd4 Nf5
-          description: Best variation in SAN notation (only if played move was inaccurate)
-        judgment:
-          type: object
-          description: Judgment annotation (only if played move was inaccurate)
-          properties:
-            name:
-              type: string
-              enum:
-              - Inaccuracy
-              - Mistake
-              - Blunder
-            comment:
-              type: string
-              example: Blunder. Nxg6 was best.
-    GamePgn:
-      type: string
-      example: '[Event "Rated Blitz game"]
-
-        [Site "https://lichess.org/fY44h4OY"]
-
-        [Date "2018.03.29"]
-
-        [Round "-"]
-
-        [White "pveldman"]
-
-        [Black "thibault"]
-
-        [Result "1-0"]
-
-        [UTCDate "2018.03.29"]
-
-        [UTCTime "01:38:15"]
-
-        [WhiteElo "1610"]
-
-        [BlackElo "1601"]
-
-        [WhiteRatingDiff "+10"]
-
-        [BlackRatingDiff "-10"]
-
-        [Variant "Standard"]
-
-        [TimeControl "180+0"]
-
-        [ECO "C62"]
-
-        [Opening "Ruy Lopez: Steinitz Defense"]
-
-        [Termination "Normal"]
-
-
-        1. e4 { [%clk 0:03:00] } e5 { [%clk 0:03:00] } 2. Nf3 { [%clk 0:02:59] } Nc6 { [%clk 0:02:58] } 3. Bb5 { [%clk 0:02:57] } d6 { [%clk 0:02:55] } 4. h3 { [%clk 0:02:54] } Nf6 { [%clk 0:02:52] } 5. Bxc6+ { [%clk 0:02:52] } bxc6 { [%clk 0:02:49] } 6. d3 { [%clk 0:02:51] } Be7 { [%clk 0:02:46] } 7. O-O { [%clk 0:02:47] } O-O { [%clk 0:02:45] } 8. b3 { [%clk 0:02:45] } d5 { [%clk 0:02:45] } 9. exd5 { [%clk 0:02:33] } cxd5 { [%clk 0:02:40] } 10. Nxe5 { [%clk 0:02:31] } Qd6 { [%clk 0:02:38] } 1-0
-
-        '
-    GameColor:
-      type: string
-      enum:
-      - white
-      - black
-    Ok:
-      properties:
-        ok:
-          type: boolean
-      required:
-      - ok
-    GameOpening:
-      type: object
-      properties:
-        eco:
-          type: string
-        name:
-          type: string
-        ply:
-          type: integer
-      required:
-      - eco
-      - name
-      - ply
-    GamePlayers:
-      type: object
-      properties:
-        white:
-          $ref: '#/components/schemas/GamePlayerUser'
-        black:
-          $ref: '#/components/schemas/GamePlayerUser'
-      required:
-      - white
-      - black
-    SwissTournament:
-      type: object
-      properties:
-        id:
-          type: string
-        createdBy:
-          type: string
-        startsAt:
-          type: string
-        name:
-          type: string
-        clock:
-          type: object
-          properties:
-            limit:
-              type: number
-            increment:
-              type: number
-          required:
-          - limit
-          - increment
-        variant:
-          type: string
-        round:
-          type: number
-        nbRounds:
-          type: number
-        nbPlayers:
-          type: number
-        nbOngoing:
-          type: number
-        status:
-          $ref: '#/components/schemas/SwissStatus'
-        stats:
-          type: object
-          properties:
-            games:
-              type: number
-            whiteWins:
-              type: number
-            blackWins:
-              type: number
-            draws:
-              type: number
-            byes:
-              type: number
-            absences:
-              type: number
-            averageRating:
-              type: number
-          required:
-          - games
-          - whiteWins
-          - blackWins
-          - draws
-          - byes
-          - absences
-          - averageRating
-        rated:
-          type: boolean
-        verdicts:
-          $ref: '#/components/schemas/Verdicts'
-        nextRound:
-          type: object
-          properties:
-            at:
-              type: string
-              format: date-time
-            in:
-              type: integer
-              description: The number of seconds until the next round starts.
-      required:
-      - id
-      - createdBy
-      - startsAt
-      - name
-      - clock
-      - variant
-      - round
-      - nbRounds
-      - nbPlayers
-      - nbOngoing
-      - status
-      - rated
-      - verdicts
     Verdict:
       type: object
       properties:
@@ -1524,69 +1422,6 @@ components:
       required:
       - condition
       - verdict
-    Flair:
-      type: string
-      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-          description: The cause of the error.
-      required:
-      - error
-      example:
-        error: This request is invalid because [...]
-    SwissUnauthorisedEdit:
-      properties:
-        error:
-          type: string
-      example:
-        error: This user cannot edit this swiss
-    GameStatusName:
-      type: string
-      enum:
-      - created
-      - started
-      - aborted
-      - mate
-      - resign
-      - stalemate
-      - timeout
-      - draw
-      - outoftime
-      - cheat
-      - noStart
-      - unknownFinish
-      - insufficientMaterialClaim
-      - variantEnd
-    Speed:
-      type: string
-      enum:
-      - ultraBullet
-      - bullet
-      - blitz
-      - rapid
-      - classical
-      - correspondence
-    LightUser:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        flair:
-          $ref: '#/components/schemas/Flair'
-        title:
-          $ref: '#/components/schemas/Title'
-        patron:
-          $ref: '#/components/schemas/Patron'
-        patronColor:
-          $ref: '#/components/schemas/PatronColor'
-      required:
-      - id
-      - name
     GamePlayerUser:
       type: object
       properties:
@@ -1625,6 +1460,15 @@ components:
       required:
       - user
       - rating
+    Speed:
+      type: string
+      enum:
+      - ultraBullet
+      - bullet
+      - blitz
+      - rapid
+      - classical
+      - correspondence
     Title:
       type: string
       enum:
@@ -1641,13 +1485,24 @@ components:
       - LM
       - BOT
       description: only appears if the user is a titled player or a bot user
-    SwissStatus:
+    Flair:
       type: string
-      description: The current state of the swiss tournament
+      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
+    VariantKey:
+      type: string
       enum:
-      - created
-      - started
-      - finished
+      - standard
+      - chess960
+      - crazyhouse
+      - antichess
+      - atomic
+      - horde
+      - kingOfTheHill
+      - racingKings
+      - threeCheck
+      - fromPosition
+      example: standard
+      default: standard
   parameters:
     AcceptPgnOrNdjson:
       in: header

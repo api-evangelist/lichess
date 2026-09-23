@@ -1,29 +1,7 @@
 {
   "provider": "lichess",
   "sources": [
-    "lichess-account-api-openapi.yml",
-    "lichess-analysis-api-openapi.yml",
-    "lichess-board-api-openapi.yml",
-    "lichess-bot-api-openapi.yml",
-    "lichess-broadcasts-api-openapi.yml",
-    "lichess-bulk-pairings-api-openapi.yml",
-    "lichess-challenges-api-openapi.yml",
-    "lichess-external-engine-api-openapi.yml",
-    "lichess-fide-api-openapi.yml",
-    "lichess-games-api-openapi.yml",
-    "lichess-messaging-api-openapi.yml",
-    "lichess-oauth-api-openapi.yml",
-    "lichess-opening-explorer-api-openapi.yml",
-    "lichess-puzzles-api-openapi.yml",
-    "lichess-relations-api-openapi.yml",
-    "lichess-simuls-api-openapi.yml",
-    "lichess-studies-api-openapi.yml",
-    "lichess-tablebase-api-openapi.yml",
-    "lichess-teams-api-openapi.yml",
-    "lichess-tournaments-arena-api-openapi.yml",
-    "lichess-tournaments-swiss-api-openapi.yml",
-    "lichess-tv-api-openapi.yml",
-    "lichess-users-api-openapi.yml"
+    "_original/lichess-openapi.yml"
   ],
   "outputs": [
     "lichess-account-api-openapi.yml",
@@ -43,16 +21,47 @@
     "lichess-relations-api-openapi.yml",
     "lichess-simuls-api-openapi.yml",
     "lichess-studies-api-openapi.yml",
+    "lichess-tv-api-openapi.yml",
     "lichess-tablebase-api-openapi.yml",
     "lichess-teams-api-openapi.yml",
     "lichess-tournaments-arena-api-openapi.yml",
     "lichess-tournaments-swiss-api-openapi.yml",
-    "lichess-tv-api-openapi.yml",
     "lichess-users-api-openapi.yml"
   ],
-  "archived": [],
+  "archived": [
+    "deleted 1 superseded output(s) from the previous generation"
+  ],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "lichess-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "superseded outputs removed: lichess-o-auth-api-openapi.yml",
+    "apis.yml register: written (+1 apis, 23 total)"
+  ],
+  "skipped": [
+    "lichess-account-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lichess-analysis-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lichess-board-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lichess-bot-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lichess-broadcasts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lichess-bulk-pairings-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lichess-challenges-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lichess-external-engine-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lichess-fide-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lichess-games-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lichess-messaging-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lichess-o-auth-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lichess-opening-explorer-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lichess-puzzles-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lichess-relations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lichess-simuls-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lichess-studies-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lichess-tablebase-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lichess-teams-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lichess-tournaments-arena-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lichess-tournaments-swiss-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lichess-tv-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "lichess-users-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

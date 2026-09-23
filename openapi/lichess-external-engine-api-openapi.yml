@@ -1,7 +1,7 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   version: 2.0.144
-  title: Lichess.org API reference Account External engine API
+  title: Lichess.org API reference External engine API
   contact:
     name: Lichess.org API
     url: https://lichess.org/api
@@ -13,159 +13,7 @@ info:
     url: https://www.gnu.org/licenses/agpl-3.0.txt
   description: '# Introduction
 
-    Welcome to the reference for the Lichess API! Lichess is free/libre,
-
-    open-source chess server powered by volunteers and donations.
-
-    - Get help in the [Lichess Discord channel](https://discord.gg/lichess)
-
-    - API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)
-
-    - API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)
-
-    - [Contribute to this documentation on Github](https://github.com/lichess-org/api)
-
-    - Check out [Lichess widgets to embed in your website](https://lichess.org/developers)
-
-    - [Download all Lichess rated games](https://database.lichess.org/)
-
-    - [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)
-
-    - [Download all evaluated positions](https://database.lichess.org/#evals)
-
-
-    ## Endpoint
-
-    All requests go to `https://lichess.org` (unless otherwise specified).
-
-
-    ## Clients
-
-    - [Python general API](https://github.com/lichess-org/berserk)
-
-    - [MicroPython general API](https://github.com/mkomon/uberserk)
-
-    - [Python general API - async](https://pypi.org/project/async-lichess-sdk)
-
-    - [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)
-
-    - [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)
-
-    - [Java general API](https://github.com/tors42/chariot)
-
-    - [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)
-
-    - [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)
-
-    - [.NET general API](https://github.com/Dblike/LichessSharp)
-
-
-    ## Rate limiting
-
-    All requests are rate limited using various strategies,
-
-    to ensure the API remains responsive for everyone.
-
-    Only make one request at a time.
-
-    If you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),
-
-    you have exceded one of the rate limits.
-
-    In most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.
-
-    Reduce your request frequency before retrying.
-
-
-    ## Streaming with ND-JSON
-
-    Some API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.
-
-
-    Here''s a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.
-
-
-    ## Authentication
-
-    ### Which authentication method is right for me?
-
-    [Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)
-
-
-    ### Personal Access Token
-
-    Personal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.
-
-    - [Generate a personal access token](https://lichess.org/account/oauth/token)
-
-    - `curl https://lichess.org/api/account -H "Authorization: Bearer {token}"`
-
-    - [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)
-
-
-    ### Token Security
-
-    - Keep your tokens secret. Do not share them in public repositories or public forums.
-
-    - Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens'' scope). You remain responsible for all activities on your account.
-
-    - Do not hardcode tokens in your application''s code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.
-
-    - If you suspect a token has been compromised, revoke it immediately.
-
-
-    To see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).
-
-
-    ### Authorization Code Flow with PKCE
-
-    The authorization code flow with PKCE allows your users to **login with Lichess**.
-
-    Lichess supports unregistered and public clients (no client authentication, choose any unique client id).
-
-    The only accepted code challenge method is `S256`.
-
-    Access tokens are long-lived (expect one year), unless they are revoked.
-
-    Refresh tokens are not supported.
-
-
-    See the [documentation for the OAuth endpoints](#tag/OAuth) or
-
-    the [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.
-
-
-    - [Demo app](https://lichess-org.github.io/api-demo/)
-
-    - [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)
-
-    - [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)
-
-    - [Java example](https://github.com/tors42/lichess-oauth-pkce-app)
-
-    - [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)
-
-
-    #### Real life examples
-
-    - [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))
-
-    - [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))
-
-    - [English Chess Federation](https://ecf.octoknight.com/)
-
-    - [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)
-
-
-    ### Token format
-
-    Access tokens and authorization codes match `^[A-Za-z0-9_]+$`.
-
-    The length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.
-
-    By convention tokens have a recognizable prefix, but do not rely on this.
-
-    '
+    Welcome to the reference for the Lichess API!'
 servers:
 - url: https://lichess.org
 - url: https://lichess.dev
@@ -184,11 +32,9 @@ tags:
 
     External engines can provide analysis on pages like the
 
-    [analysis board](https://lichess.org/analysis), running as a service
+    analysis board, running as a service
 
-    outside of the browser, or even on a different machine.
-
-    '
+    outside of the browser, or even on a different machine.'
 paths:
   /api/external-engine:
     get:
@@ -201,9 +47,7 @@ paths:
         - engine:read
       description: 'Lists all external engines that have been registered for the user,
 
-        and the credentials required to use them.
-
-        '
+        and the credentials required to use them.'
       responses:
         '200':
           description: A list of external engines.
@@ -233,9 +77,7 @@ paths:
 
         and used on the analysis board.
 
-        After registering, the provider should start waiting for analyis requests.
-
-        '
+        After registering, the provider should start waiting for analyis requests.'
       requestBody:
         description: A new external engine registration.
         required: true
@@ -275,9 +117,7 @@ paths:
       security:
       - OAuth2:
         - engine:read
-      description: 'Get properties and credentials of an external engine.
-
-        '
+      description: Get properties and credentials of an external engine.
       responses:
         '200':
           description: A registered engine.
@@ -301,9 +141,7 @@ paths:
       security:
       - OAuth2:
         - engine:write
-      description: 'Updates the properties of an external engine.
-
-        '
+      description: Updates the properties of an external engine.
       requestBody:
         description: A modified engine registration.
         required: true
@@ -334,9 +172,7 @@ paths:
       security:
       - OAuth2:
         - engine:write
-      description: 'Unregisters an external engine.
-
-        '
+      description: Unregisters an external engine.
       responses:
         '200':
           description: Engine successfully deleted
@@ -372,15 +208,13 @@ paths:
 
         Request analysis from an external engine.
 
-        Response content is streamed as [newline delimited JSON](#description/streaming-with-nd-json).
+        Response content is streamed as newline delimited JSON.
 
-        The properties are based on the [UCI specification](https://backscattering.de/chess/uci/#engine).
+        The properties are based on the UCI specification.
 
         Analysis stops when the client goes away, the requested limit
 
-        is reached, or the provider goes away.
-
-        '
+        is reached, or the provider goes away.'
       requestBody:
         description: Engine credentials and analysis request.
         required: true
@@ -477,9 +311,7 @@ paths:
 
         After acquiring a request, the provider should immediately
 
-        [start streaming the results](#tag/external-engine/POST/api/external-engine/work/{id}).
-
-        '
+        start streaming the results.'
       requestBody:
         description: Provider credentials.
         required: true
@@ -547,7 +379,31 @@ paths:
           port:
             default: '9666'
       security: []
-      description: "**Endpoint: `https://engine.lichess.ovh/api/external-engine/work/{id}`**\nSubmit a stream of analysis as [UCI output](https://backscattering.de/chess/uci/#engine-info).\n* The engine should always be in `UCI_Chess960` mode.\n* `UCI_AnalyseMode` enabled if available.\n* It produces `info` with at least:\n  - `depth`\n  - `multipv` (between 1 and 5)\n  - `score`\n  - `nodes`\n  - `time`\n  - `pv`\nThe server may close the connection at any time, indicating that\nthe requester has gone away and analysis should be stopped.\n"
+      description: '**Endpoint: `https://engine.lichess.ovh/api/external-engine/work/{id}`**
+
+        Submit a stream of analysis as UCI output.
+
+        * The engine should always be in `UCI_Chess960` mode.
+
+        * `UCI_AnalyseMode` enabled if available.
+
+        * It produces `info` with at least:
+
+        - `depth`
+
+        - `multipv` (between 1 and 5)
+
+        - `score`
+
+        - `nodes`
+
+        - `time`
+
+        - `pv`
+
+        The server may close the connection at any time, indicating that
+
+        the requester has gone away and analysis should be stopped.'
       requestBody:
         description: Analysis results
         required: true
@@ -566,29 +422,7 @@ paths:
                 default: '''*'''
 components:
   examples:
-    externalEngine-listExternalEngines.json:
-      value:
-      - id: eei_NU53ONEmZqij
-        name: Stockfish 17
-        userId: bobby
-        maxThreads: 8
-        maxHash: 2048
-        variants:
-        - chess
-        providerData: null
-        clientSecret: ees_K6cAs9Fo2kblqep4
     externalEngine-createExternalEngine.json:
-      value:
-        id: eei_NU53ONEmZqij
-        name: Stockfish 17
-        userId: bobby
-        maxThreads: 8
-        maxHash: 2048
-        variants:
-        - chess
-        providerData: null
-        clientSecret: ees_K6cAs9Fo2kblqep4
-    externalEngine-getExternalEngine.json:
       value:
         id: eei_NU53ONEmZqij
         name: Stockfish 17
@@ -611,6 +445,17 @@ components:
     externalEngine-deleteExternalEngine.json:
       value:
         ok: true
+    externalEngine-updateExternalEngine.json:
+      value:
+        id: eei_NU53ONEmZqij
+        name: Stockfish 17.1
+        userId: bobby
+        maxThreads: 8
+        maxHash: 2048
+        variants:
+        - chess
+        providerData: null
+        clientSecret: ees_K6cAs9Fo2kblqep4
     externalEngine-acquireAnalysisRequest.json:
       value:
         id: ygxzCoNU0wUXodLm
@@ -635,10 +480,21 @@ components:
           variants:
           - chess
           providerData: null
-    externalEngine-updateExternalEngine.json:
+    externalEngine-getExternalEngine.json:
       value:
         id: eei_NU53ONEmZqij
-        name: Stockfish 17.1
+        name: Stockfish 17
+        userId: bobby
+        maxThreads: 8
+        maxHash: 2048
+        variants:
+        - chess
+        providerData: null
+        clientSecret: ees_K6cAs9Fo2kblqep4
+    externalEngine-listExternalEngines.json:
+      value:
+      - id: eei_NU53ONEmZqij
+        name: Stockfish 17
         userId: bobby
         maxThreads: 8
         maxHash: 2048
@@ -647,6 +503,47 @@ components:
         providerData: null
         clientSecret: ees_K6cAs9Fo2kblqep4
   schemas:
+    Ok:
+      properties:
+        ok:
+          type: boolean
+      required:
+      - ok
+    ExternalEngineWork:
+      oneOf:
+      - allOf:
+        - type: object
+          title: Search by movetime
+          properties:
+            movetime:
+              type: integer
+              description: Amount of time to analyse the position, in milliseconds.
+              minimum: 1
+          required:
+          - movetime
+        - $ref: '#/components/schemas/ExternalEngineWorkCommon'
+      - allOf:
+        - type: object
+          title: Search by depth
+          properties:
+            depth:
+              type: integer
+              description: Analysis target depth
+              minimum: 1
+          required:
+          - depth
+        - $ref: '#/components/schemas/ExternalEngineWorkCommon'
+      - allOf:
+        - type: object
+          title: Search by nodes
+          properties:
+            nodes:
+              type: integer
+              description: Number of nodes to analyse in the position
+              minimum: 1
+          required:
+          - nodes
+        - $ref: '#/components/schemas/ExternalEngineWorkCommon'
     UciVariant:
       type: string
       enum:
@@ -660,12 +557,6 @@ components:
       - 3check
       example: chess
       default: chess
-    Ok:
-      properties:
-        ok:
-          type: boolean
-      required:
-      - ok
     ExternalEngine:
       type: object
       properties:
@@ -726,47 +617,6 @@ components:
       - maxThreads
       - maxHash
       - variants
-    ExternalEngineWorkCommon:
-      type: object
-      properties:
-        sessionId:
-          type: string
-          description: 'Arbitary string that identifies the analysis session.
-
-            Providers may wish to clear the hash table between sessions.
-
-            '
-        threads:
-          type: integer
-          minimum: 1
-          description: Number of threads to use for analysis.
-        hash:
-          type: integer
-          minimum: 1
-          description: Hash table size to use for analysis, in MiB.
-        multiPv:
-          type: integer
-          minimum: 1
-          maximum: 5
-          description: Requested number of principal variations.
-        variant:
-          $ref: '#/components/schemas/UciVariant'
-        initialFen:
-          type: string
-          description: Initial position of the game.
-        moves:
-          type: array
-          description: List of moves played from the initial position, in UCI notation.
-          items:
-            type: string
-      required:
-      - sessionId
-      - threads
-      - hash
-      - multiPv
-      - variant
-      - initialFen
-      - moves
     ExternalEngineRegistration:
       type: object
       properties:
@@ -837,41 +687,47 @@ components:
       - maxThreads
       - maxHash
       - providerSecret
-    ExternalEngineWork:
-      oneOf:
-      - allOf:
-        - type: object
-          title: Search by movetime
-          properties:
-            movetime:
-              type: integer
-              description: Amount of time to analyse the position, in milliseconds.
-              minimum: 1
-          required:
-          - movetime
-        - $ref: '#/components/schemas/ExternalEngineWorkCommon'
-      - allOf:
-        - type: object
-          title: Search by depth
-          properties:
-            depth:
-              type: integer
-              description: Analysis target depth
-              minimum: 1
-          required:
-          - depth
-        - $ref: '#/components/schemas/ExternalEngineWorkCommon'
-      - allOf:
-        - type: object
-          title: Search by nodes
-          properties:
-            nodes:
-              type: integer
-              description: Number of nodes to analyse in the position
-              minimum: 1
-          required:
-          - nodes
-        - $ref: '#/components/schemas/ExternalEngineWorkCommon'
+    ExternalEngineWorkCommon:
+      type: object
+      properties:
+        sessionId:
+          type: string
+          description: 'Arbitary string that identifies the analysis session.
+
+            Providers may wish to clear the hash table between sessions.
+
+            '
+        threads:
+          type: integer
+          minimum: 1
+          description: Number of threads to use for analysis.
+        hash:
+          type: integer
+          minimum: 1
+          description: Hash table size to use for analysis, in MiB.
+        multiPv:
+          type: integer
+          minimum: 1
+          maximum: 5
+          description: Requested number of principal variations.
+        variant:
+          $ref: '#/components/schemas/UciVariant'
+        initialFen:
+          type: string
+          description: Initial position of the game.
+        moves:
+          type: array
+          description: List of moves played from the initial position, in UCI notation.
+          items:
+            type: string
+      required:
+      - sessionId
+      - threads
+      - hash
+      - multiPv
+      - variant
+      - initialFen
+      - moves
   securitySchemes:
     OAuth2:
       type: oauth2

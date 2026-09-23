@@ -1,7 +1,7 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   version: 2.0.144
-  title: Lichess.org API reference Account Simuls API
+  title: Lichess.org API reference Simuls API
   contact:
     name: Lichess.org API
     url: https://lichess.org/api
@@ -13,159 +13,7 @@ info:
     url: https://www.gnu.org/licenses/agpl-3.0.txt
   description: '# Introduction
 
-    Welcome to the reference for the Lichess API! Lichess is free/libre,
-
-    open-source chess server powered by volunteers and donations.
-
-    - Get help in the [Lichess Discord channel](https://discord.gg/lichess)
-
-    - API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)
-
-    - API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)
-
-    - [Contribute to this documentation on Github](https://github.com/lichess-org/api)
-
-    - Check out [Lichess widgets to embed in your website](https://lichess.org/developers)
-
-    - [Download all Lichess rated games](https://database.lichess.org/)
-
-    - [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)
-
-    - [Download all evaluated positions](https://database.lichess.org/#evals)
-
-
-    ## Endpoint
-
-    All requests go to `https://lichess.org` (unless otherwise specified).
-
-
-    ## Clients
-
-    - [Python general API](https://github.com/lichess-org/berserk)
-
-    - [MicroPython general API](https://github.com/mkomon/uberserk)
-
-    - [Python general API - async](https://pypi.org/project/async-lichess-sdk)
-
-    - [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)
-
-    - [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)
-
-    - [Java general API](https://github.com/tors42/chariot)
-
-    - [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)
-
-    - [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)
-
-    - [.NET general API](https://github.com/Dblike/LichessSharp)
-
-
-    ## Rate limiting
-
-    All requests are rate limited using various strategies,
-
-    to ensure the API remains responsive for everyone.
-
-    Only make one request at a time.
-
-    If you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),
-
-    you have exceded one of the rate limits.
-
-    In most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.
-
-    Reduce your request frequency before retrying.
-
-
-    ## Streaming with ND-JSON
-
-    Some API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.
-
-
-    Here''s a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.
-
-
-    ## Authentication
-
-    ### Which authentication method is right for me?
-
-    [Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)
-
-
-    ### Personal Access Token
-
-    Personal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.
-
-    - [Generate a personal access token](https://lichess.org/account/oauth/token)
-
-    - `curl https://lichess.org/api/account -H "Authorization: Bearer {token}"`
-
-    - [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)
-
-
-    ### Token Security
-
-    - Keep your tokens secret. Do not share them in public repositories or public forums.
-
-    - Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens'' scope). You remain responsible for all activities on your account.
-
-    - Do not hardcode tokens in your application''s code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.
-
-    - If you suspect a token has been compromised, revoke it immediately.
-
-
-    To see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).
-
-
-    ### Authorization Code Flow with PKCE
-
-    The authorization code flow with PKCE allows your users to **login with Lichess**.
-
-    Lichess supports unregistered and public clients (no client authentication, choose any unique client id).
-
-    The only accepted code challenge method is `S256`.
-
-    Access tokens are long-lived (expect one year), unless they are revoked.
-
-    Refresh tokens are not supported.
-
-
-    See the [documentation for the OAuth endpoints](#tag/OAuth) or
-
-    the [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.
-
-
-    - [Demo app](https://lichess-org.github.io/api-demo/)
-
-    - [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)
-
-    - [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)
-
-    - [Java example](https://github.com/tors42/lichess-oauth-pkce-app)
-
-    - [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)
-
-
-    #### Real life examples
-
-    - [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))
-
-    - [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))
-
-    - [English Chess Federation](https://ecf.octoknight.com/)
-
-    - [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)
-
-
-    ### Token format
-
-    Access tokens and authorization codes match `^[A-Za-z0-9_]+$`.
-
-    The length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.
-
-    By convention tokens have a recognizable prefix, but do not rely on this.
-
-    '
+    Welcome to the reference for the Lichess API!'
 servers:
 - url: https://lichess.org
 - url: https://lichess.dev
@@ -176,11 +24,7 @@ servers:
 - url: http://l.org
 tags:
 - name: Simuls
-  description: 'Access simuls played on Lichess.
-
-    <https://lichess.org/simul>
-
-    '
+  description: Access simuls played on Lichess.
 paths:
   /api/simul:
     get:
@@ -192,9 +36,7 @@ paths:
 
         strong enough host will be listed, the same filter is used to display simuls on https://lichess.org/simul.
 
-        When [authenticated with OAuth2](#description/authentication), the pending list will be populated with your created, but unstarted simuls.
-
-        '
+        When authenticated with OAuth2, the pending list will be populated with your created, but unstarted simuls.'
       tags:
       - Simuls
       security: []
@@ -232,9 +74,18 @@ paths:
                   $ref: '#/components/examples/simuls-getCurrentSimuls.json'
 components:
   schemas:
-    Flair:
-      type: string
-      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
+    PatronColor:
+      type: integer
+      description: 'Players can choose a color for their Patron wings.
+
+        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
+
+
+        The presence of this field indicates the player is an active Patron.
+
+        '
+      minimum: 1
+      maximum: 10
     LightUser:
       type: object
       properties:
@@ -253,40 +104,27 @@ components:
       required:
       - id
       - name
-    PatronColor:
-      type: integer
-      description: 'Players can choose a color for their Patron wings.
-
-        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
-
-
-        The presence of this field indicates the player is an active Patron.
-
-        '
-      minimum: 1
-      maximum: 10
-    Title:
-      type: string
-      enum:
-      - GM
-      - WGM
-      - IM
-      - WIM
-      - FM
-      - WFM
-      - NM
-      - CM
-      - WCM
-      - WNM
-      - LM
-      - BOT
-      description: only appears if the user is a titled player or a bot user
     Patron:
       type: boolean
       deprecated: true
       description: 'Use patronColor value instead to determine if player is a patron.
 
         '
+    VariantKey:
+      type: string
+      enum:
+      - standard
+      - chess960
+      - crazyhouse
+      - antichess
+      - atomic
+      - horde
+      - kingOfTheHill
+      - racingKings
+      - threeCheck
+      - fromPosition
+      example: standard
+      default: standard
     Simul:
       type: object
       required:
@@ -350,21 +188,25 @@ components:
           type: integer
         nbPairings:
           type: integer
-    VariantKey:
+    Title:
       type: string
       enum:
-      - standard
-      - chess960
-      - crazyhouse
-      - antichess
-      - atomic
-      - horde
-      - kingOfTheHill
-      - racingKings
-      - threeCheck
-      - fromPosition
-      example: standard
-      default: standard
+      - GM
+      - WGM
+      - IM
+      - WIM
+      - FM
+      - WFM
+      - NM
+      - CM
+      - WCM
+      - WNM
+      - LM
+      - BOT
+      description: only appears if the user is a titled player or a bot user
+    Flair:
+      type: string
+      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
   examples:
     simuls-getCurrentSimuls.json:
       value:
@@ -411,7 +253,10 @@ components:
           isCreated: false
           isRunning: true
           isFinished: false
-          text: "Feel free to watch the stream while playing in the simul! :)\r\n\r\nhttps://www.twitch.tv/jludwig"
+          text: 'Feel free to watch the stream while playing in the simul! :)
+
+
+            https://www.twitch.tv/jludwig'
           nbApplicants: 0
           nbPairings: 31
           estimatedStartAt: 1778810189052
@@ -502,7 +347,22 @@ components:
           isCreated: false
           isRunning: false
           isFinished: true
-          text: "Hello Everyone!\r\nWellcome to our Simul Exhibition!\r\n\r\n\r\none Request From all of you:\r\nplease follow us on our youtube channel before joing the simul.\r\nyour support is highly matter for us!\r\nhelp us to growth\r\n\r\nyoutube Channel: https://youtube.com/@kingprincesschess?si=uAYMq2hIxsq8HTnW"
+          text: 'Hello Everyone!
+
+            Wellcome to our Simul Exhibition!
+
+
+
+            one Request From all of you:
+
+            please follow us on our youtube channel before joing the simul.
+
+            your support is highly matter for us!
+
+            help us to growth
+
+
+            youtube Channel: https://youtube.com/@kingprincesschess?si=uAYMq2hIxsq8HTnW'
           nbApplicants: 0
           nbPairings: 7
           estimatedStartAt: 1778801638585
@@ -550,7 +410,9 @@ components:
           isCreated: false
           isRunning: false
           isFinished: true
-          text: "10 boards\r\nMy profile as a coach is - lichess.org/coach/Mischuk_D"
+          text: '10 boards
+
+            My profile as a coach is - lichess.org/coach/Mischuk_D'
           nbApplicants: 0
           nbPairings: 11
           estimatedStartAt: 1778787525679
@@ -573,7 +435,19 @@ components:
           isCreated: false
           isRunning: false
           isFinished: true
-          text: "I am going to host a Q and A on my stream while I play against you guys in the simul. PLEASE join my stream and ask any questions that you have!\r\n\r\nI will be having titled player gests that will help me answer your questions!\r\n\r\nWe will start when we have 15-20 players!\r\n\r\nTo ask questions join the stream link down below to have us see your questions, both during and after the games:\r\n\r\nhttps://www.youtube.com/watch?v=QfaHy77_gwE"
+          text: 'I am going to host a Q and A on my stream while I play against you guys in the simul. PLEASE join my stream and ask any questions that you have!
+
+
+            I will be having titled player gests that will help me answer your questions!
+
+
+            We will start when we have 15-20 players!
+
+
+            To ask questions join the stream link down below to have us see your questions, both during and after the games:
+
+
+            https://www.youtube.com/watch?v=QfaHy77_gwE'
           nbApplicants: 0
           nbPairings: 22
           estimatedStartAt: 1778776058108
@@ -620,7 +494,7 @@ components:
           isCreated: false
           isRunning: false
           isFinished: true
-          text: "Chess coach: https://lichess.org/coach/Lance5500\r\nStudents reviews: https://lichess.org/forum/team-lance5500-chess-coach\r\nTemporary large discounts for the lessons packages \r\nFor lessons and other solid chess inquiries: direct message\r\n\r\nChampion: 11х Marathons, 13x Yearly, 9x Shields. Most trophies holder: 40x Marathon. \r\nPeak lichess ratings: 3052 bullet, 2801 blitz, 2815 rapid, 2622 classical\r\nhttps://lichess.thijs.com/rankings/all/marathon/list_players_trophies.html\r\nhttps://lichess.thijs.com/rankings/all/marathon/list_players_points.html\r\nCourses by @Kingscrusher-YouTube: https://kingscrusher.tv/chesscourses"
+          text: "Chess coach: https://lichess.org/coach/Lance5500\nStudents reviews: https://lichess.org/forum/team-lance5500-chess-coach\nTemporary large discounts for the lessons packages \nFor lessons and other solid chess inquiries: direct message\n\nChampion: 11х Marathons, 13x Yearly, 9x Shields. Most trophies holder: 40x Marathon. \nPeak lichess ratings: 3052 bullet, 2801 blitz, 2815 rapid, 2622 classical\nhttps://lichess.thijs.com/rankings/all/marathon/list_players_trophies.html\nhttps://lichess.thijs.com/rankings/all/marathon/list_players_points.html\nCourses by @Kingscrusher-YouTube: https://kingscrusher.tv/chesscourses"
           nbApplicants: 0
           nbPairings: 6
           estimatedStartAt: 1778780828562
@@ -669,7 +543,7 @@ components:
           isCreated: false
           isRunning: false
           isFinished: true
-          text: "Chess coach: https://lichess.org/coach/Lance5500\r\nStudents reviews: https://lichess.org/forum/team-lance5500-chess-coach\r\nTemporary large discounts for the lessons packages \r\nFor lessons and other solid chess inquiries: direct message\r\n\r\nChampion: 11х Marathons, 13x Yearly, 9x Shields. Most trophies holder: 40x Marathon. \r\nPeak lichess ratings: 3052 bullet, 2801 blitz, 2815 rapid, 2622 classical\r\nhttps://lichess.thijs.com/rankings/all/marathon/list_players_trophies.html\r\nhttps://lichess.thijs.com/rankings/all/marathon/list_players_points.html\r\nCourses by @Kingscrusher-YouTube: https://kingscrusher.tv/chesscourses"
+          text: "Chess coach: https://lichess.org/coach/Lance5500\nStudents reviews: https://lichess.org/forum/team-lance5500-chess-coach\nTemporary large discounts for the lessons packages \nFor lessons and other solid chess inquiries: direct message\n\nChampion: 11х Marathons, 13x Yearly, 9x Shields. Most trophies holder: 40x Marathon. \nPeak lichess ratings: 3052 bullet, 2801 blitz, 2815 rapid, 2622 classical\nhttps://lichess.thijs.com/rankings/all/marathon/list_players_trophies.html\nhttps://lichess.thijs.com/rankings/all/marathon/list_players_points.html\nCourses by @Kingscrusher-YouTube: https://kingscrusher.tv/chesscourses"
           nbApplicants: 0
           nbPairings: 20
           estimatedStartAt: 1778772647134
@@ -694,7 +568,7 @@ components:
           isCreated: false
           isRunning: false
           isFinished: true
-          text: "Chess coach: https://lichess.org/coach/Lance5500\r\nStudents reviews: https://lichess.org/forum/team-lance5500-chess-coach\r\nTemporary large discounts for the lessons packages \r\nFor lessons and other solid chess inquiries: direct message\r\n\r\nChampion: 11х Marathons, 13x Yearly, 9x Shields. Most trophies holder: 40x Marathon. \r\nPeak lichess ratings: 3052 bullet, 2801 blitz, 2815 rapid, 2622 classical\r\nhttps://lichess.thijs.com/rankings/all/marathon/list_players_trophies.html\r\nhttps://lichess.thijs.com/rankings/all/marathon/list_players_points.html\r\nCourses by @Kingscrusher-YouTube: https://kingscrusher.tv/chesscourses"
+          text: "Chess coach: https://lichess.org/coach/Lance5500\nStudents reviews: https://lichess.org/forum/team-lance5500-chess-coach\nTemporary large discounts for the lessons packages \nFor lessons and other solid chess inquiries: direct message\n\nChampion: 11х Marathons, 13x Yearly, 9x Shields. Most trophies holder: 40x Marathon. \nPeak lichess ratings: 3052 bullet, 2801 blitz, 2815 rapid, 2622 classical\nhttps://lichess.thijs.com/rankings/all/marathon/list_players_trophies.html\nhttps://lichess.thijs.com/rankings/all/marathon/list_players_points.html\nCourses by @Kingscrusher-YouTube: https://kingscrusher.tv/chesscourses"
           nbApplicants: 0
           nbPairings: 31
           estimatedStartAt: 1778766268947
@@ -788,7 +662,31 @@ components:
           isCreated: false
           isRunning: false
           isFinished: true
-          text: "Hey everyone!\r\n\r\nToday I’m taking on an exciting challenge\r\nI’ll be playing a 10-player simultaneous chess match! ️\r\n\r\nThink you can beat me? This is your chance\r\n\r\nAll the games will be uploaded on my YouTube channel with full analysis and commentary,\r\nso you can learn from your mistakes and improve your level.\r\n\r\nwww.youtube.com/@GMPouria\r\n\r\nMake sure to subscribe to the channel\r\nTurn on notifications so you don’t miss the videos\r\n\r\nLet’s see who can put up the best fight"
+          text: 'Hey everyone!
+
+
+            Today I’m taking on an exciting challenge
+
+            I’ll be playing a 10-player simultaneous chess match! ️
+
+
+            Think you can beat me? This is your chance
+
+
+            All the games will be uploaded on my YouTube channel with full analysis and commentary,
+
+            so you can learn from your mistakes and improve your level.
+
+
+            www.youtube.com/@GMPouria
+
+
+            Make sure to subscribe to the channel
+
+            Turn on notifications so you don’t miss the videos
+
+
+            Let’s see who can put up the best fight'
           nbApplicants: 0
           nbPairings: 10
           estimatedStartAt: 1778751147287
@@ -810,7 +708,7 @@ components:
           isCreated: false
           isRunning: false
           isFinished: true
-          text: "Hey everyone!\r\n\r\nToday I’m taking on an exciting challenge \r\nI’ll be playing a 10-player simultaneous chess match! ️\r\n\r\nThink you can beat me? This is your chance \r\n\r\n All the games will be uploaded on my YouTube channel with full analysis and commentary,\r\nso you can learn from your mistakes and improve your level.\r\n\r\nhttps://www.youtube.com/@GMPouria\r\n\r\n Make sure to subscribe to the channel\r\n Turn on notifications so you don’t miss the videos\r\n\r\nLet’s see who can put up the best fight"
+          text: "Hey everyone!\n\nToday I’m taking on an exciting challenge \nI’ll be playing a 10-player simultaneous chess match! ️\n\nThink you can beat me? This is your chance \n\n All the games will be uploaded on my YouTube channel with full analysis and commentary,\nso you can learn from your mistakes and improve your level.\n\nhttps://www.youtube.com/@GMPouria\n\n Make sure to subscribe to the channel\n Turn on notifications so you don’t miss the videos\n\nLet’s see who can put up the best fight"
           nbApplicants: 0
           nbPairings: 4
           estimatedStartAt: 1778749896527
@@ -832,7 +730,9 @@ components:
           isCreated: false
           isRunning: false
           isFinished: true
-          text: "10 boards\r\nMy profile as a coach is - lichess.org/coach/Mischuk_D"
+          text: '10 boards
+
+            My profile as a coach is - lichess.org/coach/Mischuk_D'
           nbApplicants: 0
           nbPairings: 10
           estimatedStartAt: 1778746557064
@@ -879,7 +779,10 @@ components:
           isCreated: false
           isRunning: false
           isFinished: true
-          text: "Feel free to watch the stream while playing in the simul!!!\r\n\r\nhttps://www.twitch.tv/jludwig"
+          text: 'Feel free to watch the stream while playing in the simul!!!
+
+
+            https://www.twitch.tv/jludwig'
           nbApplicants: 0
           nbPairings: 30
           estimatedStartAt: 1778723706149

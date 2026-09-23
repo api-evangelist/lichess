@@ -1,7 +1,7 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   version: 2.0.144
-  title: Lichess.org API reference Account Bot API
+  title: Lichess.org API reference Bot API
   contact:
     name: Lichess.org API
     url: https://lichess.org/api
@@ -13,159 +13,7 @@ info:
     url: https://www.gnu.org/licenses/agpl-3.0.txt
   description: '# Introduction
 
-    Welcome to the reference for the Lichess API! Lichess is free/libre,
-
-    open-source chess server powered by volunteers and donations.
-
-    - Get help in the [Lichess Discord channel](https://discord.gg/lichess)
-
-    - API demo app with OAuth2 login and gameplay: [source](https://github.com/lichess-org/api-demo) / [demo](https://lichess-org.github.io/api-demo/)
-
-    - API UI app with OAuth2 login and endpoint forms: [source](https://github.com/lichess-org/api-ui) / [website](https://lichess.org/api/ui)
-
-    - [Contribute to this documentation on Github](https://github.com/lichess-org/api)
-
-    - Check out [Lichess widgets to embed in your website](https://lichess.org/developers)
-
-    - [Download all Lichess rated games](https://database.lichess.org/)
-
-    - [Download all Lichess puzzles with themes, ratings and votes](https://database.lichess.org/#puzzles)
-
-    - [Download all evaluated positions](https://database.lichess.org/#evals)
-
-
-    ## Endpoint
-
-    All requests go to `https://lichess.org` (unless otherwise specified).
-
-
-    ## Clients
-
-    - [Python general API](https://github.com/lichess-org/berserk)
-
-    - [MicroPython general API](https://github.com/mkomon/uberserk)
-
-    - [Python general API - async](https://pypi.org/project/async-lichess-sdk)
-
-    - [Python Lichess Bot](https://github.com/lichess-bot-devs/lichess-bot)
-
-    - [Python Board API for Certabo](https://github.com/haklein/certabo-lichess)
-
-    - [Java general API](https://github.com/tors42/chariot)
-
-    - [JavaScript & TypeScript general API](https://github.com/devjiwonchoi/equine)
-
-    - [LichessNET - C# API Wrapper](https://github.com/Rabergsel/LichessNET)
-
-    - [.NET general API](https://github.com/Dblike/LichessSharp)
-
-
-    ## Rate limiting
-
-    All requests are rate limited using various strategies,
-
-    to ensure the API remains responsive for everyone.
-
-    Only make one request at a time.
-
-    If you receive an HTTP response with a [429 status](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes#429),
-
-    you have exceded one of the rate limits.
-
-    In most cases, waiting one minute before retrying will be sufficient, but some limits may require longer.
-
-    Reduce your request frequency before retrying.
-
-
-    ## Streaming with ND-JSON
-
-    Some API endpoints stream their responses as [Newline Delimited JSON a.k.a. **nd-json**](https://github.com/ndjson/ndjson-spec), with one JSON object per line.
-
-
-    Here''s a [JavaScript utility function](https://gist.github.com/ornicar/a097406810939cf7be1df8ea30e94f3e) to help reading NDJSON streamed responses.
-
-
-    ## Authentication
-
-    ### Which authentication method is right for me?
-
-    [Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md)
-
-
-    ### Personal Access Token
-
-    Personal API access tokens allow you to quickly interact with Lichess API without going through an OAuth flow.
-
-    - [Generate a personal access token](https://lichess.org/account/oauth/token)
-
-    - `curl https://lichess.org/api/account -H "Authorization: Bearer {token}"`
-
-    - [NodeJS example](https://github.com/lichess-org/api/tree/master/example/oauth-personal-token)
-
-
-    ### Token Security
-
-    - Keep your tokens secret. Do not share them in public repositories or public forums.
-
-    - Your tokens can be used to make your account perform arbitrary actions (within the limits of the tokens'' scope). You remain responsible for all activities on your account.
-
-    - Do not hardcode tokens in your application''s code. Use environment variables or a secure storage and ensure they are not shipped/exposed to users. Be especially careful that they are not included in frontend bundles or apps that are shipped to users.
-
-    - If you suspect a token has been compromised, revoke it immediately.
-
-
-    To see your active tokens or revoke them, see [your Personal API access tokens](https://lichess.org/account/oauth/token).
-
-
-    ### Authorization Code Flow with PKCE
-
-    The authorization code flow with PKCE allows your users to **login with Lichess**.
-
-    Lichess supports unregistered and public clients (no client authentication, choose any unique client id).
-
-    The only accepted code challenge method is `S256`.
-
-    Access tokens are long-lived (expect one year), unless they are revoked.
-
-    Refresh tokens are not supported.
-
-
-    See the [documentation for the OAuth endpoints](#tag/OAuth) or
-
-    the [PKCE RFC](https://datatracker.ietf.org/doc/html/rfc7636#section-4) for a precise protocol description.
-
-
-    - [Demo app](https://lichess-org.github.io/api-demo/)
-
-    - [Minimal client-side example](https://github.com/lichess-org/api/tree/master/example/oauth-app)
-
-    - [Flask/Python example](https://github.com/lakinwecker/lichess-oauth-flask)
-
-    - [Java example](https://github.com/tors42/lichess-oauth-pkce-app)
-
-    - [NodeJS Passport strategy to login with Lichess OAuth2](https://www.npmjs.com/package/passport-lichess)
-
-
-    #### Real life examples
-
-    - [PyChess](https://github.com/gbtami/pychess-variants) ([source code](https://github.com/gbtami/pychess-variants))
-
-    - [Lichess4545](https://www.lichess4545.com/) ([source code](https://github.com/cyanfish/heltour))
-
-    - [English Chess Federation](https://ecf.octoknight.com/)
-
-    - [Rotherham Online Chess](https://rotherhamonlinechess.azurewebsites.net/tournaments)
-
-
-    ### Token format
-
-    Access tokens and authorization codes match `^[A-Za-z0-9_]+$`.
-
-    The length of tokens can be increased without notice. Make sure your application can handle at least 512 characters.
-
-    By convention tokens have a recognizable prefix, but do not rely on this.
-
-    '
+    Welcome to the reference for the Lichess API!'
 servers:
 - url: https://lichess.org
 - url: https://lichess.dev
@@ -176,69 +24,13 @@ servers:
 - url: http://l.org
 tags:
 - name: Bot
-  description: 'Play on Lichess as a bot. Allows engine play.
-
-    Read the [blog post announcement of lichess bots](https://lichess.org/blog/WvDNticAAMu_mHKP/welcome-lichess-bots).
-
-
-    Only works with [Bot accounts](#tag/bot/POST/api/bot/account/upgrade).
-
-
-    ### Features
-
-    - [Stream incoming chess moves](#tag/bot/GET/api/bot/game/stream/{gameId})
-
-    - [Play chess moves](#tag/bot/POST/api/bot/game/{gameId}/move/{move})
-
-    - [Read](#tag/bot/GET/api/bot/game/stream/{gameId}) and [write](#tag/bot/POST/api/bot/game/{gameId}/chat) in the player and spectator chats
-
-    - [Receive](#tag/bot/GET/api/stream/event), [create](#tag/challenges/POST/api/challenge/{username}) and [accept](#tag/challenges/POST/api/challenge/{challengeId}/accept) (or [decline](#tag/challenges/POST/api/challenge/{challengeId}/decline)) challenges
-
-    - [Abort](#tag/bot/POST/api/bot/game/{gameId}/abort) and [resign](#tag/bot/POST/api/bot/game/{gameId}/resign) games
-
-    - Engine assistance is [allowed](https://lichess.org/page/fair-play)
-
-    ### Restrictions
-
-    - Bots can only play challenge games:  pools and tournaments are off-limits
-
-    - Bots cannot play UltraBullet (¼+0) because it requires making too many requests. But 0+1 and ½+0 are allowed.
-
-    - Bots must follow [Lichess TOS](https://lichess.org/terms-of-service) specifically Sandbagging, Constant Aborting, Boosting, etc
-
-    - Bot devs are advised to make their Bots play casual only when testing their Bots logic and to avoid breaking Lichess TOS.
-
-    ### Integrations
-
-    - [Python3 lichess-bot](https://github.com/lichess-bot-devs/lichess-bot) (official)
-
-    - [Python3 lichess UCI bot](https://github.com/Torom/BotLi)
-
-    - [JavaScript bot-o-tron](https://github.com/tailuge/bot-o-tron)
-
-    - [Golang lichess-bot](https://github.com/dolegi/lichess-bot)
-
-    - [Electronic Chessboard](http://www.oliviermercier.com/res/projects/chessboard/)
-
-    - Yours? Please make [an issue or pull request](https://github.com/lichess-org/api).
-
-    ### Links
-
-    - [Announcement](https://lichess.org/blog/WvDNticAAMu_mHKP/welcome-lichess-bots)
-
-    - Join the [Lichess Bots team](https://lichess.org/team/lichess-bots) with your bot account
-
-    - [Get help in the discord channel](https://discord.gg/quwueFd)
-
-    - Watch [Lichess Bot TV](https://lichess.org/tv/bot)
-
-    '
+  description: Play on Lichess as a bot.
 paths:
   /api/stream/event:
     get:
       operationId: apiStreamEvent
       summary: Stream incoming events
-      description: 'Stream the events reaching a lichess user in real time as [ndjson](#description/streaming-with-nd-json).
+      description: 'Stream the events reaching a lichess user in real time as ndjson.
 
 
         An empty line is sent every 7 seconds for keep alive purposes.
@@ -260,9 +52,7 @@ paths:
         When the stream opens, all current challenges and games are sent.
 
 
-        Only one global event stream can be active at a time. When the stream opens, the previous one with the same access token is closed.
-
-        '
+        Only one global event stream can be active at a time. When the stream opens, the previous one with the same access token is closed.'
       tags:
       - Bot
       security:
@@ -309,7 +99,7 @@ paths:
       tags:
       - Bot
       security: []
-      description: Stream the [online bot users](https://lichess.org/player/bots), as [ndjson](#description/streaming-with-nd-json).
+      description: Stream the online bot users, as ndjson.
       parameters:
       - in: query
         name: nb
@@ -343,17 +133,15 @@ paths:
 
         The account **cannot have played any game** before becoming a Bot account. The upgrade is **irreversible**. The account will only be able to play as a Bot.
 
-        To upgrade an account to Bot, use the [official lichess-bot client](https://github.com/lichess-bot-devs/lichess-bot), or follow these steps:
+        To upgrade an account to Bot, use the official lichess-bot client, or follow these steps:
 
-        - Create an [API access token](https://lichess.org/account/oauth/token/create?scopes[]=bot:play) with "Play bot moves" permission.
+        - Create an API access token with "Play bot moves" permission.
 
-        - `curl -d '''' https://lichess.org/api/bot/account/upgrade -H "Authorization: Bearer <yourTokenHere>"`
+        - `curl -d '''' https://lichess.org/api/bot/account/upgrade -H "Authorization: Bearer "`
 
-        To know if an account has already been upgraded, use the [Get my profile API](#tag/account/GET/api/account):
+        To know if an account has already been upgraded, use the Get my profile API:
 
-        the `title` field should be set to `BOT`.
-
-        '
+        the `title` field should be set to `BOT`.'
       tags:
       - Bot
       security:
@@ -381,7 +169,7 @@ paths:
     get:
       operationId: botGameStream
       summary: Stream Bot game state
-      description: 'Stream the state of a game being played with the Bot API, as [ndjson](#description/streaming-with-nd-json).
+      description: 'Stream the state of a game being played with the Bot API, as ndjson.
 
         Use this endpoint to get updates about the game in real-time, with a single request.
 
@@ -395,9 +183,7 @@ paths:
 
         - `opponentGone` Whether the opponent has left the game, and how long before you can claim a win or draw.
 
-        The first line is always of type `gameFull`.
-
-        '
+        The first line is always of type `gameFull`.'
       tags:
       - Bot
       security:
@@ -438,9 +224,7 @@ paths:
       summary: Make a Bot move
       description: 'Make a move in a game being played with the Bot API.
 
-        The move can also contain a draw offer/agreement.
-
-        '
+        The move can also contain a draw offer/agreement.'
       tags:
       - Bot
       security:
@@ -487,9 +271,7 @@ paths:
     post:
       operationId: botGameChat
       summary: Write in the chat
-      description: 'Post a message to the player or spectator chat, in a game being played with the Bot API.
-
-        '
+      description: Post a message to the player or spectator chat, in a game being played with the Bot API.
       tags:
       - Bot
       security:
@@ -541,9 +323,7 @@ paths:
     get:
       operationId: botGameChatGet
       summary: Fetch the game chat
-      description: 'Get the messages posted in the game chat
-
-        '
+      description: Get the messages posted in the game chat
       tags:
       - Bot
       security:
@@ -572,9 +352,7 @@ paths:
     post:
       operationId: botGameAbort
       summary: Abort a game
-      description: 'Abort a game being played with the Bot API.
-
-        '
+      description: Abort a game being played with the Bot API.
       tags:
       - Bot
       security:
@@ -609,9 +387,7 @@ paths:
     post:
       operationId: botGameResign
       summary: Resign a game
-      description: 'Resign a game being played with the Bot API.
-
-        '
+      description: Resign a game being played with the Bot API.
       tags:
       - Bot
       security:
@@ -650,9 +426,7 @@ paths:
 
         - `yes`: Offer a draw, or accept the opponent''s draw offer.
 
-        - `no`: Decline a draw offer from the opponent.
-
-        '
+        - `no`: Decline a draw offer from the opponent.'
       tags:
       - Bot
       security:
@@ -700,9 +474,7 @@ paths:
 
         - `yes`: Propose a takeback, or accept the opponent''s takeback offer.
 
-        - `no`: Decline a takeback offer from the opponent.
-
-        '
+        - `no`: Decline a takeback offer from the opponent.'
       tags:
       - Bot
       security:
@@ -746,9 +518,7 @@ paths:
     post:
       operationId: botGameClaimVictory
       summary: Claim victory of a game
-      description: 'Claim victory when the opponent has left the game for a while.
-
-        '
+      description: Claim victory when the opponent has left the game for a while.
       tags:
       - Bot
       security:
@@ -783,9 +553,7 @@ paths:
     post:
       operationId: botGameClaimDraw
       summary: Claim draw of a game
-      description: 'Claim draw when the opponent has left the game for a while.
-
-        '
+      description: Claim draw when the opponent has left the game for a while.
       tags:
       - Bot
       security:
@@ -817,35 +585,420 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 components:
+  examples:
+    bot-getOnlineBots.json:
+      value:
+        id: variantsbot
+        username: VariantsBot
+        perfs:
+          bullet:
+            games: 2
+            rating: 2212
+            rd: 500
+            prog: 0
+            prov: true
+          blitz:
+            games: 0
+            rating: 1500
+            rd: 500
+            prog: 0
+            prov: true
+          rapid:
+            games: 0
+            rating: 1500
+            rd: 500
+            prog: 0
+            prov: true
+          classical:
+            games: 0
+            rating: 1500
+            rd: 500
+            prog: 0
+            prov: true
+          correspondence:
+            games: 0
+            rating: 1500
+            rd: 500
+            prog: 0
+            prov: true
+          chess960:
+            games: 65
+            rating: 2180
+            rd: 229
+            prog: -11
+            prov: true
+          kingOfTheHill:
+            games: 579
+            rating: 2579
+            rd: 176
+            prog: -1
+            prov: true
+          threeCheck:
+            games: 2110
+            rating: 2759
+            rd: 171
+            prog: -5
+            prov: true
+          antichess:
+            games: 6982
+            rating: 3021
+            rd: 169
+            prog: 0
+            prov: true
+          atomic:
+            games: 3666
+            rating: 2714
+            rd: 167
+            prog: -19
+            prov: true
+          horde:
+            games: 1019
+            rating: 3019
+            rd: 170
+            prog: 2
+            prov: true
+          racingKings:
+            games: 3173
+            rating: 2703
+            rd: 164
+            prog: -8
+            prov: true
+          crazyhouse:
+            games: 1058
+            rating: 2754
+            rd: 177
+            prog: 1
+            prov: true
+        title: BOT
+        createdAt: 1597330896288
+        profile:
+          bio: 'Fairy-Stockfish for variants, on an AMD Threadripper.  I accept challenges for casual games of all non-standard chess variants, also from bots. Accepted time controls: minimum 1 + 0, maximum 15 + 10. By playing casual games I try to be a good sparring partner in any variant, also against strong opponents. Tool to create opening books for any Lichess chess variant: github.com/lichapibot/cbuild.'
+        seenAt: 1778812219623
+        playTime:
+          total: 18093325
+          tv: 3862
+          human: 20182743
+    stream-gameFinish.json:
+      value:
+        type: gameFinish
+        game:
+          fullId: xAVd6eJykuzM
+          gameId: xAVd6eJy
+          fen: rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2
+          color: white
+          lastMove: e7e5
+          source: friend
+          status:
+            id: 31
+            name: resign
+          variant:
+            key: standard
+            name: Standard
+          speed: blitz
+          perf: blitz
+          rated: true
+          hasMoved: true
+          opponent:
+            id: aaron
+            username: Aaron
+            rating: 797
+            ratingDiff: 6
+          isMyTurn: false
+          secondsLeft: 300
+          winner: black
+          rating: 692
+          ratingDiff: -9
+          compat:
+            bot: false
+            board: true
+          id: xAVd6eJy
+    stream-challengeCanceled.json:
+      value:
+        type: challengeCanceled
+        challenge:
+          id: Ocf0maqB
+          url: https://lichess.org/Ocf0maqB
+          status: canceled
+          challenger:
+            name: Elena
+            title: WNM
+            flair: people.man-vampire
+            patron: true
+            patronColor: 1
+            id: elena
+            rating: 2240
+          destUser:
+            name: Diego
+            id: diego
+            rating: 2056
+            provisional: true
+            online: true
+          variant:
+            key: standard
+            name: Standard
+            short: Std
+          rated: false
+          speed: correspondence
+          timeControl:
+            type: unlimited
+          color: random
+          finalColor: white
+          perf:
+            icon: 
+            name: Correspondence
+    stream-gameStart.json:
+      value:
+        type: gameStart
+        game:
+          fullId: xAVd6eJykuzM
+          gameId: xAVd6eJy
+          fen: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+          color: white
+          lastMove: ''
+          source: friend
+          status:
+            id: 20
+            name: started
+          variant:
+            key: standard
+            name: Standard
+          speed: blitz
+          perf: blitz
+          rated: true
+          hasMoved: false
+          opponent:
+            id: aaron
+            username: Aaron
+            rating: 797
+          isMyTurn: true
+          secondsLeft: 300
+          rating: 692
+          compat:
+            bot: false
+            board: true
+          id: xAVd6eJy
+    stream-gameFinish-ai.json:
+      value:
+        type: gameFinish
+        game:
+          fullId: Vyp0MJIgjhQr
+          gameId: Vyp0MJIg
+          fen: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+          color: black
+          lastMove: ''
+          source: ai
+          status:
+            id: 25
+            name: aborted
+          variant:
+            key: standard
+            name: Standard
+          speed: correspondence
+          perf: correspondence
+          rated: false
+          hasMoved: false
+          opponent:
+            id: null
+            username: Stockfish level 1
+            ai: 1
+          isMyTurn: false
+          rating: 2245
+          compat:
+            bot: false
+            board: true
+          id: Vyp0MJIg
+    stream-gameStart-ai.json:
+      value:
+        type: gameStart
+        game:
+          fullId: Vyp0MJIgjhQr
+          gameId: Vyp0MJIg
+          fen: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+          color: black
+          lastMove: ''
+          source: ai
+          status:
+            id: 20
+            name: started
+          variant:
+            key: standard
+            name: Standard
+          speed: correspondence
+          perf: correspondence
+          rated: false
+          hasMoved: false
+          opponent:
+            id: null
+            username: Stockfish level 1
+            ai: 1
+          isMyTurn: false
+          rating: 2245
+          compat:
+            bot: false
+            board: true
+          id: Vyp0MJIg
+    stream-challenge.json:
+      value:
+        type: challenge
+        challenge:
+          id: sxqxgMtR
+          url: https://lichess.org/sxqxgMtR
+          status: created
+          challenger:
+            name: Adriana
+            flair: activity.1st-place-medal
+            id: adriana
+            rating: 599
+          destUser:
+            name: Gabriela
+            flair: objects.yen-banknote
+            id: gabriela
+            rating: 1569
+            online: true
+          variant:
+            key: standard
+            name: Standard
+            short: Std
+          rated: false
+          speed: correspondence
+          timeControl:
+            type: unlimited
+          color: random
+          finalColor: white
+          perf:
+            icon: 
+            name: Correspondence
+        compat:
+          bot: false
+          board: true
+    stream-challengeDeclined.json:
+      value:
+        type: challengeDeclined
+        challenge:
+          id: sxqxgMtR
+          url: https://lichess.org/sxqxgMtR
+          status: declined
+          challenger:
+            name: Adriana
+            flair: activity.1st-place-medal
+            id: adriana
+            rating: 599
+          destUser:
+            name: Gabriela
+            flair: objects.yen-banknote
+            id: gabriela
+            rating: 1569
+            online: true
+          variant:
+            key: standard
+            name: Standard
+            short: Std
+          rated: false
+          speed: correspondence
+          timeControl:
+            type: unlimited
+          color: random
+          finalColor: white
+          perf:
+            icon: 
+            name: Correspondence
+          declineReason: I'm not accepting challenges at the moment.
+          declineReasonKey: generic
   schemas:
-    PuzzleModePerf:
+    ChallengeEvent:
       type: object
       properties:
-        runs:
-          type: integer
-        score:
+        type:
+          type: string
+          const: challenge
+        challenge:
+          $ref: '#/components/schemas/ChallengeJson'
+        compat:
+          $ref: '#/components/schemas/GameCompat'
+      required:
+      - type
+      - challenge
+    ChallengeDeclinedEvent:
+      type: object
+      properties:
+        type:
+          type: string
+          const: challengeDeclined
+        challenge:
+          $ref: '#/components/schemas/ChallengeDeclinedJson'
+      required:
+      - type
+      - challenge
+    GameStatus:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/GameStatusId'
+        name:
+          $ref: '#/components/schemas/GameStatusName'
+      required:
+      - id
+      - name
+    Variant:
+      type: object
+      properties:
+        key:
+          $ref: '#/components/schemas/VariantKey'
+        name:
+          type: string
+        short:
+          type: string
+      required:
+      - key
+      - name
+    GameStartEvent:
+      type: object
+      properties:
+        type:
+          type: string
+          const: gameStart
+        game:
+          $ref: '#/components/schemas/GameEventInfo'
+      required:
+      - type
+      - game
+    GameCompat:
+      type: object
+      properties:
+        bot:
+          type: boolean
+          description: Compatible with Bot API
+        board:
+          type: boolean
+          description: Compatible with Board API
+    OpponentGoneEvent:
+      type: object
+      properties:
+        type:
+          type: string
+          const: opponentGone
+        gone:
+          type: boolean
+        claimWinInSeconds:
           type: integer
       required:
-      - runs
-      - score
-    PatronColor:
-      type: integer
-      description: 'Players can choose a color for their Patron wings.
-
-        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
-
-
-        The presence of this field indicates the player is an active Patron.
-
-        '
-      minimum: 1
-      maximum: 10
-    ChallengeColor:
-      type: string
-      enum:
-      - white
-      - black
-      - random
+      - type
+      - gone
+      example:
+        type: opponentGone
+        gone: true
+        claimWinInSeconds: 8
+    GameFinishEvent:
+      type: object
+      properties:
+        type:
+          type: string
+          const: gameFinish
+        game:
+          $ref: '#/components/schemas/GameEventInfo'
+      required:
+      - type
+      - game
     ChatLineEvent:
       type: object
       properties:
@@ -871,318 +1024,40 @@ components:
         username: thibault
         text: Good luck, have fun
         room: player
-    GameFullEvent:
-      type: object
-      properties:
-        type:
-          type: string
-          const: gameFull
-        id:
-          type: string
-        variant:
-          $ref: '#/components/schemas/Variant'
-        clock:
-          type: object
-          properties:
-            initial:
-              type: integer
-              format: int64
-              description: Initial time in milliseconds
-            increment:
-              type: integer
-              format: int64
-              description: Increment time in milliseconds
-        speed:
-          $ref: '#/components/schemas/Speed'
-        perf:
-          type: object
-          properties:
-            name:
-              type: string
-              description: Translated perf name (e.g. "Classical" or "Blitz")
-        rated:
-          type: boolean
-        createdAt:
-          type: integer
-          format: int64
-        white:
-          $ref: '#/components/schemas/GameEventPlayer'
-        black:
-          $ref: '#/components/schemas/GameEventPlayer'
-        initialFen:
-          type: string
-          default: startpos
-        state:
-          $ref: '#/components/schemas/GameStateEvent'
-        daysPerTurn:
-          type: integer
-          description: If the game is correspondence
-        tournamentId:
-          type: string
-      required:
-      - type
-      - id
-      - variant
-      - speed
-      - perf
-      - rated
-      - createdAt
-      - white
-      - black
-      - initialFen
-      - state
-      example:
-        id: BEOucQJo
-        variant:
-          key: standard
-          name: Standard
-          short: Std
-        speed: rapid
-        perf:
-          name: Rapid
-        rated: false
-        createdAt: 1745112707998
-        white:
-          id: bobby
-          name: Bobby
-          title: null
-          rating: 1751
-        black:
-          id: mary
-          name: Mary
-          title: null
-          rating: 1021
-        initialFen: startpos
-        clock:
-          initial: 900000
-          increment: 0
-        type: gameFull
-        state:
-          type: gameState
-          moves: d2d3
-          wtime: 900000
-          btime: 900000
-          winc: 0
-          binc: 0
-          status: started
-    Variant:
-      type: object
-      properties:
-        key:
-          $ref: '#/components/schemas/VariantKey'
-        name:
-          type: string
-        short:
-          type: string
-      required:
-      - key
-      - name
-    GameStateEvent:
-      type: object
-      properties:
-        type:
-          type: string
-          const: gameState
-        moves:
-          type: string
-          description: 'Current moves in UCI format (King to rook for Chess690-compatible castling
-
-            notation)
-
-            '
-        wtime:
-          type: integer
-          description: Integer of milliseconds White has left on the clock
-        btime:
-          type: integer
-          description: Integer of milliseconds Black has left on the clock
-        winc:
-          type: integer
-          description: Integer of White Fisher increment.
-        binc:
-          type: integer
-          description: Integer of Black Fisher increment.
-        status:
-          $ref: '#/components/schemas/GameStatusName'
-        winner:
-          $ref: '#/components/schemas/GameColor'
-          description: Color of the winner, if any
-        wdraw:
-          type: boolean
-          description: true if white is offering draw, else omitted
-        bdraw:
-          type: boolean
-          description: true if black is offering draw, else omitted
-        wtakeback:
-          type: boolean
-          description: true if white is proposing takeback, else omitted
-        btakeback:
-          type: boolean
-          description: true if black is proposing takeback, else omitted
-        expiration:
-          type: object
-          description: A game may be aborted if a player doesn't make their first move in time
-          properties:
-            idleMillis:
-              type: integer
-              description: Milliseconds since the last move was played, or since the game started
-            millisToMove:
-              type: integer
-              description: Time each player has to make their first move, before the game is aborted
-          required:
-          - idleMillis
-          - millisToMove
-      required:
-      - type
-      - moves
-      - wtime
-      - btime
-      - winc
-      - binc
-      - status
-      example:
-        type: gameState
-        moves: e2e4 c7c5 f2f4 d7d6 g1f3 b8c6 f1c4 g8f6 d2d3 g7g6 e1g1 f8g7 b1c3
-        wtime: 7598040
-        btime: 8395220
-        winc: 10000
-        binc: 10000
-        wdraw: false
-        bdraw: false
-        wtakeback: false
-        btakeback: false
-        status: started
-    ChallengeCanceledEvent:
-      type: object
-      properties:
-        type:
-          type: string
-          const: challengeCanceled
-        challenge:
-          $ref: '#/components/schemas/ChallengeJson'
-      required:
-      - type
-      - challenge
-    PlayTime:
-      type: object
-      properties:
-        total:
-          type: integer
-        tv:
-          type: integer
-        human:
-          type: integer
-      required:
-      - total
-      - tv
-    Patron:
-      type: boolean
-      deprecated: true
-      description: 'Use patronColor value instead to determine if player is a patron.
-
-        '
-    VariantKey:
+    GameStatusName:
       type: string
       enum:
-      - standard
-      - chess960
-      - crazyhouse
-      - antichess
-      - atomic
-      - horde
-      - kingOfTheHill
-      - racingKings
-      - threeCheck
-      - fromPosition
-      example: standard
-      default: standard
-    ChallengeUser:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        rating:
-          type: integer
-        title:
-          $ref: '#/components/schemas/Title'
-        flair:
-          $ref: '#/components/schemas/Flair'
-        patron:
-          $ref: '#/components/schemas/Patron'
-        patronColor:
-          $ref: '#/components/schemas/PatronColor'
-        provisional:
-          type: boolean
-        online:
-          type: boolean
-        lag:
-          type: integer
-      required:
-      - id
-      - name
-    GameColor:
-      type: string
+      - created
+      - started
+      - aborted
+      - mate
+      - resign
+      - stalemate
+      - timeout
+      - draw
+      - outoftime
+      - cheat
+      - noStart
+      - unknownFinish
+      - insufficientMaterialClaim
+      - variantEnd
+    GameStatusId:
+      type: integer
       enum:
-      - white
-      - black
-    NotFound:
-      properties:
-        error:
-          type: string
-      required:
-      - error
-      example:
-        error: Not found.
-    GameEventInfo:
-      type: object
-      properties:
-        fullId:
-          type: string
-        gameId:
-          type: string
-        fen:
-          type: string
-        color:
-          $ref: '#/components/schemas/GameColor'
-        lastMove:
-          type: string
-        source:
-          $ref: '#/components/schemas/GameSource'
-        status:
-          $ref: '#/components/schemas/GameStatus'
-        variant:
-          $ref: '#/components/schemas/Variant'
-        speed:
-          $ref: '#/components/schemas/Speed'
-        perf:
-          type: string
-        rating:
-          type: integer
-        rated:
-          type: boolean
-        hasMoved:
-          type: boolean
-        opponent:
-          $ref: '#/components/schemas/GameEventOpponent'
-        isMyTurn:
-          type: boolean
-        secondsLeft:
-          type: integer
-        winner:
-          $ref: '#/components/schemas/GameColor'
-        ratingDiff:
-          type: integer
-        compat:
-          $ref: '#/components/schemas/GameCompat'
-        id:
-          type: string
-        tournamentId:
-          type: string
-      required:
-      - fullId
-      - gameId
+      - 10
+      - 20
+      - 25
+      - 30
+      - 31
+      - 32
+      - 33
+      - 34
+      - 35
+      - 36
+      - 37
+      - 38
+      - 39
+      - 60
     PlayerGameChat:
       type: array
       items:
@@ -1202,69 +1077,47 @@ components:
         user: lichess
       - text: Good game, well played
         user: thibault
-    ChallengeDeclinedEvent:
-      type: object
-      properties:
-        type:
-          type: string
-          const: challengeDeclined
-        challenge:
-          $ref: '#/components/schemas/ChallengeDeclinedJson'
-      required:
-      - type
-      - challenge
-    Ok:
-      properties:
-        ok:
-          type: boolean
-      required:
-      - ok
-    GameStartEvent:
-      type: object
-      properties:
-        type:
-          type: string
-          const: gameStart
-        game:
-          $ref: '#/components/schemas/GameEventInfo'
-      required:
-      - type
-      - game
-    GameCompat:
-      type: object
-      properties:
-        bot:
-          type: boolean
-          description: Compatible with Bot API
-        board:
-          type: boolean
-          description: Compatible with Board API
-    ChallengeDeclinedJson:
-      allOf:
-      - $ref: '#/components/schemas/ChallengeJson'
+    GameEventOpponent:
+      oneOf:
       - type: object
+        title: Player
         properties:
-          declineReason:
+          id:
             type: string
-            description: Human readable, possibly translated reason why the challenge was declined.
-          declineReasonKey:
+          username:
             type: string
-            description: Untranslated, computer-matchable reason why the challenge was declined.
-            enum:
-            - generic
-            - later
-            - toofast
-            - tooslow
-            - timecontrol
-            - rated
-            - casual
-            - standard
-            - variant
-            - nobot
-            - onlybot
+          rating:
+            type: integer
+          ratingDiff:
+            type: integer
         required:
-        - declineReason
-        - declineReasonKey
+        - id
+        - username
+        - rating
+      - type: object
+        title: AI Opponent
+        properties:
+          id:
+            type: 'null'
+          username:
+            type: string
+          ai:
+            type: integer
+            description: AI level, from 1 to 8, where 1 is the weakest and 8 is the strongest.
+        required:
+        - id
+        - username
+        - ai
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The cause of the error.
+      required:
+      - error
+      example:
+        error: This request is invalid because [...]
     Profile:
       type: object
       properties:
@@ -1305,114 +1158,173 @@ components:
           description: only appears if a user has set them
         links:
           type: string
-          example: "github.com/ornicar\r\nmas.to/@thibault"
-    GameStatusId:
-      type: integer
-      enum:
-      - 10
-      - 20
-      - 25
-      - 30
-      - 31
-      - 32
-      - 33
-      - 34
-      - 35
-      - 36
-      - 37
-      - 38
-      - 39
-      - 60
-    Flair:
-      type: string
-      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
-    Perf:
+          example: 'github.com/ornicar
+
+            mas.to/@thibault'
+    ChallengeUser:
       type: object
       properties:
-        games:
-          type: integer
-        rating:
-          type: integer
-        rd:
-          type: integer
-          description: rating deviation
-        prog:
-          type: integer
-        prov:
-          type: boolean
-          description: only appears if a user's perf rating are [provisional](https://lichess.org/faq#provisional)
-        rank:
-          type: integer
-          description: global lichess ranking, only appears for recently active players
-      required:
-      - games
-      - rating
-      - rd
-      - prog
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-          description: The cause of the error.
-      required:
-      - error
-      example:
-        error: This request is invalid because [...]
-    ChallengeStatus:
-      type: string
-      enum:
-      - created
-      - offline
-      - canceled
-      - declined
-      - accepted
-    Speed:
-      type: string
-      enum:
-      - ultraBullet
-      - bullet
-      - blitz
-      - rapid
-      - classical
-      - correspondence
-    GameStatusName:
-      type: string
-      enum:
-      - created
-      - started
-      - aborted
-      - mate
-      - resign
-      - stalemate
-      - timeout
-      - draw
-      - outoftime
-      - cheat
-      - noStart
-      - unknownFinish
-      - insufficientMaterialClaim
-      - variantEnd
-    GameEventPlayer:
-      type: object
-      properties:
-        aiLevel:
-          type: integer
         id:
           type: string
         name:
           type: string
-        title:
-          oneOf:
-          - $ref: '#/components/schemas/Title'
-          - type: 'null'
         rating:
           type: integer
+        title:
+          $ref: '#/components/schemas/Title'
+        flair:
+          $ref: '#/components/schemas/Flair'
+        patron:
+          $ref: '#/components/schemas/Patron'
+        patronColor:
+          $ref: '#/components/schemas/PatronColor'
         provisional:
           type: boolean
+        online:
+          type: boolean
+        lag:
+          type: integer
       required:
       - id
       - name
+    Patron:
+      type: boolean
+      deprecated: true
+      description: 'Use patronColor value instead to determine if player is a patron.
+
+        '
+    Perfs:
+      type: object
+      properties:
+        chess960:
+          $ref: '#/components/schemas/Perf'
+        atomic:
+          $ref: '#/components/schemas/Perf'
+        racingKings:
+          $ref: '#/components/schemas/Perf'
+        ultraBullet:
+          $ref: '#/components/schemas/Perf'
+        blitz:
+          $ref: '#/components/schemas/Perf'
+        kingOfTheHill:
+          $ref: '#/components/schemas/Perf'
+        threeCheck:
+          $ref: '#/components/schemas/Perf'
+        antichess:
+          $ref: '#/components/schemas/Perf'
+        crazyhouse:
+          $ref: '#/components/schemas/Perf'
+        bullet:
+          $ref: '#/components/schemas/Perf'
+        correspondence:
+          $ref: '#/components/schemas/Perf'
+        horde:
+          $ref: '#/components/schemas/Perf'
+        puzzle:
+          $ref: '#/components/schemas/Perf'
+        classical:
+          $ref: '#/components/schemas/Perf'
+        rapid:
+          $ref: '#/components/schemas/Perf'
+        storm:
+          $ref: '#/components/schemas/PuzzleModePerf'
+        racer:
+          $ref: '#/components/schemas/PuzzleModePerf'
+        streak:
+          $ref: '#/components/schemas/PuzzleModePerf'
+    GameColor:
+      type: string
+      enum:
+      - white
+      - black
+    TimeControl:
+      oneOf:
+      - type: object
+        title: Real-time
+        properties:
+          type:
+            type: string
+            const: clock
+          limit:
+            type: integer
+          increment:
+            type: integer
+          show:
+            example: 5+2
+            type: string
+        additionalProperties: false
+      - type: object
+        title: Correspondence
+        properties:
+          type:
+            type: string
+            const: correspondence
+          daysPerTurn:
+            type: integer
+        additionalProperties: false
+      - type: object
+        title: Unlimited
+        properties:
+          type:
+            type: string
+            const: unlimited
+        additionalProperties: false
+    Ok:
+      properties:
+        ok:
+          type: boolean
+      required:
+      - ok
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        perfs:
+          $ref: '#/components/schemas/Perfs'
+        title:
+          $ref: '#/components/schemas/Title'
+        flair:
+          $ref: '#/components/schemas/Flair'
+        createdAt:
+          type: integer
+          format: int64
+        disabled:
+          type: boolean
+          description: only appears if a user's account is closed
+        tosViolation:
+          type: boolean
+          description: only appears if a user's account is marked for the violation of [Lichess TOS](https://lichess.org/terms-of-service)
+        profile:
+          $ref: '#/components/schemas/Profile'
+        seenAt:
+          type: integer
+          format: int64
+        playTime:
+          $ref: '#/components/schemas/PlayTime'
+        patron:
+          $ref: '#/components/schemas/Patron'
+        patronColor:
+          $ref: '#/components/schemas/PatronColor'
+        verified:
+          type: boolean
+      required:
+      - id
+      - username
+    PatronColor:
+      type: integer
+      description: 'Players can choose a color for their Patron wings.
+
+        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
+
+
+        The presence of this field indicates the player is an active Patron.
+
+        '
+      minimum: 1
+      maximum: 10
     ChallengeJson:
       type: object
       properties:
@@ -1509,23 +1421,202 @@ components:
           icon: 
           name: Rapid
         direction: out
-    OpponentGoneEvent:
+    GameEventPlayer:
+      type: object
+      properties:
+        aiLevel:
+          type: integer
+        id:
+          type: string
+        name:
+          type: string
+        title:
+          oneOf:
+          - $ref: '#/components/schemas/Title'
+          - type: 'null'
+        rating:
+          type: integer
+        provisional:
+          type: boolean
+      required:
+      - id
+      - name
+    Perf:
+      type: object
+      properties:
+        games:
+          type: integer
+        rating:
+          type: integer
+        rd:
+          type: integer
+          description: rating deviation
+        prog:
+          type: integer
+        prov:
+          type: boolean
+          description: only appears if a user's perf rating are [provisional](https://lichess.org/faq#provisional)
+        rank:
+          type: integer
+          description: global lichess ranking, only appears for recently active players
+      required:
+      - games
+      - rating
+      - rd
+      - prog
+    PuzzleModePerf:
+      type: object
+      properties:
+        runs:
+          type: integer
+        score:
+          type: integer
+      required:
+      - runs
+      - score
+    GameEventInfo:
+      type: object
+      properties:
+        fullId:
+          type: string
+        gameId:
+          type: string
+        fen:
+          type: string
+        color:
+          $ref: '#/components/schemas/GameColor'
+        lastMove:
+          type: string
+        source:
+          $ref: '#/components/schemas/GameSource'
+        status:
+          $ref: '#/components/schemas/GameStatus'
+        variant:
+          $ref: '#/components/schemas/Variant'
+        speed:
+          $ref: '#/components/schemas/Speed'
+        perf:
+          type: string
+        rating:
+          type: integer
+        rated:
+          type: boolean
+        hasMoved:
+          type: boolean
+        opponent:
+          $ref: '#/components/schemas/GameEventOpponent'
+        isMyTurn:
+          type: boolean
+        secondsLeft:
+          type: integer
+        winner:
+          $ref: '#/components/schemas/GameColor'
+        ratingDiff:
+          type: integer
+        compat:
+          $ref: '#/components/schemas/GameCompat'
+        id:
+          type: string
+        tournamentId:
+          type: string
+      required:
+      - fullId
+      - gameId
+    Speed:
+      type: string
+      enum:
+      - ultraBullet
+      - bullet
+      - blitz
+      - rapid
+      - classical
+      - correspondence
+    ChallengeCanceledEvent:
       type: object
       properties:
         type:
           type: string
-          const: opponentGone
-        gone:
-          type: boolean
-        claimWinInSeconds:
-          type: integer
+          const: challengeCanceled
+        challenge:
+          $ref: '#/components/schemas/ChallengeJson'
       required:
       - type
-      - gone
+      - challenge
+    GameStateEvent:
+      type: object
+      properties:
+        type:
+          type: string
+          const: gameState
+        moves:
+          type: string
+          description: 'Current moves in UCI format (King to rook for Chess690-compatible castling
+
+            notation)
+
+            '
+        wtime:
+          type: integer
+          description: Integer of milliseconds White has left on the clock
+        btime:
+          type: integer
+          description: Integer of milliseconds Black has left on the clock
+        winc:
+          type: integer
+          description: Integer of White Fisher increment.
+        binc:
+          type: integer
+          description: Integer of Black Fisher increment.
+        status:
+          $ref: '#/components/schemas/GameStatusName'
+        winner:
+          $ref: '#/components/schemas/GameColor'
+          description: Color of the winner, if any
+        wdraw:
+          type: boolean
+          description: true if white is offering draw, else omitted
+        bdraw:
+          type: boolean
+          description: true if black is offering draw, else omitted
+        wtakeback:
+          type: boolean
+          description: true if white is proposing takeback, else omitted
+        btakeback:
+          type: boolean
+          description: true if black is proposing takeback, else omitted
+        expiration:
+          type: object
+          description: A game may be aborted if a player doesn't make their first move in time
+          properties:
+            idleMillis:
+              type: integer
+              description: Milliseconds since the last move was played, or since the game started
+            millisToMove:
+              type: integer
+              description: Time each player has to make their first move, before the game is aborted
+          required:
+          - idleMillis
+          - millisToMove
+      required:
+      - type
+      - moves
+      - wtime
+      - btime
+      - winc
+      - binc
+      - status
       example:
-        type: opponentGone
-        gone: true
-        claimWinInSeconds: 8
+        type: gameState
+        moves: e2e4 c7c5 f2f4 d7d6 g1f3 b8c6 f1c4 g8f6 d2d3 g7g6 e1g1 f8g7 b1c3
+        wtime: 7598040
+        btime: 8395220
+        winc: 10000
+        binc: 10000
+        wdraw: false
+        bdraw: false
+        wtakeback: false
+        btakeback: false
+        status: started
     GameSource:
       type: string
       enum:
@@ -1542,126 +1633,14 @@ components:
       - pool
       - arena
       - swiss
-    User:
-      type: object
-      properties:
-        id:
-          type: string
-        username:
-          type: string
-        perfs:
-          $ref: '#/components/schemas/Perfs'
-        title:
-          $ref: '#/components/schemas/Title'
-        flair:
-          $ref: '#/components/schemas/Flair'
-        createdAt:
-          type: integer
-          format: int64
-        disabled:
-          type: boolean
-          description: only appears if a user's account is closed
-        tosViolation:
-          type: boolean
-          description: only appears if a user's account is marked for the violation of [Lichess TOS](https://lichess.org/terms-of-service)
-        profile:
-          $ref: '#/components/schemas/Profile'
-        seenAt:
-          type: integer
-          format: int64
-        playTime:
-          $ref: '#/components/schemas/PlayTime'
-        patron:
-          $ref: '#/components/schemas/Patron'
-        patronColor:
-          $ref: '#/components/schemas/PatronColor'
-        verified:
-          type: boolean
-      required:
-      - id
-      - username
-    GameFinishEvent:
-      type: object
-      properties:
-        type:
-          type: string
-          const: gameFinish
-        game:
-          $ref: '#/components/schemas/GameEventInfo'
-      required:
-      - type
-      - game
-    Perfs:
-      type: object
-      properties:
-        chess960:
-          $ref: '#/components/schemas/Perf'
-        atomic:
-          $ref: '#/components/schemas/Perf'
-        racingKings:
-          $ref: '#/components/schemas/Perf'
-        ultraBullet:
-          $ref: '#/components/schemas/Perf'
-        blitz:
-          $ref: '#/components/schemas/Perf'
-        kingOfTheHill:
-          $ref: '#/components/schemas/Perf'
-        threeCheck:
-          $ref: '#/components/schemas/Perf'
-        antichess:
-          $ref: '#/components/schemas/Perf'
-        crazyhouse:
-          $ref: '#/components/schemas/Perf'
-        bullet:
-          $ref: '#/components/schemas/Perf'
-        correspondence:
-          $ref: '#/components/schemas/Perf'
-        horde:
-          $ref: '#/components/schemas/Perf'
-        puzzle:
-          $ref: '#/components/schemas/Perf'
-        classical:
-          $ref: '#/components/schemas/Perf'
-        rapid:
-          $ref: '#/components/schemas/Perf'
-        storm:
-          $ref: '#/components/schemas/PuzzleModePerf'
-        racer:
-          $ref: '#/components/schemas/PuzzleModePerf'
-        streak:
-          $ref: '#/components/schemas/PuzzleModePerf'
-    TimeControl:
-      oneOf:
-      - type: object
-        title: Real-time
-        properties:
-          type:
-            type: string
-            const: clock
-          limit:
-            type: integer
-          increment:
-            type: integer
-          show:
-            example: 5+2
-            type: string
-        additionalProperties: false
-      - type: object
-        title: Correspondence
-        properties:
-          type:
-            type: string
-            const: correspondence
-          daysPerTurn:
-            type: integer
-        additionalProperties: false
-      - type: object
-        title: Unlimited
-        properties:
-          type:
-            type: string
-            const: unlimited
-        additionalProperties: false
+    ChallengeStatus:
+      type: string
+      enum:
+      - created
+      - offline
+      - canceled
+      - declined
+      - accepted
     Title:
       type: string
       enum:
@@ -1678,379 +1657,170 @@ components:
       - LM
       - BOT
       description: only appears if the user is a titled player or a bot user
-    GameStatus:
-      type: object
+    Flair:
+      type: string
+      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
+    NotFound:
       properties:
-        id:
-          $ref: '#/components/schemas/GameStatusId'
-        name:
-          $ref: '#/components/schemas/GameStatusName'
+        error:
+          type: string
       required:
-      - id
-      - name
-    GameEventOpponent:
-      oneOf:
-      - type: object
-        title: Player
-        properties:
-          id:
-            type: string
-          username:
-            type: string
-          rating:
-            type: integer
-          ratingDiff:
-            type: integer
-        required:
-        - id
-        - username
-        - rating
-      - type: object
-        title: AI Opponent
-        properties:
-          id:
-            type: 'null'
-          username:
-            type: string
-          ai:
-            type: integer
-            description: AI level, from 1 to 8, where 1 is the weakest and 8 is the strongest.
-        required:
-        - id
-        - username
-        - ai
-    ChallengeEvent:
+      - error
+      example:
+        error: Not found.
+    GameFullEvent:
       type: object
       properties:
         type:
           type: string
-          const: challenge
-        challenge:
-          $ref: '#/components/schemas/ChallengeJson'
-        compat:
-          $ref: '#/components/schemas/GameCompat'
+          const: gameFull
+        id:
+          type: string
+        variant:
+          $ref: '#/components/schemas/Variant'
+        clock:
+          type: object
+          properties:
+            initial:
+              type: integer
+              format: int64
+              description: Initial time in milliseconds
+            increment:
+              type: integer
+              format: int64
+              description: Increment time in milliseconds
+        speed:
+          $ref: '#/components/schemas/Speed'
+        perf:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Translated perf name (e.g. "Classical" or "Blitz")
+        rated:
+          type: boolean
+        createdAt:
+          type: integer
+          format: int64
+        white:
+          $ref: '#/components/schemas/GameEventPlayer'
+        black:
+          $ref: '#/components/schemas/GameEventPlayer'
+        initialFen:
+          type: string
+          default: startpos
+        state:
+          $ref: '#/components/schemas/GameStateEvent'
+        daysPerTurn:
+          type: integer
+          description: If the game is correspondence
+        tournamentId:
+          type: string
       required:
       - type
-      - challenge
-  examples:
-    stream-gameFinish-ai.json:
-      value:
-        type: gameFinish
-        game:
-          fullId: Vyp0MJIgjhQr
-          gameId: Vyp0MJIg
-          fen: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
-          color: black
-          lastMove: ''
-          source: ai
-          status:
-            id: 25
-            name: aborted
-          variant:
-            key: standard
-            name: Standard
-          speed: correspondence
-          perf: correspondence
-          rated: false
-          hasMoved: false
-          opponent:
-            id: null
-            username: Stockfish level 1
-            ai: 1
-          isMyTurn: false
-          rating: 2245
-          compat:
-            bot: false
-            board: true
-          id: Vyp0MJIg
-    stream-challenge.json:
-      value:
-        type: challenge
-        challenge:
-          id: sxqxgMtR
-          url: https://lichess.org/sxqxgMtR
-          status: created
-          challenger:
-            name: Adriana
-            flair: activity.1st-place-medal
-            id: adriana
-            rating: 599
-          destUser:
-            name: Gabriela
-            flair: objects.yen-banknote
-            id: gabriela
-            rating: 1569
-            online: true
-          variant:
-            key: standard
-            name: Standard
-            short: Std
-          rated: false
-          speed: correspondence
-          timeControl:
-            type: unlimited
-          color: random
-          finalColor: white
-          perf:
-            icon: 
-            name: Correspondence
-        compat:
-          bot: false
-          board: true
-    stream-challengeCanceled.json:
-      value:
-        type: challengeCanceled
-        challenge:
-          id: Ocf0maqB
-          url: https://lichess.org/Ocf0maqB
-          status: canceled
-          challenger:
-            name: Elena
-            title: WNM
-            flair: people.man-vampire
-            patron: true
-            patronColor: 1
-            id: elena
-            rating: 2240
-          destUser:
-            name: Diego
-            id: diego
-            rating: 2056
-            provisional: true
-            online: true
-          variant:
-            key: standard
-            name: Standard
-            short: Std
-          rated: false
-          speed: correspondence
-          timeControl:
-            type: unlimited
-          color: random
-          finalColor: white
-          perf:
-            icon: 
-            name: Correspondence
-    stream-challengeDeclined.json:
-      value:
-        type: challengeDeclined
-        challenge:
-          id: sxqxgMtR
-          url: https://lichess.org/sxqxgMtR
-          status: declined
-          challenger:
-            name: Adriana
-            flair: activity.1st-place-medal
-            id: adriana
-            rating: 599
-          destUser:
-            name: Gabriela
-            flair: objects.yen-banknote
-            id: gabriela
-            rating: 1569
-            online: true
-          variant:
-            key: standard
-            name: Standard
-            short: Std
-          rated: false
-          speed: correspondence
-          timeControl:
-            type: unlimited
-          color: random
-          finalColor: white
-          perf:
-            icon: 
-            name: Correspondence
-          declineReason: I'm not accepting challenges at the moment.
-          declineReasonKey: generic
-    bot-getOnlineBots.json:
-      value:
-        id: variantsbot
-        username: VariantsBot
-        perfs:
-          bullet:
-            games: 2
-            rating: 2212
-            rd: 500
-            prog: 0
-            prov: true
-          blitz:
-            games: 0
-            rating: 1500
-            rd: 500
-            prog: 0
-            prov: true
-          rapid:
-            games: 0
-            rating: 1500
-            rd: 500
-            prog: 0
-            prov: true
-          classical:
-            games: 0
-            rating: 1500
-            rd: 500
-            prog: 0
-            prov: true
-          correspondence:
-            games: 0
-            rating: 1500
-            rd: 500
-            prog: 0
-            prov: true
-          chess960:
-            games: 65
-            rating: 2180
-            rd: 229
-            prog: -11
-            prov: true
-          kingOfTheHill:
-            games: 579
-            rating: 2579
-            rd: 176
-            prog: -1
-            prov: true
-          threeCheck:
-            games: 2110
-            rating: 2759
-            rd: 171
-            prog: -5
-            prov: true
-          antichess:
-            games: 6982
-            rating: 3021
-            rd: 169
-            prog: 0
-            prov: true
-          atomic:
-            games: 3666
-            rating: 2714
-            rd: 167
-            prog: -19
-            prov: true
-          horde:
-            games: 1019
-            rating: 3019
-            rd: 170
-            prog: 2
-            prov: true
-          racingKings:
-            games: 3173
-            rating: 2703
-            rd: 164
-            prog: -8
-            prov: true
-          crazyhouse:
-            games: 1058
-            rating: 2754
-            rd: 177
-            prog: 1
-            prov: true
-        title: BOT
-        createdAt: 1597330896288
-        profile:
-          bio: 'Fairy-Stockfish for variants, on an AMD Threadripper.  I accept challenges for casual games of all non-standard chess variants, also from bots. Accepted time controls: minimum 1 + 0, maximum 15 + 10. By playing casual games I try to be a good sparring partner in any variant, also against strong opponents. Tool to create opening books for any Lichess chess variant: github.com/lichapibot/cbuild.'
-        seenAt: 1778812219623
-        playTime:
-          total: 18093325
-          tv: 3862
-          human: 20182743
-    stream-gameStart-ai.json:
-      value:
-        type: gameStart
-        game:
-          fullId: Vyp0MJIgjhQr
-          gameId: Vyp0MJIg
-          fen: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
-          color: black
-          lastMove: ''
-          source: ai
-          status:
-            id: 20
-            name: started
-          variant:
-            key: standard
-            name: Standard
-          speed: correspondence
-          perf: correspondence
-          rated: false
-          hasMoved: false
-          opponent:
-            id: null
-            username: Stockfish level 1
-            ai: 1
-          isMyTurn: false
-          rating: 2245
-          compat:
-            bot: false
-            board: true
-          id: Vyp0MJIg
-    stream-gameStart.json:
-      value:
-        type: gameStart
-        game:
-          fullId: xAVd6eJykuzM
-          gameId: xAVd6eJy
-          fen: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
-          color: white
-          lastMove: ''
-          source: friend
-          status:
-            id: 20
-            name: started
-          variant:
-            key: standard
-            name: Standard
-          speed: blitz
-          perf: blitz
-          rated: true
-          hasMoved: false
-          opponent:
-            id: aaron
-            username: Aaron
-            rating: 797
-          isMyTurn: true
-          secondsLeft: 300
-          rating: 692
-          compat:
-            bot: false
-            board: true
-          id: xAVd6eJy
-    stream-gameFinish.json:
-      value:
-        type: gameFinish
-        game:
-          fullId: xAVd6eJykuzM
-          gameId: xAVd6eJy
-          fen: rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2
-          color: white
-          lastMove: e7e5
-          source: friend
-          status:
-            id: 31
-            name: resign
-          variant:
-            key: standard
-            name: Standard
-          speed: blitz
-          perf: blitz
-          rated: true
-          hasMoved: true
-          opponent:
-            id: aaron
-            username: Aaron
-            rating: 797
-            ratingDiff: 6
-          isMyTurn: false
-          secondsLeft: 300
-          winner: black
-          rating: 692
-          ratingDiff: -9
-          compat:
-            bot: false
-            board: true
-          id: xAVd6eJy
+      - id
+      - variant
+      - speed
+      - perf
+      - rated
+      - createdAt
+      - white
+      - black
+      - initialFen
+      - state
+      example:
+        id: BEOucQJo
+        variant:
+          key: standard
+          name: Standard
+          short: Std
+        speed: rapid
+        perf:
+          name: Rapid
+        rated: false
+        createdAt: 1745112707998
+        white:
+          id: bobby
+          name: Bobby
+          title: null
+          rating: 1751
+        black:
+          id: mary
+          name: Mary
+          title: null
+          rating: 1021
+        initialFen: startpos
+        clock:
+          initial: 900000
+          increment: 0
+        type: gameFull
+        state:
+          type: gameState
+          moves: d2d3
+          wtime: 900000
+          btime: 900000
+          winc: 0
+          binc: 0
+          status: started
+    ChallengeDeclinedJson:
+      allOf:
+      - $ref: '#/components/schemas/ChallengeJson'
+      - type: object
+        properties:
+          declineReason:
+            type: string
+            description: Human readable, possibly translated reason why the challenge was declined.
+          declineReasonKey:
+            type: string
+            description: Untranslated, computer-matchable reason why the challenge was declined.
+            enum:
+            - generic
+            - later
+            - toofast
+            - tooslow
+            - timecontrol
+            - rated
+            - casual
+            - standard
+            - variant
+            - nobot
+            - onlybot
+        required:
+        - declineReason
+        - declineReasonKey
+    PlayTime:
+      type: object
+      properties:
+        total:
+          type: integer
+        tv:
+          type: integer
+        human:
+          type: integer
+      required:
+      - total
+      - tv
+    VariantKey:
+      type: string
+      enum:
+      - standard
+      - chess960
+      - crazyhouse
+      - antichess
+      - atomic
+      - horde
+      - kingOfTheHill
+      - racingKings
+      - threeCheck
+      - fromPosition
+      example: standard
+      default: standard
+    ChallengeColor:
+      type: string
+      enum:
+      - white
+      - black
+      - random
   securitySchemes:
     OAuth2:
       type: oauth2
