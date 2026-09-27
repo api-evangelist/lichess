@@ -713,6 +713,14 @@ paths:
                   $ref: '#/components/examples/users-getNotesForUser.json'
 components:
   examples:
+    users-autocompleteUsernames-object.json:
+      value:
+        result:
+        - name: Bobby
+          id: bobby
+    users-autocompleteUsernames-list.json:
+      value:
+      - bobby
     users-getRealTimeUsersStatus.json:
       value:
       - name: Mary
@@ -722,409 +730,327 @@ components:
         title: WCM
         flair: smileys.downcast-face-with-sweat
         id: ana
-    users-getUserActivity.json:
+    users-getUserPublicData.json:
       value:
-      - interval:
-          start: 1778803200000
-          end: 1778889600000
-        follows:
-          in:
-            ids:
-            - chrisc5mb
-      - interval:
-          start: 1778716800000
-          end: 1778803200000
-        puzzles:
-          score:
-            win: 1
-            loss: 0
-            draw: 0
-            rp:
-              before: 1999
-              after: 2009
-        follows:
-          in:
-            ids:
-            - lisanthm
-            - pureaperionsq
-            - arda_kslc21
-            - teso22
-            - ww0ut
-            - vidhathathreya
-            - shirakuchess
-      - interval:
-          start: 1778630400000
-          end: 1778716800000
-        games:
+        id: mary
+        username: Mary
+        perfs:
+          bullet:
+            games: 1593
+            rating: 1119
+            rd: 66
+            prog: -27
           blitz:
-            win: 0
-            loss: 2
-            draw: 0
-            rp:
-              before: 1805
-              after: 1791
-        puzzles:
-          score:
-            win: 1
-            loss: 0
-            draw: 0
-            rp:
-              before: 1986
-              after: 1999
-        follows:
-          in:
-            ids:
-            - sathvik_nannuri
-            - raphael_171123
-            - l3azwa
-            - orion_banerjee
-            - leftfreezingdoor
-            - shapovalov1
-            - tolbrandir
-            - jhansirani
-            - mailtoadvik
-            - battledudes606dbdb
-            - hdjjkf
-            - advit_bhat
-            - j_harshiv
-            - bobybot
-            - jackhlay
-            nb: 18
-      - interval:
-          start: 1778544000000
-          end: 1778630400000
-        puzzles:
-          score:
-            win: 1
-            loss: 0
-            draw: 0
-            rp:
-              before: 1978
-              after: 1986
-        follows:
-          in:
-            ids:
-            - xinyilovechess
-            - kushnorris
-            - enrigo93
-            - zanycolourfulwindow
-            - pet_your_enemy
-            - advikrnair
-            - rom1_chess
-            - gleb1234567899
-            - masterr_67
-            - gknuchamp
-            - mr_checkmate007
-            - karpov005
-            - pragyanreddy
-        stream: true
-      - interval:
-          start: 1778457600000
-          end: 1778544000000
-        games:
+            games: 1560
+            rating: 1145
+            rd: 56
+            prog: -29
+          rapid:
+            games: 358
+            rating: 1124
+            rd: 83
+            prog: -8
+          classical:
+            games: 414
+            rating: 946
+            rd: 110
+            prog: 33
+            prov: true
+          correspondence:
+            games: 692
+            rating: 1083
+            rd: 56
+            prog: 23
+          chess960:
+            games: 600
+            rating: 1104
+            rd: 92
+            prog: 22
+          kingOfTheHill:
+            games: 454
+            rating: 1077
+            rd: 54
+            prog: 43
+          threeCheck:
+            games: 159
+            rating: 1018
+            rd: 108
+            prog: -6
+          antichess:
+            games: 114
+            rating: 937
+            rd: 49
+            prog: -51
+          atomic:
+            games: 1261
+            rating: 1073
+            rd: 45
+            prog: -6
+          horde:
+            games: 83
+            rating: 1115
+            rd: 45
+            prog: -28
+          crazyhouse:
+            games: 1556
+            rating: 965
+            rd: 49
+            prog: 2
+          puzzle:
+            games: 60
+            rating: 1033
+            rd: 45
+            prog: -36
+        flair: people.open-hands-medium-light-skin-tone
+        createdAt: 1775221588473
+        profile:
+          flag: GW
+          location: Mary City
+          bio: A normal working day for modern industry only dates from the Factory Act of 1833, which included cotton, wool, flax, and silk factories. Nothing is more characteristic of the spirit of capital than the history of the English Factory Acts from 1833 to 1864.
+          fideRating: 1400
+          uscfRating: 1035
+          ecfRating: 1084
+          rcfRating: 910
+          cfcRating: 992
+          dsbRating: 1129
+          links: 'https://en.wikipedia.org/wiki/Srinivasa_Ramanujan
+
+            https://en.wikipedia.org/wiki/Charles_Darwin
+
+            https://lichess.org
+
+            https://reddit.com/r/chess
+
+            https://en.wikipedia.org/wiki/Noam_Chomsky'
+        seenAt: 1776880668894
+        playTime:
+          total: 15514
+          tv: 0
+        url: https://lichess.org/@/Mary
+        count:
+          all: 9795
+          rated: 7836
+          draw: 904
+          loss: 4408
+          win: 4483
+          bookmark: 0
+          playing: 0
+          import: 0
+          me: 1
+        followable: true
+        following: true
+        blocking: false
+    users-getUsersById.json:
+      value:
+      - id: thibault
+        username: thibault
+        perfs:
+          ultraBullet:
+            games: 3
+            rating: 1688
+            rd: 358
+            prog: 0
+            prov: true
+          bullet:
+            games: 7482
+            rating: 1785
+            rd: 86
+            prog: 12
           blitz:
-            win: 1
-            loss: 0
-            draw: 0
-            rp:
-              before: 1799
-              after: 1805
-        follows:
-          in:
-            ids:
-            - kolya228322
-            - uluthrek
-            - sixtyseven_67
-            - jilbo1234
-            - onemorekiwi
-            - laskeristhebomb
-            - vihariuppalapati
-            - alexhuerta
-            - fjcruiser
-            - thenameisstan
-            - bhoomin
-            - zeus555
-            - ramrachit_2204
-            - kishalay_m
-            - dayronf1
-      - interval:
-          start: 1778371200000
-          end: 1778457600000
-        puzzles:
-          score:
-            win: 13
-            loss: 2
-            draw: 0
-            rp:
-              before: 1886
-              after: 1978
-        follows:
-          in:
-            ids:
-            - coolcoldice3
-            - johndoe5743
-            - kemalbaitemir
-            - emmanuelrv1
-            - qlibet
-            - jay63
-            - rchess14102013
-            - r-a1h8h1a8
-            - tidahy
-            - tikhon_loud
-            - danielgg14
-            - chessking20122026
-            - h4zuop
-            - schiffskoch
-            - nilusha1984
-      - interval:
-          start: 1778284800000
-          end: 1778371200000
-        puzzles:
-          score:
-            win: 1
-            loss: 0
-            draw: 0
-            rp:
-              before: 1872
-              after: 1886
-        follows:
-          in:
-            ids:
-            - h4zuop
-            - thebeguiler
-            - rawlyfearful
-            - brilliant-siesta
-            - r01-f2f7
-            - iamsubhajitroy
-            - akshayksingh
-            - nel_2000
-            - feshom
-            - remotecon_troller
-            - yonilavo
-            - basitbc02
-    users-addNoteForUser.json:
-      value:
-        ok: true
-    users-getPerformanceStatisticsOfAUser.json:
-      value:
-        user:
-          name: thibault
-        perf:
-          glicko:
-            rating: 1791.48
-            deviation: 47.84
-          nb: 11614
-          progress: -1
-        rank: 147171
-        percentile: 77.6
-        stat:
-          highest:
-            int: 1970
-            at: '2022-02-23T13:44:54.633Z'
-            gameId: Blpjmhnf
-          lowest:
-            int: 1385
-            at: '2015-08-05T10:13:41.326Z'
-            gameId: tgbRykg2
-          bestWins:
-            results:
-            - opRating: 2239
-              opId:
-                name: aqua21
-                flair: objects.postal-horn
-                id: aqua21
-              at: '2020-02-15T19:13:05.329Z'
-              gameId: UxNJmMXz
-            - opRating: 2163
-              opId:
-                name: Staffan67
-                id: staffan67
-              at: '2022-12-28T10:54:21.597Z'
-              gameId: 9IMlwEv1
-            - opRating: 2120
-              opId:
-                name: Heissenberger
-                id: heissenberger
-              at: '2021-10-25T08:26:27.155Z'
-              gameId: 2buPRuV8
-            - opRating: 2051
-              opId:
-                name: Stas235
-                id: stas235
-              at: '2021-11-06T18:55:53.728Z'
-              gameId: VLxCVzDY
-            - opRating: 2040
-              opId:
-                name: Harryz-77
-                id: harryz-77
-              at: '2021-11-03T17:39:40.181Z'
-              gameId: eCgiYDS7
-          worstLosses:
-            results:
-            - opRating: 995
-              opId:
-                name: dahupetitjoueur
-                id: dahupetitjoueur
-              at: '2017-04-12T14:31:58.002Z'
-              gameId: 7zyddy2c
-            - opRating: 1121
-              opId:
-                name: Tinkugupta1011
-                id: tinkugupta1011
-              at: '2022-10-22T03:36:35.447Z'
-              gameId: CCyyGKmD
-            - opRating: 1146
-              opId:
-                name: chemkhihabib
-                id: chemkhihabib
-              at: '2016-06-01T09:31:09.694Z'
-              gameId: XatMm3RO
-            - opRating: 1166
-              opId:
-                name: Bottios
-                title: BOT
-                id: bottios
-              at: '2018-12-14T09:22:52.633Z'
-              gameId: 3fke4MHX
-            - opRating: 1182
-              opId:
-                name: skanerterry
-                id: skanerterry
-              at: '2016-06-09T15:32:10.474Z'
-              gameId: n4ViqGlp
-          count:
-            all: 12101
-            rated: 11492
-            win: 5726
-            loss: 5802
-            draw: 573
-            tour: 1601
-            berserk: 52
-            opAvg: 1706.62
-            seconds: 3767400
-            disconnects: 9
-          resultStreak:
-            win:
-              cur:
-                v: 0
-              max:
-                v: 11
-                from:
-                  at: '2018-10-19T10:02:05.144Z'
-                  gameId: ycmyqK6e
-                to:
-                  at: '2018-10-19T12:25:31.868Z'
-                  gameId: 3PwQXIBN
-            loss:
-              cur:
-                v: 2
-                from:
-                  at: '2026-05-13T08:23:38.653Z'
-                  gameId: nrO6iTZ3
-                to:
-                  at: '2026-05-13T08:32:58.61Z'
-                  gameId: fSJcMeCL
-              max:
-                v: 19
-                from:
-                  at: '2018-03-09T23:54:54.771Z'
-                  gameId: iAJe1M8f
-                to:
-                  at: '2018-03-16T20:52:03.611Z'
-                  gameId: 7CZ1SEF5
-          playStreak:
-            nb:
-              cur:
-                v: 0
-              max:
-                v: 115
-                from:
-                  at: '2024-10-18T11:32:12.142Z'
-                  gameId: l819pRNp
-                to:
-                  at: '2024-10-18T20:54:30.256Z'
-                  gameId: 1HeDeGbe
-            time:
-              cur:
-                v: 0
-              max:
-                v: 23231
-                from:
-                  at: '2024-10-18T11:32:12.142Z'
-                  gameId: l819pRNp
-                to:
-                  at: '2024-10-18T20:54:30.256Z'
-                  gameId: 1HeDeGbe
-            lastDate: '2026-05-13T08:32:58.61Z'
-    users-getLiveStreamers.json:
-      value:
-      - name: lefonghua
-        title: FM
-        id: lefonghua
-        stream:
-          service: twitch
-          status: Analyzing Viewers Games! | !analyze !rapid !plus | lichess.org
-          lang: en
-        streamer:
-          name: Lefong Hua
-          headline: FM Lefong Hua. Professional chess coach from Montreal, Canada.
-          twitch: https://www.twitch.tv/lefonghua
-          image: https://image.lichess1.org/display?fmt=webp&h=350&op=thumbnail&path=lefonghua:streamer:lefonghua:Vr5ViPnv.jpg&w=350&sig=4dec7bb87631c83eb93b427fc24e4726582e6af0
-      - name: sabinafoisor
-        title: WGM
-        id: sabinafoisor
-        stream:
-          service: twitch
-          status: Commentary on US Chess this weekend | lichess.org
-          lang: en
-        streamer:
-          name: Sabina Foisor
-          headline: WGM Sabina Foisor
-          description: "Hello everyone,\n\nMy name is Sabina Foisor and I am a WGM representing the United States. I was born in Romania to a chess family and learned to play chess at 4 years old. At around  5 and a half y.o I have competed in my first open tournament. Despite not having won any games, I have made up my mind to make a career out of chess, though there were many moments when I struggled. In 1997, I won the European Championship for Girls under 8 years old. In my teens I have won multiple national girls youth championships. In the European scene I triumphed winning  medals in Classical, Blitz, Rapid and Solving Problems competitions. At the age of 16 I became a WIM and at 18 I received the title of WGM. I consider the year 2007 to have been the peak of my chess career sharing 5th place at the European Individual Women’s Chess Championship from which I qualified for the Women’s World Chess Championship. That same year I was ranked in the top 10 Junior Girls in the World. In 2008 I received a chess scholarship at UMBC and decided to put chess on pause to focus on my studies. I graduated in 2012 with an BA in Modern Languages and Linguistics and in 2014 I received my Masters Degree in Intercultural Communication, specializing in intercultural training. In the begging of 2009 I started representing the United States and proudly participated in 5 Chess Olympiads and 4 Women’s World Team Championships. My biggest achievement was winning US Women’s Chess Championship in 2017.\n\nI started my streaming in March 2020. I hope you enjoy my channel and stream! I am taking challenges from viewers and subscribers and happy to take on different chess variants. \n\nTwitter: https://twitter.com/SabinaFoisor\nFacebook: https://www.facebook.com/SabinaFoisor/\nInstagram: https://www.instagram.com/sabinafoisor/\nTwitch: https://www.twitch.tv/sabinafoisor"
-          twitch: https://www.twitch.tv/sabinafoisor
-          youtube: https://www.youtube.com/channel/UC2hjYBYRdE2ynHqfQpo_gow/live
-          image: https://image.lichess1.org/display?fmt=webp&h=350&op=thumbnail&path=sabinafoisor:streamer:sabinafoisor:JpKJW8ke.jpg&w=350&sig=fcefac30465d2a3db65e123dd45393bd2dc03494
-      - name: sloppydogg
-        title: IM
-        id: sloppydogg
-        stream:
-          service: twitch
-          status: 'Lichess Simul Record Attempt #10 lichess.org'
-          lang: en
-        streamer:
-          name: John Ludwig
-          headline: Watch and learn chess from an International Master! :)
-          description: 'Thank you so much for checking my stream out! It will be a great mix of entertaining play, teaching moments, and all other things great with chess! The more you engage, the better! I will play whatever openings you recommend, or even specific ideas you would like to see! '
-          twitch: https://www.twitch.tv/jludwig
-          image: https://image.lichess1.org/display?fmt=webp&h=350&op=thumbnail&path=psrd6rY4J8tr.webp&w=350&sig=7959c8fdc44570537eefe98bc450d81022fe13f3
-      - name: chessoptics
+            games: 11614
+            rating: 1791
+            rd: 47
+            prog: -1
+          rapid:
+            games: 894
+            rating: 1907
+            rd: 72
+            prog: -34
+          classical:
+            games: 25
+            rating: 1858
+            rd: 241
+            prog: 48
+            prov: true
+          correspondence:
+            games: 377
+            rating: 1942
+            rd: 165
+            prog: -12
+            prov: true
+          chess960:
+            games: 348
+            rating: 1551
+            rd: 264
+            prog: 61
+            prov: true
+          kingOfTheHill:
+            games: 94
+            rating: 1744
+            rd: 284
+            prog: 14
+            prov: true
+          threeCheck:
+            games: 66
+            rating: 1728
+            rd: 257
+            prog: 132
+            prov: true
+          antichess:
+            games: 73
+            rating: 1465
+            rd: 248
+            prog: -56
+            prov: true
+          atomic:
+            games: 99
+            rating: 1633
+            rd: 297
+            prog: 18
+            prov: true
+          horde:
+            games: 46
+            rating: 1592
+            rd: 278
+            prog: -20
+            prov: true
+          racingKings:
+            games: 13
+            rating: 1552
+            rd: 329
+            prog: -75
+            prov: true
+          crazyhouse:
+            games: 50
+            rating: 1567
+            rd: 295
+            prog: -34
+            prov: true
+          puzzle:
+            games: 5875
+            rating: 2009
+            rd: 66
+            prog: 0
+          storm:
+            runs: 44
+            score: 33
+          racer:
+            runs: 83
+            score: 51
+          streak:
+            runs: 49
+            score: 33
+        flair: nature.seedling
         patron: true
-        patronColor: 1
-        id: chessoptics
-        stream:
-          service: twitch
-          status: '|Chess is the lens life is the view| Variety Music |Lichess.org {Training with the chessbook app}'
-          lang: en
-        streamer:
-          name: chessoptics
-          headline: This is a place to enjoy chess and learn.
-          description: If you Love Chess then come watch me play and enjoy. leave some comments and lets talk about chess.
-          twitch: https://www.twitch.tv/chessoptics
-          image: https://image.lichess1.org/display?fmt=webp&h=350&op=thumbnail&path=vPkudbELA3pE.webp&w=350&sig=4240861f841d02a38742f5a5f9f2d40ce89315ec
-      - name: account4BD
-        flair: people.troll
-        patron: true
-        patronColor: 4
-        id: account4bd
-        stream:
-          service: twitch
-          status: Fred Again... X Chess Again Best NightTime recipe !! | Dailys Fastest Echecs Arènes's Fully Zerked Only on @Lichess.org
-          lang: en
-        streamer:
-          name: account4BD
-          headline: hey chess addicts
-          twitch: https://www.twitch.tv/chess_punk
-          image: https://image.lichess1.org/display?fmt=webp&h=350&op=thumbnail&path=streamer:account4bd:fUQxz0qi.webp&w=350&sig=a3c17df24c8be4a4016e0029b730680e5db4fb5c
+        patronColor: 10
+        verified: true
+        createdAt: 1290415680000
+        profile:
+          bio: I turn coffee into bugs.
+          realName: Thibault Duplessis
+          links: 'github.com/ornicar
+
+            mas.to/@thibault'
+        seenAt: 1778797754768
+        playTime:
+          total: 6501837
+          tv: 18024
+      - id: maia1
+        username: maia1
+        perfs:
+          bullet:
+            games: 213943
+            rating: 1646
+            rd: 45
+            prog: 9
+          blitz:
+            games: 405348
+            rating: 1454
+            rd: 45
+            prog: -19
+          rapid:
+            games: 531260
+            rating: 1554
+            rd: 45
+            prog: -12
+          classical:
+            games: 141761
+            rating: 1648
+            rd: 45
+            prog: 17
+          correspondence:
+            games: 265
+            rating: 1527
+            rd: 219
+            prog: -18
+            prov: true
+        title: BOT
+        verified: true
+        createdAt: 1582579972726
+        profile:
+          bio: "Maia is a human-like neural network chess engine. This version was trained by learning from over 10 million Lichess games between 1100s. \n\nMaia Chess is an ongoing research project aiming to make a more human-friendly, useful, and fun chess AI. For more information go to maiachess.com. You can also play against @maia5 and @maia9. Developed by @ashtonanderson, @sidsen and @reidmcy."
+          realName: Maia Chess 1100
+          links: 'https://maiachess.com
+
+            https://github.com/CSSLab/maia-chess
+
+            https://twitter.com/maiachess'
+        seenAt: 1778812162634
+        playTime:
+          total: 1241669416
+          tv: 3031257
+          human: 975711343
+      - id: maia5
+        username: maia5
+        perfs:
+          bullet:
+            games: 64081
+            rating: 1619
+            rd: 45
+            prog: 0
+          blitz:
+            games: 182714
+            rating: 1436
+            rd: 45
+            prog: -11
+          rapid:
+            games: 205434
+            rating: 1666
+            rd: 45
+            prog: 10
+          classical:
+            games: 49627
+            rating: 1726
+            rd: 45
+            prog: -16
+          correspondence:
+            games: 18
+            rating: 1792
+            rd: 240
+            prog: 30
+            prov: true
+        title: BOT
+        verified: true
+        createdAt: 1582580198358
+        profile:
+          bio: Maia is a human-like neural network chess engine. This version was trained by learning from over 10 million Lichess games between 1500s. Maia Chess is an ongoing research project aiming to make a more human-friendly, useful, and fun chess AI. For more information go to maiachess.com. You can also play @maia1 and @maia9. Developed by @ashtonanderson,  @sidsen and @reidmcy.
+          realName: Maia Chess 1500
+          links: 'https://maiachess.com
+
+            github.com/CSSLab/maia-chess
+
+            https://twitter.com/maiachess'
+        seenAt: 1778812197532
+        playTime:
+          total: 562691901
+          tv: 3859273
+          human: 410999173
+    users-getCrosstable.json:
+      value:
+        users:
+          drnykterstein: 753.5
+          rebeccaharris: 459.5
+        nbGames: 1213
     users-getRatingHistoryOfAUser.json:
       value:
       - name: UltraBullet
@@ -1801,6 +1727,9 @@ components:
           - 4
           - 13
           - 1108
+    users-addNoteForUser.json:
+      value:
+        ok: true
     users-getNotesForUser.json:
       value:
       - from:
@@ -1812,335 +1741,363 @@ components:
           id: mary
         text: this is a private note
         date: 1778812629766
-    users-getCrosstable.json:
+    users-getUserActivity.json:
+      value:
+      - interval:
+          start: 1778803200000
+          end: 1778889600000
+        follows:
+          in:
+            ids:
+            - chrisc5mb
+      - interval:
+          start: 1778716800000
+          end: 1778803200000
+        puzzles:
+          score:
+            win: 1
+            loss: 0
+            draw: 0
+            rp:
+              before: 1999
+              after: 2009
+        follows:
+          in:
+            ids:
+            - lisanthm
+            - pureaperionsq
+            - arda_kslc21
+            - teso22
+            - ww0ut
+            - vidhathathreya
+            - shirakuchess
+      - interval:
+          start: 1778630400000
+          end: 1778716800000
+        games:
+          blitz:
+            win: 0
+            loss: 2
+            draw: 0
+            rp:
+              before: 1805
+              after: 1791
+        puzzles:
+          score:
+            win: 1
+            loss: 0
+            draw: 0
+            rp:
+              before: 1986
+              after: 1999
+        follows:
+          in:
+            ids:
+            - sathvik_nannuri
+            - raphael_171123
+            - l3azwa
+            - orion_banerjee
+            - leftfreezingdoor
+            - shapovalov1
+            - tolbrandir
+            - jhansirani
+            - mailtoadvik
+            - battledudes606dbdb
+            - hdjjkf
+            - advit_bhat
+            - j_harshiv
+            - bobybot
+            - jackhlay
+            nb: 18
+      - interval:
+          start: 1778544000000
+          end: 1778630400000
+        puzzles:
+          score:
+            win: 1
+            loss: 0
+            draw: 0
+            rp:
+              before: 1978
+              after: 1986
+        follows:
+          in:
+            ids:
+            - xinyilovechess
+            - kushnorris
+            - enrigo93
+            - zanycolourfulwindow
+            - pet_your_enemy
+            - advikrnair
+            - rom1_chess
+            - gleb1234567899
+            - masterr_67
+            - gknuchamp
+            - mr_checkmate007
+            - karpov005
+            - pragyanreddy
+        stream: true
+      - interval:
+          start: 1778457600000
+          end: 1778544000000
+        games:
+          blitz:
+            win: 1
+            loss: 0
+            draw: 0
+            rp:
+              before: 1799
+              after: 1805
+        follows:
+          in:
+            ids:
+            - kolya228322
+            - uluthrek
+            - sixtyseven_67
+            - jilbo1234
+            - onemorekiwi
+            - laskeristhebomb
+            - vihariuppalapati
+            - alexhuerta
+            - fjcruiser
+            - thenameisstan
+            - bhoomin
+            - zeus555
+            - ramrachit_2204
+            - kishalay_m
+            - dayronf1
+      - interval:
+          start: 1778371200000
+          end: 1778457600000
+        puzzles:
+          score:
+            win: 13
+            loss: 2
+            draw: 0
+            rp:
+              before: 1886
+              after: 1978
+        follows:
+          in:
+            ids:
+            - coolcoldice3
+            - johndoe5743
+            - kemalbaitemir
+            - emmanuelrv1
+            - qlibet
+            - jay63
+            - rchess14102013
+            - r-a1h8h1a8
+            - tidahy
+            - tikhon_loud
+            - danielgg14
+            - chessking20122026
+            - h4zuop
+            - schiffskoch
+            - nilusha1984
+      - interval:
+          start: 1778284800000
+          end: 1778371200000
+        puzzles:
+          score:
+            win: 1
+            loss: 0
+            draw: 0
+            rp:
+              before: 1872
+              after: 1886
+        follows:
+          in:
+            ids:
+            - h4zuop
+            - thebeguiler
+            - rawlyfearful
+            - brilliant-siesta
+            - r01-f2f7
+            - iamsubhajitroy
+            - akshayksingh
+            - nel_2000
+            - feshom
+            - remotecon_troller
+            - yonilavo
+            - basitbc02
+    users-getPerformanceStatisticsOfAUser.json:
+      value:
+        user:
+          name: thibault
+        perf:
+          glicko:
+            rating: 1791.48
+            deviation: 47.84
+          nb: 11614
+          progress: -1
+        rank: 147171
+        percentile: 77.6
+        stat:
+          highest:
+            int: 1970
+            at: '2022-02-23T13:44:54.633Z'
+            gameId: Blpjmhnf
+          lowest:
+            int: 1385
+            at: '2015-08-05T10:13:41.326Z'
+            gameId: tgbRykg2
+          bestWins:
+            results:
+            - opRating: 2239
+              opId:
+                name: aqua21
+                flair: objects.postal-horn
+                id: aqua21
+              at: '2020-02-15T19:13:05.329Z'
+              gameId: UxNJmMXz
+            - opRating: 2163
+              opId:
+                name: Staffan67
+                id: staffan67
+              at: '2022-12-28T10:54:21.597Z'
+              gameId: 9IMlwEv1
+            - opRating: 2120
+              opId:
+                name: Heissenberger
+                id: heissenberger
+              at: '2021-10-25T08:26:27.155Z'
+              gameId: 2buPRuV8
+            - opRating: 2051
+              opId:
+                name: Stas235
+                id: stas235
+              at: '2021-11-06T18:55:53.728Z'
+              gameId: VLxCVzDY
+            - opRating: 2040
+              opId:
+                name: Harryz-77
+                id: harryz-77
+              at: '2021-11-03T17:39:40.181Z'
+              gameId: eCgiYDS7
+          worstLosses:
+            results:
+            - opRating: 995
+              opId:
+                name: dahupetitjoueur
+                id: dahupetitjoueur
+              at: '2017-04-12T14:31:58.002Z'
+              gameId: 7zyddy2c
+            - opRating: 1121
+              opId:
+                name: Tinkugupta1011
+                id: tinkugupta1011
+              at: '2022-10-22T03:36:35.447Z'
+              gameId: CCyyGKmD
+            - opRating: 1146
+              opId:
+                name: chemkhihabib
+                id: chemkhihabib
+              at: '2016-06-01T09:31:09.694Z'
+              gameId: XatMm3RO
+            - opRating: 1166
+              opId:
+                name: Bottios
+                title: BOT
+                id: bottios
+              at: '2018-12-14T09:22:52.633Z'
+              gameId: 3fke4MHX
+            - opRating: 1182
+              opId:
+                name: skanerterry
+                id: skanerterry
+              at: '2016-06-09T15:32:10.474Z'
+              gameId: n4ViqGlp
+          count:
+            all: 12101
+            rated: 11492
+            win: 5726
+            loss: 5802
+            draw: 573
+            tour: 1601
+            berserk: 52
+            opAvg: 1706.62
+            seconds: 3767400
+            disconnects: 9
+          resultStreak:
+            win:
+              cur:
+                v: 0
+              max:
+                v: 11
+                from:
+                  at: '2018-10-19T10:02:05.144Z'
+                  gameId: ycmyqK6e
+                to:
+                  at: '2018-10-19T12:25:31.868Z'
+                  gameId: 3PwQXIBN
+            loss:
+              cur:
+                v: 2
+                from:
+                  at: '2026-05-13T08:23:38.653Z'
+                  gameId: nrO6iTZ3
+                to:
+                  at: '2026-05-13T08:32:58.61Z'
+                  gameId: fSJcMeCL
+              max:
+                v: 19
+                from:
+                  at: '2018-03-09T23:54:54.771Z'
+                  gameId: iAJe1M8f
+                to:
+                  at: '2018-03-16T20:52:03.611Z'
+                  gameId: 7CZ1SEF5
+          playStreak:
+            nb:
+              cur:
+                v: 0
+              max:
+                v: 115
+                from:
+                  at: '2024-10-18T11:32:12.142Z'
+                  gameId: l819pRNp
+                to:
+                  at: '2024-10-18T20:54:30.256Z'
+                  gameId: 1HeDeGbe
+            time:
+              cur:
+                v: 0
+              max:
+                v: 23231
+                from:
+                  at: '2024-10-18T11:32:12.142Z'
+                  gameId: l819pRNp
+                to:
+                  at: '2024-10-18T20:54:30.256Z'
+                  gameId: 1HeDeGbe
+            lastDate: '2026-05-13T08:32:58.61Z'
+    users-getOneLeaderboard.json:
       value:
         users:
-          drnykterstein: 753.5
-          rebeccaharris: 459.5
-        nbGames: 1213
-    users-autocompleteUsernames-list.json:
-      value:
-      - bobby
-    users-autocompleteUsernames-object.json:
-      value:
-        result:
-        - name: Bobby
-          id: bobby
-    users-getUsersById.json:
-      value:
-      - id: thibault
-        username: thibault
-        perfs:
-          ultraBullet:
-            games: 3
-            rating: 1688
-            rd: 358
-            prog: 0
-            prov: true
-          bullet:
-            games: 7482
-            rating: 1785
-            rd: 86
-            prog: 12
-          blitz:
-            games: 11614
-            rating: 1791
-            rd: 47
-            prog: -1
-          rapid:
-            games: 894
-            rating: 1907
-            rd: 72
-            prog: -34
-          classical:
-            games: 25
-            rating: 1858
-            rd: 241
-            prog: 48
-            prov: true
-          correspondence:
-            games: 377
-            rating: 1942
-            rd: 165
-            prog: -12
-            prov: true
-          chess960:
-            games: 348
-            rating: 1551
-            rd: 264
-            prog: 61
-            prov: true
-          kingOfTheHill:
-            games: 94
-            rating: 1744
-            rd: 284
-            prog: 14
-            prov: true
-          threeCheck:
-            games: 66
-            rating: 1728
-            rd: 257
-            prog: 132
-            prov: true
-          antichess:
-            games: 73
-            rating: 1465
-            rd: 248
-            prog: -56
-            prov: true
-          atomic:
-            games: 99
-            rating: 1633
-            rd: 297
-            prog: 18
-            prov: true
-          horde:
-            games: 46
-            rating: 1592
-            rd: 278
-            prog: -20
-            prov: true
-          racingKings:
-            games: 13
-            rating: 1552
-            rd: 329
-            prog: -75
-            prov: true
-          crazyhouse:
-            games: 50
-            rating: 1567
-            rd: 295
-            prog: -34
-            prov: true
-          puzzle:
-            games: 5875
-            rating: 2009
-            rd: 66
-            prog: 0
-          storm:
-            runs: 44
-            score: 33
-          racer:
-            runs: 83
-            score: 51
-          streak:
-            runs: 49
-            score: 33
-        flair: nature.seedling
-        patron: true
-        patronColor: 10
-        verified: true
-        createdAt: 1290415680000
-        profile:
-          bio: I turn coffee into bugs.
-          realName: Thibault Duplessis
-          links: 'github.com/ornicar
-
-            mas.to/@thibault'
-        seenAt: 1778797754768
-        playTime:
-          total: 6501837
-          tv: 18024
-      - id: maia1
-        username: maia1
-        perfs:
-          bullet:
-            games: 213943
-            rating: 1646
-            rd: 45
-            prog: 9
-          blitz:
-            games: 405348
-            rating: 1454
-            rd: 45
-            prog: -19
-          rapid:
-            games: 531260
-            rating: 1554
-            rd: 45
-            prog: -12
-          classical:
-            games: 141761
-            rating: 1648
-            rd: 45
-            prog: 17
-          correspondence:
-            games: 265
-            rating: 1527
-            rd: 219
-            prog: -18
-            prov: true
-        title: BOT
-        verified: true
-        createdAt: 1582579972726
-        profile:
-          bio: "Maia is a human-like neural network chess engine. This version was trained by learning from over 10 million Lichess games between 1100s. \n\nMaia Chess is an ongoing research project aiming to make a more human-friendly, useful, and fun chess AI. For more information go to maiachess.com. You can also play against @maia5 and @maia9. Developed by @ashtonanderson, @sidsen and @reidmcy."
-          realName: Maia Chess 1100
-          links: 'https://maiachess.com
-
-            https://github.com/CSSLab/maia-chess
-
-            https://twitter.com/maiachess'
-        seenAt: 1778812162634
-        playTime:
-          total: 1241669416
-          tv: 3031257
-          human: 975711343
-      - id: maia5
-        username: maia5
-        perfs:
-          bullet:
-            games: 64081
-            rating: 1619
-            rd: 45
-            prog: 0
-          blitz:
-            games: 182714
-            rating: 1436
-            rd: 45
-            prog: -11
-          rapid:
-            games: 205434
-            rating: 1666
-            rd: 45
-            prog: 10
-          classical:
-            games: 49627
-            rating: 1726
-            rd: 45
-            prog: -16
-          correspondence:
-            games: 18
-            rating: 1792
-            rd: 240
-            prog: 30
-            prov: true
-        title: BOT
-        verified: true
-        createdAt: 1582580198358
-        profile:
-          bio: Maia is a human-like neural network chess engine. This version was trained by learning from over 10 million Lichess games between 1500s. Maia Chess is an ongoing research project aiming to make a more human-friendly, useful, and fun chess AI. For more information go to maiachess.com. You can also play @maia1 and @maia9. Developed by @ashtonanderson,  @sidsen and @reidmcy.
-          realName: Maia Chess 1500
-          links: 'https://maiachess.com
-
-            github.com/CSSLab/maia-chess
-
-            https://twitter.com/maiachess'
-        seenAt: 1778812197532
-        playTime:
-          total: 562691901
-          tv: 3859273
-          human: 410999173
-    users-getUserPublicData.json:
-      value:
-        id: mary
-        username: Mary
-        perfs:
-          bullet:
-            games: 1593
-            rating: 1119
-            rd: 66
-            prog: -27
-          blitz:
-            games: 1560
-            rating: 1145
-            rd: 56
-            prog: -29
-          rapid:
-            games: 358
-            rating: 1124
-            rd: 83
-            prog: -8
-          classical:
-            games: 414
-            rating: 946
-            rd: 110
-            prog: 33
-            prov: true
-          correspondence:
-            games: 692
-            rating: 1083
-            rd: 56
-            prog: 23
-          chess960:
-            games: 600
-            rating: 1104
-            rd: 92
-            prog: 22
-          kingOfTheHill:
-            games: 454
-            rating: 1077
-            rd: 54
-            prog: 43
-          threeCheck:
-            games: 159
-            rating: 1018
-            rd: 108
-            prog: -6
-          antichess:
-            games: 114
-            rating: 937
-            rd: 49
-            prog: -51
-          atomic:
-            games: 1261
-            rating: 1073
-            rd: 45
-            prog: -6
-          horde:
-            games: 83
-            rating: 1115
-            rd: 45
-            prog: -28
-          crazyhouse:
-            games: 1556
-            rating: 965
-            rd: 49
-            prog: 2
-          puzzle:
-            games: 60
-            rating: 1033
-            rd: 45
-            prog: -36
-        flair: people.open-hands-medium-light-skin-tone
-        createdAt: 1775221588473
-        profile:
-          flag: GW
-          location: Mary City
-          bio: A normal working day for modern industry only dates from the Factory Act of 1833, which included cotton, wool, flax, and silk factories. Nothing is more characteristic of the spirit of capital than the history of the English Factory Acts from 1833 to 1864.
-          fideRating: 1400
-          uscfRating: 1035
-          ecfRating: 1084
-          rcfRating: 910
-          cfcRating: 992
-          dsbRating: 1129
-          links: 'https://en.wikipedia.org/wiki/Srinivasa_Ramanujan
-
-            https://en.wikipedia.org/wiki/Charles_Darwin
-
-            https://lichess.org
-
-            https://reddit.com/r/chess
-
-            https://en.wikipedia.org/wiki/Noam_Chomsky'
-        seenAt: 1776880668894
-        playTime:
-          total: 15514
-          tv: 0
-        url: https://lichess.org/@/Mary
-        count:
-          all: 9795
-          rated: 7836
-          draw: 904
-          loss: 4408
-          win: 4483
-          bookmark: 0
-          playing: 0
-          import: 0
-          me: 1
-        followable: true
-        following: true
-        blocking: false
+        - id: ana
+          username: Ana
+          perfs:
+            blitz:
+              rating: 2512
+              progress: 0
+          title: WCM
+        - id: elena
+          username: Elena
+          perfs:
+            blitz:
+              rating: 2389
+              progress: 0
+          title: WNM
+          patron: true
+          patronColor: 1
+        - id: lola
+          username: Lola
+          perfs:
+            blitz:
+              rating: 2366
+              progress: 0
+          title: CM
     users-getAllTop10.json:
       value:
         bullet:
@@ -3029,33 +2986,291 @@ components:
             racingKings:
               rating: 2299
               progress: -33
-    users-getOneLeaderboard.json:
+    users-getLiveStreamers.json:
       value:
-        users:
-        - id: ana
-          username: Ana
-          perfs:
-            blitz:
-              rating: 2512
-              progress: 0
-          title: WCM
-        - id: elena
-          username: Elena
-          perfs:
-            blitz:
-              rating: 2389
-              progress: 0
-          title: WNM
-          patron: true
-          patronColor: 1
-        - id: lola
-          username: Lola
-          perfs:
-            blitz:
-              rating: 2366
-              progress: 0
-          title: CM
+      - name: lefonghua
+        title: FM
+        id: lefonghua
+        stream:
+          service: twitch
+          status: Analyzing Viewers Games! | !analyze !rapid !plus | lichess.org
+          lang: en
+        streamer:
+          name: Lefong Hua
+          headline: FM Lefong Hua. Professional chess coach from Montreal, Canada.
+          twitch: https://www.twitch.tv/lefonghua
+          image: https://image.lichess1.org/display?fmt=webp&h=350&op=thumbnail&path=lefonghua:streamer:lefonghua:Vr5ViPnv.jpg&w=350&sig=4dec7bb87631c83eb93b427fc24e4726582e6af0
+      - name: sabinafoisor
+        title: WGM
+        id: sabinafoisor
+        stream:
+          service: twitch
+          status: Commentary on US Chess this weekend | lichess.org
+          lang: en
+        streamer:
+          name: Sabina Foisor
+          headline: WGM Sabina Foisor
+          description: "Hello everyone,\n\nMy name is Sabina Foisor and I am a WGM representing the United States. I was born in Romania to a chess family and learned to play chess at 4 years old. At around  5 and a half y.o I have competed in my first open tournament. Despite not having won any games, I have made up my mind to make a career out of chess, though there were many moments when I struggled. In 1997, I won the European Championship for Girls under 8 years old. In my teens I have won multiple national girls youth championships. In the European scene I triumphed winning  medals in Classical, Blitz, Rapid and Solving Problems competitions. At the age of 16 I became a WIM and at 18 I received the title of WGM. I consider the year 2007 to have been the peak of my chess career sharing 5th place at the European Individual Women’s Chess Championship from which I qualified for the Women’s World Chess Championship. That same year I was ranked in the top 10 Junior Girls in the World. In 2008 I received a chess scholarship at UMBC and decided to put chess on pause to focus on my studies. I graduated in 2012 with an BA in Modern Languages and Linguistics and in 2014 I received my Masters Degree in Intercultural Communication, specializing in intercultural training. In the begging of 2009 I started representing the United States and proudly participated in 5 Chess Olympiads and 4 Women’s World Team Championships. My biggest achievement was winning US Women’s Chess Championship in 2017.\n\nI started my streaming in March 2020. I hope you enjoy my channel and stream! I am taking challenges from viewers and subscribers and happy to take on different chess variants. \n\nTwitter: https://twitter.com/SabinaFoisor\nFacebook: https://www.facebook.com/SabinaFoisor/\nInstagram: https://www.instagram.com/sabinafoisor/\nTwitch: https://www.twitch.tv/sabinafoisor"
+          twitch: https://www.twitch.tv/sabinafoisor
+          youtube: https://www.youtube.com/channel/UC2hjYBYRdE2ynHqfQpo_gow/live
+          image: https://image.lichess1.org/display?fmt=webp&h=350&op=thumbnail&path=sabinafoisor:streamer:sabinafoisor:JpKJW8ke.jpg&w=350&sig=fcefac30465d2a3db65e123dd45393bd2dc03494
+      - name: sloppydogg
+        title: IM
+        id: sloppydogg
+        stream:
+          service: twitch
+          status: 'Lichess Simul Record Attempt #10 lichess.org'
+          lang: en
+        streamer:
+          name: John Ludwig
+          headline: Watch and learn chess from an International Master! :)
+          description: 'Thank you so much for checking my stream out! It will be a great mix of entertaining play, teaching moments, and all other things great with chess! The more you engage, the better! I will play whatever openings you recommend, or even specific ideas you would like to see! '
+          twitch: https://www.twitch.tv/jludwig
+          image: https://image.lichess1.org/display?fmt=webp&h=350&op=thumbnail&path=psrd6rY4J8tr.webp&w=350&sig=7959c8fdc44570537eefe98bc450d81022fe13f3
+      - name: chessoptics
+        patron: true
+        patronColor: 1
+        id: chessoptics
+        stream:
+          service: twitch
+          status: '|Chess is the lens life is the view| Variety Music |Lichess.org {Training with the chessbook app}'
+          lang: en
+        streamer:
+          name: chessoptics
+          headline: This is a place to enjoy chess and learn.
+          description: If you Love Chess then come watch me play and enjoy. leave some comments and lets talk about chess.
+          twitch: https://www.twitch.tv/chessoptics
+          image: https://image.lichess1.org/display?fmt=webp&h=350&op=thumbnail&path=vPkudbELA3pE.webp&w=350&sig=4240861f841d02a38742f5a5f9f2d40ce89315ec
+      - name: account4BD
+        flair: people.troll
+        patron: true
+        patronColor: 4
+        id: account4bd
+        stream:
+          service: twitch
+          status: Fred Again... X Chess Again Best NightTime recipe !! | Dailys Fastest Echecs Arènes's Fully Zerked Only on @Lichess.org
+          lang: en
+        streamer:
+          name: account4BD
+          headline: hey chess addicts
+          twitch: https://www.twitch.tv/chess_punk
+          image: https://image.lichess1.org/display?fmt=webp&h=350&op=thumbnail&path=streamer:account4bd:fUQxz0qi.webp&w=350&sig=a3c17df24c8be4a4016e0029b730680e5db4fb5c
   schemas:
+    RatingHistoryEntry:
+      type: object
+      properties:
+        name:
+          type: string
+        points:
+          type: array
+          items:
+            type: array
+            description: '[year, month, day, rating]'
+            items:
+              type: integer
+            minItems: 4
+            maxItems: 4
+      example:
+        name: Bullet
+        points:
+        - - 2011
+          - 0
+          - 8
+          - 1472
+        - - 2011
+          - 0
+          - 9
+          - 1332
+        - - 2011
+          - 8
+          - 12
+          - 1314
+    Leaderboard:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/TopUser'
+      required:
+      - users
+    TopUser:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        perfs:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              rating:
+                type: integer
+              progress:
+                type: integer
+            required:
+            - rating
+            - progress
+        title:
+          $ref: '#/components/schemas/Title'
+        patron:
+          $ref: '#/components/schemas/Patron'
+        patronColor:
+          $ref: '#/components/schemas/PatronColor'
+        online:
+          type: boolean
+      required:
+      - id
+      - username
+    UserActivityCorrespondenceGame:
+      type: object
+      properties:
+        id:
+          type: string
+        color:
+          $ref: '#/components/schemas/GameColor'
+        url:
+          type: string
+          format: uri
+        variant:
+          $ref: '#/components/schemas/VariantKey'
+        speed:
+          type: string
+          const: correspondence
+        perf:
+          type: string
+          const: correspondence
+        rated:
+          type: boolean
+        opponent:
+          oneOf:
+          - type: object
+            required:
+            - aiLevel
+            properties:
+              aiLevel:
+                type: integer
+          - type: object
+            required:
+            - user
+            - rating
+            properties:
+              user:
+                type: string
+              rating:
+                type: integer
+      required:
+      - id
+      - color
+      - url
+      - opponent
+    UserActivityScore:
+      type: object
+      properties:
+        win:
+          type: integer
+        loss:
+          type: integer
+        draw:
+          type: integer
+        rp:
+          type: object
+          properties:
+            before:
+              type: integer
+            after:
+              type: integer
+          required:
+          - before
+          - after
+      required:
+      - win
+      - loss
+      - draw
+      - rp
+    Profile:
+      type: object
+      properties:
+        flag:
+          type: string
+          example: EC
+        location:
+          type: string
+        bio:
+          type: string
+          example: Free bugs!
+        realName:
+          type: string
+          example: Thibault Duplessis
+        fideRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        uscfRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        ecfRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        cfcRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        rcfRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        dsbRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        links:
+          type: string
+          example: 'github.com/ornicar
+
+            mas.to/@thibault'
+    Ok:
+      properties:
+        ok:
+          type: boolean
+      required:
+      - ok
+    UserStreamer:
+      type: object
+      properties:
+        twitch:
+          type: object
+          properties:
+            channel:
+              type: string
+              format: uri
+              example: https://www.twitch.tv/lichessdotorg
+        youtube:
+          type: object
+          properties:
+            channel:
+              type: string
+              format: uri
+              example: https://www.youtube.com/c/LichessDotOrg
+    VariantKey:
+      type: string
+      enum:
+      - standard
+      - chess960
+      - crazyhouse
+      - antichess
+      - atomic
+      - horde
+      - kingOfTheHill
+      - racingKings
+      - threeCheck
+      - fromPosition
+      example: standard
+      default: standard
     UserActivity:
       type: object
       properties:
@@ -3259,36 +3474,163 @@ components:
           type: boolean
       required:
       - interval
-    TopUser:
+    GameColor:
+      type: string
+      enum:
+      - white
+      - black
+    Count:
       type: object
       properties:
-        id:
-          type: string
-        username:
-          type: string
-        perfs:
-          type: object
-          additionalProperties:
-            type: object
-            properties:
-              rating:
-                type: integer
-              progress:
-                type: integer
-            required:
-            - rating
-            - progress
-        title:
-          $ref: '#/components/schemas/Title'
-        patron:
-          $ref: '#/components/schemas/Patron'
-        patronColor:
-          $ref: '#/components/schemas/PatronColor'
-        online:
-          type: boolean
+        all:
+          type: integer
+        rated:
+          type: integer
+        ai:
+          type: integer
+        draw:
+          type: integer
+        drawH:
+          type: integer
+        loss:
+          type: integer
+        lossH:
+          type: integer
+        win:
+          type: integer
+        winH:
+          type: integer
+        bookmark:
+          type: integer
+        playing:
+          type: integer
+        import:
+          type: integer
+        me:
+          type: integer
       required:
-      - id
-      - username
+      - all
+      - rated
+      - draw
+      - loss
+      - win
+      - bookmark
+      - playing
+      - import
+      - me
+    PlayTime:
+      type: object
+      properties:
+        total:
+          type: integer
+        tv:
+          type: integer
+        human:
+          type: integer
+      required:
+      - total
+      - tv
+    UserExtended:
+      allOf:
+      - $ref: '#/components/schemas/User'
+      - type: object
+        properties:
+          url:
+            type: string
+            format: uri
+          playing:
+            type: string
+            format: uri
+          count:
+            $ref: '#/components/schemas/Count'
+          streaming:
+            type: boolean
+          streamer:
+            $ref: '#/components/schemas/UserStreamer'
+          followable:
+            type: boolean
+            description: only appears if the request is [authenticated with OAuth2](#description/authentication)
+          following:
+            type: boolean
+            description: only appears if the request is [authenticated with OAuth2](#description/authentication)
+          blocking:
+            type: boolean
+            description: only appears if the request is [authenticated with OAuth2](#description/authentication)
+          fideId:
+            type: number
+        required:
+        - url
+    PerfType:
+      type: string
+      enum:
+      - ultraBullet
+      - bullet
+      - blitz
+      - rapid
+      - classical
+      - correspondence
+      - chess960
+      - crazyhouse
+      - antichess
+      - atomic
+      - horde
+      - kingOfTheHill
+      - racingKings
+      - threeCheck
+    UserActivityFollowList:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+        nb:
+          type: integer
+      required:
+      - ids
+    Top10s:
+      type: object
+      properties:
+        bullet:
+          $ref: '#/components/schemas/PerfTop10'
+        blitz:
+          $ref: '#/components/schemas/PerfTop10'
+        rapid:
+          $ref: '#/components/schemas/PerfTop10'
+        classical:
+          $ref: '#/components/schemas/PerfTop10'
+        ultraBullet:
+          $ref: '#/components/schemas/PerfTop10'
+        crazyhouse:
+          $ref: '#/components/schemas/PerfTop10'
+        chess960:
+          $ref: '#/components/schemas/PerfTop10'
+        kingOfTheHill:
+          $ref: '#/components/schemas/PerfTop10'
+        threeCheck:
+          $ref: '#/components/schemas/PerfTop10'
+        antichess:
+          $ref: '#/components/schemas/PerfTop10'
+        atomic:
+          $ref: '#/components/schemas/PerfTop10'
+        horde:
+          $ref: '#/components/schemas/PerfTop10'
+        racingKings:
+          $ref: '#/components/schemas/PerfTop10'
+      required:
+      - bullet
+      - blitz
+      - rapid
+      - classical
+      - ultraBullet
+      - crazyhouse
+      - chess960
+      - kingOfTheHill
+      - threeCheck
+      - antichess
+      - atomic
+      - horde
+      - racingKings
     LightUser:
       type: object
       properties:
@@ -3307,132 +3649,37 @@ components:
       required:
       - id
       - name
-    Profile:
-      type: object
-      properties:
-        flag:
-          type: string
-          example: EC
-        location:
-          type: string
-        bio:
-          type: string
-          example: Free bugs!
-        realName:
-          type: string
-          example: Thibault Duplessis
-        fideRating:
-          type: integer
-          example: 1500
-          description: only appears if a user has set them
-        uscfRating:
-          type: integer
-          example: 1500
-          description: only appears if a user has set them
-        ecfRating:
-          type: integer
-          example: 1500
-          description: only appears if a user has set them
-        cfcRating:
-          type: integer
-          example: 1500
-          description: only appears if a user has set them
-        rcfRating:
-          type: integer
-          example: 1500
-          description: only appears if a user has set them
-        dsbRating:
-          type: integer
-          example: 1500
-          description: only appears if a user has set them
-        links:
-          type: string
-          example: 'github.com/ornicar
+    PatronColor:
+      type: integer
+      description: 'Players can choose a color for their Patron wings.
 
-            mas.to/@thibault'
-    UserActivityFollowList:
-      type: object
-      properties:
-        ids:
-          type: array
-          items:
-            type: string
-        nb:
-          type: integer
-      required:
-      - ids
-    Crosstable:
-      type: object
-      properties:
-        users:
-          additionalProperties:
-            type: number
-        nbGames:
-          type: integer
-      required:
-      - users
-      - nbGames
-      example:
-        users:
-          neio: 201.5
-          thibault: 144.5
-        nbGames: 346
-    Patron:
-      type: boolean
-      deprecated: true
-      description: 'Use patronColor value instead to determine if player is a patron.
+        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
+
+
+        The presence of this field indicates the player is an active Patron.
 
         '
-    LightUserOnline:
-      allOf:
-      - $ref: '#/components/schemas/LightUser'
-      - properties:
-          online:
-            type: boolean
-    Perfs:
-      type: object
-      properties:
-        chess960:
-          $ref: '#/components/schemas/Perf'
-        atomic:
-          $ref: '#/components/schemas/Perf'
-        racingKings:
-          $ref: '#/components/schemas/Perf'
-        ultraBullet:
-          $ref: '#/components/schemas/Perf'
-        blitz:
-          $ref: '#/components/schemas/Perf'
-        kingOfTheHill:
-          $ref: '#/components/schemas/Perf'
-        threeCheck:
-          $ref: '#/components/schemas/Perf'
-        antichess:
-          $ref: '#/components/schemas/Perf'
-        crazyhouse:
-          $ref: '#/components/schemas/Perf'
-        bullet:
-          $ref: '#/components/schemas/Perf'
-        correspondence:
-          $ref: '#/components/schemas/Perf'
-        horde:
-          $ref: '#/components/schemas/Perf'
-        puzzle:
-          $ref: '#/components/schemas/Perf'
-        classical:
-          $ref: '#/components/schemas/Perf'
-        rapid:
-          $ref: '#/components/schemas/Perf'
-        storm:
-          $ref: '#/components/schemas/PuzzleModePerf'
-        racer:
-          $ref: '#/components/schemas/PuzzleModePerf'
-        streak:
-          $ref: '#/components/schemas/PuzzleModePerf'
-    GameColor:
+      minimum: 1
+      maximum: 10
+    Flair:
+      type: string
+      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
+    Title:
       type: string
       enum:
-      - white
-      - black
+      - GM
+      - WGM
+      - IM
+      - WIM
+      - FM
+      - WFM
+      - NM
+      - CM
+      - WCM
+      - WNM
+      - LM
+      - BOT
+      description: only appears if the user is a titled player or a bot user
     PerfStat:
       type: object
       properties:
@@ -3815,79 +4062,126 @@ components:
       - rank
       - percentile
       - stat
-    UserActivityScore:
+    Patron:
+      type: boolean
+      deprecated: true
+      description: 'Use patronColor value instead to determine if player is a patron.
+
+        '
+    PuzzleModePerf:
       type: object
       properties:
-        win:
+        runs:
           type: integer
-        loss:
+        score:
           type: integer
-        draw:
-          type: integer
-        rp:
-          type: object
-          properties:
-            before:
-              type: integer
-            after:
-              type: integer
-          required:
-          - before
-          - after
       required:
-      - win
-      - loss
-      - draw
-      - rp
-    Top10s:
+      - runs
+      - score
+    Perfs:
       type: object
       properties:
-        bullet:
-          $ref: '#/components/schemas/PerfTop10'
-        blitz:
-          $ref: '#/components/schemas/PerfTop10'
-        rapid:
-          $ref: '#/components/schemas/PerfTop10'
-        classical:
-          $ref: '#/components/schemas/PerfTop10'
-        ultraBullet:
-          $ref: '#/components/schemas/PerfTop10'
-        crazyhouse:
-          $ref: '#/components/schemas/PerfTop10'
         chess960:
-          $ref: '#/components/schemas/PerfTop10'
-        kingOfTheHill:
-          $ref: '#/components/schemas/PerfTop10'
-        threeCheck:
-          $ref: '#/components/schemas/PerfTop10'
-        antichess:
-          $ref: '#/components/schemas/PerfTop10'
+          $ref: '#/components/schemas/Perf'
         atomic:
-          $ref: '#/components/schemas/PerfTop10'
-        horde:
-          $ref: '#/components/schemas/PerfTop10'
+          $ref: '#/components/schemas/Perf'
         racingKings:
-          $ref: '#/components/schemas/PerfTop10'
-      required:
-      - bullet
-      - blitz
-      - rapid
-      - classical
-      - ultraBullet
-      - crazyhouse
-      - chess960
-      - kingOfTheHill
-      - threeCheck
-      - antichess
-      - atomic
-      - horde
-      - racingKings
-    Ok:
+          $ref: '#/components/schemas/Perf'
+        ultraBullet:
+          $ref: '#/components/schemas/Perf'
+        blitz:
+          $ref: '#/components/schemas/Perf'
+        kingOfTheHill:
+          $ref: '#/components/schemas/Perf'
+        threeCheck:
+          $ref: '#/components/schemas/Perf'
+        antichess:
+          $ref: '#/components/schemas/Perf'
+        crazyhouse:
+          $ref: '#/components/schemas/Perf'
+        bullet:
+          $ref: '#/components/schemas/Perf'
+        correspondence:
+          $ref: '#/components/schemas/Perf'
+        horde:
+          $ref: '#/components/schemas/Perf'
+        puzzle:
+          $ref: '#/components/schemas/Perf'
+        classical:
+          $ref: '#/components/schemas/Perf'
+        rapid:
+          $ref: '#/components/schemas/Perf'
+        storm:
+          $ref: '#/components/schemas/PuzzleModePerf'
+        racer:
+          $ref: '#/components/schemas/PuzzleModePerf'
+        streak:
+          $ref: '#/components/schemas/PuzzleModePerf'
+    Perf:
+      type: object
       properties:
-        ok:
+        games:
+          type: integer
+        rating:
+          type: integer
+        rd:
+          type: integer
+          description: rating deviation
+        prog:
+          type: integer
+        prov:
           type: boolean
+          description: only appears if a user's perf rating are [provisional](https://lichess.org/faq#provisional)
+        rank:
+          type: integer
+          description: global lichess ranking, only appears for recently active players
       required:
-      - ok
+      - games
+      - rating
+      - rd
+      - prog
+    PerfTop10:
+      type: array
+      minItems: 10
+      maxItems: 10
+      items:
+        $ref: '#/components/schemas/TopUser'
+    LightUserOnline:
+      allOf:
+      - $ref: '#/components/schemas/LightUser'
+      - properties:
+          online:
+            type: boolean
+    Crosstable:
+      type: object
+      properties:
+        users:
+          additionalProperties:
+            type: number
+        nbGames:
+          type: integer
+      required:
+      - users
+      - nbGames
+      example:
+        users:
+          neio: 201.5
+          thibault: 144.5
+        nbGames: 346
+    UserNote:
+      type: object
+      properties:
+        from:
+          $ref: '#/components/schemas/LightUser'
+        to:
+          $ref: '#/components/schemas/LightUser'
+        text:
+          type: string
+          example: This is a note
+        date:
+          type: integer
+          format: int64
+          example: 1290415680000
     User:
       type: object
       properties:
@@ -3926,300 +4220,6 @@ components:
       required:
       - id
       - username
-    UserActivityCorrespondenceGame:
-      type: object
-      properties:
-        id:
-          type: string
-        color:
-          $ref: '#/components/schemas/GameColor'
-        url:
-          type: string
-          format: uri
-        variant:
-          $ref: '#/components/schemas/VariantKey'
-        speed:
-          type: string
-          const: correspondence
-        perf:
-          type: string
-          const: correspondence
-        rated:
-          type: boolean
-        opponent:
-          oneOf:
-          - type: object
-            required:
-            - aiLevel
-            properties:
-              aiLevel:
-                type: integer
-          - type: object
-            required:
-            - user
-            - rating
-            properties:
-              user:
-                type: string
-              rating:
-                type: integer
-      required:
-      - id
-      - color
-      - url
-      - opponent
-    PatronColor:
-      type: integer
-      description: 'Players can choose a color for their Patron wings.
-
-        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
-
-
-        The presence of this field indicates the player is an active Patron.
-
-        '
-      minimum: 1
-      maximum: 10
-    Perf:
-      type: object
-      properties:
-        games:
-          type: integer
-        rating:
-          type: integer
-        rd:
-          type: integer
-          description: rating deviation
-        prog:
-          type: integer
-        prov:
-          type: boolean
-          description: only appears if a user's perf rating are [provisional](https://lichess.org/faq#provisional)
-        rank:
-          type: integer
-          description: global lichess ranking, only appears for recently active players
-      required:
-      - games
-      - rating
-      - rd
-      - prog
-    PuzzleModePerf:
-      type: object
-      properties:
-        runs:
-          type: integer
-        score:
-          type: integer
-      required:
-      - runs
-      - score
-    Count:
-      type: object
-      properties:
-        all:
-          type: integer
-        rated:
-          type: integer
-        ai:
-          type: integer
-        draw:
-          type: integer
-        drawH:
-          type: integer
-        loss:
-          type: integer
-        lossH:
-          type: integer
-        win:
-          type: integer
-        winH:
-          type: integer
-        bookmark:
-          type: integer
-        playing:
-          type: integer
-        import:
-          type: integer
-        me:
-          type: integer
-      required:
-      - all
-      - rated
-      - draw
-      - loss
-      - win
-      - bookmark
-      - playing
-      - import
-      - me
-    UserExtended:
-      allOf:
-      - $ref: '#/components/schemas/User'
-      - type: object
-        properties:
-          url:
-            type: string
-            format: uri
-          playing:
-            type: string
-            format: uri
-          count:
-            $ref: '#/components/schemas/Count'
-          streaming:
-            type: boolean
-          streamer:
-            $ref: '#/components/schemas/UserStreamer'
-          followable:
-            type: boolean
-            description: only appears if the request is [authenticated with OAuth2](#description/authentication)
-          following:
-            type: boolean
-            description: only appears if the request is [authenticated with OAuth2](#description/authentication)
-          blocking:
-            type: boolean
-            description: only appears if the request is [authenticated with OAuth2](#description/authentication)
-          fideId:
-            type: number
-        required:
-        - url
-    Title:
-      type: string
-      enum:
-      - GM
-      - WGM
-      - IM
-      - WIM
-      - FM
-      - WFM
-      - NM
-      - CM
-      - WCM
-      - WNM
-      - LM
-      - BOT
-      description: only appears if the user is a titled player or a bot user
-    Flair:
-      type: string
-      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
-    UserStreamer:
-      type: object
-      properties:
-        twitch:
-          type: object
-          properties:
-            channel:
-              type: string
-              format: uri
-              example: https://www.twitch.tv/lichessdotorg
-        youtube:
-          type: object
-          properties:
-            channel:
-              type: string
-              format: uri
-              example: https://www.youtube.com/c/LichessDotOrg
-    PerfType:
-      type: string
-      enum:
-      - ultraBullet
-      - bullet
-      - blitz
-      - rapid
-      - classical
-      - correspondence
-      - chess960
-      - crazyhouse
-      - antichess
-      - atomic
-      - horde
-      - kingOfTheHill
-      - racingKings
-      - threeCheck
-    Leaderboard:
-      type: object
-      properties:
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/TopUser'
-      required:
-      - users
-    PerfTop10:
-      type: array
-      minItems: 10
-      maxItems: 10
-      items:
-        $ref: '#/components/schemas/TopUser'
-    PlayTime:
-      type: object
-      properties:
-        total:
-          type: integer
-        tv:
-          type: integer
-        human:
-          type: integer
-      required:
-      - total
-      - tv
-    RatingHistoryEntry:
-      type: object
-      properties:
-        name:
-          type: string
-        points:
-          type: array
-          items:
-            type: array
-            description: '[year, month, day, rating]'
-            items:
-              type: integer
-            minItems: 4
-            maxItems: 4
-      example:
-        name: Bullet
-        points:
-        - - 2011
-          - 0
-          - 8
-          - 1472
-        - - 2011
-          - 0
-          - 9
-          - 1332
-        - - 2011
-          - 8
-          - 12
-          - 1314
-    VariantKey:
-      type: string
-      enum:
-      - standard
-      - chess960
-      - crazyhouse
-      - antichess
-      - atomic
-      - horde
-      - kingOfTheHill
-      - racingKings
-      - threeCheck
-      - fromPosition
-      example: standard
-      default: standard
-    UserNote:
-      type: object
-      properties:
-        from:
-          $ref: '#/components/schemas/LightUser'
-        to:
-          $ref: '#/components/schemas/LightUser'
-        text:
-          type: string
-          example: This is a note
-        date:
-          type: integer
-          format: int64
-          example: 1290415680000
     RatingHistory:
       type: array
       items:

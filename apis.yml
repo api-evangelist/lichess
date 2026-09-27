@@ -8,7 +8,7 @@ apis:
 
     <https://lichess.org/account/preferences/game-display>
   humanURL: https://lichess.org/api
-  baseURL: https://lichess.org
+  baseURL: https://lichess.dev
   tags:
   - Account
   properties:
@@ -33,7 +33,7 @@ apis:
 
     <https://lichess.org/analysis>
   humanURL: https://lichess.org/api
-  baseURL: https://lichess.org
+  baseURL: https://lichess.dev
   tags:
   - Analysis
   properties:
@@ -103,7 +103,7 @@ apis:
 
     - Yours? Please make [an issue or pull request](https://github.com/lichess-org/api).
   humanURL: https://lichess.org/api
-  baseURL: https://lichess.org
+  baseURL: https://lichess.dev
   tags:
   - Boards
   tags_raw:
@@ -189,7 +189,7 @@ apis:
 
     - Watch [Lichess Bot TV](https://lichess.org/tv/bot)
   humanURL: https://lichess.org/api
-  baseURL: https://lichess.org
+  baseURL: https://lichess.dev
   tags:
   - Bot
   properties:
@@ -226,7 +226,7 @@ apis:
 
     You must first create a tournament, then you can add rounds to them.
   humanURL: https://lichess.org/api
-  baseURL: https://lichess.org
+  baseURL: https://lichess.dev
   tags:
   - Broadcast
   tags_raw:
@@ -254,7 +254,7 @@ apis:
 
     These endpoints are intended for tournament organisers.
   humanURL: https://lichess.org/api
-  baseURL: https://lichess.org
+  baseURL: https://lichess.dev
   tags:
   - Bulk pairings
   properties:
@@ -280,7 +280,7 @@ apis:
 
     To create a lot of challenges, consider [bulk pairing](#tag/bulk-pairings/POST/api/bulk-pairing) instead.
   humanURL: https://lichess.org/api
-  baseURL: https://lichess.org
+  baseURL: https://lichess.dev
   tags:
   - Challenges
   properties:
@@ -313,7 +313,7 @@ apis:
 
     outside of the browser, or even on a different machine.
   humanURL: https://lichess.org/api
-  baseURL: https://lichess.org
+  baseURL: https://lichess.dev
   tags:
   - External engine
   properties:
@@ -339,7 +339,7 @@ apis:
 
     <https://lichess.org/fide>
   humanURL: https://lichess.org/api
-  baseURL: https://lichess.org
+  baseURL: https://lichess.dev
   tags:
   - FIDE
   properties:
@@ -364,7 +364,7 @@ apis:
 
     <https://lichess.org/games>
   humanURL: https://lichess.org/api
-  baseURL: https://lichess.org
+  baseURL: https://lichess.dev
   tags:
   - Games
   properties:
@@ -389,7 +389,7 @@ apis:
 
     <https://lichess.org/inbox>
   humanURL: https://lichess.org/api
-  baseURL: https://lichess.org
+  baseURL: https://lichess.dev
   tags:
   - Messaging
   properties:
@@ -420,7 +420,7 @@ apis:
 
     > The hostname for these endpoints is `explorer.lichess.org` and not `lichess.org`.
   humanURL: https://lichess.org/api
-  baseURL: https://lichess.org
+  baseURL: https://lichess.dev
   tags:
   - Opening Explorer
   properties:
@@ -449,7 +449,7 @@ apis:
     For a list of our [puzzle themes](https://lichess.org/training/themes) with their description, check
     out the [theme translation file](https://github.com/ornicar/lila/blob/master/translation/source/puzzleTheme.xml).
   humanURL: https://lichess.org/api
-  baseURL: https://lichess.org
+  baseURL: https://lichess.dev
   tags:
   - Puzzles
   properties:
@@ -471,7 +471,7 @@ apis:
   name: Lichess Relations API
   description: Access relations between users.
   humanURL: https://lichess.org/api
-  baseURL: https://lichess.org
+  baseURL: https://lichess.dev
   tags:
   - Relations
   properties:
@@ -496,7 +496,7 @@ apis:
 
     <https://lichess.org/simul>
   humanURL: https://lichess.org/api
-  baseURL: https://lichess.org
+  baseURL: https://lichess.dev
   tags:
   - Simuls
   properties:
@@ -521,7 +521,7 @@ apis:
 
     <https://lichess.org/study>
   humanURL: https://lichess.org/api
-  baseURL: https://lichess.org
+  baseURL: https://lichess.dev
   tags:
   - Studies
   properties:
@@ -549,7 +549,7 @@ apis:
 
     > The hostname for these endpoints is `tablebase.lichess.org` and not `lichess.org`.
   humanURL: https://lichess.org/api
-  baseURL: https://lichess.org
+  baseURL: https://lichess.dev
   tags:
   - Tablebase
   properties:
@@ -574,7 +574,7 @@ apis:
 
     <https://lichess.org/team>
   humanURL: https://lichess.org/api
-  baseURL: https://lichess.org
+  baseURL: https://lichess.dev
   tags:
   - Team
   tags_raw:
@@ -603,7 +603,7 @@ apis:
 
     but you can [create your own Arena tournaments](https://lichess.org/tournament/new) as well.
   humanURL: https://lichess.org/api
-  baseURL: https://lichess.org
+  baseURL: https://lichess.dev
   tags:
   - Tournaments (Arena)
   properties:
@@ -628,7 +628,7 @@ apis:
 
     [Read more about Swiss tournaments.](https://lichess.org/swiss).
   humanURL: https://lichess.org/api
-  baseURL: https://lichess.org
+  baseURL: https://lichess.dev
   tags:
   - Tournaments (Swiss)
   properties:
@@ -653,7 +653,7 @@ apis:
 
     <https://lichess.org/tv> & <https://lichess.org/games>
   humanURL: https://lichess.org/api
-  baseURL: https://lichess.org
+  baseURL: https://lichess.dev
   tags:
   - TV
   properties:
@@ -685,7 +685,7 @@ apis:
 
     - User blogs mashup feed for a language: https://lichess.org/blog/community/fr.atom
   humanURL: https://lichess.org/api
-  baseURL: https://lichess.org
+  baseURL: https://lichess.dev
   tags:
   - User
   tags_raw:
@@ -713,7 +713,7 @@ apis:
 
     [Read about the Lichess API authentication methods and code examples](https://github.com/lichess-org/api/blob/master/example/README.md).
   humanURL: https://lichess.org/api
-  baseURL: https://lichess.org
+  baseURL: https://lichess.dev
   tags:
   - Authentication
   tags_raw:
@@ -737,7 +737,7 @@ name: Lichess
 tags:
   - Chess
   - Games
-  - Open-Source
+  - Open Source
   - Non-Profit
   - Tournaments
   - Puzzles
@@ -756,6 +756,7 @@ tags_raw:
   - Streaming
   - ND-JSON
   - OAuth
+  - Open-Source
 kind: contract
 deliveryModel:
   model: open-core

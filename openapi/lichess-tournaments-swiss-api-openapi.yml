@@ -1047,43 +1047,6 @@ paths:
                   $ref: '#/components/examples/teams-getTeamSwissTournaments.json'
 components:
   schemas:
-    GameOpening:
-      type: object
-      properties:
-        eco:
-          type: string
-        name:
-          type: string
-        ply:
-          type: integer
-      required:
-      - eco
-      - name
-      - ply
-    SwissStatus:
-      type: string
-      description: The current state of the swiss tournament
-      enum:
-      - created
-      - started
-      - finished
-    GameStatusName:
-      type: string
-      enum:
-      - created
-      - started
-      - aborted
-      - mate
-      - resign
-      - stalemate
-      - timeout
-      - draw
-      - outoftime
-      - cheat
-      - noStart
-      - unknownFinish
-      - insufficientMaterialClaim
-      - variantEnd
     GamePgn:
       type: string
       example: '[Event "Rated Blitz game"]
@@ -1126,77 +1089,6 @@ components:
         1. e4 { [%clk 0:03:00] } e5 { [%clk 0:03:00] } 2. Nf3 { [%clk 0:02:59] } Nc6 { [%clk 0:02:58] } 3. Bb5 { [%clk 0:02:57] } d6 { [%clk 0:02:55] } 4. h3 { [%clk 0:02:54] } Nf6 { [%clk 0:02:52] } 5. Bxc6+ { [%clk 0:02:52] } bxc6 { [%clk 0:02:49] } 6. d3 { [%clk 0:02:51] } Be7 { [%clk 0:02:46] } 7. O-O { [%clk 0:02:47] } O-O { [%clk 0:02:45] } 8. b3 { [%clk 0:02:45] } d5 { [%clk 0:02:45] } 9. exd5 { [%clk 0:02:33] } cxd5 { [%clk 0:02:40] } 10. Nxe5 { [%clk 0:02:31] } Qd6 { [%clk 0:02:38] } 1-0
 
         '
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-          description: The cause of the error.
-      required:
-      - error
-      example:
-        error: This request is invalid because [...]
-    GamePlayers:
-      type: object
-      properties:
-        white:
-          $ref: '#/components/schemas/GamePlayerUser'
-        black:
-          $ref: '#/components/schemas/GamePlayerUser'
-      required:
-      - white
-      - black
-    LightUser:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        flair:
-          $ref: '#/components/schemas/Flair'
-        title:
-          $ref: '#/components/schemas/Title'
-        patron:
-          $ref: '#/components/schemas/Patron'
-        patronColor:
-          $ref: '#/components/schemas/PatronColor'
-      required:
-      - id
-      - name
-    Verdicts:
-      type: object
-      properties:
-        accepted:
-          type: boolean
-        list:
-          type: array
-          items:
-            $ref: '#/components/schemas/Verdict'
-      required:
-      - accepted
-      - list
-    Patron:
-      type: boolean
-      deprecated: true
-      description: 'Use patronColor value instead to determine if player is a patron.
-
-        '
-    SwissFromPositionFEN:
-      type: string
-      description: Custom initial position (in X-FEN). Variant must be standard and the game cannot be rated.
-      default: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
-    SwissUnauthorisedEdit:
-      properties:
-        error:
-          type: string
-      example:
-        error: This user cannot edit this swiss
-    GameColor:
-      type: string
-      enum:
-      - white
-      - black
     GameMoveAnalysis:
       type: object
       properties:
@@ -1227,12 +1119,185 @@ components:
             comment:
               type: string
               example: Blunder. Nxg6 was best.
+    GamePlayers:
+      type: object
+      properties:
+        white:
+          $ref: '#/components/schemas/GamePlayerUser'
+        black:
+          $ref: '#/components/schemas/GamePlayerUser'
+      required:
+      - white
+      - black
+    GameStatusName:
+      type: string
+      enum:
+      - created
+      - started
+      - aborted
+      - mate
+      - resign
+      - stalemate
+      - timeout
+      - draw
+      - outoftime
+      - cheat
+      - noStart
+      - unknownFinish
+      - insufficientMaterialClaim
+      - variantEnd
+    SwissUnauthorisedEdit:
+      properties:
+        error:
+          type: string
+      example:
+        error: This user cannot edit this swiss
+    GamePlayerUser:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/LightUser'
+        rating:
+          type: integer
+        ratingDiff:
+          type: integer
+        name:
+          type: string
+        provisional:
+          type: boolean
+        aiLevel:
+          type: integer
+        analysis:
+          type: object
+          properties:
+            inaccuracy:
+              type: integer
+            mistake:
+              type: integer
+            blunder:
+              type: integer
+            acpl:
+              type: integer
+            accuracy:
+              type: integer
+          required:
+          - inaccuracy
+          - mistake
+          - blunder
+          - acpl
+        team:
+          type: string
+      required:
+      - user
+      - rating
     Ok:
       properties:
         ok:
           type: boolean
       required:
       - ok
+    VariantKey:
+      type: string
+      enum:
+      - standard
+      - chess960
+      - crazyhouse
+      - antichess
+      - atomic
+      - horde
+      - kingOfTheHill
+      - racingKings
+      - threeCheck
+      - fromPosition
+      example: standard
+      default: standard
+    GameColor:
+      type: string
+      enum:
+      - white
+      - black
+    GameJson:
+      type: object
+      properties:
+        id:
+          type: string
+        rated:
+          type: boolean
+        variant:
+          $ref: '#/components/schemas/VariantKey'
+        speed:
+          $ref: '#/components/schemas/Speed'
+        perf:
+          type: string
+        createdAt:
+          type: integer
+          format: int64
+        lastMoveAt:
+          type: integer
+          format: int64
+        status:
+          $ref: '#/components/schemas/GameStatusName'
+        source:
+          type: string
+        players:
+          $ref: '#/components/schemas/GamePlayers'
+        initialFen:
+          type: string
+        winner:
+          $ref: '#/components/schemas/GameColor'
+        opening:
+          $ref: '#/components/schemas/GameOpening'
+        moves:
+          type: string
+        pgn:
+          type: string
+        daysPerTurn:
+          type: integer
+        analysis:
+          type: array
+          items:
+            $ref: '#/components/schemas/GameMoveAnalysis'
+        tournament:
+          type: string
+        swiss:
+          type: string
+        clock:
+          type: object
+          properties:
+            initial:
+              type: integer
+            increment:
+              type: integer
+            totalTime:
+              type: integer
+          required:
+          - initial
+          - increment
+          - totalTime
+        clocks:
+          type: array
+          items:
+            type: integer
+        division:
+          type: object
+          properties:
+            middle:
+              type: integer
+              description: Ply at which the middlegame begins
+            end:
+              type: integer
+              description: Ply at which the endgame begins
+          required: []
+      required:
+      - id
+      - rated
+      - variant
+      - speed
+      - perf
+      - createdAt
+      - lastMoveAt
+      - status
+      - players
     SwissTournament:
       type: object
       properties:
@@ -1318,88 +1383,24 @@ components:
       - status
       - rated
       - verdicts
-    GameJson:
+    LightUser:
       type: object
       properties:
         id:
           type: string
-        rated:
-          type: boolean
-        variant:
-          $ref: '#/components/schemas/VariantKey'
-        speed:
-          $ref: '#/components/schemas/Speed'
-        perf:
+        name:
           type: string
-        createdAt:
-          type: integer
-          format: int64
-        lastMoveAt:
-          type: integer
-          format: int64
-        status:
-          $ref: '#/components/schemas/GameStatusName'
-        source:
-          type: string
-        players:
-          $ref: '#/components/schemas/GamePlayers'
-        initialFen:
-          type: string
-        winner:
-          $ref: '#/components/schemas/GameColor'
-        opening:
-          $ref: '#/components/schemas/GameOpening'
-        moves:
-          type: string
-        pgn:
-          type: string
-        daysPerTurn:
-          type: integer
-        analysis:
-          type: array
-          items:
-            $ref: '#/components/schemas/GameMoveAnalysis'
-        tournament:
-          type: string
-        swiss:
-          type: string
-        clock:
-          type: object
-          properties:
-            initial:
-              type: integer
-            increment:
-              type: integer
-            totalTime:
-              type: integer
-          required:
-          - initial
-          - increment
-          - totalTime
-        clocks:
-          type: array
-          items:
-            type: integer
-        division:
-          type: object
-          properties:
-            middle:
-              type: integer
-              description: Ply at which the middlegame begins
-            end:
-              type: integer
-              description: Ply at which the endgame begins
-          required: []
+        flair:
+          $ref: '#/components/schemas/Flair'
+        title:
+          $ref: '#/components/schemas/Title'
+        patron:
+          $ref: '#/components/schemas/Patron'
+        patronColor:
+          $ref: '#/components/schemas/PatronColor'
       required:
       - id
-      - rated
-      - variant
-      - speed
-      - perf
-      - createdAt
-      - lastMoveAt
-      - status
-      - players
+      - name
     PatronColor:
       type: integer
       description: 'Players can choose a color for their Patron wings.
@@ -1422,53 +1423,9 @@ components:
       required:
       - condition
       - verdict
-    GamePlayerUser:
-      type: object
-      properties:
-        user:
-          $ref: '#/components/schemas/LightUser'
-        rating:
-          type: integer
-        ratingDiff:
-          type: integer
-        name:
-          type: string
-        provisional:
-          type: boolean
-        aiLevel:
-          type: integer
-        analysis:
-          type: object
-          properties:
-            inaccuracy:
-              type: integer
-            mistake:
-              type: integer
-            blunder:
-              type: integer
-            acpl:
-              type: integer
-            accuracy:
-              type: integer
-          required:
-          - inaccuracy
-          - mistake
-          - blunder
-          - acpl
-        team:
-          type: string
-      required:
-      - user
-      - rating
-    Speed:
+    Flair:
       type: string
-      enum:
-      - ultraBullet
-      - bullet
-      - blitz
-      - rapid
-      - classical
-      - correspondence
+      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
     Title:
       type: string
       enum:
@@ -1485,24 +1442,67 @@ components:
       - LM
       - BOT
       description: only appears if the user is a titled player or a bot user
-    Flair:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The cause of the error.
+      required:
+      - error
+      example:
+        error: This request is invalid because [...]
+    Patron:
+      type: boolean
+      deprecated: true
+      description: 'Use patronColor value instead to determine if player is a patron.
+
+        '
+    GameOpening:
+      type: object
+      properties:
+        eco:
+          type: string
+        name:
+          type: string
+        ply:
+          type: integer
+      required:
+      - eco
+      - name
+      - ply
+    SwissFromPositionFEN:
       type: string
-      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
-    VariantKey:
+      description: Custom initial position (in X-FEN). Variant must be standard and the game cannot be rated.
+      default: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+    Speed:
       type: string
       enum:
-      - standard
-      - chess960
-      - crazyhouse
-      - antichess
-      - atomic
-      - horde
-      - kingOfTheHill
-      - racingKings
-      - threeCheck
-      - fromPosition
-      example: standard
-      default: standard
+      - ultraBullet
+      - bullet
+      - blitz
+      - rapid
+      - classical
+      - correspondence
+    Verdicts:
+      type: object
+      properties:
+        accepted:
+          type: boolean
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/Verdict'
+      required:
+      - accepted
+      - list
+    SwissStatus:
+      type: string
+      description: The current state of the swiss tournament
+      enum:
+      - created
+      - started
+      - finished
   parameters:
     AcceptPgnOrNdjson:
       in: header

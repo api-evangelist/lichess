@@ -662,43 +662,6 @@ paths:
                 default: '''*'''
 components:
   schemas:
-    StudyMetadata:
-      type: object
-      properties:
-        id:
-          type: string
-          description: The study ID
-        name:
-          type: string
-          description: The study name
-        createdAt:
-          type: integer
-          format: int64
-          description: The study creation date
-        updatedAt:
-          type: integer
-          format: int64
-          description: The study last update date
-      required:
-      - id
-      - name
-      - createdAt
-      - updatedAt
-      example:
-        id: WTvnkWAL
-        name: Guess the move
-        createdAt: 1463756350225
-        updatedAt: 1469965025205
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-          description: The cause of the error.
-      required:
-      - error
-      example:
-        error: This request is invalid because [...]
     StudyPgn:
       type: string
       example: '[Event "All about the Sicilian Defense: Dragon Variation"]
@@ -740,6 +703,16 @@ components:
       - fromPosition
       example: standard
       default: standard
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The cause of the error.
+      required:
+      - error
+      example:
+        error: This request is invalid because [...]
     StudyUserSelection:
       type: string
       enum:
@@ -748,6 +721,33 @@ components:
       - contributor
       - member
       - everyone
+    StudyMetadata:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The study ID
+        name:
+          type: string
+          description: The study name
+        createdAt:
+          type: integer
+          format: int64
+          description: The study creation date
+        updatedAt:
+          type: integer
+          format: int64
+          description: The study last update date
+      required:
+      - id
+      - name
+      - createdAt
+      - updatedAt
+      example:
+        id: WTvnkWAL
+        name: Guess the move
+        createdAt: 1463756350225
+        updatedAt: 1469965025205
     StudyImportPgnChapters:
       type: object
       properties:

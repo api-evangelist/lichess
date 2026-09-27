@@ -439,100 +439,6 @@ paths:
                   $ref: '#/components/examples/openingExplorer-otbMasterGame.pgn'
 components:
   schemas:
-    OpeningExplorerLichess:
-      type: object
-      properties:
-        opening:
-          oneOf:
-          - $ref: '#/components/schemas/OpeningExplorerOpening'
-          - type: 'null'
-        white:
-          type: integer
-        draws:
-          type: integer
-        black:
-          type: integer
-        moves:
-          type: array
-          items:
-            type: object
-            properties:
-              uci:
-                type: string
-              san:
-                type: string
-              averageRating:
-                type: integer
-              white:
-                type: integer
-              draws:
-                type: integer
-              black:
-                type: integer
-              game:
-                oneOf:
-                - $ref: '#/components/schemas/OpeningExplorerLichessGame'
-                - type: 'null'
-              opening:
-                oneOf:
-                - $ref: '#/components/schemas/OpeningExplorerOpening'
-                - type: 'null'
-            required:
-            - uci
-            - san
-            - averageRating
-            - white
-            - draws
-            - black
-            - game
-            - opening
-        topGames:
-          type: array
-          items:
-            allOf:
-            - type: object
-              properties:
-                uci:
-                  type: string
-              required:
-              - uci
-            - $ref: '#/components/schemas/OpeningExplorerLichessGame'
-        recentGames:
-          type: array
-          items:
-            allOf:
-            - type: object
-              properties:
-                uci:
-                  type: string
-              required:
-              - uci
-            - $ref: '#/components/schemas/OpeningExplorerLichessGame'
-        history:
-          type: array
-          items:
-            type: object
-            properties:
-              month:
-                type: string
-              white:
-                type: integer
-              draws:
-                type: integer
-              black:
-                type: integer
-            required:
-            - month
-            - white
-            - draws
-            - black
-      required:
-      - opening
-      - white
-      - draws
-      - black
-      - moves
-      - topGames
     OpeningExplorerPlayer:
       type: object
       properties:
@@ -691,73 +597,6 @@ components:
             rating: 1700
           year: 2024
           month: 2024-11
-    Speed:
-      type: string
-      enum:
-      - ultraBullet
-      - bullet
-      - blitz
-      - rapid
-      - classical
-      - correspondence
-    OpeningExplorerLichessGame:
-      type: object
-      properties:
-        id:
-          type: string
-        winner:
-          oneOf:
-          - $ref: '#/components/schemas/GameColor'
-          - type: 'null'
-        speed:
-          $ref: '#/components/schemas/Speed'
-        white:
-          $ref: '#/components/schemas/OpeningExplorerGamePlayer'
-        black:
-          $ref: '#/components/schemas/OpeningExplorerGamePlayer'
-        year:
-          type: number
-        month:
-          type:
-          - string
-          - 'null'
-      required:
-      - id
-      - winner
-      - white
-      - black
-      - year
-      - month
-    VariantKey:
-      type: string
-      enum:
-      - standard
-      - chess960
-      - crazyhouse
-      - antichess
-      - atomic
-      - horde
-      - kingOfTheHill
-      - racingKings
-      - threeCheck
-      - fromPosition
-      example: standard
-      default: standard
-    GameColor:
-      type: string
-      enum:
-      - white
-      - black
-    OpeningExplorerOpening:
-      type: object
-      properties:
-        eco:
-          type: string
-        name:
-          type: string
-      required:
-      - eco
-      - name
     OpeningExplorerPlayerGame:
       type: object
       properties:
@@ -791,17 +630,7 @@ components:
       - black
       - year
       - month
-    OpeningExplorerGamePlayer:
-      type: object
-      properties:
-        name:
-          type: string
-        rating:
-          type: integer
-      required:
-      - name
-      - rating
-    OpeningExplorerMastersGame:
+    OpeningExplorerLichessGame:
       type: object
       properties:
         id:
@@ -810,20 +639,34 @@ components:
           oneOf:
           - $ref: '#/components/schemas/GameColor'
           - type: 'null'
+        speed:
+          $ref: '#/components/schemas/Speed'
         white:
           $ref: '#/components/schemas/OpeningExplorerGamePlayer'
         black:
           $ref: '#/components/schemas/OpeningExplorerGamePlayer'
         year:
-          type: integer
+          type: number
         month:
-          type: string
+          type:
+          - string
+          - 'null'
       required:
       - id
       - winner
       - white
       - black
       - year
+      - month
+    Speed:
+      type: string
+      enum:
+      - ultraBullet
+      - bullet
+      - blitz
+      - rapid
+      - classical
+      - correspondence
     OpeningExplorerMasters:
       type: object
       properties:
@@ -888,138 +731,164 @@ components:
       - black
       - moves
       - topGames
-  examples:
-    openingExplorer-player.json:
-      value:
-        white: 366
-        draws: 23
-        black: 279
-        moves:
-        - uci: c2c4
-          san: c4
-          averageOpponentRating: 1695
-          performance: 1744
-          white: 361
-          draws: 23
-          black: 272
-          game: null
-          opening:
-            eco: D06
-            name: Queen's Gambit
-        - uci: c2c3
-          san: c3
-          averageOpponentRating: 1797
-          performance: 1797
-          white: 2
-          draws: 0
-          black: 2
-          game: null
-          opening: null
-        - uci: e2e4
-          san: e4
-          averageOpponentRating: 1762
-          performance: 1640
-          white: 1
-          draws: 0
-          black: 2
-          game: null
-          opening:
-            eco: D00
-            name: Blackmar-Diemer Gambit
-        - uci: g1f3
-          san: Nf3
-          averageOpponentRating: 1497
-          performance: 1374
-          white: 1
-          draws: 0
-          black: 2
-          game: null
-          opening:
-            eco: D02
-            name: 'Queen''s Pawn Game: Zukertort Variation'
-        - uci: h2h4
-          san: h4
-          averageOpponentRating: 1674
-          performance: 874
-          white: 0
-          draws: 0
-          black: 1
-          game:
-            id: 9vA24xBn
-            winner: black
-            speed: bullet
-            mode: rated
-            black:
-              name: MentalBlood
-              rating: 1674
-            white:
-              name: revoof
-              rating: 1657
-            year: 2020
-            month: 2020-06
-          opening: null
-        - uci: h2h3
-          san: h3
-          averageOpponentRating: 1696
-          performance: 2496
-          white: 1
-          draws: 0
-          black: 0
-          game:
-            id: zyI4GGKv
-            winner: white
-            speed: bullet
-            mode: rated
-            black:
-              name: gocool99
-              rating: 1696
-            white:
-              name: revoof
-              rating: 1702
-            year: 2020
-            month: 2020-07
-          opening: null
-        recentGames:
-        - uci: c2c4
-          id: ycZbWQZO
-          winner: white
-          speed: bullet
-          mode: rated
-          black:
-            name: Winavesh
-            rating: 1700
-          white:
-            name: revoof
-            rating: 1700
-          year: 2024
-          month: 2024-11
+    VariantKey:
+      type: string
+      enum:
+      - standard
+      - chess960
+      - crazyhouse
+      - antichess
+      - atomic
+      - horde
+      - kingOfTheHill
+      - racingKings
+      - threeCheck
+      - fromPosition
+      example: standard
+      default: standard
+    GameColor:
+      type: string
+      enum:
+      - white
+      - black
+    OpeningExplorerMastersGame:
+      type: object
+      properties:
+        id:
+          type: string
+        winner:
+          oneOf:
+          - $ref: '#/components/schemas/GameColor'
+          - type: 'null'
+        white:
+          $ref: '#/components/schemas/OpeningExplorerGamePlayer'
+        black:
+          $ref: '#/components/schemas/OpeningExplorerGamePlayer'
+        year:
+          type: integer
+        month:
+          type: string
+      required:
+      - id
+      - winner
+      - white
+      - black
+      - year
+    OpeningExplorerOpening:
+      type: object
+      properties:
+        eco:
+          type: string
+        name:
+          type: string
+      required:
+      - eco
+      - name
+    OpeningExplorerLichess:
+      type: object
+      properties:
         opening:
-          eco: D00
-          name: Queen's Pawn Game
-        queuePosition: 178
-    openingExplorer-otbMasterGame.pgn:
-      value: '[Event "Wch Blitz"]
-
-        [Site "Astana"]
-
-        [Date "2012.07.10"]
-
-        [Round "23"]
-
-        [White "Carlsen, Magnus"]
-
-        [Black "Chadaev, Nikolay"]
-
-        [Result "1-0"]
-
-        [WhiteElo "2837"]
-
-        [BlackElo "2580"]
-
-
-        1. e4 e5 2. f4 d5 3. exd5 exf4 4. Nf3 Nf6 5. c4 c6 6. d4 cxd5 7. c5 Nc6 8. Bb5 Be7 9. O-O O-O 10. Bxf4 Bg4 11. Nc3 Ne4 12. Qd3 Bf5 13. Qe3 Bf6 14. Bxc6 bxc6 15. Ne5 Bxe5 16. Bxe5 Bg6 17. Nxe4 Bxe4 18. Qg3 f6 19. Bd6 Re8 20. b4 Bg6 21. a4 a6 22. h4 Qd7 23. h5 Bxh5 24. Rxf6 Qg4 25. Qxg4 Bxg4 26. Rf4 Bh5 27. Raf1 h6 28. Be5 Ra7 29. b5 axb5 30. axb5 cxb5 31. c6 Raa8 32. c7 Kh7 33. Rb1 Be2 34. Rf7 Rg8 35. Re7 Bc4 36. Kh2 Rae8 37. Rd7 Ra8 38. Rb2 Raf8 39. g4 Ra8 40. Rf2 b4 41. Rff7 h5 42. Rxg7+ Rxg7 43. Rxg7+ 1-0
-
-        '
+          oneOf:
+          - $ref: '#/components/schemas/OpeningExplorerOpening'
+          - type: 'null'
+        white:
+          type: integer
+        draws:
+          type: integer
+        black:
+          type: integer
+        moves:
+          type: array
+          items:
+            type: object
+            properties:
+              uci:
+                type: string
+              san:
+                type: string
+              averageRating:
+                type: integer
+              white:
+                type: integer
+              draws:
+                type: integer
+              black:
+                type: integer
+              game:
+                oneOf:
+                - $ref: '#/components/schemas/OpeningExplorerLichessGame'
+                - type: 'null'
+              opening:
+                oneOf:
+                - $ref: '#/components/schemas/OpeningExplorerOpening'
+                - type: 'null'
+            required:
+            - uci
+            - san
+            - averageRating
+            - white
+            - draws
+            - black
+            - game
+            - opening
+        topGames:
+          type: array
+          items:
+            allOf:
+            - type: object
+              properties:
+                uci:
+                  type: string
+              required:
+              - uci
+            - $ref: '#/components/schemas/OpeningExplorerLichessGame'
+        recentGames:
+          type: array
+          items:
+            allOf:
+            - type: object
+              properties:
+                uci:
+                  type: string
+              required:
+              - uci
+            - $ref: '#/components/schemas/OpeningExplorerLichessGame'
+        history:
+          type: array
+          items:
+            type: object
+            properties:
+              month:
+                type: string
+              white:
+                type: integer
+              draws:
+                type: integer
+              black:
+                type: integer
+            required:
+            - month
+            - white
+            - draws
+            - black
+      required:
+      - opening
+      - white
+      - draws
+      - black
+      - moves
+      - topGames
+    OpeningExplorerGamePlayer:
+      type: object
+      properties:
+        name:
+          type: string
+        rating:
+          type: integer
+      required:
+      - name
+      - rating
+  examples:
     openingExplorer-masters.json:
       value:
         white: 1927
@@ -1223,6 +1092,29 @@ components:
         opening:
           eco: D10
           name: 'Slav Defense: Exchange Variation'
+    openingExplorer-otbMasterGame.pgn:
+      value: '[Event "Wch Blitz"]
+
+        [Site "Astana"]
+
+        [Date "2012.07.10"]
+
+        [Round "23"]
+
+        [White "Carlsen, Magnus"]
+
+        [Black "Chadaev, Nikolay"]
+
+        [Result "1-0"]
+
+        [WhiteElo "2837"]
+
+        [BlackElo "2580"]
+
+
+        1. e4 e5 2. f4 d5 3. exd5 exf4 4. Nf3 Nf6 5. c4 c6 6. d4 cxd5 7. c5 Nc6 8. Bb5 Be7 9. O-O O-O 10. Bxf4 Bg4 11. Nc3 Ne4 12. Qd3 Bf5 13. Qe3 Bf6 14. Bxc6 bxc6 15. Ne5 Bxe5 16. Bxe5 Bg6 17. Nxe4 Bxe4 18. Qg3 f6 19. Bd6 Re8 20. b4 Bg6 21. a4 a6 22. h4 Qd7 23. h5 Bxh5 24. Rxf6 Qg4 25. Qxg4 Bxg4 26. Rf4 Bh5 27. Raf1 h6 28. Be5 Ra7 29. b5 axb5 30. axb5 cxb5 31. c6 Raa8 32. c7 Kh7 33. Rb1 Be2 34. Rf7 Rg8 35. Re7 Bc4 36. Kh2 Rae8 37. Rd7 Ra8 38. Rb2 Raf8 39. g4 Ra8 40. Rf2 b4 41. Rff7 h5 42. Rxg7+ Rxg7 43. Rxg7+ 1-0
+
+        '
     openingExplorer-lichess.json:
       value:
         white: 5061745
@@ -1423,6 +1315,114 @@ components:
         opening:
           eco: D10
           name: 'Slav Defense: Exchange Variation'
+    openingExplorer-player.json:
+      value:
+        white: 366
+        draws: 23
+        black: 279
+        moves:
+        - uci: c2c4
+          san: c4
+          averageOpponentRating: 1695
+          performance: 1744
+          white: 361
+          draws: 23
+          black: 272
+          game: null
+          opening:
+            eco: D06
+            name: Queen's Gambit
+        - uci: c2c3
+          san: c3
+          averageOpponentRating: 1797
+          performance: 1797
+          white: 2
+          draws: 0
+          black: 2
+          game: null
+          opening: null
+        - uci: e2e4
+          san: e4
+          averageOpponentRating: 1762
+          performance: 1640
+          white: 1
+          draws: 0
+          black: 2
+          game: null
+          opening:
+            eco: D00
+            name: Blackmar-Diemer Gambit
+        - uci: g1f3
+          san: Nf3
+          averageOpponentRating: 1497
+          performance: 1374
+          white: 1
+          draws: 0
+          black: 2
+          game: null
+          opening:
+            eco: D02
+            name: 'Queen''s Pawn Game: Zukertort Variation'
+        - uci: h2h4
+          san: h4
+          averageOpponentRating: 1674
+          performance: 874
+          white: 0
+          draws: 0
+          black: 1
+          game:
+            id: 9vA24xBn
+            winner: black
+            speed: bullet
+            mode: rated
+            black:
+              name: MentalBlood
+              rating: 1674
+            white:
+              name: revoof
+              rating: 1657
+            year: 2020
+            month: 2020-06
+          opening: null
+        - uci: h2h3
+          san: h3
+          averageOpponentRating: 1696
+          performance: 2496
+          white: 1
+          draws: 0
+          black: 0
+          game:
+            id: zyI4GGKv
+            winner: white
+            speed: bullet
+            mode: rated
+            black:
+              name: gocool99
+              rating: 1696
+            white:
+              name: revoof
+              rating: 1702
+            year: 2020
+            month: 2020-07
+          opening: null
+        recentGames:
+        - uci: c2c4
+          id: ycZbWQZO
+          winner: white
+          speed: bullet
+          mode: rated
+          black:
+            name: Winavesh
+            rating: 1700
+          white:
+            name: revoof
+            rating: 1700
+          year: 2024
+          month: 2024-11
+        opening:
+          eco: D00
+          name: Queen's Pawn Game
+        queuePosition: 178
   securitySchemes:
     OAuth2:
       type: oauth2
