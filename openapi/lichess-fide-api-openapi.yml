@@ -113,21 +113,6 @@ paths:
                   $ref: '#/components/examples/fide-searchFidePlayers.json'
 components:
   schemas:
-    FIDEPlayerPhoto:
-      type: object
-      properties:
-        small:
-          description: URL of a small (100x100) thumbnail of the photo
-          type: string
-        medium:
-          description: URL of a medium (500x500) version of the photo
-          type: string
-        credit:
-          description: If set, then you should make it appear next to the photo
-          type: string
-      required:
-      - small
-      - medium
     FIDEPlayerRatings:
       type: object
       description: "Data points are encoded. Each number contains a year, a month, and an ELO rating.\n\n`2015081568` -> `August 2015: 1568`\n\nHere's an example decoding implementation in JS:\n\n```js\n  const decodePoint = point => {\n    const elo = point % 10000;\n    const dateNum = Math.floor(point / 10000);\n    const year = Math.floor(dateNum / 100);\n    const month = dateNum % 100;\n    return [year, month, elo];\n  };\n```\n\nConsecutive months with same ELO are omitted. For a given ELO, only the first and last month are provided.\n"
@@ -148,6 +133,21 @@ components:
       - standard
       - rapid
       - blitz
+    FIDEPlayerPhoto:
+      type: object
+      properties:
+        small:
+          description: URL of a small (100x100) thumbnail of the photo
+          type: string
+        medium:
+          description: URL of a medium (500x500) version of the photo
+          type: string
+        credit:
+          description: If set, then you should make it appear next to the photo
+          type: string
+      required:
+      - small
+      - medium
     FIDEPlayer:
       type: object
       properties:
@@ -200,6 +200,12 @@ components:
       - BOT
       description: only appears if the user is a titled player or a bot user
   examples:
+    fide-getFidePlayer-nullYear.json:
+      value:
+        id: 8700761
+        name: Hampus, Sorensen
+        federation: ZAM
+        year: null
     fide-searchFidePlayers.json:
       value:
       - id: 35009192
@@ -220,21 +226,6 @@ components:
         federation: IND
         year: 2002
         gender: F
-    fide-getFidePlayer.json:
-      value:
-        id: 35009192
-        name: Erigaisi Arjun
-        federation: IND
-        year: 2003
-        title: GM
-        standard: 2751
-        rapid: 2741
-        blitz: 2776
-        gender: M
-        photo:
-          small: https://image.lichess1.org/display?fmt=webp&h=100&op=thumbnail&path=ZtNkAl1_0MHT.webp&w=100&sig=8a2122f91eab6c3f0528bce8ea5854fd561bbcde
-          medium: https://image.lichess1.org/display?fmt=webp&h=500&op=thumbnail&path=ZtNkAl1_0MHT.webp&w=500&sig=f2faf575e19147ee8b1d2b573f1fd2e18fab88e7
-          credit: Brigham Aldrich
     fide-getFidePlayerRatings.json:
       value:
         blitz: []
@@ -264,12 +255,21 @@ components:
         - 2024021720
         - 2024031832
         - 2025121832
-    fide-getFidePlayer-nullYear.json:
+    fide-getFidePlayer.json:
       value:
-        id: 8700761
-        name: Hampus, Sorensen
-        federation: ZAM
-        year: null
+        id: 35009192
+        name: Erigaisi Arjun
+        federation: IND
+        year: 2003
+        title: GM
+        standard: 2751
+        rapid: 2741
+        blitz: 2776
+        gender: M
+        photo:
+          small: https://image.lichess1.org/display?fmt=webp&h=100&op=thumbnail&path=ZtNkAl1_0MHT.webp&w=100&sig=8a2122f91eab6c3f0528bce8ea5854fd561bbcde
+          medium: https://image.lichess1.org/display?fmt=webp&h=500&op=thumbnail&path=ZtNkAl1_0MHT.webp&w=500&sig=f2faf575e19147ee8b1d2b573f1fd2e18fab88e7
+          credit: Brigham Aldrich
   securitySchemes:
     OAuth2:
       type: oauth2

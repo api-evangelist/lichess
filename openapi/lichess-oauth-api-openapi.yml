@@ -287,6 +287,10 @@ paths:
                   $ref: '#/components/examples/oauth-testMultipleOauthTokens.json'
 components:
   examples:
+    oauth-testMultipleOauthTokens-request.txt:
+      value: 'lip_jose,lip_badToken
+
+        '
     oauth-testMultipleOauthTokens.json:
       value:
         lip_jose:
@@ -294,10 +298,6 @@ components:
           scopes: preference:read,preference:write,email:read,challenge:read,challenge:write,challenge:bulk,study:read,study:write,tournament:write,racer:write,puzzle:read,puzzle:write,team:read,team:write,team:lead,follow:read,follow:write,msg:write,board:play,bot:play,engine:read,engine:write,web:mod
           expires: null
         lip_badToken: null
-    oauth-testMultipleOauthTokens-request.txt:
-      value: 'lip_jose,lip_badToken
-
-        '
   schemas:
     OAuthError:
       type: object

@@ -712,134 +712,1414 @@ paths:
                 default:
                   $ref: '#/components/examples/users-getNotesForUser.json'
 components:
-  examples:
-    users-autocompleteUsernames-object.json:
-      value:
-        result:
-        - name: Bobby
-          id: bobby
-    users-autocompleteUsernames-list.json:
-      value:
-      - bobby
-    users-getRealTimeUsersStatus.json:
-      value:
-      - name: Mary
-        flair: people.open-hands-medium-light-skin-tone
-        id: mary
-      - name: Ana
-        title: WCM
-        flair: smileys.downcast-face-with-sweat
-        id: ana
-    users-getUserPublicData.json:
-      value:
-        id: mary
-        username: Mary
+  schemas:
+    GameColor:
+      type: string
+      enum:
+      - white
+      - black
+    Perfs:
+      type: object
+      properties:
+        chess960:
+          $ref: '#/components/schemas/Perf'
+        atomic:
+          $ref: '#/components/schemas/Perf'
+        racingKings:
+          $ref: '#/components/schemas/Perf'
+        ultraBullet:
+          $ref: '#/components/schemas/Perf'
+        blitz:
+          $ref: '#/components/schemas/Perf'
+        kingOfTheHill:
+          $ref: '#/components/schemas/Perf'
+        threeCheck:
+          $ref: '#/components/schemas/Perf'
+        antichess:
+          $ref: '#/components/schemas/Perf'
+        crazyhouse:
+          $ref: '#/components/schemas/Perf'
+        bullet:
+          $ref: '#/components/schemas/Perf'
+        correspondence:
+          $ref: '#/components/schemas/Perf'
+        horde:
+          $ref: '#/components/schemas/Perf'
+        puzzle:
+          $ref: '#/components/schemas/Perf'
+        classical:
+          $ref: '#/components/schemas/Perf'
+        rapid:
+          $ref: '#/components/schemas/Perf'
+        storm:
+          $ref: '#/components/schemas/PuzzleModePerf'
+        racer:
+          $ref: '#/components/schemas/PuzzleModePerf'
+        streak:
+          $ref: '#/components/schemas/PuzzleModePerf'
+    Crosstable:
+      type: object
+      properties:
+        users:
+          additionalProperties:
+            type: number
+        nbGames:
+          type: integer
+      required:
+      - users
+      - nbGames
+      example:
+        users:
+          neio: 201.5
+          thibault: 144.5
+        nbGames: 346
+    UserActivity:
+      type: object
+      properties:
+        interval:
+          type: object
+          properties:
+            start:
+              type: integer
+            end:
+              type: integer
+          required:
+          - start
+          - end
+        games:
+          type: object
+          properties:
+            chess960:
+              $ref: '#/components/schemas/UserActivityScore'
+            atomic:
+              $ref: '#/components/schemas/UserActivityScore'
+            racingKings:
+              $ref: '#/components/schemas/UserActivityScore'
+            ultraBullet:
+              $ref: '#/components/schemas/UserActivityScore'
+            blitz:
+              $ref: '#/components/schemas/UserActivityScore'
+            kingOfTheHill:
+              $ref: '#/components/schemas/UserActivityScore'
+            bullet:
+              $ref: '#/components/schemas/UserActivityScore'
+            correspondence:
+              $ref: '#/components/schemas/UserActivityScore'
+            horde:
+              $ref: '#/components/schemas/UserActivityScore'
+            puzzle:
+              $ref: '#/components/schemas/UserActivityScore'
+            classical:
+              $ref: '#/components/schemas/UserActivityScore'
+            rapid:
+              $ref: '#/components/schemas/UserActivityScore'
+        puzzles:
+          type: object
+          properties:
+            score:
+              $ref: '#/components/schemas/UserActivityScore'
+        storm:
+          $ref: '#/components/schemas/PuzzleModePerf'
+        racer:
+          $ref: '#/components/schemas/PuzzleModePerf'
+        streak:
+          $ref: '#/components/schemas/PuzzleModePerf'
+        tournaments:
+          type: object
+          properties:
+            nb:
+              type: integer
+            best:
+              type: array
+              items:
+                type: object
+                required:
+                - tournament
+                - nbGames
+                - score
+                - rank
+                - rankPercent
+                properties:
+                  tournament:
+                    type: object
+                    required:
+                    - id
+                    - name
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                  nbGames:
+                    type: integer
+                  score:
+                    type: integer
+                  rank:
+                    type: integer
+                  rankPercent:
+                    type: integer
+        practice:
+          type: array
+          items:
+            type: object
+            required:
+            - url
+            - name
+            - nbPositions
+            properties:
+              url:
+                type: string
+              name:
+                type: string
+              nbPositions:
+                type: integer
+        simuls:
+          type: array
+          items:
+            type: string
+        correspondenceMoves:
+          type: object
+          required:
+          - nb
+          - games
+          properties:
+            nb:
+              type: integer
+            games:
+              type: array
+              items:
+                $ref: '#/components/schemas/UserActivityCorrespondenceGame'
+        correspondenceEnds:
+          type: object
+          properties:
+            correspondence:
+              type: object
+              properties:
+                score:
+                  $ref: '#/components/schemas/UserActivityScore'
+                games:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/UserActivityCorrespondenceGame'
+              required:
+              - score
+              - games
+          required:
+          - correspondence
+        follows:
+          type: object
+          properties:
+            in:
+              $ref: '#/components/schemas/UserActivityFollowList'
+            out:
+              $ref: '#/components/schemas/UserActivityFollowList'
+        studies:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+            required:
+            - id
+            - name
+        teams:
+          type: array
+          items:
+            type: object
+            required:
+            - url
+            - name
+            properties:
+              url:
+                type: string
+                format: uri
+              name:
+                type: string
+              flair:
+                $ref: '#/components/schemas/Flair'
+        posts:
+          type: array
+          items:
+            type: object
+            required:
+            - topicUrl
+            - topicName
+            - posts
+            properties:
+              topicUrl:
+                type: string
+              topicName:
+                type: string
+              posts:
+                type: array
+                items:
+                  type: object
+                  required:
+                  - url
+                  - text
+                  properties:
+                    url:
+                      type: string
+                    text:
+                      type: string
+        patron:
+          type: object
+          required:
+          - months
+          properties:
+            months:
+              type: integer
+        stream:
+          type: boolean
+      required:
+      - interval
+    Title:
+      type: string
+      enum:
+      - GM
+      - WGM
+      - IM
+      - WIM
+      - FM
+      - WFM
+      - NM
+      - CM
+      - WCM
+      - WNM
+      - LM
+      - BOT
+      description: only appears if the user is a titled player or a bot user
+    UserNote:
+      type: object
+      properties:
+        from:
+          $ref: '#/components/schemas/LightUser'
+        to:
+          $ref: '#/components/schemas/LightUser'
+        text:
+          type: string
+          example: This is a note
+        date:
+          type: integer
+          format: int64
+          example: 1290415680000
+    RatingHistory:
+      type: array
+      items:
+        $ref: '#/components/schemas/RatingHistoryEntry'
+      example:
+      - name: Bullet
+        points:
+        - - 2011
+          - 0
+          - 8
+          - 1472
+        - - 2011
+          - 0
+          - 9
+          - 1332
+        - - 2011
+          - 8
+          - 12
+          - 1314
+      - name: Blitz
+        points:
+        - - 2011
+          - 7
+          - 29
+          - 1332
+    Flair:
+      type: string
+      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
+    UserStreamer:
+      type: object
+      properties:
+        twitch:
+          type: object
+          properties:
+            channel:
+              type: string
+              format: uri
+              example: https://www.twitch.tv/lichessdotorg
+        youtube:
+          type: object
+          properties:
+            channel:
+              type: string
+              format: uri
+              example: https://www.youtube.com/c/LichessDotOrg
+    PerfType:
+      type: string
+      enum:
+      - ultraBullet
+      - bullet
+      - blitz
+      - rapid
+      - classical
+      - correspondence
+      - chess960
+      - crazyhouse
+      - antichess
+      - atomic
+      - horde
+      - kingOfTheHill
+      - racingKings
+      - threeCheck
+    RatingHistoryEntry:
+      type: object
+      properties:
+        name:
+          type: string
+        points:
+          type: array
+          items:
+            type: array
+            description: '[year, month, day, rating]'
+            items:
+              type: integer
+            minItems: 4
+            maxItems: 4
+      example:
+        name: Bullet
+        points:
+        - - 2011
+          - 0
+          - 8
+          - 1472
+        - - 2011
+          - 0
+          - 9
+          - 1332
+        - - 2011
+          - 8
+          - 12
+          - 1314
+    Patron:
+      type: boolean
+      deprecated: true
+      description: 'Use patronColor value instead to determine if player is a patron.
+
+        '
+    Leaderboard:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/TopUser'
+      required:
+      - users
+    UserActivityCorrespondenceGame:
+      type: object
+      properties:
+        id:
+          type: string
+        color:
+          $ref: '#/components/schemas/GameColor'
+        url:
+          type: string
+          format: uri
+        variant:
+          $ref: '#/components/schemas/VariantKey'
+        speed:
+          type: string
+          const: correspondence
+        perf:
+          type: string
+          const: correspondence
+        rated:
+          type: boolean
+        opponent:
+          oneOf:
+          - type: object
+            required:
+            - aiLevel
+            properties:
+              aiLevel:
+                type: integer
+          - type: object
+            required:
+            - user
+            - rating
+            properties:
+              user:
+                type: string
+              rating:
+                type: integer
+      required:
+      - id
+      - color
+      - url
+      - opponent
+    Profile:
+      type: object
+      properties:
+        flag:
+          type: string
+          example: EC
+        location:
+          type: string
+        bio:
+          type: string
+          example: Free bugs!
+        realName:
+          type: string
+          example: Thibault Duplessis
+        fideRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        uscfRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        ecfRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        cfcRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        rcfRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        dsbRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        links:
+          type: string
+          example: 'github.com/ornicar
+
+            mas.to/@thibault'
+    VariantKey:
+      type: string
+      enum:
+      - standard
+      - chess960
+      - crazyhouse
+      - antichess
+      - atomic
+      - horde
+      - kingOfTheHill
+      - racingKings
+      - threeCheck
+      - fromPosition
+      example: standard
+      default: standard
+    UserActivityScore:
+      type: object
+      properties:
+        win:
+          type: integer
+        loss:
+          type: integer
+        draw:
+          type: integer
+        rp:
+          type: object
+          properties:
+            before:
+              type: integer
+            after:
+              type: integer
+          required:
+          - before
+          - after
+      required:
+      - win
+      - loss
+      - draw
+      - rp
+    Top10s:
+      type: object
+      properties:
+        bullet:
+          $ref: '#/components/schemas/PerfTop10'
+        blitz:
+          $ref: '#/components/schemas/PerfTop10'
+        rapid:
+          $ref: '#/components/schemas/PerfTop10'
+        classical:
+          $ref: '#/components/schemas/PerfTop10'
+        ultraBullet:
+          $ref: '#/components/schemas/PerfTop10'
+        crazyhouse:
+          $ref: '#/components/schemas/PerfTop10'
+        chess960:
+          $ref: '#/components/schemas/PerfTop10'
+        kingOfTheHill:
+          $ref: '#/components/schemas/PerfTop10'
+        threeCheck:
+          $ref: '#/components/schemas/PerfTop10'
+        antichess:
+          $ref: '#/components/schemas/PerfTop10'
+        atomic:
+          $ref: '#/components/schemas/PerfTop10'
+        horde:
+          $ref: '#/components/schemas/PerfTop10'
+        racingKings:
+          $ref: '#/components/schemas/PerfTop10'
+      required:
+      - bullet
+      - blitz
+      - rapid
+      - classical
+      - ultraBullet
+      - crazyhouse
+      - chess960
+      - kingOfTheHill
+      - threeCheck
+      - antichess
+      - atomic
+      - horde
+      - racingKings
+    PuzzleModePerf:
+      type: object
+      properties:
+        runs:
+          type: integer
+        score:
+          type: integer
+      required:
+      - runs
+      - score
+    LightUser:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        flair:
+          $ref: '#/components/schemas/Flair'
+        title:
+          $ref: '#/components/schemas/Title'
+        patron:
+          $ref: '#/components/schemas/Patron'
+        patronColor:
+          $ref: '#/components/schemas/PatronColor'
+      required:
+      - id
+      - name
+    PatronColor:
+      type: integer
+      description: 'Players can choose a color for their Patron wings.
+
+        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
+
+
+        The presence of this field indicates the player is an active Patron.
+
+        '
+      minimum: 1
+      maximum: 10
+    Count:
+      type: object
+      properties:
+        all:
+          type: integer
+        rated:
+          type: integer
+        ai:
+          type: integer
+        draw:
+          type: integer
+        drawH:
+          type: integer
+        loss:
+          type: integer
+        lossH:
+          type: integer
+        win:
+          type: integer
+        winH:
+          type: integer
+        bookmark:
+          type: integer
+        playing:
+          type: integer
+        import:
+          type: integer
+        me:
+          type: integer
+      required:
+      - all
+      - rated
+      - draw
+      - loss
+      - win
+      - bookmark
+      - playing
+      - import
+      - me
+    PerfTop10:
+      type: array
+      minItems: 10
+      maxItems: 10
+      items:
+        $ref: '#/components/schemas/TopUser'
+    TopUser:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
         perfs:
-          bullet:
-            games: 1593
-            rating: 1119
-            rd: 66
-            prog: -27
-          blitz:
-            games: 1560
-            rating: 1145
-            rd: 56
-            prog: -29
-          rapid:
-            games: 358
-            rating: 1124
-            rd: 83
-            prog: -8
-          classical:
-            games: 414
-            rating: 946
-            rd: 110
-            prog: 33
-            prov: true
-          correspondence:
-            games: 692
-            rating: 1083
-            rd: 56
-            prog: 23
-          chess960:
-            games: 600
-            rating: 1104
-            rd: 92
-            prog: 22
-          kingOfTheHill:
-            games: 454
-            rating: 1077
-            rd: 54
-            prog: 43
-          threeCheck:
-            games: 159
-            rating: 1018
-            rd: 108
-            prog: -6
-          antichess:
-            games: 114
-            rating: 937
-            rd: 49
-            prog: -51
-          atomic:
-            games: 1261
-            rating: 1073
-            rd: 45
-            prog: -6
-          horde:
-            games: 83
-            rating: 1115
-            rd: 45
-            prog: -28
-          crazyhouse:
-            games: 1556
-            rating: 965
-            rd: 49
-            prog: 2
-          puzzle:
-            games: 60
-            rating: 1033
-            rd: 45
-            prog: -36
-        flair: people.open-hands-medium-light-skin-tone
-        createdAt: 1775221588473
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              rating:
+                type: integer
+              progress:
+                type: integer
+            required:
+            - rating
+            - progress
+        title:
+          $ref: '#/components/schemas/Title'
+        patron:
+          $ref: '#/components/schemas/Patron'
+        patronColor:
+          $ref: '#/components/schemas/PatronColor'
+        online:
+          type: boolean
+      required:
+      - id
+      - username
+    PlayTime:
+      type: object
+      properties:
+        total:
+          type: integer
+        tv:
+          type: integer
+        human:
+          type: integer
+      required:
+      - total
+      - tv
+    LightUserOnline:
+      allOf:
+      - $ref: '#/components/schemas/LightUser'
+      - properties:
+          online:
+            type: boolean
+    PerfStat:
+      type: object
+      properties:
+        user:
+          type: object
+          properties:
+            name:
+              type: string
+          required:
+          - name
+        perf:
+          type: object
+          properties:
+            glicko:
+              type: object
+              properties:
+                rating:
+                  type: number
+                deviation:
+                  type: number
+                provisional:
+                  type: boolean
+            nb:
+              type: integer
+            progress:
+              type: integer
+        rank:
+          type:
+          - integer
+          - 'null'
+        percentile:
+          type: number
+        stat:
+          type: object
+          properties:
+            highest:
+              type: object
+              properties:
+                int:
+                  type: integer
+                at:
+                  type: string
+                  format: date-time
+                gameId:
+                  type: string
+              required:
+              - int
+              - at
+              - gameId
+            lowest:
+              type: object
+              properties:
+                int:
+                  type: integer
+                at:
+                  type: string
+                  format: date-time
+                gameId:
+                  type: string
+              required:
+              - int
+              - at
+              - gameId
+            bestWins:
+              type: object
+              properties:
+                results:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      opRating:
+                        type: integer
+                      opId:
+                        $ref: '#/components/schemas/LightUser'
+                      at:
+                        type: string
+                        format: date-time
+                      gameId:
+                        type: string
+                    required:
+                    - opRating
+                    - opId
+                    - at
+                    - gameId
+              required:
+              - results
+            worstLosses:
+              type: object
+              properties:
+                results:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      opRating:
+                        type: integer
+                      opId:
+                        $ref: '#/components/schemas/LightUser'
+                      at:
+                        type: string
+                        format: date-time
+                      gameId:
+                        type: string
+                    required:
+                    - opRating
+                    - opId
+                    - at
+                    - gameId
+              required:
+              - results
+            count:
+              type: object
+              properties:
+                all:
+                  type: integer
+                rated:
+                  type: integer
+                win:
+                  type: integer
+                loss:
+                  type: integer
+                draw:
+                  type: integer
+                tour:
+                  type: integer
+                berserk:
+                  type: integer
+                opAvg:
+                  type: number
+                seconds:
+                  type: integer
+                disconnects:
+                  type: integer
+              required:
+              - all
+              - rated
+              - win
+              - loss
+              - draw
+              - tour
+              - berserk
+              - opAvg
+              - seconds
+              - disconnects
+            resultStreak:
+              type: object
+              properties:
+                win:
+                  type: object
+                  properties:
+                    cur:
+                      type: object
+                      properties:
+                        v:
+                          type: integer
+                        from:
+                          type: object
+                          properties:
+                            at:
+                              type: string
+                              format: date-time
+                            gameId:
+                              type: string
+                          required:
+                          - at
+                          - gameId
+                        to:
+                          type: object
+                          properties:
+                            at:
+                              type: string
+                              format: date-time
+                            gameId:
+                              type: string
+                          required:
+                          - at
+                          - gameId
+                      required:
+                      - v
+                    max:
+                      type: object
+                      properties:
+                        v:
+                          type: integer
+                        from:
+                          type: object
+                          properties:
+                            at:
+                              type: string
+                              format: date-time
+                            gameId:
+                              type: string
+                          required:
+                          - at
+                          - gameId
+                        to:
+                          type: object
+                          properties:
+                            at:
+                              type: string
+                              format: date-time
+                            gameId:
+                              type: string
+                          required:
+                          - at
+                          - gameId
+                      required:
+                      - v
+                  required:
+                  - cur
+                  - max
+                loss:
+                  type: object
+                  properties:
+                    cur:
+                      type: object
+                      properties:
+                        v:
+                          type: integer
+                        from:
+                          type: object
+                          properties:
+                            at:
+                              type: string
+                              format: date-time
+                            gameId:
+                              type: string
+                          required:
+                          - at
+                          - gameId
+                        to:
+                          type: object
+                          properties:
+                            at:
+                              type: string
+                              format: date-time
+                            gameId:
+                              type: string
+                          required:
+                          - at
+                          - gameId
+                      required:
+                      - v
+                    max:
+                      type: object
+                      properties:
+                        v:
+                          type: integer
+                        from:
+                          type: object
+                          properties:
+                            at:
+                              type: string
+                            gameId:
+                              type: string
+                          required:
+                          - at
+                          - gameId
+                        to:
+                          type: object
+                          properties:
+                            at:
+                              type: string
+                            gameId:
+                              type: string
+                          required:
+                          - at
+                          - gameId
+                      required:
+                      - v
+                  required:
+                  - cur
+                  - max
+              required:
+              - win
+              - loss
+            playStreak:
+              type: object
+              properties:
+                nb:
+                  type: object
+                  properties:
+                    cur:
+                      type: object
+                      properties:
+                        v:
+                          type: integer
+                      required:
+                      - v
+                    max:
+                      type: object
+                      properties:
+                        v:
+                          type: integer
+                        from:
+                          type: object
+                          properties:
+                            at:
+                              type: string
+                              format: date-time
+                            gameId:
+                              type: string
+                          required:
+                          - at
+                          - gameId
+                        to:
+                          type: object
+                          properties:
+                            at:
+                              type: string
+                              format: date-time
+                            gameId:
+                              type: string
+                          required:
+                          - at
+                          - gameId
+                      required:
+                      - v
+                  required:
+                  - cur
+                  - max
+                time:
+                  type: object
+                  properties:
+                    cur:
+                      type: object
+                      properties:
+                        v:
+                          type: integer
+                      required:
+                      - v
+                    max:
+                      type: object
+                      properties:
+                        v:
+                          type: integer
+                        from:
+                          type: object
+                          properties:
+                            at:
+                              type: string
+                              format: date-time
+                            gameId:
+                              type: string
+                          required:
+                          - at
+                          - gameId
+                        to:
+                          type: object
+                          properties:
+                            at:
+                              type: string
+                              format: date-time
+                            gameId:
+                              type: string
+                          required:
+                          - at
+                          - gameId
+                      required:
+                      - v
+                  required:
+                  - cur
+                  - max
+                lastDate:
+                  type: string
+                  format: date-time
+              required:
+              - nb
+              - time
+          required:
+          - bestWins
+          - worstLosses
+          - count
+          - resultStreak
+          - playStreak
+      required:
+      - user
+      - perf
+      - rank
+      - percentile
+      - stat
+    Ok:
+      properties:
+        ok:
+          type: boolean
+      required:
+      - ok
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        perfs:
+          $ref: '#/components/schemas/Perfs'
+        title:
+          $ref: '#/components/schemas/Title'
+        flair:
+          $ref: '#/components/schemas/Flair'
+        createdAt:
+          type: integer
+          format: int64
+        disabled:
+          type: boolean
+          description: only appears if a user's account is closed
+        tosViolation:
+          type: boolean
+          description: only appears if a user's account is marked for the violation of [Lichess TOS](https://lichess.org/terms-of-service)
         profile:
-          flag: GW
-          location: Mary City
-          bio: A normal working day for modern industry only dates from the Factory Act of 1833, which included cotton, wool, flax, and silk factories. Nothing is more characteristic of the spirit of capital than the history of the English Factory Acts from 1833 to 1864.
-          fideRating: 1400
-          uscfRating: 1035
-          ecfRating: 1084
-          rcfRating: 910
-          cfcRating: 992
-          dsbRating: 1129
-          links: 'https://en.wikipedia.org/wiki/Srinivasa_Ramanujan
-
-            https://en.wikipedia.org/wiki/Charles_Darwin
-
-            https://lichess.org
-
-            https://reddit.com/r/chess
-
-            https://en.wikipedia.org/wiki/Noam_Chomsky'
-        seenAt: 1776880668894
+          $ref: '#/components/schemas/Profile'
+        seenAt:
+          type: integer
+          format: int64
         playTime:
-          total: 15514
-          tv: 0
-        url: https://lichess.org/@/Mary
-        count:
-          all: 9795
-          rated: 7836
-          draw: 904
-          loss: 4408
-          win: 4483
-          bookmark: 0
-          playing: 0
-          import: 0
-          me: 1
-        followable: true
-        following: true
-        blocking: false
+          $ref: '#/components/schemas/PlayTime'
+        patron:
+          $ref: '#/components/schemas/Patron'
+        patronColor:
+          $ref: '#/components/schemas/PatronColor'
+        verified:
+          type: boolean
+      required:
+      - id
+      - username
+    UserExtended:
+      allOf:
+      - $ref: '#/components/schemas/User'
+      - type: object
+        properties:
+          url:
+            type: string
+            format: uri
+          playing:
+            type: string
+            format: uri
+          count:
+            $ref: '#/components/schemas/Count'
+          streaming:
+            type: boolean
+          streamer:
+            $ref: '#/components/schemas/UserStreamer'
+          followable:
+            type: boolean
+            description: only appears if the request is [authenticated with OAuth2](#description/authentication)
+          following:
+            type: boolean
+            description: only appears if the request is [authenticated with OAuth2](#description/authentication)
+          blocking:
+            type: boolean
+            description: only appears if the request is [authenticated with OAuth2](#description/authentication)
+          fideId:
+            type: number
+        required:
+        - url
+    UserActivityFollowList:
+      type: object
+      properties:
+        ids:
+          type: array
+          items:
+            type: string
+        nb:
+          type: integer
+      required:
+      - ids
+    Perf:
+      type: object
+      properties:
+        games:
+          type: integer
+        rating:
+          type: integer
+        rd:
+          type: integer
+          description: rating deviation
+        prog:
+          type: integer
+        prov:
+          type: boolean
+          description: only appears if a user's perf rating are [provisional](https://lichess.org/faq#provisional)
+        rank:
+          type: integer
+          description: global lichess ranking, only appears for recently active players
+      required:
+      - games
+      - rating
+      - rd
+      - prog
+  examples:
+    users-getUserActivity.json:
+      value:
+      - interval:
+          start: 1778803200000
+          end: 1778889600000
+        follows:
+          in:
+            ids:
+            - chrisc5mb
+      - interval:
+          start: 1778716800000
+          end: 1778803200000
+        puzzles:
+          score:
+            win: 1
+            loss: 0
+            draw: 0
+            rp:
+              before: 1999
+              after: 2009
+        follows:
+          in:
+            ids:
+            - lisanthm
+            - pureaperionsq
+            - arda_kslc21
+            - teso22
+            - ww0ut
+            - vidhathathreya
+            - shirakuchess
+      - interval:
+          start: 1778630400000
+          end: 1778716800000
+        games:
+          blitz:
+            win: 0
+            loss: 2
+            draw: 0
+            rp:
+              before: 1805
+              after: 1791
+        puzzles:
+          score:
+            win: 1
+            loss: 0
+            draw: 0
+            rp:
+              before: 1986
+              after: 1999
+        follows:
+          in:
+            ids:
+            - sathvik_nannuri
+            - raphael_171123
+            - l3azwa
+            - orion_banerjee
+            - leftfreezingdoor
+            - shapovalov1
+            - tolbrandir
+            - jhansirani
+            - mailtoadvik
+            - battledudes606dbdb
+            - hdjjkf
+            - advit_bhat
+            - j_harshiv
+            - bobybot
+            - jackhlay
+            nb: 18
+      - interval:
+          start: 1778544000000
+          end: 1778630400000
+        puzzles:
+          score:
+            win: 1
+            loss: 0
+            draw: 0
+            rp:
+              before: 1978
+              after: 1986
+        follows:
+          in:
+            ids:
+            - xinyilovechess
+            - kushnorris
+            - enrigo93
+            - zanycolourfulwindow
+            - pet_your_enemy
+            - advikrnair
+            - rom1_chess
+            - gleb1234567899
+            - masterr_67
+            - gknuchamp
+            - mr_checkmate007
+            - karpov005
+            - pragyanreddy
+        stream: true
+      - interval:
+          start: 1778457600000
+          end: 1778544000000
+        games:
+          blitz:
+            win: 1
+            loss: 0
+            draw: 0
+            rp:
+              before: 1799
+              after: 1805
+        follows:
+          in:
+            ids:
+            - kolya228322
+            - uluthrek
+            - sixtyseven_67
+            - jilbo1234
+            - onemorekiwi
+            - laskeristhebomb
+            - vihariuppalapati
+            - alexhuerta
+            - fjcruiser
+            - thenameisstan
+            - bhoomin
+            - zeus555
+            - ramrachit_2204
+            - kishalay_m
+            - dayronf1
+      - interval:
+          start: 1778371200000
+          end: 1778457600000
+        puzzles:
+          score:
+            win: 13
+            loss: 2
+            draw: 0
+            rp:
+              before: 1886
+              after: 1978
+        follows:
+          in:
+            ids:
+            - coolcoldice3
+            - johndoe5743
+            - kemalbaitemir
+            - emmanuelrv1
+            - qlibet
+            - jay63
+            - rchess14102013
+            - r-a1h8h1a8
+            - tidahy
+            - tikhon_loud
+            - danielgg14
+            - chessking20122026
+            - h4zuop
+            - schiffskoch
+            - nilusha1984
+      - interval:
+          start: 1778284800000
+          end: 1778371200000
+        puzzles:
+          score:
+            win: 1
+            loss: 0
+            draw: 0
+            rp:
+              before: 1872
+              after: 1886
+        follows:
+          in:
+            ids:
+            - h4zuop
+            - thebeguiler
+            - rawlyfearful
+            - brilliant-siesta
+            - r01-f2f7
+            - iamsubhajitroy
+            - akshayksingh
+            - nel_2000
+            - feshom
+            - remotecon_troller
+            - yonilavo
+            - basitbc02
+    users-getNotesForUser.json:
+      value:
+      - from:
+          name: Bobby
+          id: bobby
+        to:
+          name: Mary
+          flair: people.open-hands-medium-light-skin-tone
+          id: mary
+        text: this is a private note
+        date: 1778812629766
+    users-getOneLeaderboard.json:
+      value:
+        users:
+        - id: ana
+          username: Ana
+          perfs:
+            blitz:
+              rating: 2512
+              progress: 0
+          title: WCM
+        - id: elena
+          username: Elena
+          perfs:
+            blitz:
+              rating: 2389
+              progress: 0
+          title: WNM
+          patron: true
+          patronColor: 1
+        - id: lola
+          username: Lola
+          perfs:
+            blitz:
+              rating: 2366
+              progress: 0
+          title: CM
     users-getUsersById.json:
       value:
       - id: thibault
@@ -1045,1059 +2325,6 @@ components:
           total: 562691901
           tv: 3859273
           human: 410999173
-    users-getCrosstable.json:
-      value:
-        users:
-          drnykterstein: 753.5
-          rebeccaharris: 459.5
-        nbGames: 1213
-    users-getRatingHistoryOfAUser.json:
-      value:
-      - name: UltraBullet
-        points: []
-      - name: Bullet
-        points:
-        - - 2026
-          - 3
-          - 3
-          - 1193
-        - - 2026
-          - 3
-          - 6
-          - 1195
-        - - 2026
-          - 3
-          - 9
-          - 1262
-        - - 2026
-          - 3
-          - 12
-          - 1150
-        - - 2026
-          - 3
-          - 15
-          - 1213
-        - - 2026
-          - 3
-          - 18
-          - 1120
-        - - 2026
-          - 3
-          - 21
-          - 1220
-        - - 2026
-          - 3
-          - 24
-          - 1115
-        - - 2026
-          - 3
-          - 27
-          - 1076
-        - - 2026
-          - 3
-          - 30
-          - 1219
-        - - 2026
-          - 4
-          - 3
-          - 1231
-        - - 2026
-          - 4
-          - 6
-          - 1138
-        - - 2026
-          - 4
-          - 9
-          - 1134
-        - - 2026
-          - 4
-          - 12
-          - 1220
-      - name: Blitz
-        points:
-        - - 2026
-          - 3
-          - 3
-          - 697
-        - - 2026
-          - 3
-          - 5
-          - 674
-        - - 2026
-          - 3
-          - 7
-          - 671
-        - - 2026
-          - 3
-          - 9
-          - 717
-        - - 2026
-          - 3
-          - 11
-          - 838
-        - - 2026
-          - 3
-          - 13
-          - 807
-        - - 2026
-          - 3
-          - 15
-          - 862
-        - - 2026
-          - 3
-          - 17
-          - 919
-        - - 2026
-          - 3
-          - 19
-          - 900
-        - - 2026
-          - 3
-          - 21
-          - 900
-        - - 2026
-          - 3
-          - 23
-          - 1005
-        - - 2026
-          - 3
-          - 25
-          - 992
-        - - 2026
-          - 3
-          - 27
-          - 870
-        - - 2026
-          - 3
-          - 29
-          - 933
-        - - 2026
-          - 4
-          - 1
-          - 1027
-        - - 2026
-          - 4
-          - 3
-          - 983
-        - - 2026
-          - 4
-          - 5
-          - 1119
-        - - 2026
-          - 4
-          - 7
-          - 1023
-        - - 2026
-          - 4
-          - 9
-          - 1137
-        - - 2026
-          - 4
-          - 11
-          - 1019
-        - - 2026
-          - 4
-          - 13
-          - 1098
-      - name: Rapid
-        points:
-        - - 2026
-          - 3
-          - 3
-          - 737
-        - - 2026
-          - 3
-          - 9
-          - 750
-        - - 2026
-          - 3
-          - 15
-          - 784
-        - - 2026
-          - 3
-          - 21
-          - 859
-        - - 2026
-          - 3
-          - 27
-          - 852
-        - - 2026
-          - 4
-          - 3
-          - 959
-        - - 2026
-          - 4
-          - 9
-          - 1000
-      - name: Classical
-        points:
-        - - 2026
-          - 3
-          - 3
-          - 988
-        - - 2026
-          - 3
-          - 10
-          - 1069
-        - - 2026
-          - 3
-          - 17
-          - 963
-        - - 2026
-          - 3
-          - 24
-          - 946
-        - - 2026
-          - 4
-          - 1
-          - 907
-        - - 2026
-          - 4
-          - 8
-          - 864
-      - name: Correspondence
-        points:
-        - - 2026
-          - 3
-          - 3
-          - 1474
-        - - 2026
-          - 3
-          - 10
-          - 1270
-        - - 2026
-          - 3
-          - 17
-          - 1291
-        - - 2026
-          - 3
-          - 24
-          - 1307
-        - - 2026
-          - 4
-          - 1
-          - 1229
-        - - 2026
-          - 4
-          - 8
-          - 1058
-      - name: Crazyhouse
-        points:
-        - - 2026
-          - 3
-          - 3
-          - 1158
-        - - 2026
-          - 3
-          - 6
-          - 1196
-        - - 2026
-          - 3
-          - 9
-          - 1120
-        - - 2026
-          - 3
-          - 12
-          - 1170
-        - - 2026
-          - 3
-          - 15
-          - 1106
-        - - 2026
-          - 3
-          - 18
-          - 1045
-        - - 2026
-          - 3
-          - 21
-          - 1156
-        - - 2026
-          - 3
-          - 24
-          - 1066
-        - - 2026
-          - 3
-          - 27
-          - 1061
-        - - 2026
-          - 3
-          - 30
-          - 1056
-        - - 2026
-          - 4
-          - 3
-          - 1074
-        - - 2026
-          - 4
-          - 6
-          - 1014
-        - - 2026
-          - 4
-          - 9
-          - 931
-        - - 2026
-          - 4
-          - 12
-          - 965
-      - name: Chess960
-        points:
-        - - 2026
-          - 3
-          - 3
-          - 1035
-        - - 2026
-          - 3
-          - 8
-          - 957
-        - - 2026
-          - 3
-          - 13
-          - 1084
-        - - 2026
-          - 3
-          - 18
-          - 1043
-        - - 2026
-          - 3
-          - 23
-          - 1055
-        - - 2026
-          - 3
-          - 28
-          - 1118
-        - - 2026
-          - 4
-          - 3
-          - 1139
-        - - 2026
-          - 4
-          - 8
-          - 1146
-        - - 2026
-          - 4
-          - 13
-          - 1194
-      - name: King of the Hill
-        points:
-        - - 2026
-          - 3
-          - 3
-          - 1346
-        - - 2026
-          - 3
-          - 5
-          - 1405
-        - - 2026
-          - 3
-          - 7
-          - 1377
-        - - 2026
-          - 3
-          - 9
-          - 1259
-        - - 2026
-          - 3
-          - 11
-          - 1290
-        - - 2026
-          - 3
-          - 13
-          - 1269
-        - - 2026
-          - 3
-          - 15
-          - 1227
-        - - 2026
-          - 3
-          - 17
-          - 1338
-        - - 2026
-          - 3
-          - 19
-          - 1321
-        - - 2026
-          - 3
-          - 21
-          - 1155
-        - - 2026
-          - 3
-          - 23
-          - 1220
-        - - 2026
-          - 3
-          - 25
-          - 1132
-        - - 2026
-          - 3
-          - 27
-          - 1143
-        - - 2026
-          - 3
-          - 29
-          - 1099
-        - - 2026
-          - 4
-          - 1
-          - 1143
-        - - 2026
-          - 4
-          - 3
-          - 1211
-        - - 2026
-          - 4
-          - 5
-          - 1182
-        - - 2026
-          - 4
-          - 7
-          - 1219
-        - - 2026
-          - 4
-          - 9
-          - 1171
-        - - 2026
-          - 4
-          - 11
-          - 1105
-        - - 2026
-          - 4
-          - 13
-          - 1162
-      - name: Three-Check
-        points:
-        - - 2026
-          - 3
-          - 3
-          - 1575
-        - - 2026
-          - 3
-          - 7
-          - 1371
-        - - 2026
-          - 3
-          - 11
-          - 1388
-        - - 2026
-          - 3
-          - 15
-          - 1379
-        - - 2026
-          - 3
-          - 19
-          - 1245
-        - - 2026
-          - 3
-          - 23
-          - 1358
-        - - 2026
-          - 3
-          - 27
-          - 1234
-        - - 2026
-          - 4
-          - 1
-          - 1113
-        - - 2026
-          - 4
-          - 5
-          - 1161
-        - - 2026
-          - 4
-          - 9
-          - 1062
-        - - 2026
-          - 4
-          - 13
-          - 1042
-      - name: Antichess
-        points:
-        - - 2026
-          - 3
-          - 3
-          - 1126
-        - - 2026
-          - 3
-          - 10
-          - 1200
-        - - 2026
-          - 3
-          - 17
-          - 1147
-        - - 2026
-          - 3
-          - 24
-          - 1030
-        - - 2026
-          - 4
-          - 1
-          - 1074
-        - - 2026
-          - 4
-          - 8
-          - 1065
-      - name: Atomic
-        points:
-        - - 2026
-          - 3
-          - 3
-          - 1576
-        - - 2026
-          - 3
-          - 5
-          - 1399
-        - - 2026
-          - 3
-          - 7
-          - 1359
-        - - 2026
-          - 3
-          - 9
-          - 1416
-        - - 2026
-          - 3
-          - 11
-          - 1364
-        - - 2026
-          - 3
-          - 13
-          - 1405
-        - - 2026
-          - 3
-          - 15
-          - 1364
-        - - 2026
-          - 3
-          - 17
-          - 1343
-        - - 2026
-          - 3
-          - 19
-          - 1365
-        - - 2026
-          - 3
-          - 21
-          - 1385
-        - - 2026
-          - 3
-          - 23
-          - 1236
-        - - 2026
-          - 3
-          - 25
-          - 1280
-        - - 2026
-          - 3
-          - 27
-          - 1156
-        - - 2026
-          - 3
-          - 29
-          - 1191
-        - - 2026
-          - 4
-          - 1
-          - 1124
-        - - 2026
-          - 4
-          - 3
-          - 1122
-        - - 2026
-          - 4
-          - 5
-          - 1163
-        - - 2026
-          - 4
-          - 7
-          - 1131
-        - - 2026
-          - 4
-          - 9
-          - 1053
-        - - 2026
-          - 4
-          - 11
-          - 1169
-        - - 2026
-          - 4
-          - 13
-          - 1140
-      - name: Horde
-        points:
-        - - 2026
-          - 3
-          - 3
-          - 701
-        - - 2026
-          - 3
-          - 6
-          - 853
-        - - 2026
-          - 3
-          - 9
-          - 919
-        - - 2026
-          - 3
-          - 12
-          - 844
-        - - 2026
-          - 3
-          - 15
-          - 826
-        - - 2026
-          - 3
-          - 18
-          - 959
-        - - 2026
-          - 3
-          - 21
-          - 851
-        - - 2026
-          - 3
-          - 24
-          - 859
-        - - 2026
-          - 3
-          - 27
-          - 1012
-        - - 2026
-          - 3
-          - 30
-          - 1043
-        - - 2026
-          - 4
-          - 3
-          - 1108
-        - - 2026
-          - 4
-          - 6
-          - 1138
-        - - 2026
-          - 4
-          - 9
-          - 986
-        - - 2026
-          - 4
-          - 12
-          - 1121
-      - name: Racing Kings
-        points: []
-      - name: Puzzles
-        points:
-        - - 2026
-          - 3
-          - 3
-          - 1123
-        - - 2026
-          - 3
-          - 7
-          - 1094
-        - - 2026
-          - 3
-          - 11
-          - 1268
-        - - 2026
-          - 3
-          - 15
-          - 1223
-        - - 2026
-          - 3
-          - 19
-          - 1232
-        - - 2026
-          - 3
-          - 23
-          - 1085
-        - - 2026
-          - 3
-          - 27
-          - 1021
-        - - 2026
-          - 4
-          - 1
-          - 1146
-        - - 2026
-          - 4
-          - 5
-          - 1076
-        - - 2026
-          - 4
-          - 9
-          - 965
-        - - 2026
-          - 4
-          - 13
-          - 1108
-    users-addNoteForUser.json:
-      value:
-        ok: true
-    users-getNotesForUser.json:
-      value:
-      - from:
-          name: Bobby
-          id: bobby
-        to:
-          name: Mary
-          flair: people.open-hands-medium-light-skin-tone
-          id: mary
-        text: this is a private note
-        date: 1778812629766
-    users-getUserActivity.json:
-      value:
-      - interval:
-          start: 1778803200000
-          end: 1778889600000
-        follows:
-          in:
-            ids:
-            - chrisc5mb
-      - interval:
-          start: 1778716800000
-          end: 1778803200000
-        puzzles:
-          score:
-            win: 1
-            loss: 0
-            draw: 0
-            rp:
-              before: 1999
-              after: 2009
-        follows:
-          in:
-            ids:
-            - lisanthm
-            - pureaperionsq
-            - arda_kslc21
-            - teso22
-            - ww0ut
-            - vidhathathreya
-            - shirakuchess
-      - interval:
-          start: 1778630400000
-          end: 1778716800000
-        games:
-          blitz:
-            win: 0
-            loss: 2
-            draw: 0
-            rp:
-              before: 1805
-              after: 1791
-        puzzles:
-          score:
-            win: 1
-            loss: 0
-            draw: 0
-            rp:
-              before: 1986
-              after: 1999
-        follows:
-          in:
-            ids:
-            - sathvik_nannuri
-            - raphael_171123
-            - l3azwa
-            - orion_banerjee
-            - leftfreezingdoor
-            - shapovalov1
-            - tolbrandir
-            - jhansirani
-            - mailtoadvik
-            - battledudes606dbdb
-            - hdjjkf
-            - advit_bhat
-            - j_harshiv
-            - bobybot
-            - jackhlay
-            nb: 18
-      - interval:
-          start: 1778544000000
-          end: 1778630400000
-        puzzles:
-          score:
-            win: 1
-            loss: 0
-            draw: 0
-            rp:
-              before: 1978
-              after: 1986
-        follows:
-          in:
-            ids:
-            - xinyilovechess
-            - kushnorris
-            - enrigo93
-            - zanycolourfulwindow
-            - pet_your_enemy
-            - advikrnair
-            - rom1_chess
-            - gleb1234567899
-            - masterr_67
-            - gknuchamp
-            - mr_checkmate007
-            - karpov005
-            - pragyanreddy
-        stream: true
-      - interval:
-          start: 1778457600000
-          end: 1778544000000
-        games:
-          blitz:
-            win: 1
-            loss: 0
-            draw: 0
-            rp:
-              before: 1799
-              after: 1805
-        follows:
-          in:
-            ids:
-            - kolya228322
-            - uluthrek
-            - sixtyseven_67
-            - jilbo1234
-            - onemorekiwi
-            - laskeristhebomb
-            - vihariuppalapati
-            - alexhuerta
-            - fjcruiser
-            - thenameisstan
-            - bhoomin
-            - zeus555
-            - ramrachit_2204
-            - kishalay_m
-            - dayronf1
-      - interval:
-          start: 1778371200000
-          end: 1778457600000
-        puzzles:
-          score:
-            win: 13
-            loss: 2
-            draw: 0
-            rp:
-              before: 1886
-              after: 1978
-        follows:
-          in:
-            ids:
-            - coolcoldice3
-            - johndoe5743
-            - kemalbaitemir
-            - emmanuelrv1
-            - qlibet
-            - jay63
-            - rchess14102013
-            - r-a1h8h1a8
-            - tidahy
-            - tikhon_loud
-            - danielgg14
-            - chessking20122026
-            - h4zuop
-            - schiffskoch
-            - nilusha1984
-      - interval:
-          start: 1778284800000
-          end: 1778371200000
-        puzzles:
-          score:
-            win: 1
-            loss: 0
-            draw: 0
-            rp:
-              before: 1872
-              after: 1886
-        follows:
-          in:
-            ids:
-            - h4zuop
-            - thebeguiler
-            - rawlyfearful
-            - brilliant-siesta
-            - r01-f2f7
-            - iamsubhajitroy
-            - akshayksingh
-            - nel_2000
-            - feshom
-            - remotecon_troller
-            - yonilavo
-            - basitbc02
-    users-getPerformanceStatisticsOfAUser.json:
-      value:
-        user:
-          name: thibault
-        perf:
-          glicko:
-            rating: 1791.48
-            deviation: 47.84
-          nb: 11614
-          progress: -1
-        rank: 147171
-        percentile: 77.6
-        stat:
-          highest:
-            int: 1970
-            at: '2022-02-23T13:44:54.633Z'
-            gameId: Blpjmhnf
-          lowest:
-            int: 1385
-            at: '2015-08-05T10:13:41.326Z'
-            gameId: tgbRykg2
-          bestWins:
-            results:
-            - opRating: 2239
-              opId:
-                name: aqua21
-                flair: objects.postal-horn
-                id: aqua21
-              at: '2020-02-15T19:13:05.329Z'
-              gameId: UxNJmMXz
-            - opRating: 2163
-              opId:
-                name: Staffan67
-                id: staffan67
-              at: '2022-12-28T10:54:21.597Z'
-              gameId: 9IMlwEv1
-            - opRating: 2120
-              opId:
-                name: Heissenberger
-                id: heissenberger
-              at: '2021-10-25T08:26:27.155Z'
-              gameId: 2buPRuV8
-            - opRating: 2051
-              opId:
-                name: Stas235
-                id: stas235
-              at: '2021-11-06T18:55:53.728Z'
-              gameId: VLxCVzDY
-            - opRating: 2040
-              opId:
-                name: Harryz-77
-                id: harryz-77
-              at: '2021-11-03T17:39:40.181Z'
-              gameId: eCgiYDS7
-          worstLosses:
-            results:
-            - opRating: 995
-              opId:
-                name: dahupetitjoueur
-                id: dahupetitjoueur
-              at: '2017-04-12T14:31:58.002Z'
-              gameId: 7zyddy2c
-            - opRating: 1121
-              opId:
-                name: Tinkugupta1011
-                id: tinkugupta1011
-              at: '2022-10-22T03:36:35.447Z'
-              gameId: CCyyGKmD
-            - opRating: 1146
-              opId:
-                name: chemkhihabib
-                id: chemkhihabib
-              at: '2016-06-01T09:31:09.694Z'
-              gameId: XatMm3RO
-            - opRating: 1166
-              opId:
-                name: Bottios
-                title: BOT
-                id: bottios
-              at: '2018-12-14T09:22:52.633Z'
-              gameId: 3fke4MHX
-            - opRating: 1182
-              opId:
-                name: skanerterry
-                id: skanerterry
-              at: '2016-06-09T15:32:10.474Z'
-              gameId: n4ViqGlp
-          count:
-            all: 12101
-            rated: 11492
-            win: 5726
-            loss: 5802
-            draw: 573
-            tour: 1601
-            berserk: 52
-            opAvg: 1706.62
-            seconds: 3767400
-            disconnects: 9
-          resultStreak:
-            win:
-              cur:
-                v: 0
-              max:
-                v: 11
-                from:
-                  at: '2018-10-19T10:02:05.144Z'
-                  gameId: ycmyqK6e
-                to:
-                  at: '2018-10-19T12:25:31.868Z'
-                  gameId: 3PwQXIBN
-            loss:
-              cur:
-                v: 2
-                from:
-                  at: '2026-05-13T08:23:38.653Z'
-                  gameId: nrO6iTZ3
-                to:
-                  at: '2026-05-13T08:32:58.61Z'
-                  gameId: fSJcMeCL
-              max:
-                v: 19
-                from:
-                  at: '2018-03-09T23:54:54.771Z'
-                  gameId: iAJe1M8f
-                to:
-                  at: '2018-03-16T20:52:03.611Z'
-                  gameId: 7CZ1SEF5
-          playStreak:
-            nb:
-              cur:
-                v: 0
-              max:
-                v: 115
-                from:
-                  at: '2024-10-18T11:32:12.142Z'
-                  gameId: l819pRNp
-                to:
-                  at: '2024-10-18T20:54:30.256Z'
-                  gameId: 1HeDeGbe
-            time:
-              cur:
-                v: 0
-              max:
-                v: 23231
-                from:
-                  at: '2024-10-18T11:32:12.142Z'
-                  gameId: l819pRNp
-                to:
-                  at: '2024-10-18T20:54:30.256Z'
-                  gameId: 1HeDeGbe
-            lastDate: '2026-05-13T08:32:58.61Z'
-    users-getOneLeaderboard.json:
-      value:
-        users:
-        - id: ana
-          username: Ana
-          perfs:
-            blitz:
-              rating: 2512
-              progress: 0
-          title: WCM
-        - id: elena
-          username: Elena
-          perfs:
-            blitz:
-              rating: 2389
-              progress: 0
-          title: WNM
-          patron: true
-          patronColor: 1
-        - id: lola
-          username: Lola
-          perfs:
-            blitz:
-              rating: 2366
-              progress: 0
-          title: CM
     users-getAllTop10.json:
       value:
         bullet:
@@ -2986,6 +3213,697 @@ components:
             racingKings:
               rating: 2299
               progress: -33
+    users-getRealTimeUsersStatus.json:
+      value:
+      - name: Mary
+        flair: people.open-hands-medium-light-skin-tone
+        id: mary
+      - name: Ana
+        title: WCM
+        flair: smileys.downcast-face-with-sweat
+        id: ana
+    users-getCrosstable.json:
+      value:
+        users:
+          drnykterstein: 753.5
+          rebeccaharris: 459.5
+        nbGames: 1213
+    users-getRatingHistoryOfAUser.json:
+      value:
+      - name: UltraBullet
+        points: []
+      - name: Bullet
+        points:
+        - - 2026
+          - 3
+          - 3
+          - 1193
+        - - 2026
+          - 3
+          - 6
+          - 1195
+        - - 2026
+          - 3
+          - 9
+          - 1262
+        - - 2026
+          - 3
+          - 12
+          - 1150
+        - - 2026
+          - 3
+          - 15
+          - 1213
+        - - 2026
+          - 3
+          - 18
+          - 1120
+        - - 2026
+          - 3
+          - 21
+          - 1220
+        - - 2026
+          - 3
+          - 24
+          - 1115
+        - - 2026
+          - 3
+          - 27
+          - 1076
+        - - 2026
+          - 3
+          - 30
+          - 1219
+        - - 2026
+          - 4
+          - 3
+          - 1231
+        - - 2026
+          - 4
+          - 6
+          - 1138
+        - - 2026
+          - 4
+          - 9
+          - 1134
+        - - 2026
+          - 4
+          - 12
+          - 1220
+      - name: Blitz
+        points:
+        - - 2026
+          - 3
+          - 3
+          - 697
+        - - 2026
+          - 3
+          - 5
+          - 674
+        - - 2026
+          - 3
+          - 7
+          - 671
+        - - 2026
+          - 3
+          - 9
+          - 717
+        - - 2026
+          - 3
+          - 11
+          - 838
+        - - 2026
+          - 3
+          - 13
+          - 807
+        - - 2026
+          - 3
+          - 15
+          - 862
+        - - 2026
+          - 3
+          - 17
+          - 919
+        - - 2026
+          - 3
+          - 19
+          - 900
+        - - 2026
+          - 3
+          - 21
+          - 900
+        - - 2026
+          - 3
+          - 23
+          - 1005
+        - - 2026
+          - 3
+          - 25
+          - 992
+        - - 2026
+          - 3
+          - 27
+          - 870
+        - - 2026
+          - 3
+          - 29
+          - 933
+        - - 2026
+          - 4
+          - 1
+          - 1027
+        - - 2026
+          - 4
+          - 3
+          - 983
+        - - 2026
+          - 4
+          - 5
+          - 1119
+        - - 2026
+          - 4
+          - 7
+          - 1023
+        - - 2026
+          - 4
+          - 9
+          - 1137
+        - - 2026
+          - 4
+          - 11
+          - 1019
+        - - 2026
+          - 4
+          - 13
+          - 1098
+      - name: Rapid
+        points:
+        - - 2026
+          - 3
+          - 3
+          - 737
+        - - 2026
+          - 3
+          - 9
+          - 750
+        - - 2026
+          - 3
+          - 15
+          - 784
+        - - 2026
+          - 3
+          - 21
+          - 859
+        - - 2026
+          - 3
+          - 27
+          - 852
+        - - 2026
+          - 4
+          - 3
+          - 959
+        - - 2026
+          - 4
+          - 9
+          - 1000
+      - name: Classical
+        points:
+        - - 2026
+          - 3
+          - 3
+          - 988
+        - - 2026
+          - 3
+          - 10
+          - 1069
+        - - 2026
+          - 3
+          - 17
+          - 963
+        - - 2026
+          - 3
+          - 24
+          - 946
+        - - 2026
+          - 4
+          - 1
+          - 907
+        - - 2026
+          - 4
+          - 8
+          - 864
+      - name: Correspondence
+        points:
+        - - 2026
+          - 3
+          - 3
+          - 1474
+        - - 2026
+          - 3
+          - 10
+          - 1270
+        - - 2026
+          - 3
+          - 17
+          - 1291
+        - - 2026
+          - 3
+          - 24
+          - 1307
+        - - 2026
+          - 4
+          - 1
+          - 1229
+        - - 2026
+          - 4
+          - 8
+          - 1058
+      - name: Crazyhouse
+        points:
+        - - 2026
+          - 3
+          - 3
+          - 1158
+        - - 2026
+          - 3
+          - 6
+          - 1196
+        - - 2026
+          - 3
+          - 9
+          - 1120
+        - - 2026
+          - 3
+          - 12
+          - 1170
+        - - 2026
+          - 3
+          - 15
+          - 1106
+        - - 2026
+          - 3
+          - 18
+          - 1045
+        - - 2026
+          - 3
+          - 21
+          - 1156
+        - - 2026
+          - 3
+          - 24
+          - 1066
+        - - 2026
+          - 3
+          - 27
+          - 1061
+        - - 2026
+          - 3
+          - 30
+          - 1056
+        - - 2026
+          - 4
+          - 3
+          - 1074
+        - - 2026
+          - 4
+          - 6
+          - 1014
+        - - 2026
+          - 4
+          - 9
+          - 931
+        - - 2026
+          - 4
+          - 12
+          - 965
+      - name: Chess960
+        points:
+        - - 2026
+          - 3
+          - 3
+          - 1035
+        - - 2026
+          - 3
+          - 8
+          - 957
+        - - 2026
+          - 3
+          - 13
+          - 1084
+        - - 2026
+          - 3
+          - 18
+          - 1043
+        - - 2026
+          - 3
+          - 23
+          - 1055
+        - - 2026
+          - 3
+          - 28
+          - 1118
+        - - 2026
+          - 4
+          - 3
+          - 1139
+        - - 2026
+          - 4
+          - 8
+          - 1146
+        - - 2026
+          - 4
+          - 13
+          - 1194
+      - name: King of the Hill
+        points:
+        - - 2026
+          - 3
+          - 3
+          - 1346
+        - - 2026
+          - 3
+          - 5
+          - 1405
+        - - 2026
+          - 3
+          - 7
+          - 1377
+        - - 2026
+          - 3
+          - 9
+          - 1259
+        - - 2026
+          - 3
+          - 11
+          - 1290
+        - - 2026
+          - 3
+          - 13
+          - 1269
+        - - 2026
+          - 3
+          - 15
+          - 1227
+        - - 2026
+          - 3
+          - 17
+          - 1338
+        - - 2026
+          - 3
+          - 19
+          - 1321
+        - - 2026
+          - 3
+          - 21
+          - 1155
+        - - 2026
+          - 3
+          - 23
+          - 1220
+        - - 2026
+          - 3
+          - 25
+          - 1132
+        - - 2026
+          - 3
+          - 27
+          - 1143
+        - - 2026
+          - 3
+          - 29
+          - 1099
+        - - 2026
+          - 4
+          - 1
+          - 1143
+        - - 2026
+          - 4
+          - 3
+          - 1211
+        - - 2026
+          - 4
+          - 5
+          - 1182
+        - - 2026
+          - 4
+          - 7
+          - 1219
+        - - 2026
+          - 4
+          - 9
+          - 1171
+        - - 2026
+          - 4
+          - 11
+          - 1105
+        - - 2026
+          - 4
+          - 13
+          - 1162
+      - name: Three-Check
+        points:
+        - - 2026
+          - 3
+          - 3
+          - 1575
+        - - 2026
+          - 3
+          - 7
+          - 1371
+        - - 2026
+          - 3
+          - 11
+          - 1388
+        - - 2026
+          - 3
+          - 15
+          - 1379
+        - - 2026
+          - 3
+          - 19
+          - 1245
+        - - 2026
+          - 3
+          - 23
+          - 1358
+        - - 2026
+          - 3
+          - 27
+          - 1234
+        - - 2026
+          - 4
+          - 1
+          - 1113
+        - - 2026
+          - 4
+          - 5
+          - 1161
+        - - 2026
+          - 4
+          - 9
+          - 1062
+        - - 2026
+          - 4
+          - 13
+          - 1042
+      - name: Antichess
+        points:
+        - - 2026
+          - 3
+          - 3
+          - 1126
+        - - 2026
+          - 3
+          - 10
+          - 1200
+        - - 2026
+          - 3
+          - 17
+          - 1147
+        - - 2026
+          - 3
+          - 24
+          - 1030
+        - - 2026
+          - 4
+          - 1
+          - 1074
+        - - 2026
+          - 4
+          - 8
+          - 1065
+      - name: Atomic
+        points:
+        - - 2026
+          - 3
+          - 3
+          - 1576
+        - - 2026
+          - 3
+          - 5
+          - 1399
+        - - 2026
+          - 3
+          - 7
+          - 1359
+        - - 2026
+          - 3
+          - 9
+          - 1416
+        - - 2026
+          - 3
+          - 11
+          - 1364
+        - - 2026
+          - 3
+          - 13
+          - 1405
+        - - 2026
+          - 3
+          - 15
+          - 1364
+        - - 2026
+          - 3
+          - 17
+          - 1343
+        - - 2026
+          - 3
+          - 19
+          - 1365
+        - - 2026
+          - 3
+          - 21
+          - 1385
+        - - 2026
+          - 3
+          - 23
+          - 1236
+        - - 2026
+          - 3
+          - 25
+          - 1280
+        - - 2026
+          - 3
+          - 27
+          - 1156
+        - - 2026
+          - 3
+          - 29
+          - 1191
+        - - 2026
+          - 4
+          - 1
+          - 1124
+        - - 2026
+          - 4
+          - 3
+          - 1122
+        - - 2026
+          - 4
+          - 5
+          - 1163
+        - - 2026
+          - 4
+          - 7
+          - 1131
+        - - 2026
+          - 4
+          - 9
+          - 1053
+        - - 2026
+          - 4
+          - 11
+          - 1169
+        - - 2026
+          - 4
+          - 13
+          - 1140
+      - name: Horde
+        points:
+        - - 2026
+          - 3
+          - 3
+          - 701
+        - - 2026
+          - 3
+          - 6
+          - 853
+        - - 2026
+          - 3
+          - 9
+          - 919
+        - - 2026
+          - 3
+          - 12
+          - 844
+        - - 2026
+          - 3
+          - 15
+          - 826
+        - - 2026
+          - 3
+          - 18
+          - 959
+        - - 2026
+          - 3
+          - 21
+          - 851
+        - - 2026
+          - 3
+          - 24
+          - 859
+        - - 2026
+          - 3
+          - 27
+          - 1012
+        - - 2026
+          - 3
+          - 30
+          - 1043
+        - - 2026
+          - 4
+          - 3
+          - 1108
+        - - 2026
+          - 4
+          - 6
+          - 1138
+        - - 2026
+          - 4
+          - 9
+          - 986
+        - - 2026
+          - 4
+          - 12
+          - 1121
+      - name: Racing Kings
+        points: []
+      - name: Puzzles
+        points:
+        - - 2026
+          - 3
+          - 3
+          - 1123
+        - - 2026
+          - 3
+          - 7
+          - 1094
+        - - 2026
+          - 3
+          - 11
+          - 1268
+        - - 2026
+          - 3
+          - 15
+          - 1223
+        - - 2026
+          - 3
+          - 19
+          - 1232
+        - - 2026
+          - 3
+          - 23
+          - 1085
+        - - 2026
+          - 3
+          - 27
+          - 1021
+        - - 2026
+          - 4
+          - 1
+          - 1146
+        - - 2026
+          - 4
+          - 5
+          - 1076
+        - - 2026
+          - 4
+          - 9
+          - 965
+        - - 2026
+          - 4
+          - 13
+          - 1108
     users-getLiveStreamers.json:
       value:
       - name: lefonghua
@@ -3055,1196 +3973,278 @@ components:
           headline: hey chess addicts
           twitch: https://www.twitch.tv/chess_punk
           image: https://image.lichess1.org/display?fmt=webp&h=350&op=thumbnail&path=streamer:account4bd:fUQxz0qi.webp&w=350&sig=a3c17df24c8be4a4016e0029b730680e5db4fb5c
-  schemas:
-    RatingHistoryEntry:
-      type: object
-      properties:
-        name:
-          type: string
-        points:
-          type: array
-          items:
-            type: array
-            description: '[year, month, day, rating]'
-            items:
-              type: integer
-            minItems: 4
-            maxItems: 4
-      example:
-        name: Bullet
-        points:
-        - - 2011
-          - 0
-          - 8
-          - 1472
-        - - 2011
-          - 0
-          - 9
-          - 1332
-        - - 2011
-          - 8
-          - 12
-          - 1314
-    Leaderboard:
-      type: object
-      properties:
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/TopUser'
-      required:
-      - users
-    TopUser:
-      type: object
-      properties:
-        id:
-          type: string
-        username:
-          type: string
-        perfs:
-          type: object
-          additionalProperties:
-            type: object
-            properties:
-              rating:
-                type: integer
-              progress:
-                type: integer
-            required:
-            - rating
-            - progress
-        title:
-          $ref: '#/components/schemas/Title'
-        patron:
-          $ref: '#/components/schemas/Patron'
-        patronColor:
-          $ref: '#/components/schemas/PatronColor'
-        online:
-          type: boolean
-      required:
-      - id
-      - username
-    UserActivityCorrespondenceGame:
-      type: object
-      properties:
-        id:
-          type: string
-        color:
-          $ref: '#/components/schemas/GameColor'
-        url:
-          type: string
-          format: uri
-        variant:
-          $ref: '#/components/schemas/VariantKey'
-        speed:
-          type: string
-          const: correspondence
-        perf:
-          type: string
-          const: correspondence
-        rated:
-          type: boolean
-        opponent:
-          oneOf:
-          - type: object
-            required:
-            - aiLevel
-            properties:
-              aiLevel:
-                type: integer
-          - type: object
-            required:
-            - user
-            - rating
-            properties:
-              user:
-                type: string
-              rating:
-                type: integer
-      required:
-      - id
-      - color
-      - url
-      - opponent
-    UserActivityScore:
-      type: object
-      properties:
-        win:
-          type: integer
-        loss:
-          type: integer
-        draw:
-          type: integer
-        rp:
-          type: object
-          properties:
-            before:
-              type: integer
-            after:
-              type: integer
-          required:
-          - before
-          - after
-      required:
-      - win
-      - loss
-      - draw
-      - rp
-    Profile:
-      type: object
-      properties:
-        flag:
-          type: string
-          example: EC
-        location:
-          type: string
-        bio:
-          type: string
-          example: Free bugs!
-        realName:
-          type: string
-          example: Thibault Duplessis
-        fideRating:
-          type: integer
-          example: 1500
-          description: only appears if a user has set them
-        uscfRating:
-          type: integer
-          example: 1500
-          description: only appears if a user has set them
-        ecfRating:
-          type: integer
-          example: 1500
-          description: only appears if a user has set them
-        cfcRating:
-          type: integer
-          example: 1500
-          description: only appears if a user has set them
-        rcfRating:
-          type: integer
-          example: 1500
-          description: only appears if a user has set them
-        dsbRating:
-          type: integer
-          example: 1500
-          description: only appears if a user has set them
-        links:
-          type: string
-          example: 'github.com/ornicar
-
-            mas.to/@thibault'
-    Ok:
-      properties:
-        ok:
-          type: boolean
-      required:
-      - ok
-    UserStreamer:
-      type: object
-      properties:
-        twitch:
-          type: object
-          properties:
-            channel:
-              type: string
-              format: uri
-              example: https://www.twitch.tv/lichessdotorg
-        youtube:
-          type: object
-          properties:
-            channel:
-              type: string
-              format: uri
-              example: https://www.youtube.com/c/LichessDotOrg
-    VariantKey:
-      type: string
-      enum:
-      - standard
-      - chess960
-      - crazyhouse
-      - antichess
-      - atomic
-      - horde
-      - kingOfTheHill
-      - racingKings
-      - threeCheck
-      - fromPosition
-      example: standard
-      default: standard
-    UserActivity:
-      type: object
-      properties:
-        interval:
-          type: object
-          properties:
-            start:
-              type: integer
-            end:
-              type: integer
-          required:
-          - start
-          - end
-        games:
-          type: object
-          properties:
-            chess960:
-              $ref: '#/components/schemas/UserActivityScore'
-            atomic:
-              $ref: '#/components/schemas/UserActivityScore'
-            racingKings:
-              $ref: '#/components/schemas/UserActivityScore'
-            ultraBullet:
-              $ref: '#/components/schemas/UserActivityScore'
-            blitz:
-              $ref: '#/components/schemas/UserActivityScore'
-            kingOfTheHill:
-              $ref: '#/components/schemas/UserActivityScore'
-            bullet:
-              $ref: '#/components/schemas/UserActivityScore'
-            correspondence:
-              $ref: '#/components/schemas/UserActivityScore'
-            horde:
-              $ref: '#/components/schemas/UserActivityScore'
-            puzzle:
-              $ref: '#/components/schemas/UserActivityScore'
-            classical:
-              $ref: '#/components/schemas/UserActivityScore'
-            rapid:
-              $ref: '#/components/schemas/UserActivityScore'
-        puzzles:
-          type: object
-          properties:
-            score:
-              $ref: '#/components/schemas/UserActivityScore'
-        storm:
-          $ref: '#/components/schemas/PuzzleModePerf'
-        racer:
-          $ref: '#/components/schemas/PuzzleModePerf'
-        streak:
-          $ref: '#/components/schemas/PuzzleModePerf'
-        tournaments:
-          type: object
-          properties:
-            nb:
-              type: integer
-            best:
-              type: array
-              items:
-                type: object
-                required:
-                - tournament
-                - nbGames
-                - score
-                - rank
-                - rankPercent
-                properties:
-                  tournament:
-                    type: object
-                    required:
-                    - id
-                    - name
-                    properties:
-                      id:
-                        type: string
-                      name:
-                        type: string
-                  nbGames:
-                    type: integer
-                  score:
-                    type: integer
-                  rank:
-                    type: integer
-                  rankPercent:
-                    type: integer
-        practice:
-          type: array
-          items:
-            type: object
-            required:
-            - url
-            - name
-            - nbPositions
-            properties:
-              url:
-                type: string
-              name:
-                type: string
-              nbPositions:
-                type: integer
-        simuls:
-          type: array
-          items:
-            type: string
-        correspondenceMoves:
-          type: object
-          required:
-          - nb
-          - games
-          properties:
-            nb:
-              type: integer
-            games:
-              type: array
-              items:
-                $ref: '#/components/schemas/UserActivityCorrespondenceGame'
-        correspondenceEnds:
-          type: object
-          properties:
-            correspondence:
-              type: object
-              properties:
-                score:
-                  $ref: '#/components/schemas/UserActivityScore'
-                games:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/UserActivityCorrespondenceGame'
-              required:
-              - score
-              - games
-          required:
-          - correspondence
-        follows:
-          type: object
-          properties:
-            in:
-              $ref: '#/components/schemas/UserActivityFollowList'
-            out:
-              $ref: '#/components/schemas/UserActivityFollowList'
-        studies:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-              name:
-                type: string
-            required:
-            - id
-            - name
-        teams:
-          type: array
-          items:
-            type: object
-            required:
-            - url
-            - name
-            properties:
-              url:
-                type: string
-                format: uri
-              name:
-                type: string
-              flair:
-                $ref: '#/components/schemas/Flair'
-        posts:
-          type: array
-          items:
-            type: object
-            required:
-            - topicUrl
-            - topicName
-            - posts
-            properties:
-              topicUrl:
-                type: string
-              topicName:
-                type: string
-              posts:
-                type: array
-                items:
-                  type: object
-                  required:
-                  - url
-                  - text
-                  properties:
-                    url:
-                      type: string
-                    text:
-                      type: string
-        patron:
-          type: object
-          required:
-          - months
-          properties:
-            months:
-              type: integer
-        stream:
-          type: boolean
-      required:
-      - interval
-    GameColor:
-      type: string
-      enum:
-      - white
-      - black
-    Count:
-      type: object
-      properties:
-        all:
-          type: integer
-        rated:
-          type: integer
-        ai:
-          type: integer
-        draw:
-          type: integer
-        drawH:
-          type: integer
-        loss:
-          type: integer
-        lossH:
-          type: integer
-        win:
-          type: integer
-        winH:
-          type: integer
-        bookmark:
-          type: integer
-        playing:
-          type: integer
-        import:
-          type: integer
-        me:
-          type: integer
-      required:
-      - all
-      - rated
-      - draw
-      - loss
-      - win
-      - bookmark
-      - playing
-      - import
-      - me
-    PlayTime:
-      type: object
-      properties:
-        total:
-          type: integer
-        tv:
-          type: integer
-        human:
-          type: integer
-      required:
-      - total
-      - tv
-    UserExtended:
-      allOf:
-      - $ref: '#/components/schemas/User'
-      - type: object
-        properties:
-          url:
-            type: string
-            format: uri
-          playing:
-            type: string
-            format: uri
-          count:
-            $ref: '#/components/schemas/Count'
-          streaming:
-            type: boolean
-          streamer:
-            $ref: '#/components/schemas/UserStreamer'
-          followable:
-            type: boolean
-            description: only appears if the request is [authenticated with OAuth2](#description/authentication)
-          following:
-            type: boolean
-            description: only appears if the request is [authenticated with OAuth2](#description/authentication)
-          blocking:
-            type: boolean
-            description: only appears if the request is [authenticated with OAuth2](#description/authentication)
-          fideId:
-            type: number
-        required:
-        - url
-    PerfType:
-      type: string
-      enum:
-      - ultraBullet
-      - bullet
-      - blitz
-      - rapid
-      - classical
-      - correspondence
-      - chess960
-      - crazyhouse
-      - antichess
-      - atomic
-      - horde
-      - kingOfTheHill
-      - racingKings
-      - threeCheck
-    UserActivityFollowList:
-      type: object
-      properties:
-        ids:
-          type: array
-          items:
-            type: string
-        nb:
-          type: integer
-      required:
-      - ids
-    Top10s:
-      type: object
-      properties:
-        bullet:
-          $ref: '#/components/schemas/PerfTop10'
-        blitz:
-          $ref: '#/components/schemas/PerfTop10'
-        rapid:
-          $ref: '#/components/schemas/PerfTop10'
-        classical:
-          $ref: '#/components/schemas/PerfTop10'
-        ultraBullet:
-          $ref: '#/components/schemas/PerfTop10'
-        crazyhouse:
-          $ref: '#/components/schemas/PerfTop10'
-        chess960:
-          $ref: '#/components/schemas/PerfTop10'
-        kingOfTheHill:
-          $ref: '#/components/schemas/PerfTop10'
-        threeCheck:
-          $ref: '#/components/schemas/PerfTop10'
-        antichess:
-          $ref: '#/components/schemas/PerfTop10'
-        atomic:
-          $ref: '#/components/schemas/PerfTop10'
-        horde:
-          $ref: '#/components/schemas/PerfTop10'
-        racingKings:
-          $ref: '#/components/schemas/PerfTop10'
-      required:
-      - bullet
-      - blitz
-      - rapid
-      - classical
-      - ultraBullet
-      - crazyhouse
-      - chess960
-      - kingOfTheHill
-      - threeCheck
-      - antichess
-      - atomic
-      - horde
-      - racingKings
-    LightUser:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        flair:
-          $ref: '#/components/schemas/Flair'
-        title:
-          $ref: '#/components/schemas/Title'
-        patron:
-          $ref: '#/components/schemas/Patron'
-        patronColor:
-          $ref: '#/components/schemas/PatronColor'
-      required:
-      - id
-      - name
-    PatronColor:
-      type: integer
-      description: 'Players can choose a color for their Patron wings.
-
-        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
-
-
-        The presence of this field indicates the player is an active Patron.
-
-        '
-      minimum: 1
-      maximum: 10
-    Flair:
-      type: string
-      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
-    Title:
-      type: string
-      enum:
-      - GM
-      - WGM
-      - IM
-      - WIM
-      - FM
-      - WFM
-      - NM
-      - CM
-      - WCM
-      - WNM
-      - LM
-      - BOT
-      description: only appears if the user is a titled player or a bot user
-    PerfStat:
-      type: object
-      properties:
+    users-autocompleteUsernames-list.json:
+      value:
+      - bobby
+    users-getPerformanceStatisticsOfAUser.json:
+      value:
         user:
-          type: object
-          properties:
-            name:
-              type: string
-          required:
-          - name
+          name: thibault
         perf:
-          type: object
-          properties:
-            glicko:
-              type: object
-              properties:
-                rating:
-                  type: number
-                deviation:
-                  type: number
-                provisional:
-                  type: boolean
-            nb:
-              type: integer
-            progress:
-              type: integer
-        rank:
-          type:
-          - integer
-          - 'null'
-        percentile:
-          type: number
+          glicko:
+            rating: 1791.48
+            deviation: 47.84
+          nb: 11614
+          progress: -1
+        rank: 147171
+        percentile: 77.6
         stat:
-          type: object
-          properties:
-            highest:
-              type: object
-              properties:
-                int:
-                  type: integer
-                at:
-                  type: string
-                  format: date-time
-                gameId:
-                  type: string
-              required:
-              - int
-              - at
-              - gameId
-            lowest:
-              type: object
-              properties:
-                int:
-                  type: integer
-                at:
-                  type: string
-                  format: date-time
-                gameId:
-                  type: string
-              required:
-              - int
-              - at
-              - gameId
-            bestWins:
-              type: object
-              properties:
-                results:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      opRating:
-                        type: integer
-                      opId:
-                        $ref: '#/components/schemas/LightUser'
-                      at:
-                        type: string
-                        format: date-time
-                      gameId:
-                        type: string
-                    required:
-                    - opRating
-                    - opId
-                    - at
-                    - gameId
-              required:
-              - results
-            worstLosses:
-              type: object
-              properties:
-                results:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      opRating:
-                        type: integer
-                      opId:
-                        $ref: '#/components/schemas/LightUser'
-                      at:
-                        type: string
-                        format: date-time
-                      gameId:
-                        type: string
-                    required:
-                    - opRating
-                    - opId
-                    - at
-                    - gameId
-              required:
-              - results
-            count:
-              type: object
-              properties:
-                all:
-                  type: integer
-                rated:
-                  type: integer
-                win:
-                  type: integer
-                loss:
-                  type: integer
-                draw:
-                  type: integer
-                tour:
-                  type: integer
-                berserk:
-                  type: integer
-                opAvg:
-                  type: number
-                seconds:
-                  type: integer
-                disconnects:
-                  type: integer
-              required:
-              - all
-              - rated
-              - win
-              - loss
-              - draw
-              - tour
-              - berserk
-              - opAvg
-              - seconds
-              - disconnects
-            resultStreak:
-              type: object
-              properties:
-                win:
-                  type: object
-                  properties:
-                    cur:
-                      type: object
-                      properties:
-                        v:
-                          type: integer
-                        from:
-                          type: object
-                          properties:
-                            at:
-                              type: string
-                              format: date-time
-                            gameId:
-                              type: string
-                          required:
-                          - at
-                          - gameId
-                        to:
-                          type: object
-                          properties:
-                            at:
-                              type: string
-                              format: date-time
-                            gameId:
-                              type: string
-                          required:
-                          - at
-                          - gameId
-                      required:
-                      - v
-                    max:
-                      type: object
-                      properties:
-                        v:
-                          type: integer
-                        from:
-                          type: object
-                          properties:
-                            at:
-                              type: string
-                              format: date-time
-                            gameId:
-                              type: string
-                          required:
-                          - at
-                          - gameId
-                        to:
-                          type: object
-                          properties:
-                            at:
-                              type: string
-                              format: date-time
-                            gameId:
-                              type: string
-                          required:
-                          - at
-                          - gameId
-                      required:
-                      - v
-                  required:
-                  - cur
-                  - max
-                loss:
-                  type: object
-                  properties:
-                    cur:
-                      type: object
-                      properties:
-                        v:
-                          type: integer
-                        from:
-                          type: object
-                          properties:
-                            at:
-                              type: string
-                              format: date-time
-                            gameId:
-                              type: string
-                          required:
-                          - at
-                          - gameId
-                        to:
-                          type: object
-                          properties:
-                            at:
-                              type: string
-                              format: date-time
-                            gameId:
-                              type: string
-                          required:
-                          - at
-                          - gameId
-                      required:
-                      - v
-                    max:
-                      type: object
-                      properties:
-                        v:
-                          type: integer
-                        from:
-                          type: object
-                          properties:
-                            at:
-                              type: string
-                            gameId:
-                              type: string
-                          required:
-                          - at
-                          - gameId
-                        to:
-                          type: object
-                          properties:
-                            at:
-                              type: string
-                            gameId:
-                              type: string
-                          required:
-                          - at
-                          - gameId
-                      required:
-                      - v
-                  required:
-                  - cur
-                  - max
-              required:
-              - win
-              - loss
-            playStreak:
-              type: object
-              properties:
-                nb:
-                  type: object
-                  properties:
-                    cur:
-                      type: object
-                      properties:
-                        v:
-                          type: integer
-                      required:
-                      - v
-                    max:
-                      type: object
-                      properties:
-                        v:
-                          type: integer
-                        from:
-                          type: object
-                          properties:
-                            at:
-                              type: string
-                              format: date-time
-                            gameId:
-                              type: string
-                          required:
-                          - at
-                          - gameId
-                        to:
-                          type: object
-                          properties:
-                            at:
-                              type: string
-                              format: date-time
-                            gameId:
-                              type: string
-                          required:
-                          - at
-                          - gameId
-                      required:
-                      - v
-                  required:
-                  - cur
-                  - max
-                time:
-                  type: object
-                  properties:
-                    cur:
-                      type: object
-                      properties:
-                        v:
-                          type: integer
-                      required:
-                      - v
-                    max:
-                      type: object
-                      properties:
-                        v:
-                          type: integer
-                        from:
-                          type: object
-                          properties:
-                            at:
-                              type: string
-                              format: date-time
-                            gameId:
-                              type: string
-                          required:
-                          - at
-                          - gameId
-                        to:
-                          type: object
-                          properties:
-                            at:
-                              type: string
-                              format: date-time
-                            gameId:
-                              type: string
-                          required:
-                          - at
-                          - gameId
-                      required:
-                      - v
-                  required:
-                  - cur
-                  - max
-                lastDate:
-                  type: string
-                  format: date-time
-              required:
-              - nb
-              - time
-          required:
-          - bestWins
-          - worstLosses
-          - count
-          - resultStreak
-          - playStreak
-      required:
-      - user
-      - perf
-      - rank
-      - percentile
-      - stat
-    Patron:
-      type: boolean
-      deprecated: true
-      description: 'Use patronColor value instead to determine if player is a patron.
-
-        '
-    PuzzleModePerf:
-      type: object
-      properties:
-        runs:
-          type: integer
-        score:
-          type: integer
-      required:
-      - runs
-      - score
-    Perfs:
-      type: object
-      properties:
-        chess960:
-          $ref: '#/components/schemas/Perf'
-        atomic:
-          $ref: '#/components/schemas/Perf'
-        racingKings:
-          $ref: '#/components/schemas/Perf'
-        ultraBullet:
-          $ref: '#/components/schemas/Perf'
-        blitz:
-          $ref: '#/components/schemas/Perf'
-        kingOfTheHill:
-          $ref: '#/components/schemas/Perf'
-        threeCheck:
-          $ref: '#/components/schemas/Perf'
-        antichess:
-          $ref: '#/components/schemas/Perf'
-        crazyhouse:
-          $ref: '#/components/schemas/Perf'
-        bullet:
-          $ref: '#/components/schemas/Perf'
-        correspondence:
-          $ref: '#/components/schemas/Perf'
-        horde:
-          $ref: '#/components/schemas/Perf'
-        puzzle:
-          $ref: '#/components/schemas/Perf'
-        classical:
-          $ref: '#/components/schemas/Perf'
-        rapid:
-          $ref: '#/components/schemas/Perf'
-        storm:
-          $ref: '#/components/schemas/PuzzleModePerf'
-        racer:
-          $ref: '#/components/schemas/PuzzleModePerf'
-        streak:
-          $ref: '#/components/schemas/PuzzleModePerf'
-    Perf:
-      type: object
-      properties:
-        games:
-          type: integer
-        rating:
-          type: integer
-        rd:
-          type: integer
-          description: rating deviation
-        prog:
-          type: integer
-        prov:
-          type: boolean
-          description: only appears if a user's perf rating are [provisional](https://lichess.org/faq#provisional)
-        rank:
-          type: integer
-          description: global lichess ranking, only appears for recently active players
-      required:
-      - games
-      - rating
-      - rd
-      - prog
-    PerfTop10:
-      type: array
-      minItems: 10
-      maxItems: 10
-      items:
-        $ref: '#/components/schemas/TopUser'
-    LightUserOnline:
-      allOf:
-      - $ref: '#/components/schemas/LightUser'
-      - properties:
-          online:
-            type: boolean
-    Crosstable:
-      type: object
-      properties:
-        users:
-          additionalProperties:
-            type: number
-        nbGames:
-          type: integer
-      required:
-      - users
-      - nbGames
-      example:
-        users:
-          neio: 201.5
-          thibault: 144.5
-        nbGames: 346
-    UserNote:
-      type: object
-      properties:
-        from:
-          $ref: '#/components/schemas/LightUser'
-        to:
-          $ref: '#/components/schemas/LightUser'
-        text:
-          type: string
-          example: This is a note
-        date:
-          type: integer
-          format: int64
-          example: 1290415680000
-    User:
-      type: object
-      properties:
-        id:
-          type: string
-        username:
-          type: string
+          highest:
+            int: 1970
+            at: '2022-02-23T13:44:54.633Z'
+            gameId: Blpjmhnf
+          lowest:
+            int: 1385
+            at: '2015-08-05T10:13:41.326Z'
+            gameId: tgbRykg2
+          bestWins:
+            results:
+            - opRating: 2239
+              opId:
+                name: aqua21
+                flair: objects.postal-horn
+                id: aqua21
+              at: '2020-02-15T19:13:05.329Z'
+              gameId: UxNJmMXz
+            - opRating: 2163
+              opId:
+                name: Staffan67
+                id: staffan67
+              at: '2022-12-28T10:54:21.597Z'
+              gameId: 9IMlwEv1
+            - opRating: 2120
+              opId:
+                name: Heissenberger
+                id: heissenberger
+              at: '2021-10-25T08:26:27.155Z'
+              gameId: 2buPRuV8
+            - opRating: 2051
+              opId:
+                name: Stas235
+                id: stas235
+              at: '2021-11-06T18:55:53.728Z'
+              gameId: VLxCVzDY
+            - opRating: 2040
+              opId:
+                name: Harryz-77
+                id: harryz-77
+              at: '2021-11-03T17:39:40.181Z'
+              gameId: eCgiYDS7
+          worstLosses:
+            results:
+            - opRating: 995
+              opId:
+                name: dahupetitjoueur
+                id: dahupetitjoueur
+              at: '2017-04-12T14:31:58.002Z'
+              gameId: 7zyddy2c
+            - opRating: 1121
+              opId:
+                name: Tinkugupta1011
+                id: tinkugupta1011
+              at: '2022-10-22T03:36:35.447Z'
+              gameId: CCyyGKmD
+            - opRating: 1146
+              opId:
+                name: chemkhihabib
+                id: chemkhihabib
+              at: '2016-06-01T09:31:09.694Z'
+              gameId: XatMm3RO
+            - opRating: 1166
+              opId:
+                name: Bottios
+                title: BOT
+                id: bottios
+              at: '2018-12-14T09:22:52.633Z'
+              gameId: 3fke4MHX
+            - opRating: 1182
+              opId:
+                name: skanerterry
+                id: skanerterry
+              at: '2016-06-09T15:32:10.474Z'
+              gameId: n4ViqGlp
+          count:
+            all: 12101
+            rated: 11492
+            win: 5726
+            loss: 5802
+            draw: 573
+            tour: 1601
+            berserk: 52
+            opAvg: 1706.62
+            seconds: 3767400
+            disconnects: 9
+          resultStreak:
+            win:
+              cur:
+                v: 0
+              max:
+                v: 11
+                from:
+                  at: '2018-10-19T10:02:05.144Z'
+                  gameId: ycmyqK6e
+                to:
+                  at: '2018-10-19T12:25:31.868Z'
+                  gameId: 3PwQXIBN
+            loss:
+              cur:
+                v: 2
+                from:
+                  at: '2026-05-13T08:23:38.653Z'
+                  gameId: nrO6iTZ3
+                to:
+                  at: '2026-05-13T08:32:58.61Z'
+                  gameId: fSJcMeCL
+              max:
+                v: 19
+                from:
+                  at: '2018-03-09T23:54:54.771Z'
+                  gameId: iAJe1M8f
+                to:
+                  at: '2018-03-16T20:52:03.611Z'
+                  gameId: 7CZ1SEF5
+          playStreak:
+            nb:
+              cur:
+                v: 0
+              max:
+                v: 115
+                from:
+                  at: '2024-10-18T11:32:12.142Z'
+                  gameId: l819pRNp
+                to:
+                  at: '2024-10-18T20:54:30.256Z'
+                  gameId: 1HeDeGbe
+            time:
+              cur:
+                v: 0
+              max:
+                v: 23231
+                from:
+                  at: '2024-10-18T11:32:12.142Z'
+                  gameId: l819pRNp
+                to:
+                  at: '2024-10-18T20:54:30.256Z'
+                  gameId: 1HeDeGbe
+            lastDate: '2026-05-13T08:32:58.61Z'
+    users-autocompleteUsernames-object.json:
+      value:
+        result:
+        - name: Bobby
+          id: bobby
+    users-addNoteForUser.json:
+      value:
+        ok: true
+    users-getUserPublicData.json:
+      value:
+        id: mary
+        username: Mary
         perfs:
-          $ref: '#/components/schemas/Perfs'
-        title:
-          $ref: '#/components/schemas/Title'
-        flair:
-          $ref: '#/components/schemas/Flair'
-        createdAt:
-          type: integer
-          format: int64
-        disabled:
-          type: boolean
-          description: only appears if a user's account is closed
-        tosViolation:
-          type: boolean
-          description: only appears if a user's account is marked for the violation of [Lichess TOS](https://lichess.org/terms-of-service)
+          bullet:
+            games: 1593
+            rating: 1119
+            rd: 66
+            prog: -27
+          blitz:
+            games: 1560
+            rating: 1145
+            rd: 56
+            prog: -29
+          rapid:
+            games: 358
+            rating: 1124
+            rd: 83
+            prog: -8
+          classical:
+            games: 414
+            rating: 946
+            rd: 110
+            prog: 33
+            prov: true
+          correspondence:
+            games: 692
+            rating: 1083
+            rd: 56
+            prog: 23
+          chess960:
+            games: 600
+            rating: 1104
+            rd: 92
+            prog: 22
+          kingOfTheHill:
+            games: 454
+            rating: 1077
+            rd: 54
+            prog: 43
+          threeCheck:
+            games: 159
+            rating: 1018
+            rd: 108
+            prog: -6
+          antichess:
+            games: 114
+            rating: 937
+            rd: 49
+            prog: -51
+          atomic:
+            games: 1261
+            rating: 1073
+            rd: 45
+            prog: -6
+          horde:
+            games: 83
+            rating: 1115
+            rd: 45
+            prog: -28
+          crazyhouse:
+            games: 1556
+            rating: 965
+            rd: 49
+            prog: 2
+          puzzle:
+            games: 60
+            rating: 1033
+            rd: 45
+            prog: -36
+        flair: people.open-hands-medium-light-skin-tone
+        createdAt: 1775221588473
         profile:
-          $ref: '#/components/schemas/Profile'
-        seenAt:
-          type: integer
-          format: int64
+          flag: GW
+          location: Mary City
+          bio: A normal working day for modern industry only dates from the Factory Act of 1833, which included cotton, wool, flax, and silk factories. Nothing is more characteristic of the spirit of capital than the history of the English Factory Acts from 1833 to 1864.
+          fideRating: 1400
+          uscfRating: 1035
+          ecfRating: 1084
+          rcfRating: 910
+          cfcRating: 992
+          dsbRating: 1129
+          links: 'https://en.wikipedia.org/wiki/Srinivasa_Ramanujan
+
+            https://en.wikipedia.org/wiki/Charles_Darwin
+
+            https://lichess.org
+
+            https://reddit.com/r/chess
+
+            https://en.wikipedia.org/wiki/Noam_Chomsky'
+        seenAt: 1776880668894
         playTime:
-          $ref: '#/components/schemas/PlayTime'
-        patron:
-          $ref: '#/components/schemas/Patron'
-        patronColor:
-          $ref: '#/components/schemas/PatronColor'
-        verified:
-          type: boolean
-      required:
-      - id
-      - username
-    RatingHistory:
-      type: array
-      items:
-        $ref: '#/components/schemas/RatingHistoryEntry'
-      example:
-      - name: Bullet
-        points:
-        - - 2011
-          - 0
-          - 8
-          - 1472
-        - - 2011
-          - 0
-          - 9
-          - 1332
-        - - 2011
-          - 8
-          - 12
-          - 1314
-      - name: Blitz
-        points:
-        - - 2011
-          - 7
-          - 29
-          - 1332
+          total: 15514
+          tv: 0
+        url: https://lichess.org/@/Mary
+        count:
+          all: 9795
+          rated: 7836
+          draw: 904
+          loss: 4408
+          win: 4483
+          bookmark: 0
+          playing: 0
+          import: 0
+          me: 1
+        followable: true
+        following: true
+        blocking: false
   securitySchemes:
     OAuth2:
       type: oauth2

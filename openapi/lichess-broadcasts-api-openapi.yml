@@ -936,721 +936,127 @@ paths:
                 default:
                   $ref: '#/components/examples/broadcasts-getYourBroadcastRounds.json'
 components:
-  examples:
-    broadcasts-getPlayersOfBroadcastTournament.json:
-      value:
-      - name: Player 1
-        fideId: 123
-        played: 0
-      - name: Player 2
-        fideId: 456
-        played: 0
-      - name: Player 3
-        played: 0
-      - name: Player 4
-        played: 0
-    broadcasts-streamOngoingBroadcastRoundAsPgn.pgn:
-      value: '[Event "Knight Invitational"]
-
-        [Site "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/uHRiHXFM"]
-
-        [Date "2026.05.15"]
-
-        [White "Player 1"]
-
-        [Black "Player 2"]
-
-        [Result "*"]
-
-        [WhiteFideId "123"]
-
-        [BlackFideId "456"]
-
-        [Variant "Standard"]
-
-        [ECO "C20"]
-
-        [Opening "King''s Pawn Game"]
-
-        [UTCDate "2026.05.15"]
-
-        [UTCTime "02:36:43"]
-
-        [BroadcastName "Knight Invitational 2"]
-
-        [BroadcastURL "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K"]
-
-        [GameURL "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/uHRiHXFM"]
-
-
-        1. e4 e5 *
-
-
-
-        [Event "Knight Invitational"]
-
-        [Site "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/ZiN3hBIO"]
-
-        [Date "2026.05.15"]
-
-        [White "Player 3"]
-
-        [Black "Player 4"]
-
-        [Result "*"]
-
-        [Variant "Standard"]
-
-        [ECO "D00"]
-
-        [Opening "Queen''s Pawn Game"]
-
-        [UTCDate "2026.05.15"]
-
-        [UTCTime "02:36:43"]
-
-        [BroadcastName "Knight Invitational 2"]
-
-        [BroadcastURL "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K"]
-
-        [GameURL "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/ZiN3hBIO"]
-
-
-        1. d4 d5 *
-
-        '
-    broadcasts-getOfficialBroadcasts.json:
-      value:
-        tour:
-          id: gJm0i5k1
-          name: Knight Invitational
-          slug: knight-invitational
-          info: {}
-          createdAt: 1778812602837
-          url: https://lichess.org/broadcast/knight-invitational/gJm0i5k1
-          tier: 5
-          dates:
-          - 1778812603116
-        rounds:
-        - id: 2Ywx30MD
-          name: Round 1
-          slug: round-1
-          createdAt: 1778812602924
-          rated: false
-          ongoing: true
-          startsAt: 1778816202858
-          url: https://lichess.org/broadcast/knight-invitational/round-1/2Ywx30MD
-        - id: bJEvCanZ
-          name: Round 2
-          slug: round-2
-          createdAt: 1778812603074
-          rated: false
-          ongoing: true
-          startsAt: 1778819802858
-          url: https://lichess.org/broadcast/knight-invitational/round-2/bJEvCanZ
-        - id: cxolzwOn
-          name: Round 3
-          slug: round-3
-          createdAt: 1778812603095
-          rated: false
-          ongoing: true
-          startsAt: 1778823402858
-          url: https://lichess.org/broadcast/knight-invitational/round-3/cxolzwOn
-        - id: 0JjIup0K
-          name: Final Round
-          slug: final-round
-          createdAt: 1778812603116
-          rated: false
-          ongoing: true
-          startsAt: 1778812603116
-          url: https://lichess.org/broadcast/knight-invitational/final-round/0JjIup0K
-        defaultRoundId: 2Ywx30MD
-    broadcasts-getBroadcastRound.json:
-      value:
-        round:
-          id: 0JjIup0K
-          name: Final Round
-          slug: final-round
-          createdAt: 1778812603116
-          rated: false
-          ongoing: true
-          startsAt: 1778812603116
-          url: https://lichess.org/broadcast/knight-invitational-2/final-round/0JjIup0K
-        tour:
-          id: gJm0i5k1
-          name: Knight Invitational 2
-          slug: knight-invitational-2
-          info: {}
-          createdAt: 1778812602837
-          url: https://lichess.org/broadcast/knight-invitational-2/gJm0i5k1
-          dates:
-          - 1778812603116
-          communityOwner:
-            name: Admin
-            id: admin
-        study:
-          writeable: false
-          features:
-            chat: true
-            computer: true
-            explorer: true
-        games:
-        - id: uHRiHXFM
-          name: Player 1 - Player 2
-          fen: rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2
-          players:
-          - name: Player 1
-            fideId: 123
-          - name: Player 2
-            fideId: 456
-          lastMove: e7e5
-          thinkTime: 0
-          status: '*'
-        - id: ZiN3hBIO
-          name: Player 3 - Player 4
-          fen: rnbqkbnr/ppp1pppp/8/3p4/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 0 2
-          players:
-          - name: Player 3
-          - name: Player 4
-          lastMove: d7d5
-          thinkTime: 0
-          status: '*'
-        photos: {}
-        isSubscribed: false
-    broadcasts-createBroadcastTournament.json:
-      value:
-        tour:
-          id: gJm0i5k1
-          name: Knight Invitational
-          slug: knight-invitational
-          info: {}
-          createdAt: 1778812602837
-          url: https://lichess.org/broadcast/knight-invitational/gJm0i5k1
-          tier: 5
-        rounds: []
-    broadcasts-updateBroadcastTournament.json:
-      value:
-        ok: true
-    broadcasts-updateBroadcastRound.json:
-      value:
-        round:
-          id: 0JjIup0K
-          name: Final Round 2
-          slug: final-round-2
-          createdAt: 1778812603116
-          rated: false
-          ongoing: true
-          startsAt: 1778812603116
-          url: https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K
-        tour:
-          id: gJm0i5k1
-          name: Knight Invitational 2
-          slug: knight-invitational-2
-          info: {}
-          createdAt: 1778812602837
-          url: https://lichess.org/broadcast/knight-invitational-2/gJm0i5k1
-          dates:
-          - 1778812603116
-          communityOwner:
-            name: Admin
-            id: admin
-        study:
-          writeable: true
-          features:
-            chat: true
-            computer: true
-            explorer: true
-        games:
-        - id: uHRiHXFM
-          name: Player 1 - Player 2
-          fen: rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2
-          players:
-          - name: Player 1
-            fideId: 123
-          - name: Player 2
-            fideId: 456
-          lastMove: e7e5
-          thinkTime: 0
-          status: '*'
-        - id: ZiN3hBIO
-          name: Player 3 - Player 4
-          fen: rnbqkbnr/ppp1pppp/8/3p4/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 0 2
-          players:
-          - name: Player 3
-          - name: Player 4
-          lastMove: d7d5
-          thinkTime: 0
-          status: '*'
-        photos: {}
-        isSubscribed: false
-    broadcasts-exportOneRoundAsPgn.pgn:
-      value: '[Event "Knight Invitational"]
-
-        [Site "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/uHRiHXFM"]
-
-        [Date "2026.05.15"]
-
-        [White "Player 1"]
-
-        [Black "Player 2"]
-
-        [Result "*"]
-
-        [WhiteFideId "123"]
-
-        [BlackFideId "456"]
-
-        [Variant "Standard"]
-
-        [ECO "C20"]
-
-        [Opening "King''s Pawn Game"]
-
-        [UTCDate "2026.05.15"]
-
-        [UTCTime "02:36:43"]
-
-        [BroadcastName "Knight Invitational 2"]
-
-        [BroadcastURL "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K"]
-
-        [GameURL "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/uHRiHXFM"]
-
-
-        1. e4 e5 *
-
-
-
-        [Event "Knight Invitational"]
-
-        [Site "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/ZiN3hBIO"]
-
-        [Date "2026.05.15"]
-
-        [White "Player 3"]
-
-        [Black "Player 4"]
-
-        [Result "*"]
-
-        [Variant "Standard"]
-
-        [ECO "D00"]
-
-        [Opening "Queen''s Pawn Game"]
-
-        [UTCDate "2026.05.15"]
-
-        [UTCTime "02:36:43"]
-
-        [BroadcastName "Knight Invitational 2"]
-
-        [BroadcastURL "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K"]
-
-        [GameURL "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/ZiN3hBIO"]
-
-
-        1. d4 d5 *
-
-        '
-    broadcasts-getYourBroadcastRounds.json:
-      value:
-        round:
-          id: 0JjIup0K
-          name: Final Round 2
-          slug: final-round-2
-          createdAt: 1778812603116
-          rated: false
-          ongoing: true
-          startsAt: 1778812603116
-          url: https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K
-        tour:
-          id: gJm0i5k1
-          name: Knight Invitational 2
-          slug: knight-invitational-2
-          info: {}
-          createdAt: 1778812602837
-          url: https://lichess.org/broadcast/knight-invitational-2/gJm0i5k1
-          dates:
-          - 1778812603116
-          communityOwner:
-            name: Admin
-            id: admin
-        study:
-          writeable: true
-          features:
-            chat: true
-            computer: true
-            explorer: true
-    broadcasts-getBroadcastTournament.json:
-      value:
-        tour:
-          id: gJm0i5k1
-          name: Knight Invitational
-          slug: knight-invitational
-          info: {}
-          createdAt: 1778812602837
-          url: https://lichess.org/broadcast/knight-invitational/gJm0i5k1
-          tier: 5
-          dates:
-          - 1778812603116
-        rounds:
-        - id: 2Ywx30MD
-          name: Round 1
-          slug: round-1
-          createdAt: 1778812602924
-          rated: false
-          ongoing: true
-          startsAt: 1778816202858
-          url: https://lichess.org/broadcast/knight-invitational/round-1/2Ywx30MD
-        - id: bJEvCanZ
-          name: Round 2
-          slug: round-2
-          createdAt: 1778812603074
-          rated: false
-          ongoing: true
-          startsAt: 1778819802858
-          url: https://lichess.org/broadcast/knight-invitational/round-2/bJEvCanZ
-        - id: cxolzwOn
-          name: Round 3
-          slug: round-3
-          createdAt: 1778812603095
-          rated: false
-          ongoing: true
-          startsAt: 1778823402858
-          url: https://lichess.org/broadcast/knight-invitational/round-3/cxolzwOn
-        - id: 0JjIup0K
-          name: Final Round
-          slug: final-round
-          createdAt: 1778812603116
-          rated: false
-          ongoing: true
-          startsAt: 1778812603116
-          url: https://lichess.org/broadcast/knight-invitational/final-round/0JjIup0K
-        defaultRoundId: 2Ywx30MD
-        photos: {}
-    broadcasts-pushPgnToBroadcastRound.json:
-      value:
-        games:
-        - tags:
-            White: Player 1
-            WhiteFideId: '123'
-            Black: Player 2
-            BlackFideId: '456'
-            Result: '*'
-            Event: Knight Invitational
-          moves: 2
-        - tags:
-            White: Player 3
-            Black: Player 4
-            Result: '*'
-            Event: Knight Invitational
-          moves: 2
-    broadcasts-searchBroadcasts.json:
-      value:
-        currentPage: 1
-        maxPerPage: 24
-        currentPageResults:
-        - tour:
-            id: gJm0i5k1
-            name: Knight Invitational
-            slug: knight-invitational
-            info: {}
-            createdAt: 1778812602837
-            url: https://lichess.org/broadcast/knight-invitational/gJm0i5k1
-            tier: 5
-            dates:
-            - 1778812603116
-          round:
-            id: 0JjIup0K
-            name: Final Round
-            slug: final-round
-            createdAt: 1778812603116
-            rated: false
-            ongoing: true
-            startsAt: 1778812603116
-            url: https://lichess.org/broadcast/knight-invitational/final-round/0JjIup0K
-        previousPage: null
-        nextPage: null
-    broadcasts-exportAllRoundsAsPgn.pgn:
-      value: "[Event \"Round 1: Chapter 1\"]\n[Site \"https://lichess.org/broadcast/knight-invitational-2/round-1/2Ywx30MD/NemhNt04\"]\n[Date \"2026.05.15\"]\n[Result \"*\"]\n[Variant \"Standard\"]\n[ECO \"?\"]\n[Opening \"?\"]\n[UTCDate \"2026.05.15\"]\n[UTCTime \"02:36:42\"]\n[BroadcastName \"Knight Invitational 2\"]\n[BroadcastURL \"https://lichess.org/broadcast/knight-invitational-2/round-1/2Ywx30MD\"]\n[GameURL \"https://lichess.org/broadcast/knight-invitational-2/round-1/2Ywx30MD/NemhNt04\"]\n\n *\n\n\n[Event \"Round 2: Chapter 1\"]\n[Site \"https://lichess.org/broadcast/knight-invitational-2/round-2/bJEvCanZ/5JK4PVm6\"]\n[Date \"2026.05.15\"]\n[Result \"*\"]\n[Variant \"Standard\"]\n[ECO \"?\"]\n[Opening \"?\"]\n[UTCDate \"2026.05.15\"]\n[UTCTime \"02:36:43\"]\n[BroadcastName \"Knight Invitational 2\"]\n[BroadcastURL \"https://lichess.org/broadcast/knight-invitational-2/round-2/bJEvCanZ\"]\n[GameURL \"https://lichess.org/broadcast/knight-invitational-2/round-2/bJEvCanZ/5JK4PVm6\"]\n\n *\n\n\n[Event \"Round 3: Chapter 1\"]\n[Site \"https://lichess.org/broadcast/knight-invitational-2/round-3/cxolzwOn/T3ClNdwy\"]\n[Date \"2026.05.15\"]\n[Result \"*\"]\n[Variant \"Standard\"]\n[ECO \"?\"]\n[Opening \"?\"]\n[UTCDate \"2026.05.15\"]\n[UTCTime \"02:36:43\"]\n[BroadcastName \"Knight Invitational 2\"]\n[BroadcastURL \"https://lichess.org/broadcast/knight-invitational-2/round-3/cxolzwOn\"]\n[GameURL \"https://lichess.org/broadcast/knight-invitational-2/round-3/cxolzwOn/T3ClNdwy\"]\n\n *\n\n\n[Event \"Knight Invitational\"]\n[Site \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/uHRiHXFM\"]\n[Date \"2026.05.15\"]\n[White \"Player 1\"]\n[Black \"Player 2\"]\n[Result \"*\"]\n[WhiteFideId \"123\"]\n[BlackFideId \"456\"]\n[Variant \"Standard\"]\n[ECO \"C20\"]\n[Opening \"King's Pawn Game\"]\n[UTCDate \"2026.05.15\"]\n[UTCTime \"02:36:43\"]\n[BroadcastName \"Knight Invitational 2\"]\n[BroadcastURL \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K\"]\n[GameURL \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/uHRiHXFM\"]\n\n1. e4 e5 *\n\n\n[Event \"Knight Invitational\"]\n[Site \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/ZiN3hBIO\"]\n[Date \"2026.05.15\"]\n[White \"Player 3\"]\n[Black \"Player 4\"]\n[Result \"*\"]\n[Variant \"Standard\"]\n[ECO \"D00\"]\n[Opening \"Queen's Pawn Game\"]\n[UTCDate \"2026.05.15\"]\n[UTCTime \"02:36:43\"]\n[BroadcastName \"Knight Invitational 2\"]\n[BroadcastURL \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K\"]\n[GameURL \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/ZiN3hBIO\"]\n\n1. d4 d5 *\n"
-    broadcasts-createBroadcastRound.json:
-      value:
-        round:
-          id: 0JjIup0K
-          name: Final Round
-          slug: final-round
-          createdAt: 1778812603116
-          rated: false
-          ongoing: true
-          startsAt: 1778812603116
-          url: https://lichess.org/broadcast/knight-invitational/final-round/0JjIup0K
-        tour:
-          id: gJm0i5k1
-          name: Knight Invitational
-          slug: knight-invitational
-          info: {}
-          createdAt: 1778812602837
-          url: https://lichess.org/broadcast/knight-invitational/gJm0i5k1
-          tier: 5
-          dates:
-          - 1778816202858
-        study:
-          writeable: true
-          features:
-            chat: true
-            computer: true
-            explorer: true
-    broadcasts-resetBroadcastRound.json:
-      value:
-        ok: true
-    broadcasts-getPlayer.json:
-      value:
-        name: Player 1
-        fideId: 123
-        played: 0
-        games:
-        - round: 0JjIup0K
-          id: uHRiHXFM
-          opponent:
-            name: Player 2
-            fideId: 456
-          color: white
-          fideTC: standard
-          ongoing: true
-    broadcasts-getBroadcastsCreatedByUser.json:
-      value:
-        currentPage: 1
-        maxPerPage: 24
-        currentPageResults:
-        - tour:
-            id: iQ7zCznG
-            name: Bobby's Tournament
-            slug: bobbys-tournament
-            info:
-              format: 5-round Swiss
-              location: Chess Club
-            createdAt: 1778812603531
-            url: https://lichess.org/broadcast/bobbys-tournament/iQ7zCznG
-            communityOwner:
-              name: Bobby
-              id: bobby
-        previousPage: null
-        nextPage: null
-        nbResults: 1
-        nbPages: 1
-    broadcasts-getPaginatedToBroadcastPreviews.json:
-      value:
-        active:
-        - tour:
-            id: gJm0i5k1
-            name: Knight Invitational
-            slug: knight-invitational
-            info: {}
-            createdAt: 1778812602837
-            url: https://lichess.org/broadcast/knight-invitational/gJm0i5k1
-            tier: 5
-            dates:
-            - 1778812603116
-          round:
-            id: 2Ywx30MD
-            name: Round 1
-            slug: round-1
-            createdAt: 1778812602924
-            rated: false
-            ongoing: true
-            startsAt: 1778816202858
-            url: https://lichess.org/broadcast/knight-invitational/round-1/2Ywx30MD
-        upcoming: []
-        past:
-          currentPage: 1
-          maxPerPage: 24
-          currentPageResults: []
-          previousPage: null
-          nextPage: null
-    broadcasts-getBroadcastRoundWithCustomScoring.json:
-      value:
-        round:
-          id: ZpRw34eP
-          name: Round 9 | Armageddon
-          slug: round-9--armageddon
-          createdAt: 1747829403418
-          rated: false
-          finishedAt: 1749146624615
-          finished: true
-          startsAt: 1749142800000
-          customScoring:
-            white:
-              win: 0.5
-              draw: 0
-            black:
-              win: 0.5
-              draw: 0.5
-          url: https://lichess.org/broadcast/norway-chess-2025--open/round-9--armageddon/ZpRw34eP
-        tour:
-          id: PcsMbQ9J
-          name: Norway Chess 2025 | Open
-          slug: norway-chess-2025--open
-          info:
-            format: 6-player double round-robin
-            tc: 120 min + 10 sec / move starting 41
-            fideTC: standard
-            location: Stavanger, Norway
-            timeZone: Europe/Oslo
-            players: Carlsen, Gukesh, Caruana, Nakamura
-            website: https://norwaychess.no/en/
-            standings: https://stats.norwaychess.no/2025/standings
-          createdAt: 1747826541812
-          url: https://lichess.org/broadcast/norway-chess-2025--open/PcsMbQ9J
-          tier: 5
-          dates:
-          - 1748271600000
-          - 1749229200000
-          image: https://image.lichess1.org/display?fmt=webp&h=400&op=thumbnail&path=relay:PcsMbQ9J:QeUfDaHh.webp&w=800&sig=4d7317641091543a721d77baafff804fb15bf107
-          description: '**Points**
-
-
-            - Win in the classical game: 3 points
-
-            - Loss in the classical game: 0 points
-
-            - Draw in the classical game & win Armageddon: 1½ points
-
-            - Draw in the classical game & loss Armageddon: 1 point
-
-
-
-            **Armageddon**
-
-
-            - Time control: White has 10 minutes, Black has 7 minutes
-
-            - Colors: The player with white will continue with white in Armageddon'
-        study:
-          writeable: false
-          features:
-            chat: true
-            computer: true
-            explorer: true
-        games:
-        - id: Zc8WTto3
-          name: Nakamura, Hikaru - Erigaisi Arjun
-          fen: 1nR5/1P1n1pp1/6kp/4P3/6P1/7P/5PK1/8 b - - 0 48
-          players:
-          - name: Nakamura, Hikaru
-            title: GM
-            rating: 2804
-            fideId: 2016192
-            fed: USA
-            clock: 19700
-          - name: Erigaisi Arjun
-            title: GM
-            rating: 2782
-            fideId: 35009192
-            fed: IND
-            clock: 10000
-          lastMove: g3g4
-          status: 1-0
-        photos:
-          '1503014':
-            small: https://image.lichess1.org/display?fmt=webp&h=100&op=thumbnail&path=v6JPXmWyYhTI.webp&w=100&sig=78e9187109f632629c22b5e5b6997976e06a1cf9
-            medium: https://image.lichess1.org/display?fmt=webp&h=500&op=thumbnail&path=v6JPXmWyYhTI.webp&w=500&sig=4b2b5199cfc1d9ff87810d7c10af8a74fe85256e
-            credit: Brigham Aldrich
-          '2016192':
-            small: https://image.lichess1.org/display?fmt=webp&h=100&op=thumbnail&path=DKk7D4U9ivZb.webp&w=100&sig=44d30eb428b70d1058ceec0333fa227c1da60581
-            medium: https://image.lichess1.org/display?fmt=webp&h=500&op=thumbnail&path=DKk7D4U9ivZb.webp&w=500&sig=5e2c2edb1347cfa053951ea481886c21e0c4f676
-            credit: Andreas Kontokanis, CC BY-SA 2.0 <https://creativecommons.org/licenses/by-sa/2.0>, via Wikimedia Commons
-          '2020009':
-            small: https://image.lichess1.org/display?fmt=webp&h=100&op=thumbnail&path=Hif5ohoGiHPZ.webp&w=100&sig=13ea5db011e7e45a97ec1a4164a355ef6b1db8f9
-            medium: https://image.lichess1.org/display?fmt=webp&h=500&op=thumbnail&path=Hif5ohoGiHPZ.webp&w=500&sig=fa71f0594833a61290626f11ab67459349a29f3c
-            credit: Brigham Aldrich
-          '8603405':
-            small: https://image.lichess1.org/display?fmt=webp&h=100&op=thumbnail&path=rDGOWW82iYK9.webp&w=100&sig=7c8ece3893b331835185347a890831ee07a1489e
-            medium: https://image.lichess1.org/display?fmt=webp&h=500&op=thumbnail&path=rDGOWW82iYK9.webp&w=500&sig=dbae7080a8bd3ce8b153a2c7a24429f107dabf1c
-            credit: Frans Peeters, CC BY-SA 2.0 <https://creativecommons.org/licenses/by-sa/2.0>, via Wikimedia Commons
-          '35009192':
-            small: https://image.lichess1.org/display?fmt=webp&h=100&op=thumbnail&path=ZtNkAl1_0MHT.webp&w=100&sig=8a2122f91eab6c3f0528bce8ea5854fd561bbcde
-            medium: https://image.lichess1.org/display?fmt=webp&h=500&op=thumbnail&path=ZtNkAl1_0MHT.webp&w=500&sig=f2faf575e19147ee8b1d2b573f1fd2e18fab88e7
-            credit: Brigham Aldrich
-          '46616543':
-            small: https://image.lichess1.org/display?fmt=webp&h=100&op=thumbnail&path=km_a_02cL0cP.webp&w=100&sig=6427d1a5397f5396ab5246125aae60a672ac5e4a
-            medium: https://image.lichess1.org/display?fmt=webp&h=500&op=thumbnail&path=km_a_02cL0cP.webp&w=500&sig=a12e9409dfb43c0e6e2eb40f29908a55ee455770
-            credit: Frans Peeters, CC BY-SA 2.0 <https://creativecommons.org/licenses/by-sa/2.0>, via Wikimedia Commons
-        group:
-          id: I7IIijJO
-          slug: norway-chess-2025
-          name: Norway Chess 2025
-          tours:
-          - id: PcsMbQ9J
-            name: Open
-            active: false
-            live: false
-          - id: lrKI0bSz
-            name: Women
-            active: false
-            live: false
   schemas:
-    BroadcastPointStr:
+    BroadcastRoundInfo:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        createdAt:
+          type: integer
+          format: int64
+        rated:
+          type: boolean
+          description: Whether the round is used for rating calculations
+        ongoing:
+          type: boolean
+        startsAt:
+          type: integer
+          format: int64
+        startsAfterPrevious:
+          type: boolean
+          description: The start date/time is unknown and the round will start automatically when the previous round completes
+        finishedAt:
+          type: integer
+          format: int64
+        finished:
+          type: boolean
+        url:
+          type: string
+          format: uri
+        delay:
+          type: integer
+          format: int64
+        customScoring:
+          $ref: '#/components/schemas/BroadcastCustomScoring'
+      required:
+      - id
+      - name
+      - slug
+      - url
+      - createdAt
+      - rated
+    GameColor:
       type: string
       enum:
-      - '1'
-      - 1/2
-      - '0'
-    BroadcastPgnPush:
+      - white
+      - black
+    Error:
       type: object
       properties:
-        games:
-          type: array
-          items:
-            type: object
-            properties:
-              tags:
-                $ref: '#/components/schemas/BroadcastPgnPushTags'
-              moves:
-                type: integer
-              error:
-                type: string
-            required:
-            - tags
+        error:
+          type: string
+          description: The cause of the error.
       required:
-      - games
-    BroadcastTop:
+      - error
+      example:
+        error: This request is invalid because [...]
+    BroadcastPhotos:
+      type: object
+      description: Photos of players, when available. The object keys are FIDE IDs
+      additionalProperties:
+        type: object
+        properties:
+          small:
+            description: URL of a small (100x100) thumbnail of the photo
+            type: string
+          medium:
+            description: URL of a medium (500x500) version of the photo
+            type: string
+          credit:
+            description: If set, then you should make it appear next to the photo
+            type: string
+        required:
+        - small
+        - medium
+    StudyPgn:
+      type: string
+      example: '[Event "All about the Sicilian Defense: Dragon Variation"]
+
+        [Site "https://lichess.org/study/8c8bmUfy/qwnXMwVC"]
+
+        [Result "*"]
+
+        [UTCDate "2017.06.25"]
+
+        [UTCTime "10:12:04"]
+
+        [Variant "Standard"]
+
+        [ECO "B76"]
+
+        [Opening "Sicilian Defense: Dragon Variation, Yugoslav Attack, Panov Variation"]
+
+        [Annotator "https://lichess.org/@/Francesco_Super"]
+
+
+        { This chapter will go over the Dragon Variation, a very common variation used by Black and it is the most aggressive variation in the Sicilian defense. }
+
+        1. e4 c5 2. Nf3 { Simple developing move to control the d4 square } { [%csl Gd4,Gc5][%cal Gf3d4,Gc5d4] } 2... d6 { [%cal Gd6e5] } (2... e6 3. d4 cxd4 4. Nxd4 Nf6 5. e5 (5. Nc3 { [%cal Ge4e5] }) 5... Qa5+) 3. d4 { Whites want the exchange of pawns } { [%cal Gc5d4] } 3... cxd4 { [%cal Gf3d4] } 4. Nxd4 { Whites are now ahead in development but blacks still have the two central pawns whereas whites only one. } { [%csl Ge7,Gd6,Ge4] } 4... Nf6 { Blacks are now developing their knight and threatening the e4 pawn } { [%csl Ge4][%cal Gf6e4] } 5. Nc3 { The e4 pawn is now protected by the c3 knight } { [%csl Ge4,Bc3][%cal Rf6e4,Bc3e4] } 5... g6 { This is the DRAGON VARIATION. g6 allows the dark-squared bishop to develop and move to g7, controlling the long dark-squared diagonal } { [%csl Gd4] } 6. Be3 { [%cal Gd1d2,Gf2f3,Ge1c1,Gg2g4,Gh2h4,Gg4g5] } (6. Be2 Bg7 7. O-O Nc6 8. Be3 { [%cal Ge3d4] } (8. f3 Nxe4 { [%cal Gg7d4,Gc6d4] } 9. Nxc6 Qb6+ { [%cal Gb6c6,Gb6g1] } 10. Kh1 Nxc3 { [%cal Gc3d1,Gc3e2] } 11. bxc3 bxc6 { [%cal Gc8a6] }) 8... O-O 9. Nb3 a6 { [%cal Gb7b5,Gb5b4,Ge2c4] }) 6... Bg7 (6... Ng4 { [%cal Gg4e3] } 7. Bb5+ { [%cal Gb5e8,Gb8d7,Gc8d7,Gd1g4] } 7... Nc6 8. Nxc6 bxc6 9. Bxc6+ { [%cal Gc6a8] }) 7. f3 { The key opening moves for White, who attempt to castle queenside , whereas f3 strengthens the pawn structure, connecting e4 to the h2 and g2, while White also plan pushing to g4 and possibly h4. } { [%csl Bf3,Be3][%cal Rg2g4,Rh2h4,Rg4g5] } 7... O-O (7... h5 { Is operating against g4. }) 8. Qd2 { [%csl Gh6,Gg7][%cal Ge1c1,Ga1d1,Re3h6,Rd2h6] } 8... Nc6 { [%csl Gc6,Gh6][%cal Gb8c6,Ge1c1,Ga7a6,Ge3h6] } 9. g4 (9. Bh6 { [%cal Ge3d4] } 9... Bxh6 10. Qxh6 Nxd4) 9... Be6 10. Nxe6 fxe6 { [%cal Gf8f1] } 11. O-O-O Ne5 12. Be2 { [%csl Gf3][%cal Re5f3,Bd1h1,Bg1d1] } 12... Qc7 { [%csl Gc4][%cal Ge5c4,Gc4e3,Gc4d2,Bf8c8,Yc7c3] } 13. h4 Nc4 *
+
+        '
+    BroadcastGroup:
       type: object
       properties:
-        active:
+        id:
+          type: string
+        slug:
+          type: string
+        name:
+          type: string
+        tours:
           type: array
           items:
-            $ref: '#/components/schemas/BroadcastWithLastRound'
-        upcoming:
-          type: array
-          items:
-            $ref: '#/components/schemas/BroadcastWithLastRound'
-          minItems: 0
-          maxItems: 0
-          deprecated: true
-        past:
-          type: object
-          properties:
-            currentPage:
-              type: integer
-              example: 4
-            maxPerPage:
-              type: integer
-              example: 20
-            currentPageResults:
-              type: array
-              items:
-                $ref: '#/components/schemas/BroadcastWithLastRound'
-            previousPage:
-              type:
-              - integer
-              - 'null'
-              example: 3
-            nextPage:
-              type:
-              - integer
-              - 'null'
-              example: 5
+            $ref: '#/components/schemas/BroadcastGroupTour'
+      required:
+      - id
+      - slug
+      - name
+      - tours
     BroadcastWithRounds:
       type: object
       properties:
@@ -1669,6 +1075,353 @@ components:
       required:
       - tour
       - rounds
+    StatByFideTC:
+      type: object
+      properties:
+        standard:
+          type: integer
+        rapid:
+          type: integer
+        blitz:
+          type: integer
+    Title:
+      type: string
+      enum:
+      - GM
+      - WGM
+      - IM
+      - WIM
+      - FM
+      - WFM
+      - NM
+      - CM
+      - WCM
+      - WNM
+      - LM
+      - BOT
+      description: only appears if the user is a titled player or a bot user
+    BroadcastCustomScoring:
+      type: object
+      description: Scoring overrides for wins or draws.
+      properties:
+        white:
+          $ref: '#/components/schemas/BroadcastCustomPointsPerColor'
+        black:
+          $ref: '#/components/schemas/BroadcastCustomPointsPerColor'
+      required:
+      - white
+      - black
+    FideTimeControl:
+      type: string
+      enum:
+      - standard
+      - rapid
+      - blitz
+      description: 'FIDE rating category
+
+        '
+    Flair:
+      type: string
+      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
+    BroadcastPgnPush:
+      type: object
+      properties:
+        games:
+          type: array
+          items:
+            type: object
+            properties:
+              tags:
+                $ref: '#/components/schemas/BroadcastPgnPushTags'
+              moves:
+                type: integer
+              error:
+                type: string
+            required:
+            - tags
+      required:
+      - games
+    BroadcastRoundNew:
+      type: object
+      properties:
+        round:
+          $ref: '#/components/schemas/BroadcastRoundInfo'
+        tour:
+          $ref: '#/components/schemas/BroadcastTour'
+        study:
+          $ref: '#/components/schemas/BroadcastRoundStudyInfo'
+      required:
+      - round
+      - tour
+      - study
+    BroadcastTiebreakExtendedCode:
+      type: string
+      description: Extended tiebreak code
+      enum:
+      - AOB
+      - APPO
+      - APRO
+      - ARO
+      - ARO-C1
+      - ARO-C2
+      - ARO-M1
+      - ARO-M2
+      - BH
+      - BH-C1
+      - BH-C2
+      - BH-M1
+      - BH-M2
+      - BPG
+      - BWG
+      - DE
+      - FB
+      - FB-C1
+      - FB-C2
+      - FB-M1
+      - FB-M2
+      - KS
+      - PS
+      - PS-C1
+      - PS-C2
+      - PS-M1
+      - PS-M2
+      - PTP
+      - SB
+      - SB-C1
+      - SB-C2
+      - SB-M1
+      - SB-M2
+      - TPR
+      - WON
+    BroadcastTour:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        slug:
+          type: string
+        createdAt:
+          type: integer
+          example: 1722169800000
+        dates:
+          type: array
+          items:
+            type: integer
+            format: int64
+          description: Start and end dates of the tournament, as Unix timestamps in milliseconds
+          minItems: 1
+          maxItems: 2
+          example:
+          - 1722169800000
+          - 1722666600000
+        info:
+          type: object
+          description: Additional display information about the tournament
+          properties:
+            website:
+              type: string
+              format: uri
+              description: Official website. External website URL
+            players:
+              type: string
+              description: Featured players
+            location:
+              type: string
+              description: Tournament location
+            tc:
+              type: string
+              description: Time control
+            fideTC:
+              description: FIDE rating category
+              $ref: '#/components/schemas/FideTimeControl'
+            timeZone:
+              type: string
+              description: 'Timezone of the tournament. Example: `America/New_York`.
+
+                See [list of possible timezone identifiers](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) for more.
+
+                '
+            standings:
+              type: string
+              format: uri
+              description: Official standings website. External website URL
+            format:
+              type: string
+              description: Tournament format
+        tier:
+          type: integer
+          description: Used to designate featured tournaments on Lichess
+        image:
+          type: string
+          format: uri
+        description:
+          type: string
+          description: Full tournament description in markdown format, or in HTML if the html=1 query parameter is set.
+        teamTable:
+          type: boolean
+        showTeamScores:
+          type: boolean
+        url:
+          type: string
+          format: uri
+        communityOwner:
+          $ref: '#/components/schemas/LightUser'
+      required:
+      - id
+      - name
+      - slug
+      - createdAt
+      - url
+    BroadcastMyRound:
+      type: object
+      properties:
+        round:
+          $ref: '#/components/schemas/BroadcastRoundInfo'
+        tour:
+          $ref: '#/components/schemas/BroadcastTour'
+        study:
+          $ref: '#/components/schemas/BroadcastRoundStudyInfo'
+      required:
+      - round
+      - tour
+      - study
+    BroadcastRoundFormName:
+      type: string
+      minLength: 3
+      maxLength: 80
+      description: 'Name of the broadcast round.
+
+        Example: `Round 1`
+
+        '
+    Patron:
+      type: boolean
+      deprecated: true
+      description: 'Use patronColor value instead to determine if player is a patron.
+
+        '
+    BroadcastGameEntry:
+      type: object
+      properties:
+        round:
+          type: string
+          description: ID of the round
+        id:
+          type: string
+          description: The game ID. Analogous to chapterId.
+        opponent:
+          $ref: '#/components/schemas/BroadcastPlayerWithFed'
+        color:
+          $ref: '#/components/schemas/GameColor'
+        points:
+          $ref: '#/components/schemas/BroadcastPointStr'
+        customPoints:
+          $ref: '#/components/schemas/BroadcastCustomPoints'
+        ratingDiff:
+          type: integer
+          description: The change in rating for the player as a result of this game
+        fideTC:
+          $ref: '#/components/schemas/FideTimeControl'
+        ongoing:
+          type: boolean
+      required:
+      - round
+      - id
+      - opponent
+      - color
+      - fideTC
+    BroadcastByUser:
+      type: object
+      properties:
+        tour:
+          $ref: '#/components/schemas/BroadcastTour'
+      required:
+      - tour
+    BroadcastTeamPOVMatchEntry:
+      type: object
+      properties:
+        roundId:
+          type: string
+        opponent:
+          type: string
+          description: The name of the opposing team
+        mp:
+          type: number
+          description: Match points scored in this match
+        gp:
+          type: number
+          description: Game points scored in this match
+        points:
+          $ref: '#/components/schemas/BroadcastPointStr'
+      required:
+      - roundId
+      - opponent
+    BroadcastPlayerEntryWithFideAndGames:
+      allOf:
+      - $ref: '#/components/schemas/BroadcastPlayerEntry'
+      - type: object
+        properties:
+          fide:
+            type: object
+            properties:
+              year:
+                type: integer
+                description: Year of birth
+              ratings:
+                description: Player's current ratings from the latest FIDE rating list.
+                allOf:
+                - $ref: '#/components/schemas/StatByFideTC'
+          games:
+            type: array
+            description: List of games played by the player in the broadcast tournament
+            items:
+              $ref: '#/components/schemas/BroadcastGameEntry'
+    BroadcastPlayerTiebreak:
+      type: object
+      properties:
+        extendedCode:
+          $ref: '#/components/schemas/BroadcastTiebreakExtendedCode'
+        description:
+          type: string
+          example: Buchholz Cut 1
+        points:
+          type: number
+          example: 45.5
+      required:
+      - extendedCode
+      - description
+      - points
+    BroadcastTeamLeaderboardEntry:
+      properties:
+        name:
+          type: string
+          description: The name of the team
+        mp:
+          type: number
+          description: Total match points scored
+        gp:
+          type: number
+          description: Total game points scored
+        averageRating:
+          type: integer
+          description: The average rating of the team's players
+        matches:
+          type: array
+          items:
+            $ref: '#/components/schemas/BroadcastTeamPOVMatchEntry'
+        players:
+          type: array
+          description: Players who have played for the team and their overall score
+          items:
+            $ref: '#/components/schemas/BroadcastPlayerEntry'
+      required:
+      - name
+      - mp
+      - gp
+      - matches
+      - players
     BroadcastPlayerEntry:
       allOf:
       - $ref: '#/components/schemas/BroadcastPlayerWithFed'
@@ -1715,105 +1468,6 @@ components:
             type: integer
             example: 1
             minimum: 1
-    BroadcastWithRoundsAndFullGroup:
-      type: object
-      properties:
-        tour:
-          $ref: '#/components/schemas/BroadcastTour'
-        group:
-          $ref: '#/components/schemas/BroadcastGroup'
-        rounds:
-          type: array
-          items:
-            $ref: '#/components/schemas/BroadcastRoundInfo'
-        defaultRoundId:
-          type: string
-        photos:
-          $ref: '#/components/schemas/BroadcastPhotos'
-      required:
-      - tour
-      - rounds
-    BroadcastRoundGame:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        fen:
-          type: string
-        players:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-              title:
-                $ref: '#/components/schemas/Title'
-              rating:
-                type: integer
-              fideId:
-                type: integer
-              fed:
-                type: string
-              clock:
-                type: integer
-        lastMove:
-          type: string
-        check:
-          type: string
-          enum:
-          - +
-          - '#'
-        thinkTime:
-          type: integer
-        status:
-          description: The result of the game
-          type: string
-          enum:
-          - '*'
-          - 1-0
-          - 0-1
-          - ½-½
-      required:
-      - id
-      - name
-    BroadcastPlayerEntryWithFideAndGames:
-      allOf:
-      - $ref: '#/components/schemas/BroadcastPlayerEntry'
-      - type: object
-        properties:
-          fide:
-            type: object
-            properties:
-              year:
-                type: integer
-                description: Year of birth
-              ratings:
-                description: Player's current ratings from the latest FIDE rating list.
-                allOf:
-                - $ref: '#/components/schemas/StatByFideTC'
-          games:
-            type: array
-            description: List of games played by the player in the broadcast tournament
-            items:
-              $ref: '#/components/schemas/BroadcastGameEntry'
-    BroadcastPlayerTiebreak:
-      type: object
-      properties:
-        extendedCode:
-          $ref: '#/components/schemas/BroadcastTiebreakExtendedCode'
-        description:
-          type: string
-          example: Buchholz Cut 1
-        points:
-          type: number
-          example: 45.5
-      required:
-      - extendedCode
-      - description
-      - points
     BroadcastForm:
       type: object
       properties:
@@ -2035,28 +1689,219 @@ components:
           $ref: '#/components/schemas/BroadcastTour'
         round:
           $ref: '#/components/schemas/BroadcastRoundInfo'
-    BroadcastCustomScoring:
+    BroadcastPgnPushTags:
       type: object
-      description: Scoring overrides for wins or draws.
+      additionalProperties:
+        type: string
+    NotFound:
       properties:
-        white:
-          $ref: '#/components/schemas/BroadcastCustomPointsPerColor'
-        black:
-          $ref: '#/components/schemas/BroadcastCustomPointsPerColor'
+        error:
+          type: string
       required:
-      - white
-      - black
+      - error
+      example:
+        error: Not found.
+    BroadcastRound:
+      type: object
+      properties:
+        round:
+          $ref: '#/components/schemas/BroadcastRoundInfo'
+        tour:
+          $ref: '#/components/schemas/BroadcastTour'
+        study:
+          $ref: '#/components/schemas/BroadcastRoundStudyInfo'
+        games:
+          type: array
+          items:
+            $ref: '#/components/schemas/BroadcastRoundGame'
+        group:
+          $ref: '#/components/schemas/BroadcastGroup'
+        isSubscribed:
+          type: boolean
+          description: Indicates if the user making the request is subscribed to the broadcast
+        photos:
+          $ref: '#/components/schemas/BroadcastPhotos'
+      required:
+      - round
+      - tour
+      - study
+      - games
+      - photos
+    LightUser:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        flair:
+          $ref: '#/components/schemas/Flair'
+        title:
+          $ref: '#/components/schemas/Title'
+        patron:
+          $ref: '#/components/schemas/Patron'
+        patronColor:
+          $ref: '#/components/schemas/PatronColor'
+      required:
+      - id
+      - name
+    BroadcastTop:
+      type: object
+      properties:
+        active:
+          type: array
+          items:
+            $ref: '#/components/schemas/BroadcastWithLastRound'
+        upcoming:
+          type: array
+          items:
+            $ref: '#/components/schemas/BroadcastWithLastRound'
+          minItems: 0
+          maxItems: 0
+          deprecated: true
+        past:
+          type: object
+          properties:
+            currentPage:
+              type: integer
+              example: 4
+            maxPerPage:
+              type: integer
+              example: 20
+            currentPageResults:
+              type: array
+              items:
+                $ref: '#/components/schemas/BroadcastWithLastRound'
+            previousPage:
+              type:
+              - integer
+              - 'null'
+              example: 3
+            nextPage:
+              type:
+              - integer
+              - 'null'
+              example: 5
+    PatronColor:
+      type: integer
+      description: 'Players can choose a color for their Patron wings.
+
+        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
+
+
+        The presence of this field indicates the player is an active Patron.
+
+        '
+      minimum: 1
+      maximum: 10
+    BroadcastPointStr:
+      type: string
+      enum:
+      - '1'
+      - 1/2
+      - '0'
+    BroadcastRoundGame:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        fen:
+          type: string
+        players:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              title:
+                $ref: '#/components/schemas/Title'
+              rating:
+                type: integer
+              fideId:
+                type: integer
+              fed:
+                type: string
+              clock:
+                type: integer
+        lastMove:
+          type: string
+        check:
+          type: string
+          enum:
+          - +
+          - '#'
+        thinkTime:
+          type: integer
+        status:
+          description: The result of the game
+          type: string
+          enum:
+          - '*'
+          - 1-0
+          - 0-1
+          - ½-½
+      required:
+      - id
+      - name
+    BroadcastWithRoundsAndFullGroup:
+      type: object
+      properties:
+        tour:
+          $ref: '#/components/schemas/BroadcastTour'
+        group:
+          $ref: '#/components/schemas/BroadcastGroup'
+        rounds:
+          type: array
+          items:
+            $ref: '#/components/schemas/BroadcastRoundInfo'
+        defaultRoundId:
+          type: string
+        photos:
+          $ref: '#/components/schemas/BroadcastPhotos'
+      required:
+      - tour
+      - rounds
+    BroadcastCustomPoints:
+      type: number
+      minimum: 0
+      maximum: 10
     Ok:
       properties:
         ok:
           type: boolean
       required:
       - ok
-    GameColor:
-      type: string
-      enum:
-      - white
-      - black
+    BroadcastCustomPointsPerColor:
+      type: object
+      properties:
+        win:
+          $ref: '#/components/schemas/BroadcastCustomPoints'
+        draw:
+          $ref: '#/components/schemas/BroadcastCustomPoints'
+      required:
+      - win
+      - draw
+    BroadcastRoundStudyInfo:
+      type: object
+      properties:
+        writeable:
+          description: Whether the currently authenticated user has permission to update the study
+          type: boolean
+        features:
+          type: object
+          properties:
+            chat:
+              type: boolean
+              description: Whether chat is enabled for the currently authenticated user
+            computer:
+              type: boolean
+              description: Whether engine analysis is enabled for the currently authenticated user
+            explorer:
+              type: boolean
+              description: Whether the opening explorer + tablebase is enabled for the currently authenticated user
     BroadcastRoundForm:
       allOf:
       - oneOf:
@@ -2311,45 +2156,6 @@ components:
               '
             minimum: 2
             maximum: 60
-    BroadcastTiebreakExtendedCode:
-      type: string
-      description: Extended tiebreak code
-      enum:
-      - AOB
-      - APPO
-      - APRO
-      - ARO
-      - ARO-C1
-      - ARO-C2
-      - ARO-M1
-      - ARO-M2
-      - BH
-      - BH-C1
-      - BH-C2
-      - BH-M1
-      - BH-M2
-      - BPG
-      - BWG
-      - DE
-      - FB
-      - FB-C1
-      - FB-C2
-      - FB-M1
-      - FB-M2
-      - KS
-      - PS
-      - PS-C1
-      - PS-C2
-      - PS-M1
-      - PS-M2
-      - PTP
-      - SB
-      - SB-C1
-      - SB-C2
-      - SB-M1
-      - SB-M2
-      - TPR
-      - WON
     BroadcastPlayerWithFed:
       type: object
       properties:
@@ -2387,465 +2193,659 @@ components:
       - name
       - active
       - live
-    BroadcastGameEntry:
-      type: object
-      properties:
-        round:
-          type: string
-          description: ID of the round
-        id:
-          type: string
-          description: The game ID. Analogous to chapterId.
-        opponent:
-          $ref: '#/components/schemas/BroadcastPlayerWithFed'
-        color:
-          $ref: '#/components/schemas/GameColor'
-        points:
-          $ref: '#/components/schemas/BroadcastPointStr'
-        customPoints:
-          $ref: '#/components/schemas/BroadcastCustomPoints'
-        ratingDiff:
-          type: integer
-          description: The change in rating for the player as a result of this game
-        fideTC:
-          $ref: '#/components/schemas/FideTimeControl'
-        ongoing:
-          type: boolean
-      required:
-      - round
-      - id
-      - opponent
-      - color
-      - fideTC
-    StatByFideTC:
-      type: object
-      properties:
-        standard:
-          type: integer
-        rapid:
-          type: integer
-        blitz:
-          type: integer
-    StudyPgn:
-      type: string
-      example: '[Event "All about the Sicilian Defense: Dragon Variation"]
+  examples:
+    broadcasts-getPlayersOfBroadcastTournament.json:
+      value:
+      - name: Player 1
+        fideId: 123
+        played: 0
+      - name: Player 2
+        fideId: 456
+        played: 0
+      - name: Player 3
+        played: 0
+      - name: Player 4
+        played: 0
+    broadcasts-exportOneRoundAsPgn.pgn:
+      value: '[Event "Knight Invitational"]
 
-        [Site "https://lichess.org/study/8c8bmUfy/qwnXMwVC"]
+        [Site "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/uHRiHXFM"]
+
+        [Date "2026.05.15"]
+
+        [White "Player 1"]
+
+        [Black "Player 2"]
 
         [Result "*"]
 
-        [UTCDate "2017.06.25"]
+        [WhiteFideId "123"]
 
-        [UTCTime "10:12:04"]
+        [BlackFideId "456"]
 
         [Variant "Standard"]
 
-        [ECO "B76"]
+        [ECO "C20"]
 
-        [Opening "Sicilian Defense: Dragon Variation, Yugoslav Attack, Panov Variation"]
+        [Opening "King''s Pawn Game"]
 
-        [Annotator "https://lichess.org/@/Francesco_Super"]
+        [UTCDate "2026.05.15"]
 
+        [UTCTime "02:36:43"]
 
-        { This chapter will go over the Dragon Variation, a very common variation used by Black and it is the most aggressive variation in the Sicilian defense. }
+        [BroadcastName "Knight Invitational 2"]
 
-        1. e4 c5 2. Nf3 { Simple developing move to control the d4 square } { [%csl Gd4,Gc5][%cal Gf3d4,Gc5d4] } 2... d6 { [%cal Gd6e5] } (2... e6 3. d4 cxd4 4. Nxd4 Nf6 5. e5 (5. Nc3 { [%cal Ge4e5] }) 5... Qa5+) 3. d4 { Whites want the exchange of pawns } { [%cal Gc5d4] } 3... cxd4 { [%cal Gf3d4] } 4. Nxd4 { Whites are now ahead in development but blacks still have the two central pawns whereas whites only one. } { [%csl Ge7,Gd6,Ge4] } 4... Nf6 { Blacks are now developing their knight and threatening the e4 pawn } { [%csl Ge4][%cal Gf6e4] } 5. Nc3 { The e4 pawn is now protected by the c3 knight } { [%csl Ge4,Bc3][%cal Rf6e4,Bc3e4] } 5... g6 { This is the DRAGON VARIATION. g6 allows the dark-squared bishop to develop and move to g7, controlling the long dark-squared diagonal } { [%csl Gd4] } 6. Be3 { [%cal Gd1d2,Gf2f3,Ge1c1,Gg2g4,Gh2h4,Gg4g5] } (6. Be2 Bg7 7. O-O Nc6 8. Be3 { [%cal Ge3d4] } (8. f3 Nxe4 { [%cal Gg7d4,Gc6d4] } 9. Nxc6 Qb6+ { [%cal Gb6c6,Gb6g1] } 10. Kh1 Nxc3 { [%cal Gc3d1,Gc3e2] } 11. bxc3 bxc6 { [%cal Gc8a6] }) 8... O-O 9. Nb3 a6 { [%cal Gb7b5,Gb5b4,Ge2c4] }) 6... Bg7 (6... Ng4 { [%cal Gg4e3] } 7. Bb5+ { [%cal Gb5e8,Gb8d7,Gc8d7,Gd1g4] } 7... Nc6 8. Nxc6 bxc6 9. Bxc6+ { [%cal Gc6a8] }) 7. f3 { The key opening moves for White, who attempt to castle queenside , whereas f3 strengthens the pawn structure, connecting e4 to the h2 and g2, while White also plan pushing to g4 and possibly h4. } { [%csl Bf3,Be3][%cal Rg2g4,Rh2h4,Rg4g5] } 7... O-O (7... h5 { Is operating against g4. }) 8. Qd2 { [%csl Gh6,Gg7][%cal Ge1c1,Ga1d1,Re3h6,Rd2h6] } 8... Nc6 { [%csl Gc6,Gh6][%cal Gb8c6,Ge1c1,Ga7a6,Ge3h6] } 9. g4 (9. Bh6 { [%cal Ge3d4] } 9... Bxh6 10. Qxh6 Nxd4) 9... Be6 10. Nxe6 fxe6 { [%cal Gf8f1] } 11. O-O-O Ne5 12. Be2 { [%csl Gf3][%cal Re5f3,Bd1h1,Bg1d1] } 12... Qc7 { [%csl Gc4][%cal Ge5c4,Gc4e3,Gc4d2,Bf8c8,Yc7c3] } 13. h4 Nc4 *
+        [BroadcastURL "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K"]
 
-        '
-    LightUser:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        flair:
-          $ref: '#/components/schemas/Flair'
-        title:
-          $ref: '#/components/schemas/Title'
-        patron:
-          $ref: '#/components/schemas/Patron'
-        patronColor:
-          $ref: '#/components/schemas/PatronColor'
-      required:
-      - id
-      - name
-    PatronColor:
-      type: integer
-      description: 'Players can choose a color for their Patron wings.
-
-        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
+        [GameURL "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/uHRiHXFM"]
 
 
-        The presence of this field indicates the player is an active Patron.
+        1. e4 e5 *
 
-        '
-      minimum: 1
-      maximum: 10
-    Flair:
-      type: string
-      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
-    Title:
-      type: string
-      enum:
-      - GM
-      - WGM
-      - IM
-      - WIM
-      - FM
-      - WFM
-      - NM
-      - CM
-      - WCM
-      - WNM
-      - LM
-      - BOT
-      description: only appears if the user is a titled player or a bot user
-    BroadcastTour:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        slug:
-          type: string
-        createdAt:
-          type: integer
-          example: 1722169800000
-        dates:
-          type: array
-          items:
-            type: integer
-            format: int64
-          description: Start and end dates of the tournament, as Unix timestamps in milliseconds
-          minItems: 1
-          maxItems: 2
-          example:
-          - 1722169800000
-          - 1722666600000
-        info:
-          type: object
-          description: Additional display information about the tournament
-          properties:
-            website:
-              type: string
-              format: uri
-              description: Official website. External website URL
-            players:
-              type: string
-              description: Featured players
-            location:
-              type: string
-              description: Tournament location
-            tc:
-              type: string
-              description: Time control
-            fideTC:
-              description: FIDE rating category
-              $ref: '#/components/schemas/FideTimeControl'
-            timeZone:
-              type: string
-              description: 'Timezone of the tournament. Example: `America/New_York`.
 
-                See [list of possible timezone identifiers](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) for more.
 
-                '
-            standings:
-              type: string
-              format: uri
-              description: Official standings website. External website URL
-            format:
-              type: string
-              description: Tournament format
-        tier:
-          type: integer
-          description: Used to designate featured tournaments on Lichess
-        image:
-          type: string
-          format: uri
-        description:
-          type: string
-          description: Full tournament description in markdown format, or in HTML if the html=1 query parameter is set.
-        teamTable:
-          type: boolean
-        showTeamScores:
-          type: boolean
-        url:
-          type: string
-          format: uri
-        communityOwner:
-          $ref: '#/components/schemas/LightUser'
-      required:
-      - id
-      - name
-      - slug
-      - createdAt
-      - url
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-          description: The cause of the error.
-      required:
-      - error
-      example:
-        error: This request is invalid because [...]
-    BroadcastRoundNew:
-      type: object
-      properties:
-        round:
-          $ref: '#/components/schemas/BroadcastRoundInfo'
-        tour:
-          $ref: '#/components/schemas/BroadcastTour'
-        study:
-          $ref: '#/components/schemas/BroadcastRoundStudyInfo'
-      required:
-      - round
-      - tour
-      - study
-    BroadcastMyRound:
-      type: object
-      properties:
-        round:
-          $ref: '#/components/schemas/BroadcastRoundInfo'
-        tour:
-          $ref: '#/components/schemas/BroadcastTour'
-        study:
-          $ref: '#/components/schemas/BroadcastRoundStudyInfo'
-      required:
-      - round
-      - tour
-      - study
-    BroadcastCustomPointsPerColor:
-      type: object
-      properties:
-        win:
-          $ref: '#/components/schemas/BroadcastCustomPoints'
-        draw:
-          $ref: '#/components/schemas/BroadcastCustomPoints'
-      required:
-      - win
-      - draw
-    Patron:
-      type: boolean
-      deprecated: true
-      description: 'Use patronColor value instead to determine if player is a patron.
+        [Event "Knight Invitational"]
+
+        [Site "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/ZiN3hBIO"]
+
+        [Date "2026.05.15"]
+
+        [White "Player 3"]
+
+        [Black "Player 4"]
+
+        [Result "*"]
+
+        [Variant "Standard"]
+
+        [ECO "D00"]
+
+        [Opening "Queen''s Pawn Game"]
+
+        [UTCDate "2026.05.15"]
+
+        [UTCTime "02:36:43"]
+
+        [BroadcastName "Knight Invitational 2"]
+
+        [BroadcastURL "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K"]
+
+        [GameURL "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/ZiN3hBIO"]
+
+
+        1. d4 d5 *
 
         '
-    BroadcastTeamLeaderboardEntry:
-      properties:
-        name:
-          type: string
-          description: The name of the team
-        mp:
-          type: number
-          description: Total match points scored
-        gp:
-          type: number
-          description: Total game points scored
-        averageRating:
-          type: integer
-          description: The average rating of the team's players
-        matches:
-          type: array
-          items:
-            $ref: '#/components/schemas/BroadcastTeamPOVMatchEntry'
-        players:
-          type: array
-          description: Players who have played for the team and their overall score
-          items:
-            $ref: '#/components/schemas/BroadcastPlayerEntry'
-      required:
-      - name
-      - mp
-      - gp
-      - matches
-      - players
-    NotFound:
-      properties:
-        error:
-          type: string
-      required:
-      - error
-      example:
-        error: Not found.
-    BroadcastRound:
-      type: object
-      properties:
-        round:
-          $ref: '#/components/schemas/BroadcastRoundInfo'
+    broadcasts-getOfficialBroadcasts.json:
+      value:
         tour:
-          $ref: '#/components/schemas/BroadcastTour'
+          id: gJm0i5k1
+          name: Knight Invitational
+          slug: knight-invitational
+          info: {}
+          createdAt: 1778812602837
+          url: https://lichess.org/broadcast/knight-invitational/gJm0i5k1
+          tier: 5
+          dates:
+          - 1778812603116
+        rounds:
+        - id: 2Ywx30MD
+          name: Round 1
+          slug: round-1
+          createdAt: 1778812602924
+          rated: false
+          ongoing: true
+          startsAt: 1778816202858
+          url: https://lichess.org/broadcast/knight-invitational/round-1/2Ywx30MD
+        - id: bJEvCanZ
+          name: Round 2
+          slug: round-2
+          createdAt: 1778812603074
+          rated: false
+          ongoing: true
+          startsAt: 1778819802858
+          url: https://lichess.org/broadcast/knight-invitational/round-2/bJEvCanZ
+        - id: cxolzwOn
+          name: Round 3
+          slug: round-3
+          createdAt: 1778812603095
+          rated: false
+          ongoing: true
+          startsAt: 1778823402858
+          url: https://lichess.org/broadcast/knight-invitational/round-3/cxolzwOn
+        - id: 0JjIup0K
+          name: Final Round
+          slug: final-round
+          createdAt: 1778812603116
+          rated: false
+          ongoing: true
+          startsAt: 1778812603116
+          url: https://lichess.org/broadcast/knight-invitational/final-round/0JjIup0K
+        defaultRoundId: 2Ywx30MD
+    broadcasts-getBroadcastRound.json:
+      value:
+        round:
+          id: 0JjIup0K
+          name: Final Round
+          slug: final-round
+          createdAt: 1778812603116
+          rated: false
+          ongoing: true
+          startsAt: 1778812603116
+          url: https://lichess.org/broadcast/knight-invitational-2/final-round/0JjIup0K
+        tour:
+          id: gJm0i5k1
+          name: Knight Invitational 2
+          slug: knight-invitational-2
+          info: {}
+          createdAt: 1778812602837
+          url: https://lichess.org/broadcast/knight-invitational-2/gJm0i5k1
+          dates:
+          - 1778812603116
+          communityOwner:
+            name: Admin
+            id: admin
         study:
-          $ref: '#/components/schemas/BroadcastRoundStudyInfo'
+          writeable: false
+          features:
+            chat: true
+            computer: true
+            explorer: true
         games:
-          type: array
-          items:
-            $ref: '#/components/schemas/BroadcastRoundGame'
-        group:
-          $ref: '#/components/schemas/BroadcastGroup'
-        isSubscribed:
-          type: boolean
-          description: Indicates if the user making the request is subscribed to the broadcast
-        photos:
-          $ref: '#/components/schemas/BroadcastPhotos'
-      required:
-      - round
-      - tour
-      - study
-      - games
-      - photos
-    BroadcastRoundStudyInfo:
-      type: object
-      properties:
-        writeable:
-          description: Whether the currently authenticated user has permission to update the study
-          type: boolean
-        features:
-          type: object
-          properties:
-            chat:
-              type: boolean
-              description: Whether chat is enabled for the currently authenticated user
-            computer:
-              type: boolean
-              description: Whether engine analysis is enabled for the currently authenticated user
-            explorer:
-              type: boolean
-              description: Whether the opening explorer + tablebase is enabled for the currently authenticated user
-    BroadcastTeamPOVMatchEntry:
-      type: object
-      properties:
-        roundId:
-          type: string
-        opponent:
-          type: string
-          description: The name of the opposing team
-        mp:
-          type: number
-          description: Match points scored in this match
-        gp:
-          type: number
-          description: Game points scored in this match
-        points:
-          $ref: '#/components/schemas/BroadcastPointStr'
-      required:
-      - roundId
-      - opponent
-    BroadcastPgnPushTags:
-      type: object
-      additionalProperties:
-        type: string
-    BroadcastRoundInfo:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        slug:
-          type: string
-        createdAt:
-          type: integer
-          format: int64
-        rated:
-          type: boolean
-          description: Whether the round is used for rating calculations
-        ongoing:
-          type: boolean
-        startsAt:
-          type: integer
-          format: int64
-        startsAfterPrevious:
-          type: boolean
-          description: The start date/time is unknown and the round will start automatically when the previous round completes
-        finishedAt:
-          type: integer
-          format: int64
-        finished:
-          type: boolean
-        url:
-          type: string
-          format: uri
-        delay:
-          type: integer
-          format: int64
-        customScoring:
-          $ref: '#/components/schemas/BroadcastCustomScoring'
-      required:
-      - id
-      - name
-      - slug
-      - url
-      - createdAt
-      - rated
-    FideTimeControl:
-      type: string
-      enum:
-      - standard
-      - rapid
-      - blitz
-      description: 'FIDE rating category
-
-        '
-    BroadcastByUser:
-      type: object
-      properties:
+        - id: uHRiHXFM
+          name: Player 1 - Player 2
+          fen: rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2
+          players:
+          - name: Player 1
+            fideId: 123
+          - name: Player 2
+            fideId: 456
+          lastMove: e7e5
+          thinkTime: 0
+          status: '*'
+        - id: ZiN3hBIO
+          name: Player 3 - Player 4
+          fen: rnbqkbnr/ppp1pppp/8/3p4/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 0 2
+          players:
+          - name: Player 3
+          - name: Player 4
+          lastMove: d7d5
+          thinkTime: 0
+          status: '*'
+        photos: {}
+        isSubscribed: false
+    broadcasts-resetBroadcastRound.json:
+      value:
+        ok: true
+    broadcasts-getBroadcastRoundWithCustomScoring.json:
+      value:
+        round:
+          id: ZpRw34eP
+          name: Round 9 | Armageddon
+          slug: round-9--armageddon
+          createdAt: 1747829403418
+          rated: false
+          finishedAt: 1749146624615
+          finished: true
+          startsAt: 1749142800000
+          customScoring:
+            white:
+              win: 0.5
+              draw: 0
+            black:
+              win: 0.5
+              draw: 0.5
+          url: https://lichess.org/broadcast/norway-chess-2025--open/round-9--armageddon/ZpRw34eP
         tour:
-          $ref: '#/components/schemas/BroadcastTour'
-      required:
-      - tour
-    BroadcastCustomPoints:
-      type: number
-      minimum: 0
-      maximum: 10
-    BroadcastRoundFormName:
-      type: string
-      minLength: 3
-      maxLength: 80
-      description: 'Name of the broadcast round.
+          id: PcsMbQ9J
+          name: Norway Chess 2025 | Open
+          slug: norway-chess-2025--open
+          info:
+            format: 6-player double round-robin
+            tc: 120 min + 10 sec / move starting 41
+            fideTC: standard
+            location: Stavanger, Norway
+            timeZone: Europe/Oslo
+            players: Carlsen, Gukesh, Caruana, Nakamura
+            website: https://norwaychess.no/en/
+            standings: https://stats.norwaychess.no/2025/standings
+          createdAt: 1747826541812
+          url: https://lichess.org/broadcast/norway-chess-2025--open/PcsMbQ9J
+          tier: 5
+          dates:
+          - 1748271600000
+          - 1749229200000
+          image: https://image.lichess1.org/display?fmt=webp&h=400&op=thumbnail&path=relay:PcsMbQ9J:QeUfDaHh.webp&w=800&sig=4d7317641091543a721d77baafff804fb15bf107
+          description: '**Points**
 
-        Example: `Round 1`
+
+            - Win in the classical game: 3 points
+
+            - Loss in the classical game: 0 points
+
+            - Draw in the classical game & win Armageddon: 1½ points
+
+            - Draw in the classical game & loss Armageddon: 1 point
+
+
+
+            **Armageddon**
+
+
+            - Time control: White has 10 minutes, Black has 7 minutes
+
+            - Colors: The player with white will continue with white in Armageddon'
+        study:
+          writeable: false
+          features:
+            chat: true
+            computer: true
+            explorer: true
+        games:
+        - id: Zc8WTto3
+          name: Nakamura, Hikaru - Erigaisi Arjun
+          fen: 1nR5/1P1n1pp1/6kp/4P3/6P1/7P/5PK1/8 b - - 0 48
+          players:
+          - name: Nakamura, Hikaru
+            title: GM
+            rating: 2804
+            fideId: 2016192
+            fed: USA
+            clock: 19700
+          - name: Erigaisi Arjun
+            title: GM
+            rating: 2782
+            fideId: 35009192
+            fed: IND
+            clock: 10000
+          lastMove: g3g4
+          status: 1-0
+        photos:
+          '1503014':
+            small: https://image.lichess1.org/display?fmt=webp&h=100&op=thumbnail&path=v6JPXmWyYhTI.webp&w=100&sig=78e9187109f632629c22b5e5b6997976e06a1cf9
+            medium: https://image.lichess1.org/display?fmt=webp&h=500&op=thumbnail&path=v6JPXmWyYhTI.webp&w=500&sig=4b2b5199cfc1d9ff87810d7c10af8a74fe85256e
+            credit: Brigham Aldrich
+          '2016192':
+            small: https://image.lichess1.org/display?fmt=webp&h=100&op=thumbnail&path=DKk7D4U9ivZb.webp&w=100&sig=44d30eb428b70d1058ceec0333fa227c1da60581
+            medium: https://image.lichess1.org/display?fmt=webp&h=500&op=thumbnail&path=DKk7D4U9ivZb.webp&w=500&sig=5e2c2edb1347cfa053951ea481886c21e0c4f676
+            credit: Andreas Kontokanis, CC BY-SA 2.0 <https://creativecommons.org/licenses/by-sa/2.0>, via Wikimedia Commons
+          '2020009':
+            small: https://image.lichess1.org/display?fmt=webp&h=100&op=thumbnail&path=Hif5ohoGiHPZ.webp&w=100&sig=13ea5db011e7e45a97ec1a4164a355ef6b1db8f9
+            medium: https://image.lichess1.org/display?fmt=webp&h=500&op=thumbnail&path=Hif5ohoGiHPZ.webp&w=500&sig=fa71f0594833a61290626f11ab67459349a29f3c
+            credit: Brigham Aldrich
+          '8603405':
+            small: https://image.lichess1.org/display?fmt=webp&h=100&op=thumbnail&path=rDGOWW82iYK9.webp&w=100&sig=7c8ece3893b331835185347a890831ee07a1489e
+            medium: https://image.lichess1.org/display?fmt=webp&h=500&op=thumbnail&path=rDGOWW82iYK9.webp&w=500&sig=dbae7080a8bd3ce8b153a2c7a24429f107dabf1c
+            credit: Frans Peeters, CC BY-SA 2.0 <https://creativecommons.org/licenses/by-sa/2.0>, via Wikimedia Commons
+          '35009192':
+            small: https://image.lichess1.org/display?fmt=webp&h=100&op=thumbnail&path=ZtNkAl1_0MHT.webp&w=100&sig=8a2122f91eab6c3f0528bce8ea5854fd561bbcde
+            medium: https://image.lichess1.org/display?fmt=webp&h=500&op=thumbnail&path=ZtNkAl1_0MHT.webp&w=500&sig=f2faf575e19147ee8b1d2b573f1fd2e18fab88e7
+            credit: Brigham Aldrich
+          '46616543':
+            small: https://image.lichess1.org/display?fmt=webp&h=100&op=thumbnail&path=km_a_02cL0cP.webp&w=100&sig=6427d1a5397f5396ab5246125aae60a672ac5e4a
+            medium: https://image.lichess1.org/display?fmt=webp&h=500&op=thumbnail&path=km_a_02cL0cP.webp&w=500&sig=a12e9409dfb43c0e6e2eb40f29908a55ee455770
+            credit: Frans Peeters, CC BY-SA 2.0 <https://creativecommons.org/licenses/by-sa/2.0>, via Wikimedia Commons
+        group:
+          id: I7IIijJO
+          slug: norway-chess-2025
+          name: Norway Chess 2025
+          tours:
+          - id: PcsMbQ9J
+            name: Open
+            active: false
+            live: false
+          - id: lrKI0bSz
+            name: Women
+            active: false
+            live: false
+    broadcasts-exportAllRoundsAsPgn.pgn:
+      value: "[Event \"Round 1: Chapter 1\"]\n[Site \"https://lichess.org/broadcast/knight-invitational-2/round-1/2Ywx30MD/NemhNt04\"]\n[Date \"2026.05.15\"]\n[Result \"*\"]\n[Variant \"Standard\"]\n[ECO \"?\"]\n[Opening \"?\"]\n[UTCDate \"2026.05.15\"]\n[UTCTime \"02:36:42\"]\n[BroadcastName \"Knight Invitational 2\"]\n[BroadcastURL \"https://lichess.org/broadcast/knight-invitational-2/round-1/2Ywx30MD\"]\n[GameURL \"https://lichess.org/broadcast/knight-invitational-2/round-1/2Ywx30MD/NemhNt04\"]\n\n *\n\n\n[Event \"Round 2: Chapter 1\"]\n[Site \"https://lichess.org/broadcast/knight-invitational-2/round-2/bJEvCanZ/5JK4PVm6\"]\n[Date \"2026.05.15\"]\n[Result \"*\"]\n[Variant \"Standard\"]\n[ECO \"?\"]\n[Opening \"?\"]\n[UTCDate \"2026.05.15\"]\n[UTCTime \"02:36:43\"]\n[BroadcastName \"Knight Invitational 2\"]\n[BroadcastURL \"https://lichess.org/broadcast/knight-invitational-2/round-2/bJEvCanZ\"]\n[GameURL \"https://lichess.org/broadcast/knight-invitational-2/round-2/bJEvCanZ/5JK4PVm6\"]\n\n *\n\n\n[Event \"Round 3: Chapter 1\"]\n[Site \"https://lichess.org/broadcast/knight-invitational-2/round-3/cxolzwOn/T3ClNdwy\"]\n[Date \"2026.05.15\"]\n[Result \"*\"]\n[Variant \"Standard\"]\n[ECO \"?\"]\n[Opening \"?\"]\n[UTCDate \"2026.05.15\"]\n[UTCTime \"02:36:43\"]\n[BroadcastName \"Knight Invitational 2\"]\n[BroadcastURL \"https://lichess.org/broadcast/knight-invitational-2/round-3/cxolzwOn\"]\n[GameURL \"https://lichess.org/broadcast/knight-invitational-2/round-3/cxolzwOn/T3ClNdwy\"]\n\n *\n\n\n[Event \"Knight Invitational\"]\n[Site \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/uHRiHXFM\"]\n[Date \"2026.05.15\"]\n[White \"Player 1\"]\n[Black \"Player 2\"]\n[Result \"*\"]\n[WhiteFideId \"123\"]\n[BlackFideId \"456\"]\n[Variant \"Standard\"]\n[ECO \"C20\"]\n[Opening \"King's Pawn Game\"]\n[UTCDate \"2026.05.15\"]\n[UTCTime \"02:36:43\"]\n[BroadcastName \"Knight Invitational 2\"]\n[BroadcastURL \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K\"]\n[GameURL \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/uHRiHXFM\"]\n\n1. e4 e5 *\n\n\n[Event \"Knight Invitational\"]\n[Site \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/ZiN3hBIO\"]\n[Date \"2026.05.15\"]\n[White \"Player 3\"]\n[Black \"Player 4\"]\n[Result \"*\"]\n[Variant \"Standard\"]\n[ECO \"D00\"]\n[Opening \"Queen's Pawn Game\"]\n[UTCDate \"2026.05.15\"]\n[UTCTime \"02:36:43\"]\n[BroadcastName \"Knight Invitational 2\"]\n[BroadcastURL \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K\"]\n[GameURL \"https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/ZiN3hBIO\"]\n\n1. d4 d5 *\n"
+    broadcasts-getBroadcastsCreatedByUser.json:
+      value:
+        currentPage: 1
+        maxPerPage: 24
+        currentPageResults:
+        - tour:
+            id: iQ7zCznG
+            name: Bobby's Tournament
+            slug: bobbys-tournament
+            info:
+              format: 5-round Swiss
+              location: Chess Club
+            createdAt: 1778812603531
+            url: https://lichess.org/broadcast/bobbys-tournament/iQ7zCznG
+            communityOwner:
+              name: Bobby
+              id: bobby
+        previousPage: null
+        nextPage: null
+        nbResults: 1
+        nbPages: 1
+    broadcasts-streamOngoingBroadcastRoundAsPgn.pgn:
+      value: '[Event "Knight Invitational"]
+
+        [Site "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/uHRiHXFM"]
+
+        [Date "2026.05.15"]
+
+        [White "Player 1"]
+
+        [Black "Player 2"]
+
+        [Result "*"]
+
+        [WhiteFideId "123"]
+
+        [BlackFideId "456"]
+
+        [Variant "Standard"]
+
+        [ECO "C20"]
+
+        [Opening "King''s Pawn Game"]
+
+        [UTCDate "2026.05.15"]
+
+        [UTCTime "02:36:43"]
+
+        [BroadcastName "Knight Invitational 2"]
+
+        [BroadcastURL "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K"]
+
+        [GameURL "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/uHRiHXFM"]
+
+
+        1. e4 e5 *
+
+
+
+        [Event "Knight Invitational"]
+
+        [Site "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/ZiN3hBIO"]
+
+        [Date "2026.05.15"]
+
+        [White "Player 3"]
+
+        [Black "Player 4"]
+
+        [Result "*"]
+
+        [Variant "Standard"]
+
+        [ECO "D00"]
+
+        [Opening "Queen''s Pawn Game"]
+
+        [UTCDate "2026.05.15"]
+
+        [UTCTime "02:36:43"]
+
+        [BroadcastName "Knight Invitational 2"]
+
+        [BroadcastURL "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K"]
+
+        [GameURL "https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K/ZiN3hBIO"]
+
+
+        1. d4 d5 *
 
         '
-    BroadcastPhotos:
-      type: object
-      description: Photos of players, when available. The object keys are FIDE IDs
-      additionalProperties:
-        type: object
-        properties:
-          small:
-            description: URL of a small (100x100) thumbnail of the photo
-            type: string
-          medium:
-            description: URL of a medium (500x500) version of the photo
-            type: string
-          credit:
-            description: If set, then you should make it appear next to the photo
-            type: string
-        required:
-        - small
-        - medium
-    BroadcastGroup:
-      type: object
-      properties:
-        id:
-          type: string
-        slug:
-          type: string
-        name:
-          type: string
-        tours:
-          type: array
-          items:
-            $ref: '#/components/schemas/BroadcastGroupTour'
-      required:
-      - id
-      - slug
-      - name
-      - tours
+    broadcasts-createBroadcastRound.json:
+      value:
+        round:
+          id: 0JjIup0K
+          name: Final Round
+          slug: final-round
+          createdAt: 1778812603116
+          rated: false
+          ongoing: true
+          startsAt: 1778812603116
+          url: https://lichess.org/broadcast/knight-invitational/final-round/0JjIup0K
+        tour:
+          id: gJm0i5k1
+          name: Knight Invitational
+          slug: knight-invitational
+          info: {}
+          createdAt: 1778812602837
+          url: https://lichess.org/broadcast/knight-invitational/gJm0i5k1
+          tier: 5
+          dates:
+          - 1778816202858
+        study:
+          writeable: true
+          features:
+            chat: true
+            computer: true
+            explorer: true
+    broadcasts-createBroadcastTournament.json:
+      value:
+        tour:
+          id: gJm0i5k1
+          name: Knight Invitational
+          slug: knight-invitational
+          info: {}
+          createdAt: 1778812602837
+          url: https://lichess.org/broadcast/knight-invitational/gJm0i5k1
+          tier: 5
+        rounds: []
+    broadcasts-getPlayer.json:
+      value:
+        name: Player 1
+        fideId: 123
+        played: 0
+        games:
+        - round: 0JjIup0K
+          id: uHRiHXFM
+          opponent:
+            name: Player 2
+            fideId: 456
+          color: white
+          fideTC: standard
+          ongoing: true
+    broadcasts-pushPgnToBroadcastRound.json:
+      value:
+        games:
+        - tags:
+            White: Player 1
+            WhiteFideId: '123'
+            Black: Player 2
+            BlackFideId: '456'
+            Result: '*'
+            Event: Knight Invitational
+          moves: 2
+        - tags:
+            White: Player 3
+            Black: Player 4
+            Result: '*'
+            Event: Knight Invitational
+          moves: 2
+    broadcasts-getPaginatedToBroadcastPreviews.json:
+      value:
+        active:
+        - tour:
+            id: gJm0i5k1
+            name: Knight Invitational
+            slug: knight-invitational
+            info: {}
+            createdAt: 1778812602837
+            url: https://lichess.org/broadcast/knight-invitational/gJm0i5k1
+            tier: 5
+            dates:
+            - 1778812603116
+          round:
+            id: 2Ywx30MD
+            name: Round 1
+            slug: round-1
+            createdAt: 1778812602924
+            rated: false
+            ongoing: true
+            startsAt: 1778816202858
+            url: https://lichess.org/broadcast/knight-invitational/round-1/2Ywx30MD
+        upcoming: []
+        past:
+          currentPage: 1
+          maxPerPage: 24
+          currentPageResults: []
+          previousPage: null
+          nextPage: null
+    broadcasts-updateBroadcastTournament.json:
+      value:
+        ok: true
+    broadcasts-getBroadcastTournament.json:
+      value:
+        tour:
+          id: gJm0i5k1
+          name: Knight Invitational
+          slug: knight-invitational
+          info: {}
+          createdAt: 1778812602837
+          url: https://lichess.org/broadcast/knight-invitational/gJm0i5k1
+          tier: 5
+          dates:
+          - 1778812603116
+        rounds:
+        - id: 2Ywx30MD
+          name: Round 1
+          slug: round-1
+          createdAt: 1778812602924
+          rated: false
+          ongoing: true
+          startsAt: 1778816202858
+          url: https://lichess.org/broadcast/knight-invitational/round-1/2Ywx30MD
+        - id: bJEvCanZ
+          name: Round 2
+          slug: round-2
+          createdAt: 1778812603074
+          rated: false
+          ongoing: true
+          startsAt: 1778819802858
+          url: https://lichess.org/broadcast/knight-invitational/round-2/bJEvCanZ
+        - id: cxolzwOn
+          name: Round 3
+          slug: round-3
+          createdAt: 1778812603095
+          rated: false
+          ongoing: true
+          startsAt: 1778823402858
+          url: https://lichess.org/broadcast/knight-invitational/round-3/cxolzwOn
+        - id: 0JjIup0K
+          name: Final Round
+          slug: final-round
+          createdAt: 1778812603116
+          rated: false
+          ongoing: true
+          startsAt: 1778812603116
+          url: https://lichess.org/broadcast/knight-invitational/final-round/0JjIup0K
+        defaultRoundId: 2Ywx30MD
+        photos: {}
+    broadcasts-searchBroadcasts.json:
+      value:
+        currentPage: 1
+        maxPerPage: 24
+        currentPageResults:
+        - tour:
+            id: gJm0i5k1
+            name: Knight Invitational
+            slug: knight-invitational
+            info: {}
+            createdAt: 1778812602837
+            url: https://lichess.org/broadcast/knight-invitational/gJm0i5k1
+            tier: 5
+            dates:
+            - 1778812603116
+          round:
+            id: 0JjIup0K
+            name: Final Round
+            slug: final-round
+            createdAt: 1778812603116
+            rated: false
+            ongoing: true
+            startsAt: 1778812603116
+            url: https://lichess.org/broadcast/knight-invitational/final-round/0JjIup0K
+        previousPage: null
+        nextPage: null
+    broadcasts-updateBroadcastRound.json:
+      value:
+        round:
+          id: 0JjIup0K
+          name: Final Round 2
+          slug: final-round-2
+          createdAt: 1778812603116
+          rated: false
+          ongoing: true
+          startsAt: 1778812603116
+          url: https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K
+        tour:
+          id: gJm0i5k1
+          name: Knight Invitational 2
+          slug: knight-invitational-2
+          info: {}
+          createdAt: 1778812602837
+          url: https://lichess.org/broadcast/knight-invitational-2/gJm0i5k1
+          dates:
+          - 1778812603116
+          communityOwner:
+            name: Admin
+            id: admin
+        study:
+          writeable: true
+          features:
+            chat: true
+            computer: true
+            explorer: true
+        games:
+        - id: uHRiHXFM
+          name: Player 1 - Player 2
+          fen: rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2
+          players:
+          - name: Player 1
+            fideId: 123
+          - name: Player 2
+            fideId: 456
+          lastMove: e7e5
+          thinkTime: 0
+          status: '*'
+        - id: ZiN3hBIO
+          name: Player 3 - Player 4
+          fen: rnbqkbnr/ppp1pppp/8/3p4/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 0 2
+          players:
+          - name: Player 3
+          - name: Player 4
+          lastMove: d7d5
+          thinkTime: 0
+          status: '*'
+        photos: {}
+        isSubscribed: false
+    broadcasts-getYourBroadcastRounds.json:
+      value:
+        round:
+          id: 0JjIup0K
+          name: Final Round 2
+          slug: final-round-2
+          createdAt: 1778812603116
+          rated: false
+          ongoing: true
+          startsAt: 1778812603116
+          url: https://lichess.org/broadcast/knight-invitational-2/final-round-2/0JjIup0K
+        tour:
+          id: gJm0i5k1
+          name: Knight Invitational 2
+          slug: knight-invitational-2
+          info: {}
+          createdAt: 1778812602837
+          url: https://lichess.org/broadcast/knight-invitational-2/gJm0i5k1
+          dates:
+          - 1778812603116
+          communityOwner:
+            name: Admin
+            id: admin
+        study:
+          writeable: true
+          features:
+            chat: true
+            computer: true
+            explorer: true
   parameters:
     PatchQuery:
       in: query

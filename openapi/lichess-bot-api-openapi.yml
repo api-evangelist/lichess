@@ -586,52 +586,30 @@ paths:
                 $ref: '#/components/schemas/Error'
 components:
   schemas:
-    ChallengeDeclinedEvent:
-      type: object
-      properties:
-        type:
-          type: string
-          const: challengeDeclined
-        challenge:
-          $ref: '#/components/schemas/ChallengeDeclinedJson'
-      required:
-      - type
-      - challenge
-    Variant:
-      type: object
-      properties:
-        key:
-          $ref: '#/components/schemas/VariantKey'
-        name:
-          type: string
-        short:
-          type: string
-      required:
-      - key
-      - name
-    GameStatusName:
+    Speed:
       type: string
       enum:
-      - created
-      - started
-      - aborted
-      - mate
-      - resign
-      - stalemate
-      - timeout
-      - draw
-      - outoftime
-      - cheat
-      - noStart
-      - unknownFinish
-      - insufficientMaterialClaim
-      - variantEnd
-    ChallengeColor:
+      - ultraBullet
+      - bullet
+      - blitz
+      - rapid
+      - classical
+      - correspondence
+    GameColor:
       type: string
       enum:
       - white
       - black
-      - random
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The cause of the error.
+      required:
+      - error
+      example:
+        error: This request is invalid because [...]
     GameEventInfo:
       type: object
       properties:
@@ -680,6 +658,139 @@ components:
       required:
       - fullId
       - gameId
+    GameFullEvent:
+      type: object
+      properties:
+        type:
+          type: string
+          const: gameFull
+        id:
+          type: string
+        variant:
+          $ref: '#/components/schemas/Variant'
+        clock:
+          type: object
+          properties:
+            initial:
+              type: integer
+              format: int64
+              description: Initial time in milliseconds
+            increment:
+              type: integer
+              format: int64
+              description: Increment time in milliseconds
+        speed:
+          $ref: '#/components/schemas/Speed'
+        perf:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Translated perf name (e.g. "Classical" or "Blitz")
+        rated:
+          type: boolean
+        createdAt:
+          type: integer
+          format: int64
+        white:
+          $ref: '#/components/schemas/GameEventPlayer'
+        black:
+          $ref: '#/components/schemas/GameEventPlayer'
+        initialFen:
+          type: string
+          default: startpos
+        state:
+          $ref: '#/components/schemas/GameStateEvent'
+        daysPerTurn:
+          type: integer
+          description: If the game is correspondence
+        tournamentId:
+          type: string
+      required:
+      - type
+      - id
+      - variant
+      - speed
+      - perf
+      - rated
+      - createdAt
+      - white
+      - black
+      - initialFen
+      - state
+      example:
+        id: BEOucQJo
+        variant:
+          key: standard
+          name: Standard
+          short: Std
+        speed: rapid
+        perf:
+          name: Rapid
+        rated: false
+        createdAt: 1745112707998
+        white:
+          id: bobby
+          name: Bobby
+          title: null
+          rating: 1751
+        black:
+          id: mary
+          name: Mary
+          title: null
+          rating: 1021
+        initialFen: startpos
+        clock:
+          initial: 900000
+          increment: 0
+        type: gameFull
+        state:
+          type: gameState
+          moves: d2d3
+          wtime: 900000
+          btime: 900000
+          winc: 0
+          binc: 0
+          status: started
+    Perfs:
+      type: object
+      properties:
+        chess960:
+          $ref: '#/components/schemas/Perf'
+        atomic:
+          $ref: '#/components/schemas/Perf'
+        racingKings:
+          $ref: '#/components/schemas/Perf'
+        ultraBullet:
+          $ref: '#/components/schemas/Perf'
+        blitz:
+          $ref: '#/components/schemas/Perf'
+        kingOfTheHill:
+          $ref: '#/components/schemas/Perf'
+        threeCheck:
+          $ref: '#/components/schemas/Perf'
+        antichess:
+          $ref: '#/components/schemas/Perf'
+        crazyhouse:
+          $ref: '#/components/schemas/Perf'
+        bullet:
+          $ref: '#/components/schemas/Perf'
+        correspondence:
+          $ref: '#/components/schemas/Perf'
+        horde:
+          $ref: '#/components/schemas/Perf'
+        puzzle:
+          $ref: '#/components/schemas/Perf'
+        classical:
+          $ref: '#/components/schemas/Perf'
+        rapid:
+          $ref: '#/components/schemas/Perf'
+        storm:
+          $ref: '#/components/schemas/PuzzleModePerf'
+        racer:
+          $ref: '#/components/schemas/PuzzleModePerf'
+        streak:
+          $ref: '#/components/schemas/PuzzleModePerf'
     GameCompat:
       type: object
       properties:
@@ -689,118 +800,42 @@ components:
         board:
           type: boolean
           description: Compatible with Board API
-    ChallengeDeclinedJson:
-      allOf:
-      - $ref: '#/components/schemas/ChallengeJson'
-      - type: object
+    PlayerGameChat:
+      type: array
+      items:
+        type: object
         properties:
-          declineReason:
+          text:
             type: string
-            description: Human readable, possibly translated reason why the challenge was declined.
-          declineReasonKey:
+          user:
             type: string
-            description: Untranslated, computer-matchable reason why the challenge was declined.
-            enum:
-            - generic
-            - later
-            - toofast
-            - tooslow
-            - timecontrol
-            - rated
-            - casual
-            - standard
-            - variant
-            - nobot
-            - onlybot
         required:
-        - declineReason
-        - declineReasonKey
-    GameStatusId:
-      type: integer
-      enum:
-      - 10
-      - 20
-      - 25
-      - 30
-      - 31
-      - 32
-      - 33
-      - 34
-      - 35
-      - 36
-      - 37
-      - 38
-      - 39
-      - 60
-    ChallengeUser:
+        - text
+        - user
+      example:
+      - text: Takeback sent
+        user: lichess
+      - text: Takeback accepted
+        user: lichess
+      - text: Good game, well played
+        user: thibault
+    OpponentGoneEvent:
       type: object
       properties:
-        id:
+        type:
           type: string
-        name:
-          type: string
-        rating:
-          type: integer
-        title:
-          $ref: '#/components/schemas/Title'
-        flair:
-          $ref: '#/components/schemas/Flair'
-        patron:
-          $ref: '#/components/schemas/Patron'
-        patronColor:
-          $ref: '#/components/schemas/PatronColor'
-        provisional:
+          const: opponentGone
+        gone:
           type: boolean
-        online:
-          type: boolean
-        lag:
+        claimWinInSeconds:
           type: integer
       required:
-      - id
-      - name
-    Profile:
-      type: object
-      properties:
-        flag:
-          type: string
-          example: EC
-        location:
-          type: string
-        bio:
-          type: string
-          example: Free bugs!
-        realName:
-          type: string
-          example: Thibault Duplessis
-        fideRating:
-          type: integer
-          example: 1500
-          description: only appears if a user has set them
-        uscfRating:
-          type: integer
-          example: 1500
-          description: only appears if a user has set them
-        ecfRating:
-          type: integer
-          example: 1500
-          description: only appears if a user has set them
-        cfcRating:
-          type: integer
-          example: 1500
-          description: only appears if a user has set them
-        rcfRating:
-          type: integer
-          example: 1500
-          description: only appears if a user has set them
-        dsbRating:
-          type: integer
-          example: 1500
-          description: only appears if a user has set them
-        links:
-          type: string
-          example: 'github.com/ornicar
-
-            mas.to/@thibault'
+      - type
+      - gone
+      example:
+        type: opponentGone
+        gone: true
+        claimWinInSeconds: 8
     GameStateEvent:
       type: object
       properties:
@@ -876,6 +911,37 @@ components:
         wtakeback: false
         btakeback: false
         status: started
+    Title:
+      type: string
+      enum:
+      - GM
+      - WGM
+      - IM
+      - WIM
+      - FM
+      - WFM
+      - NM
+      - CM
+      - WCM
+      - WNM
+      - LM
+      - BOT
+      description: only appears if the user is a titled player or a bot user
+    Variant:
+      type: object
+      properties:
+        key:
+          $ref: '#/components/schemas/VariantKey'
+        name:
+          type: string
+        short:
+          type: string
+      required:
+      - key
+      - name
+    Flair:
+      type: string
+      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
     GameEventPlayer:
       type: object
       properties:
@@ -896,105 +962,6 @@ components:
       required:
       - id
       - name
-    Ok:
-      properties:
-        ok:
-          type: boolean
-      required:
-      - ok
-    VariantKey:
-      type: string
-      enum:
-      - standard
-      - chess960
-      - crazyhouse
-      - antichess
-      - atomic
-      - horde
-      - kingOfTheHill
-      - racingKings
-      - threeCheck
-      - fromPosition
-      example: standard
-      default: standard
-    GameColor:
-      type: string
-      enum:
-      - white
-      - black
-    PlayTime:
-      type: object
-      properties:
-        total:
-          type: integer
-        tv:
-          type: integer
-        human:
-          type: integer
-      required:
-      - total
-      - tv
-    GameEventOpponent:
-      oneOf:
-      - type: object
-        title: Player
-        properties:
-          id:
-            type: string
-          username:
-            type: string
-          rating:
-            type: integer
-          ratingDiff:
-            type: integer
-        required:
-        - id
-        - username
-        - rating
-      - type: object
-        title: AI Opponent
-        properties:
-          id:
-            type: 'null'
-          username:
-            type: string
-          ai:
-            type: integer
-            description: AI level, from 1 to 8, where 1 is the weakest and 8 is the strongest.
-        required:
-        - id
-        - username
-        - ai
-    ChallengeCanceledEvent:
-      type: object
-      properties:
-        type:
-          type: string
-          const: challengeCanceled
-        challenge:
-          $ref: '#/components/schemas/ChallengeJson'
-      required:
-      - type
-      - challenge
-    PlayerGameChat:
-      type: array
-      items:
-        type: object
-        properties:
-          text:
-            type: string
-          user:
-            type: string
-        required:
-        - text
-        - user
-      example:
-      - text: Takeback sent
-        user: lichess
-      - text: Takeback accepted
-        user: lichess
-      - text: Good game, well played
-        user: thibault
     ChallengeJson:
       type: object
       properties:
@@ -1091,6 +1058,65 @@ components:
           icon: 
           name: Rapid
         direction: out
+    ChallengeDeclinedJson:
+      allOf:
+      - $ref: '#/components/schemas/ChallengeJson'
+      - type: object
+        properties:
+          declineReason:
+            type: string
+            description: Human readable, possibly translated reason why the challenge was declined.
+          declineReasonKey:
+            type: string
+            description: Untranslated, computer-matchable reason why the challenge was declined.
+            enum:
+            - generic
+            - later
+            - toofast
+            - tooslow
+            - timecontrol
+            - rated
+            - casual
+            - standard
+            - variant
+            - nobot
+            - onlybot
+        required:
+        - declineReason
+        - declineReasonKey
+    GameSource:
+      type: string
+      enum:
+      - lobby
+      - friend
+      - ai
+      - api
+      - tournament
+      - position
+      - import
+      - importlive
+      - simul
+      - relay
+      - pool
+      - arena
+      - swiss
+    GameStartEvent:
+      type: object
+      properties:
+        type:
+          type: string
+          const: gameStart
+        game:
+          $ref: '#/components/schemas/GameEventInfo'
+      required:
+      - type
+      - game
+    Patron:
+      type: boolean
+      deprecated: true
+      description: 'Use patronColor value instead to determine if player is a patron.
+
+        '
     ChatLineEvent:
       type: object
       properties:
@@ -1116,6 +1142,208 @@ components:
         username: thibault
         text: Good luck, have fun
         room: player
+    Profile:
+      type: object
+      properties:
+        flag:
+          type: string
+          example: EC
+        location:
+          type: string
+        bio:
+          type: string
+          example: Free bugs!
+        realName:
+          type: string
+          example: Thibault Duplessis
+        fideRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        uscfRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        ecfRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        cfcRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        rcfRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        dsbRating:
+          type: integer
+          example: 1500
+          description: only appears if a user has set them
+        links:
+          type: string
+          example: 'github.com/ornicar
+
+            mas.to/@thibault'
+    VariantKey:
+      type: string
+      enum:
+      - standard
+      - chess960
+      - crazyhouse
+      - antichess
+      - atomic
+      - horde
+      - kingOfTheHill
+      - racingKings
+      - threeCheck
+      - fromPosition
+      example: standard
+      default: standard
+    GameStatus:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/GameStatusId'
+        name:
+          $ref: '#/components/schemas/GameStatusName'
+      required:
+      - id
+      - name
+    GameStatusName:
+      type: string
+      enum:
+      - created
+      - started
+      - aborted
+      - mate
+      - resign
+      - stalemate
+      - timeout
+      - draw
+      - outoftime
+      - cheat
+      - noStart
+      - unknownFinish
+      - insufficientMaterialClaim
+      - variantEnd
+    PuzzleModePerf:
+      type: object
+      properties:
+        runs:
+          type: integer
+        score:
+          type: integer
+      required:
+      - runs
+      - score
+    ChallengeUser:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        rating:
+          type: integer
+        title:
+          $ref: '#/components/schemas/Title'
+        flair:
+          $ref: '#/components/schemas/Flair'
+        patron:
+          $ref: '#/components/schemas/Patron'
+        patronColor:
+          $ref: '#/components/schemas/PatronColor'
+        provisional:
+          type: boolean
+        online:
+          type: boolean
+        lag:
+          type: integer
+      required:
+      - id
+      - name
+    ChallengeDeclinedEvent:
+      type: object
+      properties:
+        type:
+          type: string
+          const: challengeDeclined
+        challenge:
+          $ref: '#/components/schemas/ChallengeDeclinedJson'
+      required:
+      - type
+      - challenge
+    NotFound:
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      example:
+        error: Not found.
+    ChallengeColor:
+      type: string
+      enum:
+      - white
+      - black
+      - random
+    PatronColor:
+      type: integer
+      description: 'Players can choose a color for their Patron wings.
+
+        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
+
+
+        The presence of this field indicates the player is an active Patron.
+
+        '
+      minimum: 1
+      maximum: 10
+    TimeControl:
+      oneOf:
+      - type: object
+        title: Real-time
+        properties:
+          type:
+            type: string
+            const: clock
+          limit:
+            type: integer
+          increment:
+            type: integer
+          show:
+            example: 5+2
+            type: string
+        additionalProperties: false
+      - type: object
+        title: Correspondence
+        properties:
+          type:
+            type: string
+            const: correspondence
+          daysPerTurn:
+            type: integer
+        additionalProperties: false
+      - type: object
+        title: Unlimited
+        properties:
+          type:
+            type: string
+            const: unlimited
+        additionalProperties: false
+    PlayTime:
+      type: object
+      properties:
+        total:
+          type: integer
+        tv:
+          type: integer
+        human:
+          type: integer
+      required:
+      - total
+      - tv
     ChallengeEvent:
       type: object
       properties:
@@ -1129,286 +1357,46 @@ components:
       required:
       - type
       - challenge
-    PatronColor:
-      type: integer
-      description: 'Players can choose a color for their Patron wings.
-
-        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
-
-
-        The presence of this field indicates the player is an active Patron.
-
-        '
-      minimum: 1
-      maximum: 10
-    Flair:
-      type: string
-      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
-    Title:
-      type: string
-      enum:
-      - GM
-      - WGM
-      - IM
-      - WIM
-      - FM
-      - WFM
-      - NM
-      - CM
-      - WCM
-      - WNM
-      - LM
-      - BOT
-      description: only appears if the user is a titled player or a bot user
-    GameSource:
-      type: string
-      enum:
-      - lobby
-      - friend
-      - ai
-      - api
-      - tournament
-      - position
-      - import
-      - importlive
-      - simul
-      - relay
-      - pool
-      - arena
-      - swiss
-    Error:
-      type: object
+    Ok:
       properties:
-        error:
-          type: string
-          description: The cause of the error.
-      required:
-      - error
-      example:
-        error: This request is invalid because [...]
-    Patron:
-      type: boolean
-      deprecated: true
-      description: 'Use patronColor value instead to determine if player is a patron.
-
-        '
-    Perfs:
-      type: object
-      properties:
-        chess960:
-          $ref: '#/components/schemas/Perf'
-        atomic:
-          $ref: '#/components/schemas/Perf'
-        racingKings:
-          $ref: '#/components/schemas/Perf'
-        ultraBullet:
-          $ref: '#/components/schemas/Perf'
-        blitz:
-          $ref: '#/components/schemas/Perf'
-        kingOfTheHill:
-          $ref: '#/components/schemas/Perf'
-        threeCheck:
-          $ref: '#/components/schemas/Perf'
-        antichess:
-          $ref: '#/components/schemas/Perf'
-        crazyhouse:
-          $ref: '#/components/schemas/Perf'
-        bullet:
-          $ref: '#/components/schemas/Perf'
-        correspondence:
-          $ref: '#/components/schemas/Perf'
-        horde:
-          $ref: '#/components/schemas/Perf'
-        puzzle:
-          $ref: '#/components/schemas/Perf'
-        classical:
-          $ref: '#/components/schemas/Perf'
-        rapid:
-          $ref: '#/components/schemas/Perf'
-        storm:
-          $ref: '#/components/schemas/PuzzleModePerf'
-        racer:
-          $ref: '#/components/schemas/PuzzleModePerf'
-        streak:
-          $ref: '#/components/schemas/PuzzleModePerf'
-    PuzzleModePerf:
-      type: object
-      properties:
-        runs:
-          type: integer
-        score:
-          type: integer
-      required:
-      - runs
-      - score
-    NotFound:
-      properties:
-        error:
-          type: string
-      required:
-      - error
-      example:
-        error: Not found.
-    Perf:
-      type: object
-      properties:
-        games:
-          type: integer
-        rating:
-          type: integer
-        rd:
-          type: integer
-          description: rating deviation
-        prog:
-          type: integer
-        prov:
+        ok:
           type: boolean
-          description: only appears if a user's perf rating are [provisional](https://lichess.org/faq#provisional)
-        rank:
-          type: integer
-          description: global lichess ranking, only appears for recently active players
       required:
-      - games
-      - rating
-      - rd
-      - prog
+      - ok
+    GameStatusId:
+      type: integer
+      enum:
+      - 10
+      - 20
+      - 25
+      - 30
+      - 31
+      - 32
+      - 33
+      - 34
+      - 35
+      - 36
+      - 37
+      - 38
+      - 39
+      - 60
+    ChallengeCanceledEvent:
+      type: object
+      properties:
+        type:
+          type: string
+          const: challengeCanceled
+        challenge:
+          $ref: '#/components/schemas/ChallengeJson'
+      required:
+      - type
+      - challenge
     GameFinishEvent:
       type: object
       properties:
         type:
           type: string
           const: gameFinish
-        game:
-          $ref: '#/components/schemas/GameEventInfo'
-      required:
-      - type
-      - game
-    GameFullEvent:
-      type: object
-      properties:
-        type:
-          type: string
-          const: gameFull
-        id:
-          type: string
-        variant:
-          $ref: '#/components/schemas/Variant'
-        clock:
-          type: object
-          properties:
-            initial:
-              type: integer
-              format: int64
-              description: Initial time in milliseconds
-            increment:
-              type: integer
-              format: int64
-              description: Increment time in milliseconds
-        speed:
-          $ref: '#/components/schemas/Speed'
-        perf:
-          type: object
-          properties:
-            name:
-              type: string
-              description: Translated perf name (e.g. "Classical" or "Blitz")
-        rated:
-          type: boolean
-        createdAt:
-          type: integer
-          format: int64
-        white:
-          $ref: '#/components/schemas/GameEventPlayer'
-        black:
-          $ref: '#/components/schemas/GameEventPlayer'
-        initialFen:
-          type: string
-          default: startpos
-        state:
-          $ref: '#/components/schemas/GameStateEvent'
-        daysPerTurn:
-          type: integer
-          description: If the game is correspondence
-        tournamentId:
-          type: string
-      required:
-      - type
-      - id
-      - variant
-      - speed
-      - perf
-      - rated
-      - createdAt
-      - white
-      - black
-      - initialFen
-      - state
-      example:
-        id: BEOucQJo
-        variant:
-          key: standard
-          name: Standard
-          short: Std
-        speed: rapid
-        perf:
-          name: Rapid
-        rated: false
-        createdAt: 1745112707998
-        white:
-          id: bobby
-          name: Bobby
-          title: null
-          rating: 1751
-        black:
-          id: mary
-          name: Mary
-          title: null
-          rating: 1021
-        initialFen: startpos
-        clock:
-          initial: 900000
-          increment: 0
-        type: gameFull
-        state:
-          type: gameState
-          moves: d2d3
-          wtime: 900000
-          btime: 900000
-          winc: 0
-          binc: 0
-          status: started
-    Speed:
-      type: string
-      enum:
-      - ultraBullet
-      - bullet
-      - blitz
-      - rapid
-      - classical
-      - correspondence
-    OpponentGoneEvent:
-      type: object
-      properties:
-        type:
-          type: string
-          const: opponentGone
-        gone:
-          type: boolean
-        claimWinInSeconds:
-          type: integer
-      required:
-      - type
-      - gone
-      example:
-        type: opponentGone
-        gone: true
-        claimWinInSeconds: 8
-    GameStartEvent:
-      type: object
-      properties:
-        type:
-          type: string
-          const: gameStart
         game:
           $ref: '#/components/schemas/GameEventInfo'
       required:
@@ -1422,16 +1410,6 @@ components:
       - canceled
       - declined
       - accepted
-    GameStatus:
-      type: object
-      properties:
-        id:
-          $ref: '#/components/schemas/GameStatusId'
-        name:
-          $ref: '#/components/schemas/GameStatusName'
-      required:
-      - id
-      - name
     User:
       type: object
       properties:
@@ -1470,39 +1448,128 @@ components:
       required:
       - id
       - username
-    TimeControl:
+    GameEventOpponent:
       oneOf:
       - type: object
-        title: Real-time
+        title: Player
         properties:
-          type:
+          id:
             type: string
-            const: clock
-          limit:
-            type: integer
-          increment:
-            type: integer
-          show:
-            example: 5+2
+          username:
             type: string
-        additionalProperties: false
+          rating:
+            type: integer
+          ratingDiff:
+            type: integer
+        required:
+        - id
+        - username
+        - rating
       - type: object
-        title: Correspondence
+        title: AI Opponent
         properties:
-          type:
+          id:
+            type: 'null'
+          username:
             type: string
-            const: correspondence
-          daysPerTurn:
+          ai:
             type: integer
-        additionalProperties: false
-      - type: object
-        title: Unlimited
-        properties:
-          type:
-            type: string
-            const: unlimited
-        additionalProperties: false
+            description: AI level, from 1 to 8, where 1 is the weakest and 8 is the strongest.
+        required:
+        - id
+        - username
+        - ai
+    Perf:
+      type: object
+      properties:
+        games:
+          type: integer
+        rating:
+          type: integer
+        rd:
+          type: integer
+          description: rating deviation
+        prog:
+          type: integer
+        prov:
+          type: boolean
+          description: only appears if a user's perf rating are [provisional](https://lichess.org/faq#provisional)
+        rank:
+          type: integer
+          description: global lichess ranking, only appears for recently active players
+      required:
+      - games
+      - rating
+      - rd
+      - prog
   examples:
+    stream-challengeDeclined.json:
+      value:
+        type: challengeDeclined
+        challenge:
+          id: sxqxgMtR
+          url: https://lichess.org/sxqxgMtR
+          status: declined
+          challenger:
+            name: Adriana
+            flair: activity.1st-place-medal
+            id: adriana
+            rating: 599
+          destUser:
+            name: Gabriela
+            flair: objects.yen-banknote
+            id: gabriela
+            rating: 1569
+            online: true
+          variant:
+            key: standard
+            name: Standard
+            short: Std
+          rated: false
+          speed: correspondence
+          timeControl:
+            type: unlimited
+          color: random
+          finalColor: white
+          perf:
+            icon: 
+            name: Correspondence
+          declineReason: I'm not accepting challenges at the moment.
+          declineReasonKey: generic
+    stream-gameFinish.json:
+      value:
+        type: gameFinish
+        game:
+          fullId: xAVd6eJykuzM
+          gameId: xAVd6eJy
+          fen: rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2
+          color: white
+          lastMove: e7e5
+          source: friend
+          status:
+            id: 31
+            name: resign
+          variant:
+            key: standard
+            name: Standard
+          speed: blitz
+          perf: blitz
+          rated: true
+          hasMoved: true
+          opponent:
+            id: aaron
+            username: Aaron
+            rating: 797
+            ratingDiff: 6
+          isMyTurn: false
+          secondsLeft: 300
+          winner: black
+          rating: 692
+          ratingDiff: -9
+          compat:
+            bot: false
+            board: true
+          id: xAVd6eJy
     stream-challengeCanceled.json:
       value:
         type: challengeCanceled
@@ -1537,39 +1604,37 @@ components:
           perf:
             icon: 
             name: Correspondence
-    stream-challengeDeclined.json:
+    stream-gameStart.json:
       value:
-        type: challengeDeclined
-        challenge:
-          id: sxqxgMtR
-          url: https://lichess.org/sxqxgMtR
-          status: declined
-          challenger:
-            name: Adriana
-            flair: activity.1st-place-medal
-            id: adriana
-            rating: 599
-          destUser:
-            name: Gabriela
-            flair: objects.yen-banknote
-            id: gabriela
-            rating: 1569
-            online: true
+        type: gameStart
+        game:
+          fullId: xAVd6eJykuzM
+          gameId: xAVd6eJy
+          fen: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+          color: white
+          lastMove: ''
+          source: friend
+          status:
+            id: 20
+            name: started
           variant:
             key: standard
             name: Standard
-            short: Std
-          rated: false
-          speed: correspondence
-          timeControl:
-            type: unlimited
-          color: random
-          finalColor: white
-          perf:
-            icon: 
-            name: Correspondence
-          declineReason: I'm not accepting challenges at the moment.
-          declineReasonKey: generic
+          speed: blitz
+          perf: blitz
+          rated: true
+          hasMoved: false
+          opponent:
+            id: aaron
+            username: Aaron
+            rating: 797
+          isMyTurn: true
+          secondsLeft: 300
+          rating: 692
+          compat:
+            bot: false
+            board: true
+          id: xAVd6eJy
     stream-challenge.json:
       value:
         type: challenge
@@ -1604,6 +1669,66 @@ components:
         compat:
           bot: false
           board: true
+    stream-gameFinish-ai.json:
+      value:
+        type: gameFinish
+        game:
+          fullId: Vyp0MJIgjhQr
+          gameId: Vyp0MJIg
+          fen: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+          color: black
+          lastMove: ''
+          source: ai
+          status:
+            id: 25
+            name: aborted
+          variant:
+            key: standard
+            name: Standard
+          speed: correspondence
+          perf: correspondence
+          rated: false
+          hasMoved: false
+          opponent:
+            id: null
+            username: Stockfish level 1
+            ai: 1
+          isMyTurn: false
+          rating: 2245
+          compat:
+            bot: false
+            board: true
+          id: Vyp0MJIg
+    stream-gameStart-ai.json:
+      value:
+        type: gameStart
+        game:
+          fullId: Vyp0MJIgjhQr
+          gameId: Vyp0MJIg
+          fen: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+          color: black
+          lastMove: ''
+          source: ai
+          status:
+            id: 20
+            name: started
+          variant:
+            key: standard
+            name: Standard
+          speed: correspondence
+          perf: correspondence
+          rated: false
+          hasMoved: false
+          opponent:
+            id: null
+            username: Stockfish level 1
+            ai: 1
+          isMyTurn: false
+          rating: 2245
+          compat:
+            bot: false
+            board: true
+          id: Vyp0MJIg
     bot-getOnlineBots.json:
       value:
         id: variantsbot
@@ -1696,131 +1821,6 @@ components:
           total: 18093325
           tv: 3862
           human: 20182743
-    stream-gameFinish.json:
-      value:
-        type: gameFinish
-        game:
-          fullId: xAVd6eJykuzM
-          gameId: xAVd6eJy
-          fen: rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2
-          color: white
-          lastMove: e7e5
-          source: friend
-          status:
-            id: 31
-            name: resign
-          variant:
-            key: standard
-            name: Standard
-          speed: blitz
-          perf: blitz
-          rated: true
-          hasMoved: true
-          opponent:
-            id: aaron
-            username: Aaron
-            rating: 797
-            ratingDiff: 6
-          isMyTurn: false
-          secondsLeft: 300
-          winner: black
-          rating: 692
-          ratingDiff: -9
-          compat:
-            bot: false
-            board: true
-          id: xAVd6eJy
-    stream-gameStart.json:
-      value:
-        type: gameStart
-        game:
-          fullId: xAVd6eJykuzM
-          gameId: xAVd6eJy
-          fen: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
-          color: white
-          lastMove: ''
-          source: friend
-          status:
-            id: 20
-            name: started
-          variant:
-            key: standard
-            name: Standard
-          speed: blitz
-          perf: blitz
-          rated: true
-          hasMoved: false
-          opponent:
-            id: aaron
-            username: Aaron
-            rating: 797
-          isMyTurn: true
-          secondsLeft: 300
-          rating: 692
-          compat:
-            bot: false
-            board: true
-          id: xAVd6eJy
-    stream-gameStart-ai.json:
-      value:
-        type: gameStart
-        game:
-          fullId: Vyp0MJIgjhQr
-          gameId: Vyp0MJIg
-          fen: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
-          color: black
-          lastMove: ''
-          source: ai
-          status:
-            id: 20
-            name: started
-          variant:
-            key: standard
-            name: Standard
-          speed: correspondence
-          perf: correspondence
-          rated: false
-          hasMoved: false
-          opponent:
-            id: null
-            username: Stockfish level 1
-            ai: 1
-          isMyTurn: false
-          rating: 2245
-          compat:
-            bot: false
-            board: true
-          id: Vyp0MJIg
-    stream-gameFinish-ai.json:
-      value:
-        type: gameFinish
-        game:
-          fullId: Vyp0MJIgjhQr
-          gameId: Vyp0MJIg
-          fen: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
-          color: black
-          lastMove: ''
-          source: ai
-          status:
-            id: 25
-            name: aborted
-          variant:
-            key: standard
-            name: Standard
-          speed: correspondence
-          perf: correspondence
-          rated: false
-          hasMoved: false
-          opponent:
-            id: null
-            username: Stockfish level 1
-            ai: 1
-          isMyTurn: false
-          rating: 2245
-          compat:
-            bot: false
-            board: true
-          id: Vyp0MJIg
   securitySchemes:
     OAuth2:
       type: oauth2
