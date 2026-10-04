@@ -161,6 +161,97 @@ paths:
                   $ref: '#/components/examples/relations-unblockPlayer.json'
 components:
   schemas:
+    PlayTime:
+      type: object
+      properties:
+        total:
+          type: integer
+        tv:
+          type: integer
+        human:
+          type: integer
+      required:
+      - total
+      - tv
+    PatronColor:
+      type: integer
+      description: 'Players can choose a color for their Patron wings.
+
+        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
+
+
+        The presence of this field indicates the player is an active Patron.
+
+        '
+      minimum: 1
+      maximum: 10
+    PuzzleModePerf:
+      type: object
+      properties:
+        runs:
+          type: integer
+        score:
+          type: integer
+      required:
+      - runs
+      - score
+    Title:
+      type: string
+      enum:
+      - GM
+      - WGM
+      - IM
+      - WIM
+      - FM
+      - WFM
+      - NM
+      - CM
+      - WCM
+      - WNM
+      - LM
+      - BOT
+      description: only appears if the user is a titled player or a bot user
+    Flair:
+      type: string
+      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        perfs:
+          $ref: '#/components/schemas/Perfs'
+        title:
+          $ref: '#/components/schemas/Title'
+        flair:
+          $ref: '#/components/schemas/Flair'
+        createdAt:
+          type: integer
+          format: int64
+        disabled:
+          type: boolean
+          description: only appears if a user's account is closed
+        tosViolation:
+          type: boolean
+          description: only appears if a user's account is marked for the violation of [Lichess TOS](https://lichess.org/terms-of-service)
+        profile:
+          $ref: '#/components/schemas/Profile'
+        seenAt:
+          type: integer
+          format: int64
+        playTime:
+          $ref: '#/components/schemas/PlayTime'
+        patron:
+          $ref: '#/components/schemas/Patron'
+        patronColor:
+          $ref: '#/components/schemas/PatronColor'
+        verified:
+          type: boolean
+      required:
+      - id
+      - username
     Perfs:
       type: object
       properties:
@@ -200,25 +291,29 @@ components:
           $ref: '#/components/schemas/PuzzleModePerf'
         streak:
           $ref: '#/components/schemas/PuzzleModePerf'
-    Title:
-      type: string
-      enum:
-      - GM
-      - WGM
-      - IM
-      - WIM
-      - FM
-      - WFM
-      - NM
-      - CM
-      - WCM
-      - WNM
-      - LM
-      - BOT
-      description: only appears if the user is a titled player or a bot user
-    Flair:
-      type: string
-      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
+    Perf:
+      type: object
+      properties:
+        games:
+          type: integer
+        rating:
+          type: integer
+        rd:
+          type: integer
+          description: rating deviation
+        prog:
+          type: integer
+        prov:
+          type: boolean
+          description: only appears if a user's perf rating are [provisional](https://lichess.org/faq#provisional)
+        rank:
+          type: integer
+          description: global lichess ranking, only appears for recently active players
+      required:
+      - games
+      - rating
+      - rd
+      - prog
     UserStreamer:
       type: object
       properties:
@@ -242,6 +337,36 @@ components:
       description: 'Use patronColor value instead to determine if player is a patron.
 
         '
+    UserExtended:
+      allOf:
+      - $ref: '#/components/schemas/User'
+      - type: object
+        properties:
+          url:
+            type: string
+            format: uri
+          playing:
+            type: string
+            format: uri
+          count:
+            $ref: '#/components/schemas/Count'
+          streaming:
+            type: boolean
+          streamer:
+            $ref: '#/components/schemas/UserStreamer'
+          followable:
+            type: boolean
+            description: only appears if the request is [authenticated with OAuth2](#description/authentication)
+          following:
+            type: boolean
+            description: only appears if the request is [authenticated with OAuth2](#description/authentication)
+          blocking:
+            type: boolean
+            description: only appears if the request is [authenticated with OAuth2](#description/authentication)
+          fideId:
+            type: number
+        required:
+        - url
     Profile:
       type: object
       properties:
@@ -285,28 +410,6 @@ components:
           example: 'github.com/ornicar
 
             mas.to/@thibault'
-    PuzzleModePerf:
-      type: object
-      properties:
-        runs:
-          type: integer
-        score:
-          type: integer
-      required:
-      - runs
-      - score
-    PatronColor:
-      type: integer
-      description: 'Players can choose a color for their Patron wings.
-
-        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
-
-
-        The presence of this field indicates the player is an active Patron.
-
-        '
-      minimum: 1
-      maximum: 10
     Count:
       type: object
       properties:
@@ -346,126 +449,23 @@ components:
       - playing
       - import
       - me
-    PlayTime:
-      type: object
-      properties:
-        total:
-          type: integer
-        tv:
-          type: integer
-        human:
-          type: integer
-      required:
-      - total
-      - tv
     Ok:
       properties:
         ok:
           type: boolean
       required:
       - ok
-    User:
-      type: object
-      properties:
-        id:
-          type: string
-        username:
-          type: string
-        perfs:
-          $ref: '#/components/schemas/Perfs'
-        title:
-          $ref: '#/components/schemas/Title'
-        flair:
-          $ref: '#/components/schemas/Flair'
-        createdAt:
-          type: integer
-          format: int64
-        disabled:
-          type: boolean
-          description: only appears if a user's account is closed
-        tosViolation:
-          type: boolean
-          description: only appears if a user's account is marked for the violation of [Lichess TOS](https://lichess.org/terms-of-service)
-        profile:
-          $ref: '#/components/schemas/Profile'
-        seenAt:
-          type: integer
-          format: int64
-        playTime:
-          $ref: '#/components/schemas/PlayTime'
-        patron:
-          $ref: '#/components/schemas/Patron'
-        patronColor:
-          $ref: '#/components/schemas/PatronColor'
-        verified:
-          type: boolean
-      required:
-      - id
-      - username
-    UserExtended:
-      allOf:
-      - $ref: '#/components/schemas/User'
-      - type: object
-        properties:
-          url:
-            type: string
-            format: uri
-          playing:
-            type: string
-            format: uri
-          count:
-            $ref: '#/components/schemas/Count'
-          streaming:
-            type: boolean
-          streamer:
-            $ref: '#/components/schemas/UserStreamer'
-          followable:
-            type: boolean
-            description: only appears if the request is [authenticated with OAuth2](#description/authentication)
-          following:
-            type: boolean
-            description: only appears if the request is [authenticated with OAuth2](#description/authentication)
-          blocking:
-            type: boolean
-            description: only appears if the request is [authenticated with OAuth2](#description/authentication)
-          fideId:
-            type: number
-        required:
-        - url
-    Perf:
-      type: object
-      properties:
-        games:
-          type: integer
-        rating:
-          type: integer
-        rd:
-          type: integer
-          description: rating deviation
-        prog:
-          type: integer
-        prov:
-          type: boolean
-          description: only appears if a user's perf rating are [provisional](https://lichess.org/faq#provisional)
-        rank:
-          type: integer
-          description: global lichess ranking, only appears for recently active players
-      required:
-      - games
-      - rating
-      - rd
-      - prog
   examples:
     relations-unfollowPlayer.json:
       value:
         ok: true
-    relations-followPlayer.json:
+    relations-blockPlayer.json:
       value:
         ok: true
     relations-unblockPlayer.json:
       value:
         ok: true
-    relations-blockPlayer.json:
+    relations-followPlayer.json:
       value:
         ok: true
     relations-getMyFollowing.json:

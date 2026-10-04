@@ -421,67 +421,183 @@ paths:
                 type: string
                 default: '''*'''
 components:
+  examples:
+    externalEngine-getExternalEngine.json:
+      value:
+        id: eei_NU53ONEmZqij
+        name: Stockfish 17
+        userId: bobby
+        maxThreads: 8
+        maxHash: 2048
+        variants:
+        - chess
+        providerData: null
+        clientSecret: ees_K6cAs9Fo2kblqep4
+    externalEngine-createExternalEngine.json:
+      value:
+        id: eei_NU53ONEmZqij
+        name: Stockfish 17
+        userId: bobby
+        maxThreads: 8
+        maxHash: 2048
+        variants:
+        - chess
+        providerData: null
+        clientSecret: ees_K6cAs9Fo2kblqep4
+    externalEngine-deleteExternalEngine.json:
+      value:
+        ok: true
+    externalEngine-updateExternalEngine.json:
+      value:
+        id: eei_NU53ONEmZqij
+        name: Stockfish 17.1
+        userId: bobby
+        maxThreads: 8
+        maxHash: 2048
+        variants:
+        - chess
+        providerData: null
+        clientSecret: ees_K6cAs9Fo2kblqep4
+    externalEngine-acquireAnalysisRequest.json:
+      value:
+        id: ygxzCoNU0wUXodLm
+        work:
+          sessionId: '1'
+          threads: 1
+          hash: 2048
+          depth: 1
+          multiPv: 1
+          variant: chess
+          initialFen: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+          moves:
+          - e2e4
+          - g8f6
+        engine:
+          id: eei_dw2szwYp76C9
+          name: Stockfish 17.1
+          clientSecret: ees_EjQe0iSY6TGhsvCW
+          userId: bobby
+          maxThreads: 8
+          maxHash: 2048
+          variants:
+          - chess
+          providerData: null
+    externalEngine-listExternalEngines.json:
+      value:
+      - id: eei_NU53ONEmZqij
+        name: Stockfish 17
+        userId: bobby
+        maxThreads: 8
+        maxHash: 2048
+        variants:
+        - chess
+        providerData: null
+        clientSecret: ees_K6cAs9Fo2kblqep4
+    externalEngine-analyseWithExternalEngine.json:
+      value:
+        time: 2
+        depth: 1
+        nodes: 20
+        pvs:
+        - moves: []
+          cp: 13
+          depth: 1
   schemas:
-    ExternalEngine:
+    ExternalEngineWorkCommon:
       type: object
       properties:
-        id:
+        sessionId:
           type: string
-          description: Unique engine registration ID.
-        name:
-          type: string
-          description: Display name of the engine.
-          minLength: 3
-          maxLength: 200
-        clientSecret:
-          type: string
-          description: 'A secret token that can be used to
+          description: 'Arbitary string that identifies the analysis session.
 
-            [*request* analysis](#tag/external-engine/POST/api/external-engine/{id}/analyse)
-
-            from this external engine.
+            Providers may wish to clear the hash table between sessions.
 
             '
-        userId:
+        threads:
+          type: integer
+          minimum: 1
+          description: Number of threads to use for analysis.
+        hash:
+          type: integer
+          minimum: 1
+          description: Hash table size to use for analysis, in MiB.
+        multiPv:
+          type: integer
+          minimum: 1
+          maximum: 5
+          description: Requested number of principal variations.
+        variant:
+          $ref: '#/components/schemas/UciVariant'
+        initialFen:
           type: string
-          description: The user this engine has been registered for.
-        maxThreads:
-          type: integer
-          description: Maximum number of available threads.
-          minimum: 1
-          maximum: 65536
-        maxHash:
-          type: integer
-          description: Maximum available hash table size, in MiB.
-          minimum: 1
-          maximum: 1048576
-        variants:
+          description: Initial position of the game.
+        moves:
           type: array
-          description: List of supported chess variants.
+          description: List of moves played from the initial position, in UCI notation.
           items:
-            $ref: '#/components/schemas/UciVariant'
-        providerData:
-          type:
-          - string
-          - 'null'
-          description: 'Arbitrary data that the engine provider can use for identification
-
-            or bookkeeping.
-
-
-            Users can read this information, but updating it requires knowing
-
-            or changing the `providerSecret`.
-
-            '
+            type: string
       required:
-      - id
-      - clientSecret
-      - userId
-      - name
-      - maxThreads
-      - maxHash
-      - variants
+      - sessionId
+      - threads
+      - hash
+      - multiPv
+      - variant
+      - initialFen
+      - moves
+    UciVariant:
+      type: string
+      enum:
+      - chess
+      - crazyhouse
+      - antichess
+      - atomic
+      - horde
+      - kingofthehill
+      - racingkings
+      - 3check
+      example: chess
+      default: chess
+    ExternalEngineWork:
+      oneOf:
+      - allOf:
+        - type: object
+          title: Search by movetime
+          properties:
+            movetime:
+              type: integer
+              description: Amount of time to analyse the position, in milliseconds.
+              minimum: 1
+          required:
+          - movetime
+        - $ref: '#/components/schemas/ExternalEngineWorkCommon'
+      - allOf:
+        - type: object
+          title: Search by depth
+          properties:
+            depth:
+              type: integer
+              description: Analysis target depth
+              minimum: 1
+          required:
+          - depth
+        - $ref: '#/components/schemas/ExternalEngineWorkCommon'
+      - allOf:
+        - type: object
+          title: Search by nodes
+          properties:
+            nodes:
+              type: integer
+              description: Number of nodes to analyse in the position
+              minimum: 1
+          required:
+          - nodes
+        - $ref: '#/components/schemas/ExternalEngineWorkCommon'
+    Ok:
+      properties:
+        ok:
+          type: boolean
+      required:
+      - ok
     ExternalEngineRegistration:
       type: object
       properties:
@@ -552,182 +668,66 @@ components:
       - maxThreads
       - maxHash
       - providerSecret
-    ExternalEngineWork:
-      oneOf:
-      - allOf:
-        - type: object
-          title: Search by movetime
-          properties:
-            movetime:
-              type: integer
-              description: Amount of time to analyse the position, in milliseconds.
-              minimum: 1
-          required:
-          - movetime
-        - $ref: '#/components/schemas/ExternalEngineWorkCommon'
-      - allOf:
-        - type: object
-          title: Search by depth
-          properties:
-            depth:
-              type: integer
-              description: Analysis target depth
-              minimum: 1
-          required:
-          - depth
-        - $ref: '#/components/schemas/ExternalEngineWorkCommon'
-      - allOf:
-        - type: object
-          title: Search by nodes
-          properties:
-            nodes:
-              type: integer
-              description: Number of nodes to analyse in the position
-              minimum: 1
-          required:
-          - nodes
-        - $ref: '#/components/schemas/ExternalEngineWorkCommon'
-    ExternalEngineWorkCommon:
+    ExternalEngine:
       type: object
       properties:
-        sessionId:
+        id:
           type: string
-          description: 'Arbitary string that identifies the analysis session.
+          description: Unique engine registration ID.
+        name:
+          type: string
+          description: Display name of the engine.
+          minLength: 3
+          maxLength: 200
+        clientSecret:
+          type: string
+          description: 'A secret token that can be used to
 
-            Providers may wish to clear the hash table between sessions.
+            [*request* analysis](#tag/external-engine/POST/api/external-engine/{id}/analyse)
+
+            from this external engine.
 
             '
-        threads:
-          type: integer
-          minimum: 1
-          description: Number of threads to use for analysis.
-        hash:
-          type: integer
-          minimum: 1
-          description: Hash table size to use for analysis, in MiB.
-        multiPv:
-          type: integer
-          minimum: 1
-          maximum: 5
-          description: Requested number of principal variations.
-        variant:
-          $ref: '#/components/schemas/UciVariant'
-        initialFen:
+        userId:
           type: string
-          description: Initial position of the game.
-        moves:
+          description: The user this engine has been registered for.
+        maxThreads:
+          type: integer
+          description: Maximum number of available threads.
+          minimum: 1
+          maximum: 65536
+        maxHash:
+          type: integer
+          description: Maximum available hash table size, in MiB.
+          minimum: 1
+          maximum: 1048576
+        variants:
           type: array
-          description: List of moves played from the initial position, in UCI notation.
+          description: List of supported chess variants.
           items:
-            type: string
+            $ref: '#/components/schemas/UciVariant'
+        providerData:
+          type:
+          - string
+          - 'null'
+          description: 'Arbitrary data that the engine provider can use for identification
+
+            or bookkeeping.
+
+
+            Users can read this information, but updating it requires knowing
+
+            or changing the `providerSecret`.
+
+            '
       required:
-      - sessionId
-      - threads
-      - hash
-      - multiPv
-      - variant
-      - initialFen
-      - moves
-    UciVariant:
-      type: string
-      enum:
-      - chess
-      - crazyhouse
-      - antichess
-      - atomic
-      - horde
-      - kingofthehill
-      - racingkings
-      - 3check
-      example: chess
-      default: chess
-    Ok:
-      properties:
-        ok:
-          type: boolean
-      required:
-      - ok
-  examples:
-    externalEngine-updateExternalEngine.json:
-      value:
-        id: eei_NU53ONEmZqij
-        name: Stockfish 17.1
-        userId: bobby
-        maxThreads: 8
-        maxHash: 2048
-        variants:
-        - chess
-        providerData: null
-        clientSecret: ees_K6cAs9Fo2kblqep4
-    externalEngine-listExternalEngines.json:
-      value:
-      - id: eei_NU53ONEmZqij
-        name: Stockfish 17
-        userId: bobby
-        maxThreads: 8
-        maxHash: 2048
-        variants:
-        - chess
-        providerData: null
-        clientSecret: ees_K6cAs9Fo2kblqep4
-    externalEngine-createExternalEngine.json:
-      value:
-        id: eei_NU53ONEmZqij
-        name: Stockfish 17
-        userId: bobby
-        maxThreads: 8
-        maxHash: 2048
-        variants:
-        - chess
-        providerData: null
-        clientSecret: ees_K6cAs9Fo2kblqep4
-    externalEngine-getExternalEngine.json:
-      value:
-        id: eei_NU53ONEmZqij
-        name: Stockfish 17
-        userId: bobby
-        maxThreads: 8
-        maxHash: 2048
-        variants:
-        - chess
-        providerData: null
-        clientSecret: ees_K6cAs9Fo2kblqep4
-    externalEngine-analyseWithExternalEngine.json:
-      value:
-        time: 2
-        depth: 1
-        nodes: 20
-        pvs:
-        - moves: []
-          cp: 13
-          depth: 1
-    externalEngine-deleteExternalEngine.json:
-      value:
-        ok: true
-    externalEngine-acquireAnalysisRequest.json:
-      value:
-        id: ygxzCoNU0wUXodLm
-        work:
-          sessionId: '1'
-          threads: 1
-          hash: 2048
-          depth: 1
-          multiPv: 1
-          variant: chess
-          initialFen: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
-          moves:
-          - e2e4
-          - g8f6
-        engine:
-          id: eei_dw2szwYp76C9
-          name: Stockfish 17.1
-          clientSecret: ees_EjQe0iSY6TGhsvCW
-          userId: bobby
-          maxThreads: 8
-          maxHash: 2048
-          variants:
-          - chess
-          providerData: null
+      - id
+      - clientSecret
+      - userId
+      - name
+      - maxThreads
+      - maxHash
+      - variants
   securitySchemes:
     OAuth2:
       type: oauth2

@@ -543,25 +543,6 @@ paths:
                 $ref: '#/components/schemas/NotFound'
 components:
   schemas:
-    GameColor:
-      type: string
-      enum:
-      - white
-      - black
-    PuzzleBatchSolveRequest:
-      type: object
-      properties:
-        solutions:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-              win:
-                type: boolean
-              rated:
-                type: boolean
     PuzzleBatchSolveResponse:
       type: object
       properties:
@@ -582,22 +563,31 @@ components:
                 type: boolean
               ratingDiff:
                 type: integer
-    Title:
+    PuzzleBatchSelect:
+      type: object
+      properties:
+        puzzles:
+          type: array
+          items:
+            $ref: '#/components/schemas/PuzzleAndGame'
+        glicko:
+          $ref: '#/components/schemas/PuzzleGlicko'
+    PuzzleRacer:
+      type: object
+      properties:
+        id:
+          type: string
+        url:
+          type: string
+          format: uri
+      required:
+      - id
+      - url
+    GameColor:
       type: string
       enum:
-      - GM
-      - WGM
-      - IM
-      - WIM
-      - FM
-      - WFM
-      - NM
-      - CM
-      - WCM
-      - WNM
-      - LM
-      - BOT
-      description: only appears if the user is a titled player or a bot user
+      - white
+      - black
     PuzzlePerformance:
       type: object
       properties:
@@ -617,9 +607,67 @@ components:
       - performance
       - puzzleRatingAvg
       - replayWins
-    Flair:
-      type: string
-      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
+    PuzzleStormDashboard:
+      type: object
+      properties:
+        days:
+          type: array
+          items:
+            type: object
+            properties:
+              _id:
+                type: string
+              combo:
+                type: integer
+              errors:
+                type: integer
+              highest:
+                type: integer
+              moves:
+                type: integer
+              runs:
+                type: integer
+              score:
+                type: integer
+              time:
+                type: integer
+            required:
+            - _id
+            - combo
+            - errors
+            - highest
+            - moves
+            - runs
+            - score
+            - time
+        high:
+          type: object
+          properties:
+            allTime:
+              type: integer
+            day:
+              type: integer
+            month:
+              type: integer
+            week:
+              type: integer
+          required:
+          - allTime
+          - day
+          - month
+          - week
+      required:
+      - days
+      - high
+    PuzzleGlicko:
+      type: object
+      properties:
+        rating:
+          type: number
+        deviation:
+          type: number
+        provisional:
+          type: boolean
     PerfType:
       type: string
       enum:
@@ -637,52 +685,18 @@ components:
       - kingOfTheHill
       - racingKings
       - threeCheck
-    Patron:
-      type: boolean
-      deprecated: true
-      description: 'Use patronColor value instead to determine if player is a patron.
+    PatronColor:
+      type: integer
+      description: 'Players can choose a color for their Patron wings.
+
+        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
+
+
+        The presence of this field indicates the player is an active Patron.
 
         '
-    PuzzleActivity:
-      type: object
-      properties:
-        date:
-          type: integer
-        puzzle:
-          type: object
-          properties:
-            fen:
-              type: string
-            id:
-              type: string
-            lastMove:
-              type: string
-            plays:
-              type: integer
-            rating:
-              type: integer
-            solution:
-              type: array
-              items:
-                type: string
-            themes:
-              type: array
-              items:
-                type: string
-          required:
-          - fen
-          - id
-          - lastMove
-          - plays
-          - rating
-          - solution
-          - themes
-        win:
-          type: boolean
-      required:
-      - date
-      - puzzle
-      - win
+      minimum: 1
+      maximum: 10
     PuzzleDashboard:
       type: object
       properties:
@@ -706,6 +720,39 @@ components:
       - days
       - global
       - themes
+    Title:
+      type: string
+      enum:
+      - GM
+      - WGM
+      - IM
+      - WIM
+      - FM
+      - WFM
+      - NM
+      - CM
+      - WCM
+      - WNM
+      - LM
+      - BOT
+      description: only appears if the user is a titled player or a bot user
+    PuzzleBatchSolveRequest:
+      type: object
+      properties:
+        solutions:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              win:
+                type: boolean
+              rated:
+                type: boolean
+    Flair:
+      type: string
+      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
     PuzzleReplay:
       type: object
       properties:
@@ -743,15 +790,84 @@ components:
       required:
       - replay
       - angle
-    PuzzleBatchSelect:
+    PuzzleRaceResults:
       type: object
       properties:
+        id:
+          type: string
+          description: Unique identifier of the puzzle race
+        owner:
+          type: string
+          description: Owner of the puzzle race
+        players:
+          type: array
+          description: List of players participating in the race
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Player username
+              score:
+                type: integer
+                description: Player's current score in the race
+              id:
+                type: string
+                description: User ID. Missing if player is anonymous.
+              flair:
+                type: string
+                description: User's flair icon
+              patron:
+                $ref: '#/components/schemas/Patron'
+              patronColor:
+                $ref: '#/components/schemas/PatronColor'
+            required:
+            - name
+            - score
         puzzles:
           type: array
+          description: List of puzzles in the race
           items:
-            $ref: '#/components/schemas/PuzzleAndGame'
-        glicko:
-          $ref: '#/components/schemas/PuzzleGlicko'
+            type: object
+            properties:
+              id:
+                type: string
+                description: Puzzle ID
+              fen:
+                type: string
+                description: X-FEN position of the puzzle
+              line:
+                type: string
+                description: Solution moves sequence
+              rating:
+                type: integer
+                description: Puzzle Glicko2 rating
+            required:
+            - id
+            - fen
+            - line
+            - rating
+        finishesAt:
+          type: integer
+          description: Timestamp in milliseconds when the race finishes
+        startsAt:
+          type: integer
+          description: Timestamp in milliseconds when the race started
+      required:
+      - id
+      - owner
+      - players
+      - puzzles
+      - finishesAt
+      - startsAt
+    NotFound:
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      example:
+        error: Not found.
     PuzzleAndGame:
       type: object
       properties:
@@ -847,169 +963,186 @@ components:
       required:
       - game
       - puzzle
-    NotFound:
-      properties:
-        error:
-          type: string
-      required:
-      - error
-      example:
-        error: Not found.
-    PuzzleRaceResults:
-      type: object
-      properties:
-        id:
-          type: string
-          description: Unique identifier of the puzzle race
-        owner:
-          type: string
-          description: Owner of the puzzle race
-        players:
-          type: array
-          description: List of players participating in the race
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-                description: Player username
-              score:
-                type: integer
-                description: Player's current score in the race
-              id:
-                type: string
-                description: User ID. Missing if player is anonymous.
-              flair:
-                type: string
-                description: User's flair icon
-              patron:
-                $ref: '#/components/schemas/Patron'
-              patronColor:
-                $ref: '#/components/schemas/PatronColor'
-            required:
-            - name
-            - score
-        puzzles:
-          type: array
-          description: List of puzzles in the race
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                description: Puzzle ID
-              fen:
-                type: string
-                description: X-FEN position of the puzzle
-              line:
-                type: string
-                description: Solution moves sequence
-              rating:
-                type: integer
-                description: Puzzle Glicko2 rating
-            required:
-            - id
-            - fen
-            - line
-            - rating
-        finishesAt:
-          type: integer
-          description: Timestamp in milliseconds when the race finishes
-        startsAt:
-          type: integer
-          description: Timestamp in milliseconds when the race started
-      required:
-      - id
-      - owner
-      - players
-      - puzzles
-      - finishesAt
-      - startsAt
-    PuzzleStormDashboard:
-      type: object
-      properties:
-        days:
-          type: array
-          items:
-            type: object
-            properties:
-              _id:
-                type: string
-              combo:
-                type: integer
-              errors:
-                type: integer
-              highest:
-                type: integer
-              moves:
-                type: integer
-              runs:
-                type: integer
-              score:
-                type: integer
-              time:
-                type: integer
-            required:
-            - _id
-            - combo
-            - errors
-            - highest
-            - moves
-            - runs
-            - score
-            - time
-        high:
-          type: object
-          properties:
-            allTime:
-              type: integer
-            day:
-              type: integer
-            month:
-              type: integer
-            week:
-              type: integer
-          required:
-          - allTime
-          - day
-          - month
-          - week
-      required:
-      - days
-      - high
-    PatronColor:
-      type: integer
-      description: 'Players can choose a color for their Patron wings.
-
-        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
-
-
-        The presence of this field indicates the player is an active Patron.
+    Patron:
+      type: boolean
+      deprecated: true
+      description: 'Use patronColor value instead to determine if player is a patron.
 
         '
-      minimum: 1
-      maximum: 10
-    PuzzleRacer:
+    PuzzleActivity:
       type: object
       properties:
-        id:
-          type: string
-        url:
-          type: string
-          format: uri
-      required:
-      - id
-      - url
-    PuzzleGlicko:
-      type: object
-      properties:
-        rating:
-          type: number
-        deviation:
-          type: number
-        provisional:
+        date:
+          type: integer
+        puzzle:
+          type: object
+          properties:
+            fen:
+              type: string
+            id:
+              type: string
+            lastMove:
+              type: string
+            plays:
+              type: integer
+            rating:
+              type: integer
+            solution:
+              type: array
+              items:
+                type: string
+            themes:
+              type: array
+              items:
+                type: string
+          required:
+          - fen
+          - id
+          - lastMove
+          - plays
+          - rating
+          - solution
+          - themes
+        win:
           type: boolean
+      required:
+      - date
+      - puzzle
+      - win
   examples:
+    puzzles-getYourPuzzleActivity.json:
+      value:
+        date: 1778812618669
+        win: true
+        puzzle:
+          id: 6ewuj
+          rating: 1122
+          plays: 24846
+          solution:
+          - d5d2
+          - g2h1
+          - d2b2
+          themes:
+          - middlegame
+          - fork
+          - advantage
+          - short
+          fen: r3k3/pp3p2/2p1n3/2br4/4P3/P5P1/1B4KP/R2B1R2 b q - 0 1
+          lastMove: e3e4
+    puzzles-createAndJoinPuzzleRace.json:
+      value:
+        id: KgOHb
+        url: https://lichess.org/racer/KgOHb
+    puzzles-getMultiplePuzzlesAtOnce.json:
+      value:
+        puzzles:
+        - game:
+            id: lzdAM1jJ
+            perf:
+              key: classical
+              name: Classical
+            rated: true
+            players:
+            - name: Abubakar
+              flair: people.woman-mountain-biking-dark-skin-tone
+              id: abubakar
+              color: white
+              rating: 1698
+            - name: Ivan
+              title: WGM
+              id: ivan
+              color: black
+              rating: 1637
+            pgn: d4 d6 c4 Nd7 e3 e5 Nf3 h6 Bd3 Ngf6 Bc2 Be7 O-O c6 Ne1 Nf8 g3 g5 dxe5 dxe5 Qxd8+ Bxd8 c5 Bh3 Ng2 h5 Nd2 h4 Nf3 hxg3 fxg3 e4 Nxg5 Bxg2 Kxg2 Ne6 Nxe4 Nxe4 Bxe4 Nxc5 Bc2 Be7 b4 Ne6 Bb3 Bxb4 Bb2 Rh5 Bd1 Rd5 a3 Bc5 e4
+            clock: 15+15
+          puzzle:
+            id: 6ewuj
+            rating: 1123
+            plays: 24845
+            solution:
+            - d5d2
+            - g2h1
+            - d2b2
+            themes:
+            - middlegame
+            - fork
+            - advantage
+            - short
+            initialPly: 52
+        - game:
+            id: 6OH3Wycp
+            perf:
+              key: rapid
+              name: Rapid
+            rated: true
+            players:
+            - name: Hui
+              patron: true
+              patronColor: 1
+              id: hui
+              color: white
+              rating: 1954
+            - name: Pedro
+              flair: people.person-walking-dark-skin-tone
+              patron: true
+              patronColor: 1
+              id: pedro
+              color: black
+              rating: 1823
+            pgn: e4 c5 Bc4 e6 Qh5 Nf6 Qf3 Nc6 Nc3 Nd4 Qd1 d5 exd5 exd5 Bb5+ Nxb5 Nxb5 Bd7 a4 a6 Nc3 d4 Qe2+ Be7 Ne4 Nxe4 Qxe4 Bc6 Qg4 O-O d3 Qd5 f3 Rfe8 Ne2 Qe5 Kf2 Bd6 Ng3 Qe7 Bd2 Bd7 Qg5 Bxg3+ Qxg3
+            clock: 15+10
+          puzzle:
+            id: 1ygt6
+            rating: 1124
+            plays: 3186
+            solution:
+            - e7e2
+            - f2g1
+            - e2d2
+            themes:
+            - middlegame
+            - fork
+            - short
+            - crushing
+            initialPly: 44
+        glicko:
+          rating: 1756
+          deviation: 51.98
+    puzzles-getNewPuzzle.json:
+      value:
+        game:
+          id: mAe3fKx5
+          perf:
+            key: blitz
+            name: Blitz
+          rated: true
+          players:
+          - name: Lenshrr
+            id: lenshrr
+            color: white
+            rating: 1948
+          - name: Wmendes
+            id: wmendes
+            color: black
+            rating: 1938
+          pgn: e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 Nc3 Nf6 e5 Nd5 Nxd5 exd5 Nf3 d6 Be2 dxe5 dxe5 Be7 O-O O-O Bf4 Be6 Qb3 Rb8 Rad1 Qa5 Nd4 Nxd4 Rxd4 Rfc8 Qg3 Rc2 Bh6 Bf8 Bg4 Rxb2 Bxe6 fxe6 Rg4 g6 Bc1 Rxa2 h4 Rc8 h5 Rc3 f3 Qc5+ Kh2 Rxc1 hxg6 h6 g7 Be7 Qf4 Rxf1
+          clock: 5+0
+        puzzle:
+          id: SLR3a
+          rating: 1894
+          plays: 13601
+          solution:
+          - f4f7
+          - g8f7
+          - g7g8q
+          themes:
+          - advancedPawn
+          - short
+          - attraction
+          - promotion
+          - endgame
+          - mateIn2
+          initialPly: 57
     puzzles-getPuzzleById.json:
       value:
         game:
@@ -1051,74 +1184,6 @@ components:
           fen: 5rk1/p4p2/5qpR/1R1Q4/3PK3/4P1P1/P1r2PP1/8 b - - 1 1
           lastMove: f3e4
           initialPly: 52
-    puzzles-getYourPuzzleActivity.json:
-      value:
-        date: 1778812618669
-        win: true
-        puzzle:
-          id: 6ewuj
-          rating: 1122
-          plays: 24846
-          solution:
-          - d5d2
-          - g2h1
-          - d2b2
-          themes:
-          - middlegame
-          - fork
-          - advantage
-          - short
-          fen: r3k3/pp3p2/2p1n3/2br4/4P3/P5P1/1B4KP/R2B1R2 b q - 0 1
-          lastMove: e3e4
-    puzzles-getNewPuzzle.json:
-      value:
-        game:
-          id: mAe3fKx5
-          perf:
-            key: blitz
-            name: Blitz
-          rated: true
-          players:
-          - name: Lenshrr
-            id: lenshrr
-            color: white
-            rating: 1948
-          - name: Wmendes
-            id: wmendes
-            color: black
-            rating: 1938
-          pgn: e4 c5 c3 Nc6 d4 cxd4 cxd4 e6 Nc3 Nf6 e5 Nd5 Nxd5 exd5 Nf3 d6 Be2 dxe5 dxe5 Be7 O-O O-O Bf4 Be6 Qb3 Rb8 Rad1 Qa5 Nd4 Nxd4 Rxd4 Rfc8 Qg3 Rc2 Bh6 Bf8 Bg4 Rxb2 Bxe6 fxe6 Rg4 g6 Bc1 Rxa2 h4 Rc8 h5 Rc3 f3 Qc5+ Kh2 Rxc1 hxg6 h6 g7 Be7 Qf4 Rxf1
-          clock: 5+0
-        puzzle:
-          id: SLR3a
-          rating: 1894
-          plays: 13601
-          solution:
-          - f4f7
-          - g8f7
-          - g7g8q
-          themes:
-          - advancedPawn
-          - short
-          - attraction
-          - promotion
-          - endgame
-          - mateIn2
-          initialPly: 57
-    puzzles-getPuzzlesToReplay.json:
-      value:
-        replay:
-          days: 90
-          theme: mix
-          nb: 3
-          remaining:
-          - EMJ4a
-          - 9bZjC
-          - 5JGeN
-        angle:
-          key: mix
-          name: Puzzle Themes
-          desc: A mix of everything. You don't know what to expect, so be ready for anything! Just like in real games.
     puzzles-solveMultiplePuzzlesAtOnce.json:
       value:
         puzzles:
@@ -1270,79 +1335,6 @@ components:
               replayWins: 0
               puzzleRatingAvg: 1403
               performance: 1903
-    puzzles-getDailyPuzzle.json:
-      value:
-        game:
-          id: MmhaEJoJ
-          perf:
-            key: classical
-            name: Classical
-          rated: true
-          players:
-          - name: MuhCiri
-            id: muhciri
-            color: white
-            rating: 1915
-          - name: saadatinia
-            id: saadatinia
-            color: black
-            rating: 1798
-          pgn: e4 e5 Nf3 Nc6 Bc4 h6 c3 f5 d3 fxe4
-          clock: 15+15
-        puzzle:
-          id: u3GaW
-          rating: 1938
-          plays: 127146
-          solution:
-          - f3e5
-          - g8f6
-          - e5f7
-          - d8e7
-          - f7h8
-          themes:
-          - opening
-          - long
-          - fork
-          - advantage
-          fen: r1bqkbnr/pppp2p1/2n4p/4p3/2B1p3/2PP1N2/PP3PPP/RNBQK2R w KQkq - 0 1
-          lastMove: f5e4
-          initialPly: 9
-    puzzles-createAndJoinPuzzleRace.json:
-      value:
-        id: KgOHb
-        url: https://lichess.org/racer/KgOHb
-    puzzles-getStormDashboardOfPlayer.json:
-      value:
-        high:
-          day: 0
-          week: 0
-          month: 0
-          allTime: 33
-        days:
-        - _id: 2025/2/8
-          score: 1
-          moves: 1
-          errors: 0
-          combo: 1
-          time: 180
-          highest: 1020
-          runs: 1
-        - _id: 2025/1/23
-          score: 17
-          moves: 35
-          errors: 3
-          combo: 17
-          time: 164
-          highest: 1314
-          runs: 1
-        - _id: 2024/12/11
-          score: 16
-          moves: 41
-          errors: 6
-          combo: 20
-          time: 141
-          highest: 1315
-          runs: 1
     puzzles-getRaceResults.json:
       value:
         id: nkEw7
@@ -1658,81 +1650,89 @@ components:
           rating: 2496
         startsAt: 1758635599928
         finishesAt: 1758635689928
-    puzzles-getMultiplePuzzlesAtOnce.json:
+    puzzles-getPuzzlesToReplay.json:
       value:
-        puzzles:
-        - game:
-            id: lzdAM1jJ
-            perf:
-              key: classical
-              name: Classical
-            rated: true
-            players:
-            - name: Abubakar
-              flair: people.woman-mountain-biking-dark-skin-tone
-              id: abubakar
-              color: white
-              rating: 1698
-            - name: Ivan
-              title: WGM
-              id: ivan
-              color: black
-              rating: 1637
-            pgn: d4 d6 c4 Nd7 e3 e5 Nf3 h6 Bd3 Ngf6 Bc2 Be7 O-O c6 Ne1 Nf8 g3 g5 dxe5 dxe5 Qxd8+ Bxd8 c5 Bh3 Ng2 h5 Nd2 h4 Nf3 hxg3 fxg3 e4 Nxg5 Bxg2 Kxg2 Ne6 Nxe4 Nxe4 Bxe4 Nxc5 Bc2 Be7 b4 Ne6 Bb3 Bxb4 Bb2 Rh5 Bd1 Rd5 a3 Bc5 e4
-            clock: 15+15
-          puzzle:
-            id: 6ewuj
-            rating: 1123
-            plays: 24845
-            solution:
-            - d5d2
-            - g2h1
-            - d2b2
-            themes:
-            - middlegame
-            - fork
-            - advantage
-            - short
-            initialPly: 52
-        - game:
-            id: 6OH3Wycp
-            perf:
-              key: rapid
-              name: Rapid
-            rated: true
-            players:
-            - name: Hui
-              patron: true
-              patronColor: 1
-              id: hui
-              color: white
-              rating: 1954
-            - name: Pedro
-              flair: people.person-walking-dark-skin-tone
-              patron: true
-              patronColor: 1
-              id: pedro
-              color: black
-              rating: 1823
-            pgn: e4 c5 Bc4 e6 Qh5 Nf6 Qf3 Nc6 Nc3 Nd4 Qd1 d5 exd5 exd5 Bb5+ Nxb5 Nxb5 Bd7 a4 a6 Nc3 d4 Qe2+ Be7 Ne4 Nxe4 Qxe4 Bc6 Qg4 O-O d3 Qd5 f3 Rfe8 Ne2 Qe5 Kf2 Bd6 Ng3 Qe7 Bd2 Bd7 Qg5 Bxg3+ Qxg3
-            clock: 15+10
-          puzzle:
-            id: 1ygt6
-            rating: 1124
-            plays: 3186
-            solution:
-            - e7e2
-            - f2g1
-            - e2d2
-            themes:
-            - middlegame
-            - fork
-            - short
-            - crushing
-            initialPly: 44
-        glicko:
-          rating: 1756
-          deviation: 51.98
+        replay:
+          days: 90
+          theme: mix
+          nb: 3
+          remaining:
+          - EMJ4a
+          - 9bZjC
+          - 5JGeN
+        angle:
+          key: mix
+          name: Puzzle Themes
+          desc: A mix of everything. You don't know what to expect, so be ready for anything! Just like in real games.
+    puzzles-getDailyPuzzle.json:
+      value:
+        game:
+          id: MmhaEJoJ
+          perf:
+            key: classical
+            name: Classical
+          rated: true
+          players:
+          - name: MuhCiri
+            id: muhciri
+            color: white
+            rating: 1915
+          - name: saadatinia
+            id: saadatinia
+            color: black
+            rating: 1798
+          pgn: e4 e5 Nf3 Nc6 Bc4 h6 c3 f5 d3 fxe4
+          clock: 15+15
+        puzzle:
+          id: u3GaW
+          rating: 1938
+          plays: 127146
+          solution:
+          - f3e5
+          - g8f6
+          - e5f7
+          - d8e7
+          - f7h8
+          themes:
+          - opening
+          - long
+          - fork
+          - advantage
+          fen: r1bqkbnr/pppp2p1/2n4p/4p3/2B1p3/2PP1N2/PP3PPP/RNBQK2R w KQkq - 0 1
+          lastMove: f5e4
+          initialPly: 9
+    puzzles-getStormDashboardOfPlayer.json:
+      value:
+        high:
+          day: 0
+          week: 0
+          month: 0
+          allTime: 33
+        days:
+        - _id: 2025/2/8
+          score: 1
+          moves: 1
+          errors: 0
+          combo: 1
+          time: 180
+          highest: 1020
+          runs: 1
+        - _id: 2025/1/23
+          score: 17
+          moves: 35
+          errors: 3
+          combo: 17
+          time: 164
+          highest: 1314
+          runs: 1
+        - _id: 2024/12/11
+          score: 16
+          moves: 41
+          errors: 6
+          combo: 20
+          time: 141
+          highest: 1315
+          runs: 1
   securitySchemes:
     OAuth2:
       type: oauth2

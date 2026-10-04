@@ -214,7 +214,528 @@ paths:
                 default:
                   $ref: '#/components/examples/account-getMyTimeline.json'
 components:
+  examples:
+    account-setMyKidModeStatus.json:
+      value:
+        ok: true
+    account-getMyKidModeStatus.json:
+      value:
+        kid: false
+    account-getMyTimeline.json:
+      value:
+        entries:
+        - type: team-join
+          data:
+            userId: mary
+            teamId: two-bishops-two-steeds-two-wellhidden-beads
+          date: 1778797290118
+        - type: team-join
+          data:
+            userId: dmitry
+            teamId: i-dont-think-he-knows-about-second-piece-sac-pip
+          date: 1778796409740
+        - type: follow
+          data:
+            u1: mary
+            u2: marcel
+          date: 1778794086387
+        - type: team-join
+          data:
+            userId: yun
+            teamId: this-team-name-has-been-purchased-by-chesscom
+          date: 1778771081591
+        - type: team-join
+          data:
+            userId: yun
+            teamId: god-sac-the-queen
+          date: 1778743477150
+        - type: team-join
+          data:
+            userId: yarah
+            teamId: god-sac-the-queen
+          date: 1778741318351
+        - type: team-join
+          data:
+            userId: kenneth
+            teamId: god-sac-the-queen
+          date: 1778735292388
+        - type: team-join
+          data:
+            userId: dmitry
+            teamId: god-sac-the-queen
+          date: 1778730999374
+        - type: team-join
+          data:
+            userId: iryna
+            teamId: god-sac-the-queen
+          date: 1778726337298
+        - type: team-join
+          data:
+            userId: hui
+            teamId: massive-minority-attack
+          date: 1778725729602
+        - type: team-join
+          data:
+            userId: pedro
+            teamId: the-prep-leaks-for-itself
+          date: 1778719719539
+        - type: team-join
+          data:
+            userId: ikem
+            teamId: this-team-name-has-been-purchased-by-chesscom
+          date: 1778715702099
+        - type: team-create
+          data:
+            userId: kenneth
+            teamId: god-sac-the-queen
+          date: 1778707835827
+        - type: follow
+          data:
+            u1: marcel
+            u2: abubakar
+          date: 1778697218585
+        - type: follow
+          data:
+            u1: broadcaster
+            u2: sai
+          date: 1778695013138
+        users:
+          kenneth:
+            name: Kenneth
+            flair: objects.paperclip
+            id: kenneth
+          broadcaster:
+            name: Broadcaster
+            flair: people.oncoming-fist-dark-skin-tone
+            id: broadcaster
+          yarah:
+            name: Yarah
+            flair: nature.coral
+            patron: true
+            patronColor: 1
+            id: yarah
+          abubakar:
+            name: Abubakar
+            flair: people.woman-mountain-biking-dark-skin-tone
+            id: abubakar
+          mary:
+            name: Mary
+            flair: people.open-hands-medium-light-skin-tone
+            id: mary
+          pedro:
+            name: Pedro
+            flair: people.person-walking-dark-skin-tone
+            patron: true
+            patronColor: 1
+            id: pedro
+          ikem:
+            name: Ikem
+            flair: people.astronaut-medium-light-skin-tone
+            patron: true
+            patronColor: 1
+            id: ikem
+          marcel:
+            name: Marcel
+            flair: objects.guitar
+            id: marcel
+          dmitry:
+            name: Dmitry
+            id: dmitry
+          sai:
+            name: Sai
+            id: sai
+          hui:
+            name: Hui
+            patron: true
+            patronColor: 1
+            id: hui
+          yun:
+            name: Yun
+            flair: travel-places.globe-showing-europe-africa
+            id: yun
+          iryna:
+            name: Iryna
+            flair: people.call-me-hand-dark-skin-tone
+            id: iryna
+    account-getMyEmailAddress.json:
+      value:
+        email: bobby@localhost
+    account-getMyProfile.json:
+      value:
+        id: bobby
+        username: Bobby
+        perfs:
+          bullet:
+            games: 17
+            rating: 1681
+            rd: 76
+            prog: -25
+          blitz:
+            games: 109
+            rating: 1814
+            rd: 55
+            prog: -19
+          rapid:
+            games: 137
+            rating: 1761
+            rd: 88
+            prog: -2
+          classical:
+            games: 62
+            rating: 1619
+            rd: 114
+            prog: -37
+            prov: true
+          correspondence:
+            games: 1
+            rating: 1804
+            rd: 48
+            prog: -43
+          chess960:
+            games: 6
+            rating: 1703
+            rd: 49
+            prog: -52
+          kingOfTheHill:
+            games: 17
+            rating: 1728
+            rd: 45
+            prog: -17
+          threeCheck:
+            games: 576
+            rating: 1615
+            rd: 115
+            prog: -5
+            prov: true
+          antichess:
+            games: 25
+            rating: 1661
+            rd: 48
+            prog: -20
+          atomic:
+            games: 118
+            rating: 1707
+            rd: 76
+            prog: -22
+          horde:
+            games: 80
+            rating: 1678
+            rd: 78
+            prog: -5
+          crazyhouse:
+            games: 37
+            rating: 1722
+            rd: 53
+            prog: 18
+          puzzle:
+            games: 31
+            rating: 1756
+            rd: 51
+            prog: -17
+        createdAt: 1775598473954
+        profile:
+          flag: VA
+          location: Bobby City
+          bio: The succeeding period, from 1820 to 1830, was notable in England for scientific activity in the domain of Political Economy. It was the time as well of the vulgarising and extending of Ricardo's theory, as of the contest of that theory with the old school. Splendid tournaments were held. What was done then, is little known to the Continent generall
+          fideRating: 1725
+          uscfRating: 1756
+          ecfRating: 1569
+          rcfRating: 1736
+          cfcRating: 1793
+          dsbRating: 1794
+          links: 'https://en.wikipedia.org/wiki/Niels_Bohr
+
+            https://en.wikipedia.org/wiki/Voltaire
+
+            https://en.wikipedia.org/wiki/Archimedes
+
+            https://en.wikipedia.org/wiki/Nelson_Mandela
+
+            https://en.wikipedia.org/wiki/Euler'
+        seenAt: 1778760604182
+        playTime:
+          total: 19991
+          tv: 0
+        url: https://lichess.org/@/Bobby
+        count:
+          all: 2054
+          rated: 1643
+          draw: 231
+          loss: 921
+          win: 902
+          bookmark: 0
+          playing: 0
+          import: 0
+          me: 0
+        followable: true
+        following: false
+        blocking: false
+    account-getMyPreferences.json:
+      value:
+        prefs:
+          dark: true
+          transp: false
+          bgImg: https://lichess1.org/assets/lifat/background/gallery/bg25.webp
+          is3d: false
+          theme: brown
+          pieceSet: cburnett
+          theme3d: Woodi
+          pieceSet3d: Basic
+          soundSet: standard
+          autoQueen: 2
+          autoThreefold: 3
+          takeback: 3
+          moretime: 3
+          clockTenths: 1
+          clockBar: true
+          clockSound: true
+          premove: true
+          animation: 2
+          pieceNotation: 0
+          captured: true
+          follow: true
+          highlight: true
+          destination: true
+          coords: 1
+          replay: 2
+          challenge: 4
+          message: 3
+          submitMove: 0
+          confirmResign: 1
+          insightShare: 1
+          keyboardMove: 0
+          voiceMove: false
+          zen: 0
+          ratings: 1
+          moveEvent: 2
+          rookCastle: 1
+          flairs: true
+          sayGG: 0
+        language: en-US
   schemas:
+    TimelineEntryBlogPost:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - blog-post
+        date:
+          type: number
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            slug:
+              type: string
+            title:
+              type: string
+          required:
+          - id
+          - slug
+          - title
+      required:
+      - type
+      - date
+      - data
+    TimelineEntryForumPost:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - forum-post
+        date:
+          type: number
+        data:
+          type: object
+          properties:
+            userId:
+              type: string
+            topicId:
+              type: string
+            topicName:
+              type: string
+            postId:
+              type: string
+          required:
+          - userId
+          - topicId
+          - topicName
+          - postId
+      required:
+      - type
+      - date
+      - data
+    TimelineEntryTeamJoin:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - team-join
+        date:
+          type: number
+        data:
+          type: object
+          properties:
+            userId:
+              type: string
+            teamId:
+              type: string
+          required:
+          - userId
+          - teamId
+      required:
+      - type
+      - date
+      - data
+    TimelineEntryTourJoin:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - tour-join
+        date:
+          type: number
+        data:
+          type: object
+          properties:
+            userId:
+              type: string
+            tourId:
+              type: string
+            tourName:
+              type: string
+          required:
+          - userId
+          - tourId
+          - tourName
+      required:
+      - type
+      - date
+      - data
+    Ok:
+      properties:
+        ok:
+          type: boolean
+      required:
+      - ok
+    PlayTime:
+      type: object
+      properties:
+        total:
+          type: integer
+        tv:
+          type: integer
+        human:
+          type: integer
+      required:
+      - total
+      - tv
+    PerfType:
+      type: string
+      enum:
+      - ultraBullet
+      - bullet
+      - blitz
+      - rapid
+      - classical
+      - correspondence
+      - chess960
+      - crazyhouse
+      - antichess
+      - atomic
+      - horde
+      - kingOfTheHill
+      - racingKings
+      - threeCheck
+    TimelineEntryUblogPost:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - ublog-post
+        date:
+          type: number
+        data:
+          type: object
+          properties:
+            userId:
+              type: string
+            id:
+              type: string
+            slug:
+              type: string
+            title:
+              type: string
+          required:
+          - userId
+          - id
+          - slug
+          - title
+      required:
+      - type
+      - date
+      - data
+    TimelineEntryPlanStart:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - plan-start
+        date:
+          type: number
+        data:
+          type: object
+          properties:
+            userId:
+              type: string
+          required:
+          - userId
+      required:
+      - type
+      - date
+      - data
+    PatronColor:
+      type: integer
+      description: 'Players can choose a color for their Patron wings.
+
+        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
+
+
+        The presence of this field indicates the player is an active Patron.
+
+        '
+      minimum: 1
+      maximum: 10
+    TimelineEntryTeamCreate:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - team-create
+        date:
+          type: number
+        data:
+          type: object
+          properties:
+            userId:
+              type: string
+            teamId:
+              type: string
+          required:
+          - userId
+          - teamId
+      required:
+      - type
+      - date
+      - data
     TimelineEntryStudyLike:
       type: object
       properties:
@@ -241,207 +762,39 @@ components:
       - type
       - date
       - data
-    Timeline:
+    TimelineEntryPlanRenew:
       type: object
       properties:
-        entries:
-          type: array
-          items:
-            anyOf:
-            - $ref: '#/components/schemas/TimelineEntryFollow'
-            - $ref: '#/components/schemas/TimelineEntryTeamJoin'
-            - $ref: '#/components/schemas/TimelineEntryTeamCreate'
-            - $ref: '#/components/schemas/TimelineEntryForumPost'
-            - $ref: '#/components/schemas/TimelineEntryBlogPost'
-            - $ref: '#/components/schemas/TimelineEntryUblogPost'
-            - $ref: '#/components/schemas/TimelineEntryTourJoin'
-            - $ref: '#/components/schemas/TimelineEntryGameEnd'
-            - $ref: '#/components/schemas/TimelineEntrySimul'
-            - $ref: '#/components/schemas/TimelineEntryStudyLike'
-            - $ref: '#/components/schemas/TimelineEntryPlanStart'
-            - $ref: '#/components/schemas/TimelineEntryPlanRenew'
-            - $ref: '#/components/schemas/TimelineEntryUblogPostLike'
-            - $ref: '#/components/schemas/TimelineEntryStreamStart'
-            discriminator:
-              propertyName: type
-              mapping:
-                follow: '#/components/schemas/TimelineEntryFollow'
-                team-join: '#/components/schemas/TimelineEntryTeamJoin'
-                team-create: '#/components/schemas/TimelineEntryTeamCreate'
-                forum-post: '#/components/schemas/TimelineEntryForumPost'
-                blog-post: '#/components/schemas/TimelineEntryBlogPost'
-                ublog-post: '#/components/schemas/TimelineEntryUblogPost'
-                tour-join: '#/components/schemas/TimelineEntryTourJoin'
-                game-end: '#/components/schemas/TimelineEntryGameEnd'
-                simul-create: '#/components/schemas/TimelineEntrySimul'
-                simul-join: '#/components/schemas/TimelineEntrySimul'
-                study-like: '#/components/schemas/TimelineEntryStudyLike'
-                plan-start: '#/components/schemas/TimelineEntryPlanStart'
-                plan-renew: '#/components/schemas/TimelineEntryPlanRenew'
-                ublog-post-like: '#/components/schemas/TimelineEntryUblogPostLike'
-                stream-start: '#/components/schemas/TimelineEntryStreamStart'
-            required:
-            - type
-        users:
+        type:
+          type: string
+          enum:
+          - plan-renew
+        date:
+          type: number
+        data:
           type: object
-          additionalProperties:
-            type: object
-            properties:
-              id:
-                type: string
-              name:
-                type: string
-              title:
-                $ref: '#/components/schemas/Title'
-              flair:
-                $ref: '#/components/schemas/Flair'
-              patron:
-                $ref: '#/components/schemas/Patron'
-              patronColor:
-                $ref: '#/components/schemas/PatronColor'
-            required:
-            - id
-            - name
+          properties:
+            userId:
+              type: string
+            months:
+              type: number
+          required:
+          - userId
+          - months
       required:
-      - entries
-      - users
-      example:
-        entries:
-        - type: follow
-          data:
-            u1: neio
-            u2: chess-network
-          date: 1644232201429
-        - type: team-join
-          data:
-            userId: neio
-            teamId: coders
-          date: 1644232201429
-        - type: team-create
-          data:
-            userId: neio
-            teamId: coders
-          date: 1644232201429
-        - type: forum-post
-          data:
-            userId: neio
-            topicId: AAAAAAAN
-            topicName: World's Tallest LEGO Tower Completed in City Square
-            postId: AAAAAAAL
-          date: 1644232201429
-        - type: ublog-post
-          data:
-            userId: neio
-            id: og5pkt1c
-            slug: gotta-go-fast
-            title: Gotta Go Fast
-          date: 1644232201429
-        - type: tour-join
-          data:
-            userId: chess-network
-            tourId: Z24oxqgU
-            tourName: Daily Blitz Arena
-          date: 1644232201429
-        - type: game-end
-          data:
-            fullId: iGkAXUdEfLZC
-            perf: correspondence
-            opponent: chess-network
-            win: false
-          date: 1644232201429
-        - type: simul-create
-          data:
-            userId: neio
-            simulId: m3c0Wvu3
-            simulName: RCA 1st Jan simul
-          date: 1644232201429
-        - type: simul-join
-          data:
-            userId: chess-network
-            simulId: m3c0Wvu3
-            simulName: RCA 1st Jan simul
-          date: 1644232201429
-        - type: study-like
-          data:
-            userId: neio
-            studyId: ma5AvZ7o
-            studyName: Free wins | Danish Gambit
-          date: 1644232201429
-        - type: plan-start
-          data:
-            userId: chess-network
-          date: 1644232201429
-        - type: plan-renew
-          data:
-            userId: chess-network
-            months: 64
-          date: 1644232201429
-        - type: blog-post
-          data:
-            id: ZUviXRIAACYAVtMm
-            slug: lichess-development-made-easy-with-gitpod
-            title: Lichess Development Made Easy With Gitpod
-          date: 1644232201429
-        - type: ublog-post-like
-          data:
-            userId: neio
-            id: ZUviXRIAACYAVtMm
-            title: Lichess Development Made Easy With Gitpod
-          date: 1644232201429
-        - type: stream-start
-          data:
-            id: chess-network
-            title: Streamers Battle December !team | lichess.org
-          date: 1644232201429
-        users:
-          neio:
-            id: neio
-            name: Neio
-            title: NM
-          chess-network:
-            id: chess-network
-            name: Chess-Network
-            title: NM
-            patron: true
-    Perfs:
+      - type
+      - date
+      - data
+    PuzzleModePerf:
       type: object
       properties:
-        chess960:
-          $ref: '#/components/schemas/Perf'
-        atomic:
-          $ref: '#/components/schemas/Perf'
-        racingKings:
-          $ref: '#/components/schemas/Perf'
-        ultraBullet:
-          $ref: '#/components/schemas/Perf'
-        blitz:
-          $ref: '#/components/schemas/Perf'
-        kingOfTheHill:
-          $ref: '#/components/schemas/Perf'
-        threeCheck:
-          $ref: '#/components/schemas/Perf'
-        antichess:
-          $ref: '#/components/schemas/Perf'
-        crazyhouse:
-          $ref: '#/components/schemas/Perf'
-        bullet:
-          $ref: '#/components/schemas/Perf'
-        correspondence:
-          $ref: '#/components/schemas/Perf'
-        horde:
-          $ref: '#/components/schemas/Perf'
-        puzzle:
-          $ref: '#/components/schemas/Perf'
-        classical:
-          $ref: '#/components/schemas/Perf'
-        rapid:
-          $ref: '#/components/schemas/Perf'
-        storm:
-          $ref: '#/components/schemas/PuzzleModePerf'
-        racer:
-          $ref: '#/components/schemas/PuzzleModePerf'
-        streak:
-          $ref: '#/components/schemas/PuzzleModePerf'
+        runs:
+          type: integer
+        score:
+          type: integer
+      required:
+      - runs
+      - score
     Title:
       type: string
       enum:
@@ -649,113 +1002,48 @@ components:
           - 1
           - 2
           description: 0 = No, 1 = When losing, 2 = When losing or drawing
-    TimelineEntryPlanStart:
+    Count:
       type: object
       properties:
-        type:
-          type: string
-          enum:
-          - plan-start
-        date:
-          type: number
-        data:
-          type: object
-          properties:
-            userId:
-              type: string
-          required:
-          - userId
+        all:
+          type: integer
+        rated:
+          type: integer
+        ai:
+          type: integer
+        draw:
+          type: integer
+        drawH:
+          type: integer
+        loss:
+          type: integer
+        lossH:
+          type: integer
+        win:
+          type: integer
+        winH:
+          type: integer
+        bookmark:
+          type: integer
+        playing:
+          type: integer
+        import:
+          type: integer
+        me:
+          type: integer
       required:
-      - type
-      - date
-      - data
+      - all
+      - rated
+      - draw
+      - loss
+      - win
+      - bookmark
+      - playing
+      - import
+      - me
     Flair:
       type: string
       description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
-    TimelineEntrySimul:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - simul-create
-          - simul-join
-        date:
-          type: number
-        data:
-          type: object
-          properties:
-            userId:
-              type: string
-            simulId:
-              type: string
-            simulName:
-              type: string
-          required:
-          - userId
-          - simulId
-          - simulName
-      required:
-      - type
-      - date
-      - data
-    TimelineEntryFollow:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - follow
-        date:
-          type: number
-        data:
-          type: object
-          properties:
-            u1:
-              type: string
-            u2:
-              type: string
-          required:
-          - u1
-          - u2
-      required:
-      - type
-      - date
-      - data
-    UserStreamer:
-      type: object
-      properties:
-        twitch:
-          type: object
-          properties:
-            channel:
-              type: string
-              format: uri
-              example: https://www.twitch.tv/lichessdotorg
-        youtube:
-          type: object
-          properties:
-            channel:
-              type: string
-              format: uri
-              example: https://www.youtube.com/c/LichessDotOrg
-    PerfType:
-      type: string
-      enum:
-      - ultraBullet
-      - bullet
-      - blitz
-      - rapid
-      - classical
-      - correspondence
-      - chess960
-      - crazyhouse
-      - antichess
-      - atomic
-      - horde
-      - kingOfTheHill
-      - racingKings
-      - threeCheck
     TimelineEntryGameEnd:
       type: object
       properties:
@@ -785,12 +1073,308 @@ components:
       - type
       - date
       - data
-    Patron:
-      type: boolean
-      deprecated: true
-      description: 'Use patronColor value instead to determine if player is a patron.
-
-        '
+    TimelineEntryFollow:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - follow
+        date:
+          type: number
+        data:
+          type: object
+          properties:
+            u1:
+              type: string
+            u2:
+              type: string
+          required:
+          - u1
+          - u2
+      required:
+      - type
+      - date
+      - data
+    Timeline:
+      type: object
+      properties:
+        entries:
+          type: array
+          items:
+            anyOf:
+            - $ref: '#/components/schemas/TimelineEntryFollow'
+            - $ref: '#/components/schemas/TimelineEntryTeamJoin'
+            - $ref: '#/components/schemas/TimelineEntryTeamCreate'
+            - $ref: '#/components/schemas/TimelineEntryForumPost'
+            - $ref: '#/components/schemas/TimelineEntryBlogPost'
+            - $ref: '#/components/schemas/TimelineEntryUblogPost'
+            - $ref: '#/components/schemas/TimelineEntryTourJoin'
+            - $ref: '#/components/schemas/TimelineEntryGameEnd'
+            - $ref: '#/components/schemas/TimelineEntrySimul'
+            - $ref: '#/components/schemas/TimelineEntryStudyLike'
+            - $ref: '#/components/schemas/TimelineEntryPlanStart'
+            - $ref: '#/components/schemas/TimelineEntryPlanRenew'
+            - $ref: '#/components/schemas/TimelineEntryUblogPostLike'
+            - $ref: '#/components/schemas/TimelineEntryStreamStart'
+            discriminator:
+              propertyName: type
+              mapping:
+                follow: '#/components/schemas/TimelineEntryFollow'
+                team-join: '#/components/schemas/TimelineEntryTeamJoin'
+                team-create: '#/components/schemas/TimelineEntryTeamCreate'
+                forum-post: '#/components/schemas/TimelineEntryForumPost'
+                blog-post: '#/components/schemas/TimelineEntryBlogPost'
+                ublog-post: '#/components/schemas/TimelineEntryUblogPost'
+                tour-join: '#/components/schemas/TimelineEntryTourJoin'
+                game-end: '#/components/schemas/TimelineEntryGameEnd'
+                simul-create: '#/components/schemas/TimelineEntrySimul'
+                simul-join: '#/components/schemas/TimelineEntrySimul'
+                study-like: '#/components/schemas/TimelineEntryStudyLike'
+                plan-start: '#/components/schemas/TimelineEntryPlanStart'
+                plan-renew: '#/components/schemas/TimelineEntryPlanRenew'
+                ublog-post-like: '#/components/schemas/TimelineEntryUblogPostLike'
+                stream-start: '#/components/schemas/TimelineEntryStreamStart'
+            required:
+            - type
+        users:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              title:
+                $ref: '#/components/schemas/Title'
+              flair:
+                $ref: '#/components/schemas/Flair'
+              patron:
+                $ref: '#/components/schemas/Patron'
+              patronColor:
+                $ref: '#/components/schemas/PatronColor'
+            required:
+            - id
+            - name
+      required:
+      - entries
+      - users
+      example:
+        entries:
+        - type: follow
+          data:
+            u1: neio
+            u2: chess-network
+          date: 1644232201429
+        - type: team-join
+          data:
+            userId: neio
+            teamId: coders
+          date: 1644232201429
+        - type: team-create
+          data:
+            userId: neio
+            teamId: coders
+          date: 1644232201429
+        - type: forum-post
+          data:
+            userId: neio
+            topicId: AAAAAAAN
+            topicName: World's Tallest LEGO Tower Completed in City Square
+            postId: AAAAAAAL
+          date: 1644232201429
+        - type: ublog-post
+          data:
+            userId: neio
+            id: og5pkt1c
+            slug: gotta-go-fast
+            title: Gotta Go Fast
+          date: 1644232201429
+        - type: tour-join
+          data:
+            userId: chess-network
+            tourId: Z24oxqgU
+            tourName: Daily Blitz Arena
+          date: 1644232201429
+        - type: game-end
+          data:
+            fullId: iGkAXUdEfLZC
+            perf: correspondence
+            opponent: chess-network
+            win: false
+          date: 1644232201429
+        - type: simul-create
+          data:
+            userId: neio
+            simulId: m3c0Wvu3
+            simulName: RCA 1st Jan simul
+          date: 1644232201429
+        - type: simul-join
+          data:
+            userId: chess-network
+            simulId: m3c0Wvu3
+            simulName: RCA 1st Jan simul
+          date: 1644232201429
+        - type: study-like
+          data:
+            userId: neio
+            studyId: ma5AvZ7o
+            studyName: Free wins | Danish Gambit
+          date: 1644232201429
+        - type: plan-start
+          data:
+            userId: chess-network
+          date: 1644232201429
+        - type: plan-renew
+          data:
+            userId: chess-network
+            months: 64
+          date: 1644232201429
+        - type: blog-post
+          data:
+            id: ZUviXRIAACYAVtMm
+            slug: lichess-development-made-easy-with-gitpod
+            title: Lichess Development Made Easy With Gitpod
+          date: 1644232201429
+        - type: ublog-post-like
+          data:
+            userId: neio
+            id: ZUviXRIAACYAVtMm
+            title: Lichess Development Made Easy With Gitpod
+          date: 1644232201429
+        - type: stream-start
+          data:
+            id: chess-network
+            title: Streamers Battle December !team | lichess.org
+          date: 1644232201429
+        users:
+          neio:
+            id: neio
+            name: Neio
+            title: NM
+          chess-network:
+            id: chess-network
+            name: Chess-Network
+            title: NM
+            patron: true
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        username:
+          type: string
+        perfs:
+          $ref: '#/components/schemas/Perfs'
+        title:
+          $ref: '#/components/schemas/Title'
+        flair:
+          $ref: '#/components/schemas/Flair'
+        createdAt:
+          type: integer
+          format: int64
+        disabled:
+          type: boolean
+          description: only appears if a user's account is closed
+        tosViolation:
+          type: boolean
+          description: only appears if a user's account is marked for the violation of [Lichess TOS](https://lichess.org/terms-of-service)
+        profile:
+          $ref: '#/components/schemas/Profile'
+        seenAt:
+          type: integer
+          format: int64
+        playTime:
+          $ref: '#/components/schemas/PlayTime'
+        patron:
+          $ref: '#/components/schemas/Patron'
+        patronColor:
+          $ref: '#/components/schemas/PatronColor'
+        verified:
+          type: boolean
+      required:
+      - id
+      - username
+    Perfs:
+      type: object
+      properties:
+        chess960:
+          $ref: '#/components/schemas/Perf'
+        atomic:
+          $ref: '#/components/schemas/Perf'
+        racingKings:
+          $ref: '#/components/schemas/Perf'
+        ultraBullet:
+          $ref: '#/components/schemas/Perf'
+        blitz:
+          $ref: '#/components/schemas/Perf'
+        kingOfTheHill:
+          $ref: '#/components/schemas/Perf'
+        threeCheck:
+          $ref: '#/components/schemas/Perf'
+        antichess:
+          $ref: '#/components/schemas/Perf'
+        crazyhouse:
+          $ref: '#/components/schemas/Perf'
+        bullet:
+          $ref: '#/components/schemas/Perf'
+        correspondence:
+          $ref: '#/components/schemas/Perf'
+        horde:
+          $ref: '#/components/schemas/Perf'
+        puzzle:
+          $ref: '#/components/schemas/Perf'
+        classical:
+          $ref: '#/components/schemas/Perf'
+        rapid:
+          $ref: '#/components/schemas/Perf'
+        storm:
+          $ref: '#/components/schemas/PuzzleModePerf'
+        racer:
+          $ref: '#/components/schemas/PuzzleModePerf'
+        streak:
+          $ref: '#/components/schemas/PuzzleModePerf'
+    Perf:
+      type: object
+      properties:
+        games:
+          type: integer
+        rating:
+          type: integer
+        rd:
+          type: integer
+          description: rating deviation
+        prog:
+          type: integer
+        prov:
+          type: boolean
+          description: only appears if a user's perf rating are [provisional](https://lichess.org/faq#provisional)
+        rank:
+          type: integer
+          description: global lichess ranking, only appears for recently active players
+      required:
+      - games
+      - rating
+      - rd
+      - prog
+    UserStreamer:
+      type: object
+      properties:
+        twitch:
+          type: object
+          properties:
+            channel:
+              type: string
+              format: uri
+              example: https://www.twitch.tv/lichessdotorg
+        youtube:
+          type: object
+          properties:
+            channel:
+              type: string
+              format: uri
+              example: https://www.youtube.com/c/LichessDotOrg
     Profile:
       type: object
       properties:
@@ -834,321 +1418,12 @@ components:
           example: 'github.com/ornicar
 
             mas.to/@thibault'
-    TimelineEntryPlanRenew:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - plan-renew
-        date:
-          type: number
-        data:
-          type: object
-          properties:
-            userId:
-              type: string
-            months:
-              type: number
-          required:
-          - userId
-          - months
-      required:
-      - type
-      - date
-      - data
-    TimelineEntryTourJoin:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - tour-join
-        date:
-          type: number
-        data:
-          type: object
-          properties:
-            userId:
-              type: string
-            tourId:
-              type: string
-            tourName:
-              type: string
-          required:
-          - userId
-          - tourId
-          - tourName
-      required:
-      - type
-      - date
-      - data
-    PuzzleModePerf:
-      type: object
-      properties:
-        runs:
-          type: integer
-        score:
-          type: integer
-      required:
-      - runs
-      - score
-    PatronColor:
-      type: integer
-      description: 'Players can choose a color for their Patron wings.
-
-        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
-
-
-        The presence of this field indicates the player is an active Patron.
+    Patron:
+      type: boolean
+      deprecated: true
+      description: 'Use patronColor value instead to determine if player is a patron.
 
         '
-      minimum: 1
-      maximum: 10
-    TimelineEntryForumPost:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - forum-post
-        date:
-          type: number
-        data:
-          type: object
-          properties:
-            userId:
-              type: string
-            topicId:
-              type: string
-            topicName:
-              type: string
-            postId:
-              type: string
-          required:
-          - userId
-          - topicId
-          - topicName
-          - postId
-      required:
-      - type
-      - date
-      - data
-    TimelineEntryStreamStart:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - stream-start
-        date:
-          type: number
-        data:
-          type: object
-          properties:
-            id:
-              type: string
-            title:
-              type: string
-          required:
-          - id
-      required:
-      - type
-      - date
-      - data
-    Count:
-      type: object
-      properties:
-        all:
-          type: integer
-        rated:
-          type: integer
-        ai:
-          type: integer
-        draw:
-          type: integer
-        drawH:
-          type: integer
-        loss:
-          type: integer
-        lossH:
-          type: integer
-        win:
-          type: integer
-        winH:
-          type: integer
-        bookmark:
-          type: integer
-        playing:
-          type: integer
-        import:
-          type: integer
-        me:
-          type: integer
-      required:
-      - all
-      - rated
-      - draw
-      - loss
-      - win
-      - bookmark
-      - playing
-      - import
-      - me
-    TimelineEntryTeamJoin:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - team-join
-        date:
-          type: number
-        data:
-          type: object
-          properties:
-            userId:
-              type: string
-            teamId:
-              type: string
-          required:
-          - userId
-          - teamId
-      required:
-      - type
-      - date
-      - data
-    TimelineEntryUblogPostLike:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - ublog-post-like
-        date:
-          type: number
-        data:
-          type: object
-          properties:
-            userId:
-              type: string
-            id:
-              type: string
-            title:
-              type: string
-          required:
-          - userId
-          - id
-          - title
-      required:
-      - type
-      - date
-      - data
-    PlayTime:
-      type: object
-      properties:
-        total:
-          type: integer
-        tv:
-          type: integer
-        human:
-          type: integer
-      required:
-      - total
-      - tv
-    Ok:
-      properties:
-        ok:
-          type: boolean
-      required:
-      - ok
-    TimelineEntryTeamCreate:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - team-create
-        date:
-          type: number
-        data:
-          type: object
-          properties:
-            userId:
-              type: string
-            teamId:
-              type: string
-          required:
-          - userId
-          - teamId
-      required:
-      - type
-      - date
-      - data
-    TimelineEntryBlogPost:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-          - blog-post
-        date:
-          type: number
-        data:
-          type: object
-          properties:
-            id:
-              type: string
-            slug:
-              type: string
-            title:
-              type: string
-          required:
-          - id
-          - slug
-          - title
-      required:
-      - type
-      - date
-      - data
-    User:
-      type: object
-      properties:
-        id:
-          type: string
-        username:
-          type: string
-        perfs:
-          $ref: '#/components/schemas/Perfs'
-        title:
-          $ref: '#/components/schemas/Title'
-        flair:
-          $ref: '#/components/schemas/Flair'
-        createdAt:
-          type: integer
-          format: int64
-        disabled:
-          type: boolean
-          description: only appears if a user's account is closed
-        tosViolation:
-          type: boolean
-          description: only appears if a user's account is marked for the violation of [Lichess TOS](https://lichess.org/terms-of-service)
-        profile:
-          $ref: '#/components/schemas/Profile'
-        seenAt:
-          type: integer
-          format: int64
-        playTime:
-          $ref: '#/components/schemas/PlayTime'
-        patron:
-          $ref: '#/components/schemas/Patron'
-        patronColor:
-          $ref: '#/components/schemas/PatronColor'
-        verified:
-          type: boolean
-      required:
-      - id
-      - username
     UserExtended:
       allOf:
       - $ref: '#/components/schemas/User'
@@ -1179,13 +1454,62 @@ components:
             type: number
         required:
         - url
-    TimelineEntryUblogPost:
+    TimelineEntryStreamStart:
       type: object
       properties:
         type:
           type: string
           enum:
-          - ublog-post
+          - stream-start
+        date:
+          type: number
+        data:
+          type: object
+          properties:
+            id:
+              type: string
+            title:
+              type: string
+          required:
+          - id
+      required:
+      - type
+      - date
+      - data
+    TimelineEntrySimul:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - simul-create
+          - simul-join
+        date:
+          type: number
+        data:
+          type: object
+          properties:
+            userId:
+              type: string
+            simulId:
+              type: string
+            simulName:
+              type: string
+          required:
+          - userId
+          - simulId
+          - simulName
+      required:
+      - type
+      - date
+      - data
+    TimelineEntryUblogPostLike:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+          - ublog-post-like
         date:
           type: number
         data:
@@ -1195,340 +1519,16 @@ components:
               type: string
             id:
               type: string
-            slug:
-              type: string
             title:
               type: string
           required:
           - userId
           - id
-          - slug
           - title
       required:
       - type
       - date
       - data
-    Perf:
-      type: object
-      properties:
-        games:
-          type: integer
-        rating:
-          type: integer
-        rd:
-          type: integer
-          description: rating deviation
-        prog:
-          type: integer
-        prov:
-          type: boolean
-          description: only appears if a user's perf rating are [provisional](https://lichess.org/faq#provisional)
-        rank:
-          type: integer
-          description: global lichess ranking, only appears for recently active players
-      required:
-      - games
-      - rating
-      - rd
-      - prog
-  examples:
-    account-getMyEmailAddress.json:
-      value:
-        email: bobby@localhost
-    account-getMyPreferences.json:
-      value:
-        prefs:
-          dark: true
-          transp: false
-          bgImg: https://lichess1.org/assets/lifat/background/gallery/bg25.webp
-          is3d: false
-          theme: brown
-          pieceSet: cburnett
-          theme3d: Woodi
-          pieceSet3d: Basic
-          soundSet: standard
-          autoQueen: 2
-          autoThreefold: 3
-          takeback: 3
-          moretime: 3
-          clockTenths: 1
-          clockBar: true
-          clockSound: true
-          premove: true
-          animation: 2
-          pieceNotation: 0
-          captured: true
-          follow: true
-          highlight: true
-          destination: true
-          coords: 1
-          replay: 2
-          challenge: 4
-          message: 3
-          submitMove: 0
-          confirmResign: 1
-          insightShare: 1
-          keyboardMove: 0
-          voiceMove: false
-          zen: 0
-          ratings: 1
-          moveEvent: 2
-          rookCastle: 1
-          flairs: true
-          sayGG: 0
-        language: en-US
-    account-getMyProfile.json:
-      value:
-        id: bobby
-        username: Bobby
-        perfs:
-          bullet:
-            games: 17
-            rating: 1681
-            rd: 76
-            prog: -25
-          blitz:
-            games: 109
-            rating: 1814
-            rd: 55
-            prog: -19
-          rapid:
-            games: 137
-            rating: 1761
-            rd: 88
-            prog: -2
-          classical:
-            games: 62
-            rating: 1619
-            rd: 114
-            prog: -37
-            prov: true
-          correspondence:
-            games: 1
-            rating: 1804
-            rd: 48
-            prog: -43
-          chess960:
-            games: 6
-            rating: 1703
-            rd: 49
-            prog: -52
-          kingOfTheHill:
-            games: 17
-            rating: 1728
-            rd: 45
-            prog: -17
-          threeCheck:
-            games: 576
-            rating: 1615
-            rd: 115
-            prog: -5
-            prov: true
-          antichess:
-            games: 25
-            rating: 1661
-            rd: 48
-            prog: -20
-          atomic:
-            games: 118
-            rating: 1707
-            rd: 76
-            prog: -22
-          horde:
-            games: 80
-            rating: 1678
-            rd: 78
-            prog: -5
-          crazyhouse:
-            games: 37
-            rating: 1722
-            rd: 53
-            prog: 18
-          puzzle:
-            games: 31
-            rating: 1756
-            rd: 51
-            prog: -17
-        createdAt: 1775598473954
-        profile:
-          flag: VA
-          location: Bobby City
-          bio: The succeeding period, from 1820 to 1830, was notable in England for scientific activity in the domain of Political Economy. It was the time as well of the vulgarising and extending of Ricardo's theory, as of the contest of that theory with the old school. Splendid tournaments were held. What was done then, is little known to the Continent generall
-          fideRating: 1725
-          uscfRating: 1756
-          ecfRating: 1569
-          rcfRating: 1736
-          cfcRating: 1793
-          dsbRating: 1794
-          links: 'https://en.wikipedia.org/wiki/Niels_Bohr
-
-            https://en.wikipedia.org/wiki/Voltaire
-
-            https://en.wikipedia.org/wiki/Archimedes
-
-            https://en.wikipedia.org/wiki/Nelson_Mandela
-
-            https://en.wikipedia.org/wiki/Euler'
-        seenAt: 1778760604182
-        playTime:
-          total: 19991
-          tv: 0
-        url: https://lichess.org/@/Bobby
-        count:
-          all: 2054
-          rated: 1643
-          draw: 231
-          loss: 921
-          win: 902
-          bookmark: 0
-          playing: 0
-          import: 0
-          me: 0
-        followable: true
-        following: false
-        blocking: false
-    account-setMyKidModeStatus.json:
-      value:
-        ok: true
-    account-getMyKidModeStatus.json:
-      value:
-        kid: false
-    account-getMyTimeline.json:
-      value:
-        entries:
-        - type: team-join
-          data:
-            userId: mary
-            teamId: two-bishops-two-steeds-two-wellhidden-beads
-          date: 1778797290118
-        - type: team-join
-          data:
-            userId: dmitry
-            teamId: i-dont-think-he-knows-about-second-piece-sac-pip
-          date: 1778796409740
-        - type: follow
-          data:
-            u1: mary
-            u2: marcel
-          date: 1778794086387
-        - type: team-join
-          data:
-            userId: yun
-            teamId: this-team-name-has-been-purchased-by-chesscom
-          date: 1778771081591
-        - type: team-join
-          data:
-            userId: yun
-            teamId: god-sac-the-queen
-          date: 1778743477150
-        - type: team-join
-          data:
-            userId: yarah
-            teamId: god-sac-the-queen
-          date: 1778741318351
-        - type: team-join
-          data:
-            userId: kenneth
-            teamId: god-sac-the-queen
-          date: 1778735292388
-        - type: team-join
-          data:
-            userId: dmitry
-            teamId: god-sac-the-queen
-          date: 1778730999374
-        - type: team-join
-          data:
-            userId: iryna
-            teamId: god-sac-the-queen
-          date: 1778726337298
-        - type: team-join
-          data:
-            userId: hui
-            teamId: massive-minority-attack
-          date: 1778725729602
-        - type: team-join
-          data:
-            userId: pedro
-            teamId: the-prep-leaks-for-itself
-          date: 1778719719539
-        - type: team-join
-          data:
-            userId: ikem
-            teamId: this-team-name-has-been-purchased-by-chesscom
-          date: 1778715702099
-        - type: team-create
-          data:
-            userId: kenneth
-            teamId: god-sac-the-queen
-          date: 1778707835827
-        - type: follow
-          data:
-            u1: marcel
-            u2: abubakar
-          date: 1778697218585
-        - type: follow
-          data:
-            u1: broadcaster
-            u2: sai
-          date: 1778695013138
-        users:
-          kenneth:
-            name: Kenneth
-            flair: objects.paperclip
-            id: kenneth
-          broadcaster:
-            name: Broadcaster
-            flair: people.oncoming-fist-dark-skin-tone
-            id: broadcaster
-          yarah:
-            name: Yarah
-            flair: nature.coral
-            patron: true
-            patronColor: 1
-            id: yarah
-          abubakar:
-            name: Abubakar
-            flair: people.woman-mountain-biking-dark-skin-tone
-            id: abubakar
-          mary:
-            name: Mary
-            flair: people.open-hands-medium-light-skin-tone
-            id: mary
-          pedro:
-            name: Pedro
-            flair: people.person-walking-dark-skin-tone
-            patron: true
-            patronColor: 1
-            id: pedro
-          ikem:
-            name: Ikem
-            flair: people.astronaut-medium-light-skin-tone
-            patron: true
-            patronColor: 1
-            id: ikem
-          marcel:
-            name: Marcel
-            flair: objects.guitar
-            id: marcel
-          dmitry:
-            name: Dmitry
-            id: dmitry
-          sai:
-            name: Sai
-            id: sai
-          hui:
-            name: Hui
-            patron: true
-            patronColor: 1
-            id: hui
-          yun:
-            name: Yun
-            flair: travel-places.globe-showing-europe-africa
-            id: yun
-          iryna:
-            name: Iryna
-            flair: people.call-me-hand-dark-skin-tone
-            id: iryna
   securitySchemes:
     OAuth2:
       type: oauth2

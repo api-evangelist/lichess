@@ -456,6 +456,19 @@ paths:
                 $ref: '#/components/schemas/GameJson'
 components:
   schemas:
+    GameOpening:
+      type: object
+      properties:
+        eco:
+          type: string
+        name:
+          type: string
+        ply:
+          type: integer
+      required:
+      - eco
+      - name
+      - ply
     GameColor:
       type: string
       enum:
@@ -470,6 +483,16 @@ components:
       - rapid
       - classical
       - correspondence
+    GamePlayers:
+      type: object
+      properties:
+        white:
+          $ref: '#/components/schemas/GamePlayerUser'
+        black:
+          $ref: '#/components/schemas/GamePlayerUser'
+      required:
+      - white
+      - black
     Error:
       type: object
       properties:
@@ -480,10 +503,123 @@ components:
       - error
       example:
         error: This request is invalid because [...]
-    FromPositionFEN:
+    GameStatusName:
       type: string
-      description: Custom initial position (in X-FEN). Variant must be standard, fromPosition, or chess960 (if a valid 960 starting position), and the game cannot be rated.
-      default: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+      enum:
+      - created
+      - started
+      - aborted
+      - mate
+      - resign
+      - stalemate
+      - timeout
+      - draw
+      - outoftime
+      - cheat
+      - noStart
+      - unknownFinish
+      - insufficientMaterialClaim
+      - variantEnd
+    BulkPairing:
+      type: object
+      properties:
+        id:
+          type: string
+        games:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              black:
+                type: string
+              white:
+                type: string
+        variant:
+          $ref: '#/components/schemas/VariantKey'
+        clock:
+          $ref: '#/components/schemas/Clock'
+        pairAt:
+          type: integer
+        pairedAt:
+          type:
+          - integer
+          - 'null'
+        rated:
+          type: boolean
+        startClocksAt:
+          type: integer
+        scheduledAt:
+          type: integer
+      required:
+      - id
+      - games
+      - variant
+      - clock
+      - pairAt
+      - pairedAt
+      - rated
+      - startClocksAt
+      - scheduledAt
+      example:
+        id: RVAcwgg7
+        games:
+        - id: NKop9IyD
+          black: lizen1
+          white: thibault
+        - id: KT8374ut
+          black: lizen3
+          white: lizen2
+        - id: wInQr8Sk
+          black: lizen5
+          white: lizen4
+        variant: standard
+        clock:
+          increment: 0
+          limit: 300
+        pairAt: 1612289869919
+        pairedAt: null
+        rated: false
+        startClocksAt: 1612200422971
+        scheduledAt: 1612203514628
+    VariantKey:
+      type: string
+      enum:
+      - standard
+      - chess960
+      - crazyhouse
+      - antichess
+      - atomic
+      - horde
+      - kingOfTheHill
+      - racingKings
+      - threeCheck
+      - fromPosition
+      example: standard
+      default: standard
+    Clock:
+      type: object
+      properties:
+        limit:
+          type: integer
+        increment:
+          type: integer
+      required:
+      - limit
+      - increment
+    PatronColor:
+      type: integer
+      description: 'Players can choose a color for their Patron wings.
+
+        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
+
+
+        The presence of this field indicates the player is an active Patron.
+
+        '
+      minimum: 1
+      maximum: 10
     GamePgn:
       type: string
       example: '[Event "Rated Blitz game"]
@@ -545,92 +681,6 @@ components:
     Flair:
       type: string
       description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
-    Patron:
-      type: boolean
-      deprecated: true
-      description: 'Use patronColor value instead to determine if player is a patron.
-
-        '
-    Clock:
-      type: object
-      properties:
-        limit:
-          type: integer
-        increment:
-          type: integer
-      required:
-      - limit
-      - increment
-    VariantKey:
-      type: string
-      enum:
-      - standard
-      - chess960
-      - crazyhouse
-      - antichess
-      - atomic
-      - horde
-      - kingOfTheHill
-      - racingKings
-      - threeCheck
-      - fromPosition
-      example: standard
-      default: standard
-    GameStatusName:
-      type: string
-      enum:
-      - created
-      - started
-      - aborted
-      - mate
-      - resign
-      - stalemate
-      - timeout
-      - draw
-      - outoftime
-      - cheat
-      - noStart
-      - unknownFinish
-      - insufficientMaterialClaim
-      - variantEnd
-    NotFound:
-      properties:
-        error:
-          type: string
-      required:
-      - error
-      example:
-        error: Not found.
-    LightUser:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        flair:
-          $ref: '#/components/schemas/Flair'
-        title:
-          $ref: '#/components/schemas/Title'
-        patron:
-          $ref: '#/components/schemas/Patron'
-        patronColor:
-          $ref: '#/components/schemas/PatronColor'
-      required:
-      - id
-      - name
-    PatronColor:
-      type: integer
-      description: 'Players can choose a color for their Patron wings.
-
-        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
-
-
-        The presence of this field indicates the player is an active Patron.
-
-        '
-      minimum: 1
-      maximum: 10
     GameMoveAnalysis:
       type: object
       properties:
@@ -661,6 +711,36 @@ components:
             comment:
               type: string
               example: Blunder. Nxg6 was best.
+    FromPositionFEN:
+      type: string
+      description: Custom initial position (in X-FEN). Variant must be standard, fromPosition, or chess960 (if a valid 960 starting position), and the game cannot be rated.
+      default: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+    LightUser:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        flair:
+          $ref: '#/components/schemas/Flair'
+        title:
+          $ref: '#/components/schemas/Title'
+        patron:
+          $ref: '#/components/schemas/Patron'
+        patronColor:
+          $ref: '#/components/schemas/PatronColor'
+      required:
+      - id
+      - name
+    NotFound:
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      example:
+        error: Not found.
     GamePlayerUser:
       type: object
       properties:
@@ -699,29 +779,12 @@ components:
       required:
       - user
       - rating
-    GameOpening:
-      type: object
-      properties:
-        eco:
-          type: string
-        name:
-          type: string
-        ply:
-          type: integer
-      required:
-      - eco
-      - name
-      - ply
-    GamePlayers:
-      type: object
-      properties:
-        white:
-          $ref: '#/components/schemas/GamePlayerUser'
-        black:
-          $ref: '#/components/schemas/GamePlayerUser'
-      required:
-      - white
-      - black
+    Patron:
+      type: boolean
+      deprecated: true
+      description: 'Use patronColor value instead to determine if player is a patron.
+
+        '
     GameJson:
       type: object
       properties:
@@ -810,69 +873,6 @@ components:
           type: boolean
       required:
       - ok
-    BulkPairing:
-      type: object
-      properties:
-        id:
-          type: string
-        games:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-              black:
-                type: string
-              white:
-                type: string
-        variant:
-          $ref: '#/components/schemas/VariantKey'
-        clock:
-          $ref: '#/components/schemas/Clock'
-        pairAt:
-          type: integer
-        pairedAt:
-          type:
-          - integer
-          - 'null'
-        rated:
-          type: boolean
-        startClocksAt:
-          type: integer
-        scheduledAt:
-          type: integer
-      required:
-      - id
-      - games
-      - variant
-      - clock
-      - pairAt
-      - pairedAt
-      - rated
-      - startClocksAt
-      - scheduledAt
-      example:
-        id: RVAcwgg7
-        games:
-        - id: NKop9IyD
-          black: lizen1
-          white: thibault
-        - id: KT8374ut
-          black: lizen3
-          white: lizen2
-        - id: wInQr8Sk
-          black: lizen5
-          white: lizen4
-        variant: standard
-        clock:
-          increment: 0
-          limit: 300
-        pairAt: 1612289869919
-        pairedAt: null
-        rated: false
-        startClocksAt: 1612200422971
-        scheduledAt: 1612203514628
   parameters:
     AcceptPgnOrNdjson:
       in: header

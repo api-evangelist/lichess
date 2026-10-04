@@ -240,11 +240,40 @@ paths:
                   $ref: '#/components/examples/tv-getBestOngoingGamesOfTvChannel.json'
 components:
   schemas:
+    GameOpening:
+      type: object
+      properties:
+        eco:
+          type: string
+        name:
+          type: string
+        ply:
+          type: integer
+      required:
+      - eco
+      - name
+      - ply
     GameColor:
       type: string
       enum:
       - white
       - black
+    TvGame:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/LightUser'
+        rating:
+          type: integer
+        gameId:
+          type: string
+        color:
+          $ref: '#/components/schemas/GameColor'
+      required:
+      - user
+      - rating
+      - gameId
+      - color
     Speed:
       type: string
       enum:
@@ -254,6 +283,107 @@ components:
       - rapid
       - classical
       - correspondence
+    GamePlayers:
+      type: object
+      properties:
+        white:
+          $ref: '#/components/schemas/GamePlayerUser'
+        black:
+          $ref: '#/components/schemas/GamePlayerUser'
+      required:
+      - white
+      - black
+    GameStatusName:
+      type: string
+      enum:
+      - created
+      - started
+      - aborted
+      - mate
+      - resign
+      - stalemate
+      - timeout
+      - draw
+      - outoftime
+      - cheat
+      - noStart
+      - unknownFinish
+      - insufficientMaterialClaim
+      - variantEnd
+    VariantKey:
+      type: string
+      enum:
+      - standard
+      - chess960
+      - crazyhouse
+      - antichess
+      - atomic
+      - horde
+      - kingOfTheHill
+      - racingKings
+      - threeCheck
+      - fromPosition
+      example: standard
+      default: standard
+    TvFeedFen:
+      type: object
+      title: fen
+      properties:
+        t:
+          type: string
+          description: 'The type of message.
+
+            A summary of the game is sent as the first message and when the featured game changes.
+
+            Subsequent messages are just the X-FEN, last move, and clocks.
+
+            '
+          const: fen
+        d:
+          type: object
+          description: The data of the message
+          title: fen
+          properties:
+            fen:
+              type: string
+              description: The X-FEN of the current position
+            lm:
+              type: string
+              description: 'The last move in UCI format (King to rook for Chess960-compatible
+
+                castling notation)
+
+                '
+            wc:
+              type: integer
+              description: White's clock in seconds
+            bc:
+              type: integer
+              description: Black's clock in seconds
+          required:
+          - fen
+          - lm
+          - wc
+          - bc
+      required:
+      - t
+      - d
+    PatronColor:
+      type: integer
+      description: 'Players can choose a color for their Patron wings.
+
+        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
+
+
+        The presence of this field indicates the player is an active Patron.
+
+        '
+      minimum: 1
+      maximum: 10
+    TvFeed:
+      oneOf:
+      - $ref: '#/components/schemas/TvFeedFeatured'
+      - $ref: '#/components/schemas/TvFeedFen'
     GamePgn:
       type: string
       example: '[Event "Rated Blitz game"]
@@ -315,87 +445,54 @@ components:
     Flair:
       type: string
       description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
-    Patron:
-      type: boolean
-      deprecated: true
-      description: 'Use patronColor value instead to determine if player is a patron.
-
-        '
-    TvFeedFen:
+    GameMoveAnalysis:
       type: object
-      title: fen
       properties:
-        t:
+        eval:
+          type: integer
+          description: Evaluation in centipawns
+        mate:
+          type: integer
+          description: Number of moves until forced mate
+        best:
           type: string
-          description: 'The type of message.
-
-            A summary of the game is sent as the first message and when the featured game changes.
-
-            Subsequent messages are just the X-FEN, last move, and clocks.
-
-            '
-          const: fen
-        d:
+          example: c2c3
+          description: Best move in UCI notation (only if played move was inaccurate)
+        variation:
+          type: string
+          example: c3 Nc6 d4 Qb6 Be2 Nge7 Na3 cxd4 cxd4 Nf5
+          description: Best variation in SAN notation (only if played move was inaccurate)
+        judgment:
           type: object
-          description: The data of the message
-          title: fen
+          description: Judgment annotation (only if played move was inaccurate)
           properties:
-            fen:
+            name:
               type: string
-              description: The X-FEN of the current position
-            lm:
+              enum:
+              - Inaccuracy
+              - Mistake
+              - Blunder
+            comment:
               type: string
-              description: 'The last move in UCI format (King to rook for Chess960-compatible
-
-                castling notation)
-
-                '
-            wc:
-              type: integer
-              description: White's clock in seconds
-            bc:
-              type: integer
-              description: Black's clock in seconds
-          required:
-          - fen
-          - lm
-          - wc
-          - bc
+              example: Blunder. Nxg6 was best.
+    LightUser:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        flair:
+          $ref: '#/components/schemas/Flair'
+        title:
+          $ref: '#/components/schemas/Title'
+        patron:
+          $ref: '#/components/schemas/Patron'
+        patronColor:
+          $ref: '#/components/schemas/PatronColor'
       required:
-      - t
-      - d
-    VariantKey:
-      type: string
-      enum:
-      - standard
-      - chess960
-      - crazyhouse
-      - antichess
-      - atomic
-      - horde
-      - kingOfTheHill
-      - racingKings
-      - threeCheck
-      - fromPosition
-      example: standard
-      default: standard
-    GameStatusName:
-      type: string
-      enum:
-      - created
-      - started
-      - aborted
-      - mate
-      - resign
-      - stalemate
-      - timeout
-      - draw
-      - outoftime
-      - cheat
-      - noStart
-      - unknownFinish
-      - insufficientMaterialClaim
-      - variantEnd
+      - id
+      - name
     TvFeedFeatured:
       type: object
       title: featured
@@ -452,82 +549,6 @@ components:
       required:
       - t
       - d
-    TvGame:
-      type: object
-      properties:
-        user:
-          $ref: '#/components/schemas/LightUser'
-        rating:
-          type: integer
-        gameId:
-          type: string
-        color:
-          $ref: '#/components/schemas/GameColor'
-      required:
-      - user
-      - rating
-      - gameId
-      - color
-    LightUser:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        flair:
-          $ref: '#/components/schemas/Flair'
-        title:
-          $ref: '#/components/schemas/Title'
-        patron:
-          $ref: '#/components/schemas/Patron'
-        patronColor:
-          $ref: '#/components/schemas/PatronColor'
-      required:
-      - id
-      - name
-    PatronColor:
-      type: integer
-      description: 'Players can choose a color for their Patron wings.
-
-        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
-
-
-        The presence of this field indicates the player is an active Patron.
-
-        '
-      minimum: 1
-      maximum: 10
-    GameMoveAnalysis:
-      type: object
-      properties:
-        eval:
-          type: integer
-          description: Evaluation in centipawns
-        mate:
-          type: integer
-          description: Number of moves until forced mate
-        best:
-          type: string
-          example: c2c3
-          description: Best move in UCI notation (only if played move was inaccurate)
-        variation:
-          type: string
-          example: c3 Nc6 d4 Qb6 Be2 Nge7 Na3 cxd4 cxd4 Nf5
-          description: Best variation in SAN notation (only if played move was inaccurate)
-        judgment:
-          type: object
-          description: Judgment annotation (only if played move was inaccurate)
-          properties:
-            name:
-              type: string
-              enum:
-              - Inaccuracy
-              - Mistake
-              - Blunder
-            comment:
-              type: string
-              example: Blunder. Nxg6 was best.
     GamePlayerUser:
       type: object
       properties:
@@ -566,33 +587,12 @@ components:
       required:
       - user
       - rating
-    GameOpening:
-      type: object
-      properties:
-        eco:
-          type: string
-        name:
-          type: string
-        ply:
-          type: integer
-      required:
-      - eco
-      - name
-      - ply
-    GamePlayers:
-      type: object
-      properties:
-        white:
-          $ref: '#/components/schemas/GamePlayerUser'
-        black:
-          $ref: '#/components/schemas/GamePlayerUser'
-      required:
-      - white
-      - black
-    TvFeed:
-      oneOf:
-      - $ref: '#/components/schemas/TvFeedFeatured'
-      - $ref: '#/components/schemas/TvFeedFen'
+    Patron:
+      type: boolean
+      deprecated: true
+      description: 'Use patronColor value instead to determine if player is a patron.
+
+        '
     GameJson:
       type: object
       properties:
@@ -676,6 +676,28 @@ components:
       - status
       - players
   examples:
+    tv-streamCurrentTvGame-newGame.json:
+      value:
+        t: featured
+        d:
+          id: 2i3nCKuq
+          orientation: black
+          players:
+          - color: white
+            user:
+              name: DrawMerchant
+              title: IM
+              id: drawmerchant
+            rating: 2787
+            seconds: 60
+          - color: black
+            user:
+              name: Empathy666
+              flair: symbols.black-heart
+              id: empathy666
+            rating: 2876
+            seconds: 60
+          fen: 2n1rrk1/1p3ppp/3p4/pP1P2qn/2PB4/5Q2/P1N2PPP/R4RK1 w - - 5 21
     tv-getBestOngoingGamesOfTvChannel.json:
       value:
         id: nQSXy8Zw
@@ -761,28 +783,129 @@ components:
           initial: 30
           increment: 0
           totalTime: 30
-    tv-streamCurrentTvGame-newGame.json:
+    tv-getBestOngoingGamesOfTvChannel.pgn:
+      value: '[Event "rated bullet game"]
+
+        [Site "https://lichess.org/nQSXy8Zw"]
+
+        [Date "2026.05.15"]
+
+        [Round "-"]
+
+        [White "Chess-uae"]
+
+        [Black "eloWhitekingchess"]
+
+        [Result "*"]
+
+        [GameId "nQSXy8Zw"]
+
+        [UTCDate "2026.05.15"]
+
+        [UTCTime "02:36:59"]
+
+        [WhiteElo "2995"]
+
+        [BlackElo "2868"]
+
+        [Variant "Standard"]
+
+        [TimeControl "30+0"]
+
+        [ECO "A00"]
+
+        [Termination "Unterminated"]
+
+
+        1. g3 Nf6 2. Bg2 d6 3. Nf3 g6 4. O-O Bg7 5. d4 O-O 6. c4 c6 *
+
+
+
+        [Event "GRAN FINAL BULLET RAW ABRIL Team Battle"]
+
+        [Site "https://lichess.org/9U5Mc8fc"]
+
+        [Date "2026.05.15"]
+
+        [Round "-"]
+
+        [White "Goku102020newaccount"]
+
+        [Black "Misterio666"]
+
+        [Result "*"]
+
+        [GameId "9U5Mc8fc"]
+
+        [UTCDate "2026.05.15"]
+
+        [UTCTime "02:36:36"]
+
+        [WhiteElo "2826"]
+
+        [BlackElo "2530"]
+
+        [Variant "Standard"]
+
+        [TimeControl "60+0"]
+
+        [ECO "A40"]
+
+        [Termination "Unterminated"]
+
+
+        1. d4 e6 2. Bf4 Nf6 3. e3 d5 4. Nf3 Bd6 5. Bg3 Ne4 6. Nbd2 f5 7. c4 c6 8. Qb3 O-O 9. Bd3 Kh8 10. Bxe4 fxe4 11. Ne5 Bxe5 12. Bxe5 Nd7 13. Bg3 Nf6 *
+
+
+
+        [Event "rated bullet game"]
+
+        [Site "https://lichess.org/tQrb3I5l"]
+
+        [Date "2026.05.15"]
+
+        [Round "-"]
+
+        [White "eloWhitekingchess"]
+
+        [Black "Chess-uae"]
+
+        [Result "0-1"]
+
+        [GameId "tQrb3I5l"]
+
+        [UTCDate "2026.05.15"]
+
+        [UTCTime "02:36:23"]
+
+        [WhiteElo "2872"]
+
+        [BlackElo "2991"]
+
+        [WhiteRatingDiff "-4"]
+
+        [BlackRatingDiff "+4"]
+
+        [Variant "Standard"]
+
+        [TimeControl "30+0"]
+
+        [ECO "A05"]
+
+        [Termination "Normal"]
+
+
+        1. Nf3 g6 2. d3 Nf6 3. g3 Bg7 4. Bg2 O-O 5. O-O d5 6. c3 c5 7. Qc2 Nc6 8. Nbd2 d4 9. e3 dxc3 10. bxc3 Bf5 11. e4 Bg4 12. Nc4 b5 13. Ne3 Rc8 14. Nxg4 Nxg4 15. h3 Nge5 16. Nxe5 Bxe5 17. Rd1 Bg7 18. Be3 b4 19. cxb4 Nxb4 20. Qb3 Bxa1 21. Rxa1 Qxd3 22. Qa4 Rfd8 23. Qxa7 Nc2 24. Rc1 Nxe3 25. Qxe7 Nxg2 26. Kxg2 Re8 0-1
+
+        '
+    tv-streamCurrentTvGame-move.json:
       value:
-        t: featured
+        t: fen
         d:
-          id: 2i3nCKuq
-          orientation: black
-          players:
-          - color: white
-            user:
-              name: DrawMerchant
-              title: IM
-              id: drawmerchant
-            rating: 2787
-            seconds: 60
-          - color: black
-            user:
-              name: Empathy666
-              flair: symbols.black-heart
-              id: empathy666
-            rating: 2876
-            seconds: 60
-          fen: 2n1rrk1/1p3ppp/3p4/pP1P2qn/2PB4/5Q2/P1N2PPP/R4RK1 w - - 5 21
+          fen: 2n1rrk1/1p3ppp/3p4/pP1P2qn/2PB4/5Q2/P1N2PPP/4RRK1 b - - 6 21
+          lm: a1e1
+          wc: 39
+          bc: 43
     tv-getCurrentTvGames.json:
       value:
         chess960:
@@ -910,129 +1033,6 @@ components:
           rating: 2479
           gameId: EUO98ic9
           color: white
-    tv-streamCurrentTvGame-move.json:
-      value:
-        t: fen
-        d:
-          fen: 2n1rrk1/1p3ppp/3p4/pP1P2qn/2PB4/5Q2/P1N2PPP/4RRK1 b - - 6 21
-          lm: a1e1
-          wc: 39
-          bc: 43
-    tv-getBestOngoingGamesOfTvChannel.pgn:
-      value: '[Event "rated bullet game"]
-
-        [Site "https://lichess.org/nQSXy8Zw"]
-
-        [Date "2026.05.15"]
-
-        [Round "-"]
-
-        [White "Chess-uae"]
-
-        [Black "eloWhitekingchess"]
-
-        [Result "*"]
-
-        [GameId "nQSXy8Zw"]
-
-        [UTCDate "2026.05.15"]
-
-        [UTCTime "02:36:59"]
-
-        [WhiteElo "2995"]
-
-        [BlackElo "2868"]
-
-        [Variant "Standard"]
-
-        [TimeControl "30+0"]
-
-        [ECO "A00"]
-
-        [Termination "Unterminated"]
-
-
-        1. g3 Nf6 2. Bg2 d6 3. Nf3 g6 4. O-O Bg7 5. d4 O-O 6. c4 c6 *
-
-
-
-        [Event "GRAN FINAL BULLET RAW ABRIL Team Battle"]
-
-        [Site "https://lichess.org/9U5Mc8fc"]
-
-        [Date "2026.05.15"]
-
-        [Round "-"]
-
-        [White "Goku102020newaccount"]
-
-        [Black "Misterio666"]
-
-        [Result "*"]
-
-        [GameId "9U5Mc8fc"]
-
-        [UTCDate "2026.05.15"]
-
-        [UTCTime "02:36:36"]
-
-        [WhiteElo "2826"]
-
-        [BlackElo "2530"]
-
-        [Variant "Standard"]
-
-        [TimeControl "60+0"]
-
-        [ECO "A40"]
-
-        [Termination "Unterminated"]
-
-
-        1. d4 e6 2. Bf4 Nf6 3. e3 d5 4. Nf3 Bd6 5. Bg3 Ne4 6. Nbd2 f5 7. c4 c6 8. Qb3 O-O 9. Bd3 Kh8 10. Bxe4 fxe4 11. Ne5 Bxe5 12. Bxe5 Nd7 13. Bg3 Nf6 *
-
-
-
-        [Event "rated bullet game"]
-
-        [Site "https://lichess.org/tQrb3I5l"]
-
-        [Date "2026.05.15"]
-
-        [Round "-"]
-
-        [White "eloWhitekingchess"]
-
-        [Black "Chess-uae"]
-
-        [Result "0-1"]
-
-        [GameId "tQrb3I5l"]
-
-        [UTCDate "2026.05.15"]
-
-        [UTCTime "02:36:23"]
-
-        [WhiteElo "2872"]
-
-        [BlackElo "2991"]
-
-        [WhiteRatingDiff "-4"]
-
-        [BlackRatingDiff "+4"]
-
-        [Variant "Standard"]
-
-        [TimeControl "30+0"]
-
-        [ECO "A05"]
-
-        [Termination "Normal"]
-
-
-        1. Nf3 g6 2. d3 Nf6 3. g3 Bg7 4. Bg2 O-O 5. O-O d5 6. c3 c5 7. Qc2 Nc6 8. Nbd2 d4 9. e3 dxc3 10. bxc3 Bf5 11. e4 Bg4 12. Nc4 b5 13. Ne3 Rc8 14. Nxg4 Nxg4 15. h3 Nge5 16. Nxe5 Bxe5 17. Rd1 Bg7 18. Be3 b4 19. cxb4 Nxb4 20. Qb3 Bxa1 21. Rxa1 Qxd3 22. Qa4 Rfd8 23. Qxa7 Nc2 24. Rc1 Nxe3 25. Qxe7 Nxg2 26. Kxg2 Re8 0-1
-
-        '
   parameters:
     AcceptPgnOrNdjson:
       in: header
