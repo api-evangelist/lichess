@@ -1,3 +1,8 @@
+# Provenance stamped 2026-10-07 (roadmap#943): written by an API Evangelist sweep (dated 2026-05-25 by the file itself), not
+# harvested from the provider. `method: generated` so the economics campaign may replace it with a
+# dated, verbatim transcription; every figure below is unverified until it does.
+method: generated
+generated: '2026-05-25'
 specification: API Commons Plans
 specificationVersion: '0.1'
 schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
@@ -91,3 +96,30 @@ plans:
       - Visible patron badge on the user profile
       - Supports server operations, infrastructure, and development
       - No functional benefit or rate-limit change versus the Free plan
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - free
+  units:
+  - object
+  - request
+  plans:
+  - name: Free
+    access: free
+    model: free
+    model_how: derived
+    units:
+    - object
+    - request
+    periods:
+    - month
+  - name: Lichess Patron
+    access: other
+    model: free
+    model_how: derived
+    units:
+    - other
+    periods:
+    - month
+    - one-time
