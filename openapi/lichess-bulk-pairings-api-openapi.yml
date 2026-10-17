@@ -456,70 +456,6 @@ paths:
                 $ref: '#/components/schemas/GameJson'
 components:
   schemas:
-    GameOpening:
-      type: object
-      properties:
-        eco:
-          type: string
-        name:
-          type: string
-        ply:
-          type: integer
-      required:
-      - eco
-      - name
-      - ply
-    GameColor:
-      type: string
-      enum:
-      - white
-      - black
-    Speed:
-      type: string
-      enum:
-      - ultraBullet
-      - bullet
-      - blitz
-      - rapid
-      - classical
-      - correspondence
-    GamePlayers:
-      type: object
-      properties:
-        white:
-          $ref: '#/components/schemas/GamePlayerUser'
-        black:
-          $ref: '#/components/schemas/GamePlayerUser'
-      required:
-      - white
-      - black
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-          description: The cause of the error.
-      required:
-      - error
-      example:
-        error: This request is invalid because [...]
-    GameStatusName:
-      type: string
-      enum:
-      - created
-      - started
-      - aborted
-      - mate
-      - resign
-      - stalemate
-      - timeout
-      - draw
-      - outoftime
-      - cheat
-      - noStart
-      - unknownFinish
-      - insufficientMaterialClaim
-      - variantEnd
     BulkPairing:
       type: object
       properties:
@@ -583,43 +519,6 @@ components:
         rated: false
         startClocksAt: 1612200422971
         scheduledAt: 1612203514628
-    VariantKey:
-      type: string
-      enum:
-      - standard
-      - chess960
-      - crazyhouse
-      - antichess
-      - atomic
-      - horde
-      - kingOfTheHill
-      - racingKings
-      - threeCheck
-      - fromPosition
-      example: standard
-      default: standard
-    Clock:
-      type: object
-      properties:
-        limit:
-          type: integer
-        increment:
-          type: integer
-      required:
-      - limit
-      - increment
-    PatronColor:
-      type: integer
-      description: 'Players can choose a color for their Patron wings.
-
-        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
-
-
-        The presence of this field indicates the player is an active Patron.
-
-        '
-      minimum: 1
-      maximum: 10
     GamePgn:
       type: string
       example: '[Event "Rated Blitz game"]
@@ -662,129 +561,20 @@ components:
         1. e4 { [%clk 0:03:00] } e5 { [%clk 0:03:00] } 2. Nf3 { [%clk 0:02:59] } Nc6 { [%clk 0:02:58] } 3. Bb5 { [%clk 0:02:57] } d6 { [%clk 0:02:55] } 4. h3 { [%clk 0:02:54] } Nf6 { [%clk 0:02:52] } 5. Bxc6+ { [%clk 0:02:52] } bxc6 { [%clk 0:02:49] } 6. d3 { [%clk 0:02:51] } Be7 { [%clk 0:02:46] } 7. O-O { [%clk 0:02:47] } O-O { [%clk 0:02:45] } 8. b3 { [%clk 0:02:45] } d5 { [%clk 0:02:45] } 9. exd5 { [%clk 0:02:33] } cxd5 { [%clk 0:02:40] } 10. Nxe5 { [%clk 0:02:31] } Qd6 { [%clk 0:02:38] } 1-0
 
         '
-    Title:
-      type: string
-      enum:
-      - GM
-      - WGM
-      - IM
-      - WIM
-      - FM
-      - WFM
-      - NM
-      - CM
-      - WCM
-      - WNM
-      - LM
-      - BOT
-      description: only appears if the user is a titled player or a bot user
-    Flair:
-      type: string
-      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
-    GameMoveAnalysis:
-      type: object
-      properties:
-        eval:
-          type: integer
-          description: Evaluation in centipawns
-        mate:
-          type: integer
-          description: Number of moves until forced mate
-        best:
-          type: string
-          example: c2c3
-          description: Best move in UCI notation (only if played move was inaccurate)
-        variation:
-          type: string
-          example: c3 Nc6 d4 Qb6 Be2 Nge7 Na3 cxd4 cxd4 Nf5
-          description: Best variation in SAN notation (only if played move was inaccurate)
-        judgment:
-          type: object
-          description: Judgment annotation (only if played move was inaccurate)
-          properties:
-            name:
-              type: string
-              enum:
-              - Inaccuracy
-              - Mistake
-              - Blunder
-            comment:
-              type: string
-              example: Blunder. Nxg6 was best.
     FromPositionFEN:
       type: string
       description: Custom initial position (in X-FEN). Variant must be standard, fromPosition, or chess960 (if a valid 960 starting position), and the game cannot be rated.
       default: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
-    LightUser:
+    Clock:
       type: object
       properties:
-        id:
-          type: string
-        name:
-          type: string
-        flair:
-          $ref: '#/components/schemas/Flair'
-        title:
-          $ref: '#/components/schemas/Title'
-        patron:
-          $ref: '#/components/schemas/Patron'
-        patronColor:
-          $ref: '#/components/schemas/PatronColor'
-      required:
-      - id
-      - name
-    NotFound:
-      properties:
-        error:
-          type: string
-      required:
-      - error
-      example:
-        error: Not found.
-    GamePlayerUser:
-      type: object
-      properties:
-        user:
-          $ref: '#/components/schemas/LightUser'
-        rating:
+        limit:
           type: integer
-        ratingDiff:
+        increment:
           type: integer
-        name:
-          type: string
-        provisional:
-          type: boolean
-        aiLevel:
-          type: integer
-        analysis:
-          type: object
-          properties:
-            inaccuracy:
-              type: integer
-            mistake:
-              type: integer
-            blunder:
-              type: integer
-            acpl:
-              type: integer
-            accuracy:
-              type: integer
-          required:
-          - inaccuracy
-          - mistake
-          - blunder
-          - acpl
-        team:
-          type: string
       required:
-      - user
-      - rating
-    Patron:
-      type: boolean
-      deprecated: true
-      description: 'Use patronColor value instead to determine if player is a patron.
-
-        '
+      - limit
+      - increment
     GameJson:
       type: object
       properties:
@@ -867,12 +657,222 @@ components:
       - lastMoveAt
       - status
       - players
+    GameMoveAnalysis:
+      type: object
+      properties:
+        eval:
+          type: integer
+          description: Evaluation in centipawns
+        mate:
+          type: integer
+          description: Number of moves until forced mate
+        best:
+          type: string
+          example: c2c3
+          description: Best move in UCI notation (only if played move was inaccurate)
+        variation:
+          type: string
+          example: c3 Nc6 d4 Qb6 Be2 Nge7 Na3 cxd4 cxd4 Nf5
+          description: Best variation in SAN notation (only if played move was inaccurate)
+        judgment:
+          type: object
+          description: Judgment annotation (only if played move was inaccurate)
+          properties:
+            name:
+              type: string
+              enum:
+              - Inaccuracy
+              - Mistake
+              - Blunder
+            comment:
+              type: string
+              example: Blunder. Nxg6 was best.
+    VariantKey:
+      type: string
+      enum:
+      - standard
+      - chess960
+      - crazyhouse
+      - antichess
+      - atomic
+      - horde
+      - kingOfTheHill
+      - racingKings
+      - threeCheck
+      - fromPosition
+      example: standard
+      default: standard
+    GameOpening:
+      type: object
+      properties:
+        eco:
+          type: string
+        name:
+          type: string
+        ply:
+          type: integer
+      required:
+      - eco
+      - name
+      - ply
+    Flair:
+      type: string
+      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
+    GameStatusName:
+      type: string
+      enum:
+      - created
+      - started
+      - aborted
+      - mate
+      - resign
+      - stalemate
+      - timeout
+      - draw
+      - outoftime
+      - cheat
+      - noStart
+      - unknownFinish
+      - insufficientMaterialClaim
+      - variantEnd
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The cause of the error.
+      required:
+      - error
+      example:
+        error: This request is invalid because [...]
+    Speed:
+      type: string
+      enum:
+      - ultraBullet
+      - bullet
+      - blitz
+      - rapid
+      - classical
+      - correspondence
+    Patron:
+      type: boolean
+      deprecated: true
+      description: 'Use patronColor value instead to determine if player is a patron.
+
+        '
+    PatronColor:
+      type: integer
+      description: 'Players can choose a color for their Patron wings.
+
+        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
+
+
+        The presence of this field indicates the player is an active Patron.
+
+        '
+      minimum: 1
+      maximum: 10
+    Title:
+      type: string
+      enum:
+      - GM
+      - WGM
+      - IM
+      - WIM
+      - FM
+      - WFM
+      - NM
+      - CM
+      - WCM
+      - WNM
+      - LM
+      - BOT
+      description: only appears if the user is a titled player or a bot user
+    GameColor:
+      type: string
+      enum:
+      - white
+      - black
+    LightUser:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        flair:
+          $ref: '#/components/schemas/Flair'
+        title:
+          $ref: '#/components/schemas/Title'
+        patron:
+          $ref: '#/components/schemas/Patron'
+        patronColor:
+          $ref: '#/components/schemas/PatronColor'
+      required:
+      - id
+      - name
+    GamePlayerUser:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/LightUser'
+        rating:
+          type: integer
+        ratingDiff:
+          type: integer
+        name:
+          type: string
+        provisional:
+          type: boolean
+        aiLevel:
+          type: integer
+        analysis:
+          type: object
+          properties:
+            inaccuracy:
+              type: integer
+            mistake:
+              type: integer
+            blunder:
+              type: integer
+            acpl:
+              type: integer
+            accuracy:
+              type: integer
+          required:
+          - inaccuracy
+          - mistake
+          - blunder
+          - acpl
+        team:
+          type: string
+      required:
+      - user
+      - rating
+    GamePlayers:
+      type: object
+      properties:
+        white:
+          $ref: '#/components/schemas/GamePlayerUser'
+        black:
+          $ref: '#/components/schemas/GamePlayerUser'
+      required:
+      - white
+      - black
     Ok:
       properties:
         ok:
           type: boolean
       required:
       - ok
+    NotFound:
+      properties:
+        error:
+          type: string
+      required:
+      - error
+      example:
+        error: Not found.
   parameters:
     AcceptPgnOrNdjson:
       in: header

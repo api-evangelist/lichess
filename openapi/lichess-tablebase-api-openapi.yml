@@ -159,195 +159,216 @@ paths:
                 default:
                   $ref: '#/components/examples/tablebase-lookupAntichess.json'
 components:
-  schemas:
-    TablebaseMove:
-      type: object
-      properties:
-        uci:
-          type: string
-          example: h7h8q
-        san:
-          type: string
-          example: h8=Q+
-        category:
-          type: string
-          enum:
-          - loss
-          - unknown
-          - syzygy-loss
-          - maybe-loss
-          - blessed-loss
-          - draw
-          - cursed-win
-          - maybe-win
-          - syzygy-win
-          - win
-        dtz:
-          type:
-          - 'null'
-          - integer
-        precise_dtz:
-          type:
-          - 'null'
-          - integer
-        dtc:
-          type:
-          - 'null'
-          - integer
-        dtm:
-          type:
-          - 'null'
-          - integer
-        dtw:
-          type:
-          - 'null'
-          - integer
-        zeroing:
-          type: boolean
-        conversion:
-          type: boolean
-        checkmate:
-          type: boolean
-        stalemate:
-          type: boolean
-        variant_win:
-          type: boolean
-        variant_loss:
-          type: boolean
-        insufficient_material:
-          type: boolean
-      required:
-      - uci
-      - san
-      - category
-    TablebaseJson:
-      type: object
-      properties:
-        category:
-          type: string
-          enum:
-          - win
-          - unknown
-          - syzygy-win
-          - maybe-win
-          - cursed-win
-          - draw
-          - blessed-loss
-          - maybe-loss
-          - syzygy-loss
-          - loss
-          description: '`cursed-win` and `blessed-loss` means the 50-move rule prevents
-
-            the decisive result.
-
-
-            `syzygy-win` and `syzygy-loss` means exact result is unknown due to
-
-            [DTZ rounding](https://syzygy-tables.info/metrics#dtz), i.e., the
-
-            win or loss could also be prevented by the 50-move rule if
-
-            the user has deviated from the tablebase recommendation since the
-
-            last pawn move or capture.
-
-
-            `maybe-win` and `maybe-loss` means the result with regard to the
-
-            50-move rule is unknown, because DTZ is unknown and the DTC tablebase
-
-            does not guarantee to reach a zeroing move as soon as possible.
-
-            '
-        dtz:
-          type:
-          - 'null'
-          - integer
-          description: '[DTZ50'''' with rounding](https://syzygy-tables.info/metrics#dtz) in plies
-
-            (for Standard chess positions with not more than 7 pieces and variant
-
-            positions not more than 6 pieces)
-
-            '
-        precise_dtz:
-          type:
-          - 'null'
-          - integer
-          description: 'DTZ50'''' in plies, only if guaranteed to not be rounded, or absent if unknown
-
-            '
-        dtc:
-          type:
-          - 'null'
-          - integer
-          description: "Depth to Conversion: Moves to next capture, promotion,\nor checkmate. Available for:\n* Standard chess positions with 8 pieces, more than one pawn of material\n  value for each side, and at least one pair of opposing pawns,\n  short *op1*, if query parameter `dtc` is `auxiliary` or `always`.\n* Some standard chess positions with up to 7 pieces, if query parameter\n  `dtc` is `always`. Work in progress.\n"
-        dtm:
-          type:
-          - 'null'
-          - integer
-          description: 'Depth To Mate: Plies to mate (available only for Standard positions
-
-            with not more than 6 pieces)
-
-            '
-        dtw:
-          type:
-          - 'null'
-          - integer
-          description: 'Depth To Win: Plies to win (available only for Antichess positions
-
-            with not more than 4 pieces)
-
-            '
-        checkmate:
-          type: boolean
-        stalemate:
-          type: boolean
-        variant_win:
-          type: boolean
-          description: Only in chess variants
-        variant_loss:
-          type: boolean
-          description: Only in chess variants
-        insufficient_material:
-          type: boolean
-        moves:
-          type: array
-          description: Information about legal moves, best first
-          items:
-            $ref: '#/components/schemas/TablebaseMove'
-      required:
-      - category
-      - moves
-      example:
-        dtz: 1
-        precise_dtz: 1
-        dtc: null
-        dtm: 17
-        dtw: null
+  examples:
+    tablebase-lookupAntichess.json:
+      value:
         checkmate: false
         stalemate: false
         variant_win: false
         variant_loss: false
         insufficient_material: false
-        category: win
+        dtz: null
+        precise_dtz: null
+        dtm: null
+        dtw: null
+        dtc: null
+        category: unknown
         moves:
-        - uci: h7h8q
-          san: h8=Q+
-          dtz: -2
-          precise_dtz: -2
-          dtc: null
-          dtm: -16
-          dtw: null
+        - uci: f7f6
+          san: f6
           zeroing: true
+          conversion: false
           checkmate: false
           stalemate: false
           variant_win: false
           variant_loss: false
           insufficient_material: false
-          category: loss
-  examples:
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: h7h6
+          san: h6
+          zeroing: true
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: f7f5
+          san: f5
+          zeroing: true
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: h7h5
+          san: h5
+          zeroing: true
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: g8f6
+          san: Nf6
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: g8h6
+          san: Nh6
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: e7d6
+          san: Kd6
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: e7e6
+          san: Ke6
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: e7f6
+          san: Kf6
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: e7d7
+          san: Kd7
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: e7d8
+          san: Kd8
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: e7e8
+          san: Ke8
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
+        - uci: e7f8
+          san: Kf8
+          zeroing: false
+          conversion: false
+          checkmate: false
+          stalemate: false
+          variant_win: false
+          variant_loss: false
+          insufficient_material: false
+          dtz: null
+          precise_dtz: null
+          dtm: null
+          dtw: null
+          dtc: null
+          category: unknown
     tablebase-lookupAtomic.json:
       value:
         checkmate: false
@@ -1126,215 +1147,194 @@ components:
           dtw: null
           dtc: null
           category: win
-    tablebase-lookupAntichess.json:
-      value:
+  schemas:
+    TablebaseJson:
+      type: object
+      properties:
+        category:
+          type: string
+          enum:
+          - win
+          - unknown
+          - syzygy-win
+          - maybe-win
+          - cursed-win
+          - draw
+          - blessed-loss
+          - maybe-loss
+          - syzygy-loss
+          - loss
+          description: '`cursed-win` and `blessed-loss` means the 50-move rule prevents
+
+            the decisive result.
+
+
+            `syzygy-win` and `syzygy-loss` means exact result is unknown due to
+
+            [DTZ rounding](https://syzygy-tables.info/metrics#dtz), i.e., the
+
+            win or loss could also be prevented by the 50-move rule if
+
+            the user has deviated from the tablebase recommendation since the
+
+            last pawn move or capture.
+
+
+            `maybe-win` and `maybe-loss` means the result with regard to the
+
+            50-move rule is unknown, because DTZ is unknown and the DTC tablebase
+
+            does not guarantee to reach a zeroing move as soon as possible.
+
+            '
+        dtz:
+          type:
+          - 'null'
+          - integer
+          description: '[DTZ50'''' with rounding](https://syzygy-tables.info/metrics#dtz) in plies
+
+            (for Standard chess positions with not more than 7 pieces and variant
+
+            positions not more than 6 pieces)
+
+            '
+        precise_dtz:
+          type:
+          - 'null'
+          - integer
+          description: 'DTZ50'''' in plies, only if guaranteed to not be rounded, or absent if unknown
+
+            '
+        dtc:
+          type:
+          - 'null'
+          - integer
+          description: "Depth to Conversion: Moves to next capture, promotion,\nor checkmate. Available for:\n* Standard chess positions with 8 pieces, more than one pawn of material\n  value for each side, and at least one pair of opposing pawns,\n  short *op1*, if query parameter `dtc` is `auxiliary` or `always`.\n* Some standard chess positions with up to 7 pieces, if query parameter\n  `dtc` is `always`. Work in progress.\n"
+        dtm:
+          type:
+          - 'null'
+          - integer
+          description: 'Depth To Mate: Plies to mate (available only for Standard positions
+
+            with not more than 6 pieces)
+
+            '
+        dtw:
+          type:
+          - 'null'
+          - integer
+          description: 'Depth To Win: Plies to win (available only for Antichess positions
+
+            with not more than 4 pieces)
+
+            '
+        checkmate:
+          type: boolean
+        stalemate:
+          type: boolean
+        variant_win:
+          type: boolean
+          description: Only in chess variants
+        variant_loss:
+          type: boolean
+          description: Only in chess variants
+        insufficient_material:
+          type: boolean
+        moves:
+          type: array
+          description: Information about legal moves, best first
+          items:
+            $ref: '#/components/schemas/TablebaseMove'
+      required:
+      - category
+      - moves
+      example:
+        dtz: 1
+        precise_dtz: 1
+        dtc: null
+        dtm: 17
+        dtw: null
         checkmate: false
         stalemate: false
         variant_win: false
         variant_loss: false
         insufficient_material: false
-        dtz: null
-        precise_dtz: null
-        dtm: null
-        dtw: null
-        dtc: null
-        category: unknown
+        category: win
         moves:
-        - uci: f7f6
-          san: f6
+        - uci: h7h8q
+          san: h8=Q+
+          dtz: -2
+          precise_dtz: -2
+          dtc: null
+          dtm: -16
+          dtw: null
           zeroing: true
-          conversion: false
           checkmate: false
           stalemate: false
           variant_win: false
           variant_loss: false
           insufficient_material: false
-          dtz: null
-          precise_dtz: null
-          dtm: null
-          dtw: null
-          dtc: null
-          category: unknown
-        - uci: h7h6
-          san: h6
-          zeroing: true
-          conversion: false
-          checkmate: false
-          stalemate: false
-          variant_win: false
-          variant_loss: false
-          insufficient_material: false
-          dtz: null
-          precise_dtz: null
-          dtm: null
-          dtw: null
-          dtc: null
-          category: unknown
-        - uci: f7f5
-          san: f5
-          zeroing: true
-          conversion: false
-          checkmate: false
-          stalemate: false
-          variant_win: false
-          variant_loss: false
-          insufficient_material: false
-          dtz: null
-          precise_dtz: null
-          dtm: null
-          dtw: null
-          dtc: null
-          category: unknown
-        - uci: h7h5
-          san: h5
-          zeroing: true
-          conversion: false
-          checkmate: false
-          stalemate: false
-          variant_win: false
-          variant_loss: false
-          insufficient_material: false
-          dtz: null
-          precise_dtz: null
-          dtm: null
-          dtw: null
-          dtc: null
-          category: unknown
-        - uci: g8f6
-          san: Nf6
-          zeroing: false
-          conversion: false
-          checkmate: false
-          stalemate: false
-          variant_win: false
-          variant_loss: false
-          insufficient_material: false
-          dtz: null
-          precise_dtz: null
-          dtm: null
-          dtw: null
-          dtc: null
-          category: unknown
-        - uci: g8h6
-          san: Nh6
-          zeroing: false
-          conversion: false
-          checkmate: false
-          stalemate: false
-          variant_win: false
-          variant_loss: false
-          insufficient_material: false
-          dtz: null
-          precise_dtz: null
-          dtm: null
-          dtw: null
-          dtc: null
-          category: unknown
-        - uci: e7d6
-          san: Kd6
-          zeroing: false
-          conversion: false
-          checkmate: false
-          stalemate: false
-          variant_win: false
-          variant_loss: false
-          insufficient_material: false
-          dtz: null
-          precise_dtz: null
-          dtm: null
-          dtw: null
-          dtc: null
-          category: unknown
-        - uci: e7e6
-          san: Ke6
-          zeroing: false
-          conversion: false
-          checkmate: false
-          stalemate: false
-          variant_win: false
-          variant_loss: false
-          insufficient_material: false
-          dtz: null
-          precise_dtz: null
-          dtm: null
-          dtw: null
-          dtc: null
-          category: unknown
-        - uci: e7f6
-          san: Kf6
-          zeroing: false
-          conversion: false
-          checkmate: false
-          stalemate: false
-          variant_win: false
-          variant_loss: false
-          insufficient_material: false
-          dtz: null
-          precise_dtz: null
-          dtm: null
-          dtw: null
-          dtc: null
-          category: unknown
-        - uci: e7d7
-          san: Kd7
-          zeroing: false
-          conversion: false
-          checkmate: false
-          stalemate: false
-          variant_win: false
-          variant_loss: false
-          insufficient_material: false
-          dtz: null
-          precise_dtz: null
-          dtm: null
-          dtw: null
-          dtc: null
-          category: unknown
-        - uci: e7d8
-          san: Kd8
-          zeroing: false
-          conversion: false
-          checkmate: false
-          stalemate: false
-          variant_win: false
-          variant_loss: false
-          insufficient_material: false
-          dtz: null
-          precise_dtz: null
-          dtm: null
-          dtw: null
-          dtc: null
-          category: unknown
-        - uci: e7e8
-          san: Ke8
-          zeroing: false
-          conversion: false
-          checkmate: false
-          stalemate: false
-          variant_win: false
-          variant_loss: false
-          insufficient_material: false
-          dtz: null
-          precise_dtz: null
-          dtm: null
-          dtw: null
-          dtc: null
-          category: unknown
-        - uci: e7f8
-          san: Kf8
-          zeroing: false
-          conversion: false
-          checkmate: false
-          stalemate: false
-          variant_win: false
-          variant_loss: false
-          insufficient_material: false
-          dtz: null
-          precise_dtz: null
-          dtm: null
-          dtw: null
-          dtc: null
-          category: unknown
+          category: loss
+    TablebaseMove:
+      type: object
+      properties:
+        uci:
+          type: string
+          example: h7h8q
+        san:
+          type: string
+          example: h8=Q+
+        category:
+          type: string
+          enum:
+          - loss
+          - unknown
+          - syzygy-loss
+          - maybe-loss
+          - blessed-loss
+          - draw
+          - cursed-win
+          - maybe-win
+          - syzygy-win
+          - win
+        dtz:
+          type:
+          - 'null'
+          - integer
+        precise_dtz:
+          type:
+          - 'null'
+          - integer
+        dtc:
+          type:
+          - 'null'
+          - integer
+        dtm:
+          type:
+          - 'null'
+          - integer
+        dtw:
+          type:
+          - 'null'
+          - integer
+        zeroing:
+          type: boolean
+        conversion:
+          type: boolean
+        checkmate:
+          type: boolean
+        stalemate:
+          type: boolean
+        variant_win:
+          type: boolean
+        variant_loss:
+          type: boolean
+        insufficient_material:
+          type: boolean
+      required:
+      - uci
+      - san
+      - category
   securitySchemes:
     OAuth2:
       type: oauth2

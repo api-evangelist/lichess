@@ -84,6 +84,21 @@ paths:
                     example: No cloud evaluation available for that position
 components:
   schemas:
+    VariantKey:
+      type: string
+      enum:
+      - standard
+      - chess960
+      - crazyhouse
+      - antichess
+      - atomic
+      - horde
+      - kingOfTheHill
+      - racingKings
+      - threeCheck
+      - fromPosition
+      example: standard
+      default: standard
     CloudEval:
       type: object
       required:
@@ -145,21 +160,6 @@ components:
           cp: 39
         - moves: d2d3 d8f6 c2c3 a7a6 b5a4 f8c5 d3d4 c5a7 c1e3 g8e7
           cp: 37
-    VariantKey:
-      type: string
-      enum:
-      - standard
-      - chess960
-      - crazyhouse
-      - antichess
-      - atomic
-      - horde
-      - kingOfTheHill
-      - racingKings
-      - threeCheck
-      - fromPosition
-      example: standard
-      default: standard
   securitySchemes:
     OAuth2:
       type: oauth2

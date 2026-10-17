@@ -112,6 +112,77 @@ paths:
                 default:
                   $ref: '#/components/examples/fide-searchFidePlayers.json'
 components:
+  examples:
+    fide-getFidePlayer-nullYear.json:
+      value:
+        id: 8700761
+        name: Hampus, Sorensen
+        federation: ZAM
+        year: null
+    fide-getFidePlayer.json:
+      value:
+        id: 35009192
+        name: Erigaisi Arjun
+        federation: IND
+        year: 2003
+        title: GM
+        standard: 2751
+        rapid: 2741
+        blitz: 2776
+        gender: M
+        photo:
+          small: https://image.lichess1.org/display?fmt=webp&h=100&op=thumbnail&path=ZtNkAl1_0MHT.webp&w=100&sig=8a2122f91eab6c3f0528bce8ea5854fd561bbcde
+          medium: https://image.lichess1.org/display?fmt=webp&h=500&op=thumbnail&path=ZtNkAl1_0MHT.webp&w=500&sig=f2faf575e19147ee8b1d2b573f1fd2e18fab88e7
+          credit: Brigham Aldrich
+    fide-getFidePlayerRatings.json:
+      value:
+        blitz: []
+        rapid:
+        - 2015081568
+        - 2022091568
+        - 2022101620
+        - 2024021620
+        - 2024031772
+        - 2025121772
+        standard:
+        - 2015021577
+        - 2015071577
+        - 2015081679
+        - 2015111679
+        - 2015121616
+        - 2016071616
+        - 2016081618
+        - 2016101618
+        - 2016111685
+        - 2017031685
+        - 2017041692
+        - 2017061692
+        - 2017071698
+        - 2017081698
+        - 2017091720
+        - 2024021720
+        - 2024031832
+        - 2025121832
+    fide-searchFidePlayers.json:
+      value:
+      - id: 35009192
+        name: Erigaisi Arjun
+        federation: IND
+        year: 2003
+        title: GM
+        standard: 2751
+        rapid: 2741
+        blitz: 2776
+        gender: M
+        photo:
+          small: https://image.lichess1.org/display?fmt=webp&h=100&op=thumbnail&path=ZtNkAl1_0MHT.webp&w=100&sig=8a2122f91eab6c3f0528bce8ea5854fd561bbcde
+          medium: https://image.lichess1.org/display?fmt=webp&h=500&op=thumbnail&path=ZtNkAl1_0MHT.webp&w=500&sig=f2faf575e19147ee8b1d2b573f1fd2e18fab88e7
+          credit: Brigham Aldrich
+      - id: 35009060
+        name: Erigaisi Keerthana
+        federation: IND
+        year: 2002
+        gender: F
   schemas:
     FIDEPlayer:
       type: object
@@ -148,26 +219,6 @@ components:
       - id
       - name
       - federation
-    FIDEPlayerRatings:
-      type: object
-      description: "Data points are encoded. Each number contains a year, a month, and an ELO rating.\n\n`2015081568` -> `August 2015: 1568`\n\nHere's an example decoding implementation in JS:\n\n```js\n  const decodePoint = point => {\n    const elo = point % 10000;\n    const dateNum = Math.floor(point / 10000);\n    const year = Math.floor(dateNum / 100);\n    const month = dateNum % 100;\n    return [year, month, elo];\n  };\n```\n\nConsecutive months with same ELO are omitted. For a given ELO, only the first and last month are provided.\n"
-      properties:
-        standard:
-          type: array
-          items:
-            type: number
-        rapid:
-          type: array
-          items:
-            type: number
-        blitz:
-          type: array
-          items:
-            type: number
-      required:
-      - standard
-      - rapid
-      - blitz
     Title:
       type: string
       enum:
@@ -199,77 +250,26 @@ components:
       required:
       - small
       - medium
-  examples:
-    fide-getFidePlayer-nullYear.json:
-      value:
-        id: 8700761
-        name: Hampus, Sorensen
-        federation: ZAM
-        year: null
-    fide-getFidePlayerRatings.json:
-      value:
-        blitz: []
-        rapid:
-        - 2015081568
-        - 2022091568
-        - 2022101620
-        - 2024021620
-        - 2024031772
-        - 2025121772
+    FIDEPlayerRatings:
+      type: object
+      description: "Data points are encoded. Each number contains a year, a month, and an ELO rating.\n\n`2015081568` -> `August 2015: 1568`\n\nHere's an example decoding implementation in JS:\n\n```js\n  const decodePoint = point => {\n    const elo = point % 10000;\n    const dateNum = Math.floor(point / 10000);\n    const year = Math.floor(dateNum / 100);\n    const month = dateNum % 100;\n    return [year, month, elo];\n  };\n```\n\nConsecutive months with same ELO are omitted. For a given ELO, only the first and last month are provided.\n"
+      properties:
         standard:
-        - 2015021577
-        - 2015071577
-        - 2015081679
-        - 2015111679
-        - 2015121616
-        - 2016071616
-        - 2016081618
-        - 2016101618
-        - 2016111685
-        - 2017031685
-        - 2017041692
-        - 2017061692
-        - 2017071698
-        - 2017081698
-        - 2017091720
-        - 2024021720
-        - 2024031832
-        - 2025121832
-    fide-getFidePlayer.json:
-      value:
-        id: 35009192
-        name: Erigaisi Arjun
-        federation: IND
-        year: 2003
-        title: GM
-        standard: 2751
-        rapid: 2741
-        blitz: 2776
-        gender: M
-        photo:
-          small: https://image.lichess1.org/display?fmt=webp&h=100&op=thumbnail&path=ZtNkAl1_0MHT.webp&w=100&sig=8a2122f91eab6c3f0528bce8ea5854fd561bbcde
-          medium: https://image.lichess1.org/display?fmt=webp&h=500&op=thumbnail&path=ZtNkAl1_0MHT.webp&w=500&sig=f2faf575e19147ee8b1d2b573f1fd2e18fab88e7
-          credit: Brigham Aldrich
-    fide-searchFidePlayers.json:
-      value:
-      - id: 35009192
-        name: Erigaisi Arjun
-        federation: IND
-        year: 2003
-        title: GM
-        standard: 2751
-        rapid: 2741
-        blitz: 2776
-        gender: M
-        photo:
-          small: https://image.lichess1.org/display?fmt=webp&h=100&op=thumbnail&path=ZtNkAl1_0MHT.webp&w=100&sig=8a2122f91eab6c3f0528bce8ea5854fd561bbcde
-          medium: https://image.lichess1.org/display?fmt=webp&h=500&op=thumbnail&path=ZtNkAl1_0MHT.webp&w=500&sig=f2faf575e19147ee8b1d2b573f1fd2e18fab88e7
-          credit: Brigham Aldrich
-      - id: 35009060
-        name: Erigaisi Keerthana
-        federation: IND
-        year: 2002
-        gender: F
+          type: array
+          items:
+            type: number
+        rapid:
+          type: array
+          items:
+            type: number
+        blitz:
+          type: array
+          items:
+            type: number
+      required:
+      - standard
+      - rapid
+      - blitz
   securitySchemes:
     OAuth2:
       type: oauth2

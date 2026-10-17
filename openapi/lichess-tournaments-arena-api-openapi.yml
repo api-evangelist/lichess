@@ -1308,1094 +1308,7 @@ paths:
                 default:
                   $ref: '#/components/examples/arenas-getTeamArenaTournaments.json'
 components:
-  schemas:
-    ArenaTournaments:
-      type: object
-      properties:
-        created:
-          type: array
-          items:
-            $ref: '#/components/schemas/ArenaTournament'
-        started:
-          type: array
-          items:
-            $ref: '#/components/schemas/ArenaTournament'
-        finished:
-          type: array
-          items:
-            $ref: '#/components/schemas/ArenaTournament'
-      required:
-      - created
-      - started
-      - finished
-    GameOpening:
-      type: object
-      properties:
-        eco:
-          type: string
-        name:
-          type: string
-        ply:
-          type: integer
-      required:
-      - eco
-      - name
-      - ply
-    GameColor:
-      type: string
-      enum:
-      - white
-      - black
-    Variant:
-      type: object
-      properties:
-        key:
-          $ref: '#/components/schemas/VariantKey'
-        name:
-          type: string
-        short:
-          type: string
-      required:
-      - key
-      - name
-    Speed:
-      type: string
-      enum:
-      - ultraBullet
-      - bullet
-      - blitz
-      - rapid
-      - classical
-      - correspondence
-    ArenaPerf:
-      type: object
-      properties:
-        key:
-          $ref: '#/components/schemas/PerfType'
-        name:
-          type: string
-          example: Blitz
-        position:
-          type: integer
-          example: 1
-        icon:
-          type: string
-          example: )
-      required:
-      - key
-      - name
-      - position
-    GamePlayers:
-      type: object
-      properties:
-        white:
-          $ref: '#/components/schemas/GamePlayerUser'
-        black:
-          $ref: '#/components/schemas/GamePlayerUser'
-      required:
-      - white
-      - black
-    Verdict:
-      type: object
-      properties:
-        condition:
-          type: string
-        verdict:
-          type: string
-      required:
-      - condition
-      - verdict
-    Error:
-      type: object
-      properties:
-        error:
-          type: string
-          description: The cause of the error.
-      required:
-      - error
-      example:
-        error: This request is invalid because [...]
-    GameStatusName:
-      type: string
-      enum:
-      - created
-      - started
-      - aborted
-      - mate
-      - resign
-      - stalemate
-      - timeout
-      - draw
-      - outoftime
-      - cheat
-      - noStart
-      - unknownFinish
-      - insufficientMaterialClaim
-      - variantEnd
-    PerfType:
-      type: string
-      enum:
-      - ultraBullet
-      - bullet
-      - blitz
-      - rapid
-      - classical
-      - correspondence
-      - chess960
-      - crazyhouse
-      - antichess
-      - atomic
-      - horde
-      - kingOfTheHill
-      - racingKings
-      - threeCheck
-    VariantKey:
-      type: string
-      enum:
-      - standard
-      - chess960
-      - crazyhouse
-      - antichess
-      - atomic
-      - horde
-      - kingOfTheHill
-      - racingKings
-      - threeCheck
-      - fromPosition
-      example: standard
-      default: standard
-    Clock:
-      type: object
-      properties:
-        limit:
-          type: integer
-        increment:
-          type: integer
-      required:
-      - limit
-      - increment
-    PatronColor:
-      type: integer
-      description: 'Players can choose a color for their Patron wings.
-
-        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
-
-
-        The presence of this field indicates the player is an active Patron.
-
-        '
-      minimum: 1
-      maximum: 10
-    GamePgn:
-      type: string
-      example: '[Event "Rated Blitz game"]
-
-        [Site "https://lichess.org/fY44h4OY"]
-
-        [Date "2018.03.29"]
-
-        [Round "-"]
-
-        [White "pveldman"]
-
-        [Black "thibault"]
-
-        [Result "1-0"]
-
-        [UTCDate "2018.03.29"]
-
-        [UTCTime "01:38:15"]
-
-        [WhiteElo "1610"]
-
-        [BlackElo "1601"]
-
-        [WhiteRatingDiff "+10"]
-
-        [BlackRatingDiff "-10"]
-
-        [Variant "Standard"]
-
-        [TimeControl "180+0"]
-
-        [ECO "C62"]
-
-        [Opening "Ruy Lopez: Steinitz Defense"]
-
-        [Termination "Normal"]
-
-
-        1. e4 { [%clk 0:03:00] } e5 { [%clk 0:03:00] } 2. Nf3 { [%clk 0:02:59] } Nc6 { [%clk 0:02:58] } 3. Bb5 { [%clk 0:02:57] } d6 { [%clk 0:02:55] } 4. h3 { [%clk 0:02:54] } Nf6 { [%clk 0:02:52] } 5. Bxc6+ { [%clk 0:02:52] } bxc6 { [%clk 0:02:49] } 6. d3 { [%clk 0:02:51] } Be7 { [%clk 0:02:46] } 7. O-O { [%clk 0:02:47] } O-O { [%clk 0:02:45] } 8. b3 { [%clk 0:02:45] } d5 { [%clk 0:02:45] } 9. exd5 { [%clk 0:02:33] } cxd5 { [%clk 0:02:40] } 10. Nxe5 { [%clk 0:02:31] } Qd6 { [%clk 0:02:38] } 1-0
-
-        '
-    ArenaStatusName:
-      type: string
-      description: The current state of the arena tournament
-      enum:
-      - created
-      - started
-      - finished
-    ArenaTournamentPlayer:
-      type: object
-      properties:
-        games:
-          type: integer
-        score:
-          type: integer
-        rank:
-          type: integer
-        performance:
-          type: integer
-      required:
-      - games
-      - score
-      - rank
-      example:
-        games: 10
-        score: 14
-        rank: 30
-        performance: 1935
-    Title:
-      type: string
-      enum:
-      - GM
-      - WGM
-      - IM
-      - WIM
-      - FM
-      - WFM
-      - NM
-      - CM
-      - WCM
-      - WNM
-      - LM
-      - BOT
-      description: only appears if the user is a titled player or a bot user
-    ArenaTournament:
-      type: object
-      properties:
-        id:
-          type: string
-        createdBy:
-          type: string
-        system:
-          type: string
-          const: arena
-        minutes:
-          type: integer
-        clock:
-          $ref: '#/components/schemas/Clock'
-        rated:
-          type: boolean
-        fullName:
-          type: string
-        nbPlayers:
-          type: integer
-        variant:
-          $ref: '#/components/schemas/Variant'
-        startsAt:
-          type: integer
-          format: int64
-        finishesAt:
-          type: integer
-          format: int64
-        status:
-          $ref: '#/components/schemas/ArenaStatus'
-        perf:
-          $ref: '#/components/schemas/ArenaPerf'
-        secondsToStart:
-          type: integer
-        hasMaxRating:
-          type: boolean
-        maxRating:
-          $ref: '#/components/schemas/ArenaRatingObj'
-        minRating:
-          $ref: '#/components/schemas/ArenaRatingObj'
-        minRatedGames:
-          type: object
-          properties:
-            nb:
-              type: integer
-        botsAllowed:
-          type: boolean
-        minAccountAgeInDays:
-          type: integer
-        onlyTitled:
-          type: boolean
-        teamMember:
-          type: string
-        private:
-          type: boolean
-        position:
-          $ref: '#/components/schemas/ArenaPosition'
-        schedule:
-          type: object
-          properties:
-            freq:
-              type: string
-            speed:
-              type: string
-        teamBattle:
-          type: object
-          properties:
-            teams:
-              type: array
-              items:
-                type: string
-            nbLeaders:
-              type: integer
-        winner:
-          $ref: '#/components/schemas/LightUser'
-      required:
-      - id
-      - createdBy
-      - system
-      - minutes
-      - clock
-      - rated
-      - fullName
-      - nbPlayers
-      - variant
-      - startsAt
-      - finishesAt
-      - status
-      - perf
-    Flair:
-      type: string
-      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
-    ArenaSheet:
-      type: object
-      required:
-      - scores
-      properties:
-        scores:
-          type: string
-        fire:
-          type: boolean
-    GameMoveAnalysis:
-      type: object
-      properties:
-        eval:
-          type: integer
-          description: Evaluation in centipawns
-        mate:
-          type: integer
-          description: Number of moves until forced mate
-        best:
-          type: string
-          example: c2c3
-          description: Best move in UCI notation (only if played move was inaccurate)
-        variation:
-          type: string
-          example: c3 Nc6 d4 Qb6 Be2 Nge7 Na3 cxd4 cxd4 Nf5
-          description: Best variation in SAN notation (only if played move was inaccurate)
-        judgment:
-          type: object
-          description: Judgment annotation (only if played move was inaccurate)
-          properties:
-            name:
-              type: string
-              enum:
-              - Inaccuracy
-              - Mistake
-              - Blunder
-            comment:
-              type: string
-              example: Blunder. Nxg6 was best.
-    FromPositionFEN:
-      type: string
-      description: Custom initial position (in X-FEN). Variant must be standard, fromPosition, or chess960 (if a valid 960 starting position), and the game cannot be rated.
-      default: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
-    LightUser:
-      type: object
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        flair:
-          $ref: '#/components/schemas/Flair'
-        title:
-          $ref: '#/components/schemas/Title'
-        patron:
-          $ref: '#/components/schemas/Patron'
-        patronColor:
-          $ref: '#/components/schemas/PatronColor'
-      required:
-      - id
-      - name
-    Verdicts:
-      type: object
-      properties:
-        accepted:
-          type: boolean
-        list:
-          type: array
-          items:
-            $ref: '#/components/schemas/Verdict'
-      required:
-      - accepted
-      - list
-    ArenaStatus:
-      type: integer
-      description: '10: created, 20: started, 30: finished
-
-        '
-      enum:
-      - 10
-      - 20
-      - 30
-    ArenaPosition:
-      oneOf:
-      - type: object
-        title: Thematic
-        properties:
-          eco:
-            type: string
-            example: C41
-          name:
-            type: string
-            example: Philidor Defense
-          fen:
-            type: string
-            example: rnbqkbnr/ppp2ppp/3p4/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq -
-          url:
-            type: string
-            format: uri
-            example: https://lichess.org/opening/Philidor_Defense
-        required:
-        - eco
-        - name
-        - fen
-        - url
-      - type: object
-        title: Custom position
-        properties:
-          name:
-            type: string
-            const: Custom position
-          fen:
-            type: string
-            example: rnbq1bnr/ppppkppp/8/4p3/4P3/8/PPPPKPPP/RNBQ1BNR w - - 2 3
-        required:
-        - name
-        - fen
-    GamePlayerUser:
-      type: object
-      properties:
-        user:
-          $ref: '#/components/schemas/LightUser'
-        rating:
-          type: integer
-        ratingDiff:
-          type: integer
-        name:
-          type: string
-        provisional:
-          type: boolean
-        aiLevel:
-          type: integer
-        analysis:
-          type: object
-          properties:
-            inaccuracy:
-              type: integer
-            mistake:
-              type: integer
-            blunder:
-              type: integer
-            acpl:
-              type: integer
-            accuracy:
-              type: integer
-          required:
-          - inaccuracy
-          - mistake
-          - blunder
-          - acpl
-        team:
-          type: string
-      required:
-      - user
-      - rating
-    Patron:
-      type: boolean
-      deprecated: true
-      description: 'Use patronColor value instead to determine if player is a patron.
-
-        '
-    ArenaTournamentPlayed:
-      type: object
-      properties:
-        tournament:
-          $ref: '#/components/schemas/ArenaTournament'
-        player:
-          $ref: '#/components/schemas/ArenaTournamentPlayer'
-      required:
-      - tournament
-      - player
-    GameJson:
-      type: object
-      properties:
-        id:
-          type: string
-        rated:
-          type: boolean
-        variant:
-          $ref: '#/components/schemas/VariantKey'
-        speed:
-          $ref: '#/components/schemas/Speed'
-        perf:
-          type: string
-        createdAt:
-          type: integer
-          format: int64
-        lastMoveAt:
-          type: integer
-          format: int64
-        status:
-          $ref: '#/components/schemas/GameStatusName'
-        source:
-          type: string
-        players:
-          $ref: '#/components/schemas/GamePlayers'
-        initialFen:
-          type: string
-        winner:
-          $ref: '#/components/schemas/GameColor'
-        opening:
-          $ref: '#/components/schemas/GameOpening'
-        moves:
-          type: string
-        pgn:
-          type: string
-        daysPerTurn:
-          type: integer
-        analysis:
-          type: array
-          items:
-            $ref: '#/components/schemas/GameMoveAnalysis'
-        tournament:
-          type: string
-        swiss:
-          type: string
-        clock:
-          type: object
-          properties:
-            initial:
-              type: integer
-            increment:
-              type: integer
-            totalTime:
-              type: integer
-          required:
-          - initial
-          - increment
-          - totalTime
-        clocks:
-          type: array
-          items:
-            type: integer
-        division:
-          type: object
-          properties:
-            middle:
-              type: integer
-              description: Ply at which the middlegame begins
-            end:
-              type: integer
-              description: Ply at which the endgame begins
-          required: []
-      required:
-      - id
-      - rated
-      - variant
-      - speed
-      - perf
-      - createdAt
-      - lastMoveAt
-      - status
-      - players
-    Ok:
-      properties:
-        ok:
-          type: boolean
-      required:
-      - ok
-    ArenaRatingObj:
-      type: object
-      properties:
-        perf:
-          $ref: '#/components/schemas/PerfType'
-        rating:
-          type: integer
-          example: 1700
-      required:
-      - rating
-    ArenaTournamentFull:
-      type: object
-      properties:
-        id:
-          type: string
-        fullName:
-          type: string
-        rated:
-          type: boolean
-        spotlight:
-          type: object
-          properties:
-            headline:
-              type: string
-        berserkable:
-          type: boolean
-        onlyTitled:
-          type: boolean
-        clock:
-          $ref: '#/components/schemas/Clock'
-        minutes:
-          type: integer
-        createdBy:
-          type: string
-        system:
-          type: string
-        secondsToStart:
-          type: integer
-        secondsToFinish:
-          type: integer
-        isFinished:
-          type: boolean
-        isRecentlyFinished:
-          type: boolean
-        pairingsClosed:
-          type: boolean
-        startsAt:
-          type: string
-          format: int64
-        nbPlayers:
-          type: integer
-        verdicts:
-          $ref: '#/components/schemas/Verdicts'
-        quote:
-          type: object
-          properties:
-            text:
-              type: string
-            author:
-              type: string
-          description: The quote displayed on the tournament page
-        greatPlayer:
-          type: object
-          properties:
-            name:
-              type: string
-            url:
-              type: string
-              format: uri
-        allowList:
-          type: array
-          items:
-            type: string
-          description: List of usernames allowed to join the tournament
-        hasMaxRating:
-          type: boolean
-        maxRating:
-          $ref: '#/components/schemas/ArenaRatingObj'
-        minRating:
-          $ref: '#/components/schemas/ArenaRatingObj'
-        minRatedGames:
-          type: object
-          properties:
-            nb:
-              type: integer
-        botsAllowed:
-          type: boolean
-        minAccountAgeInDays:
-          type: integer
-        perf:
-          type: object
-          properties:
-            icon:
-              type: string
-            key:
-              type: string
-            name:
-              type: string
-          required:
-          - icon
-          - key
-          - name
-        schedule:
-          type: object
-          properties:
-            freq:
-              type: string
-            speed:
-              type: string
-          required:
-          - freq
-          - speed
-        description:
-          type: string
-        variant:
-          type: string
-        duels:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-              p:
-                type: array
-                minItems: 2
-                maxItems: 2
-                items:
-                  type: object
-                  properties:
-                    n:
-                      type: string
-                    r:
-                      type: integer
-                    k:
-                      type: integer
-        standing:
-          type: object
-          properties:
-            page:
-              type: integer
-            players:
-              type: array
-              items:
-                type: object
-                properties:
-                  name:
-                    type: string
-                  title:
-                    $ref: '#/components/schemas/Title'
-                  patron:
-                    $ref: '#/components/schemas/Patron'
-                  patronColor:
-                    $ref: '#/components/schemas/PatronColor'
-                  flair:
-                    $ref: '#/components/schemas/Flair'
-                  rank:
-                    type: integer
-                  rating:
-                    type: integer
-                  score:
-                    type: integer
-                  sheet:
-                    $ref: '#/components/schemas/ArenaSheet'
-        featured:
-          type: object
-          properties:
-            id:
-              type: string
-            fen:
-              type: string
-            orientation:
-              type: string
-            color:
-              type: string
-            lastMove:
-              type: string
-            white:
-              type: object
-              properties:
-                name:
-                  type: string
-                id:
-                  type: string
-                rank:
-                  type: integer
-                rating:
-                  type: integer
-            black:
-              type: object
-              properties:
-                name:
-                  type: string
-                id:
-                  type: string
-                rank:
-                  type: integer
-                rating:
-                  type: integer
-            c:
-              type: object
-              properties:
-                white:
-                  type: integer
-                  description: white's clock in seconds
-                black:
-                  type: integer
-                  description: black's clock in seconds
-        podium:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-              title:
-                $ref: '#/components/schemas/Title'
-              patron:
-                $ref: '#/components/schemas/Patron'
-              patronColor:
-                $ref: '#/components/schemas/PatronColor'
-              flair:
-                $ref: '#/components/schemas/Flair'
-              rank:
-                type: integer
-              rating:
-                type: integer
-              score:
-                type: integer
-              nb:
-                type: object
-                properties:
-                  game:
-                    type: integer
-                  berserk:
-                    type: integer
-                  win:
-                    type: integer
-              performance:
-                type: integer
-        stats:
-          type: object
-          properties:
-            games:
-              type: integer
-            moves:
-              type: integer
-            whiteWins:
-              type: integer
-            blackWins:
-              type: integer
-            draws:
-              type: integer
-            berserks:
-              type: integer
-            averageRating:
-              type: integer
-          required:
-          - games
-          - moves
-          - whiteWins
-          - blackWins
-          - draws
-          - berserks
-          - averageRating
-        myUsername:
-          type: string
-      required:
-      - id
-      - fullName
-      - clock
-      - nbPlayers
   examples:
-    arenas-getArenaById.json:
-      value:
-        nbPlayers: 364
-        duels: []
-        isFinished: true
-        podium:
-        - name: RebeccaHarris
-          title: GM
-          patron: true
-          patronColor: 10
-          rank: 1
-          rating: 3257
-          score: 148
-          nb:
-            game: 69
-            berserk: 25
-            win: 46
-          performance: 3308
-        - name: Ediz_Gurel
-          title: GM
-          flair: smileys.alien
-          rank: 2
-          rating: 3230
-          score: 146
-          nb:
-            game: 64
-            berserk: 12
-            win: 44
-          performance: 3269
-        - name: msb2
-          title: GM
-          patron: true
-          patronColor: 10
-          rank: 3
-          rating: 3218
-          score: 131
-          nb:
-            game: 74
-            berserk: 9
-            win: 44
-          performance: 3215
-        pairingsClosed: true
-        stats:
-          games: 5023
-          moves: 418545
-          whiteWins: 2476
-          blackWins: 2236
-          draws: 311
-          berserks: 729
-          averageRating: 2616
-        standing:
-          page: 1
-          players:
-          - name: RebeccaHarris
-            title: GM
-            patron: true
-            patronColor: 10
-            rank: 1
-            rating: 3257
-            score: 148
-            sheet:
-              scores: '030432005442204423030220045423044442201300204220300021033044444423033'
-          - name: Ediz_Gurel
-            title: GM
-            flair: smileys.alien
-            rank: 2
-            rating: 3230
-            score: 146
-            sheet:
-              scores: '4454220224230200000044544432020002242204444220020320204445444422'
-              fire: true
-          - name: msb2
-            title: GM
-            patron: true
-            patronColor: 10
-            rank: 3
-            rating: 3218
-            score: 131
-            sheet:
-              scores: '04221204220204220022244220200222423000022020044422044422124422010023303020'
-          - name: nihalsarin2004
-            title: GM
-            patron: true
-            patronColor: 10
-            rank: 4
-            rating: 3236
-            score: 124
-            sheet:
-              scores: '30302220030302044220220442204220210022244220202204444422223053200'
-          - name: Arka50
-            title: GM
-            rank: 5
-            rating: 3215
-            score: 122
-            sheet:
-              scores: '303303002000200220444423002020210422110444444442200202002204444220'
-          - name: chessbrahs
-            title: GM
-            rank: 6
-            rating: 3115
-            score: 122
-            sheet:
-              scores: '220002002020442304542200020000204444422020445220200204220230545220'
-              fire: true
-          - name: neslraCsungaM77
-            title: GM
-            rank: 7
-            rating: 3122
-            score: 121
-            sheet:
-              scores: '130030000042202422012442202044220204422020022221042213000201022020202044432'
-          - name: ARM-777777
-            title: GM
-            rank: 8
-            rating: 3154
-            score: 119
-            sheet:
-              scores: '044423030042301021044220220020000000100010200004220444422244444230220320'
-          - name: Night-King96
-            title: GM
-            patron: true
-            patronColor: 10
-            rank: 9
-            rating: 3131
-            score: 119
-            sheet:
-              scores: '0000300230302302044220030422044444220200000300003304230533023000305433'
-          - name: tacticthunder
-            title: GM
-            rank: 10
-            rating: 3051
-            score: 115
-            sheet:
-              scores: '20442202044444422100201200020200220044220044220222422022020220422010'
-        id: may24lta
-        createdBy: cormacobear
-        startsAt: '2024-05-25T18:00:00Z'
-        system: arena
-        fullName: Titled Arena May 2024
-        minutes: 120
-        perf:
-          key: bullet
-          name: Bullet
-          icon: T
-        clock:
-          limit: 60
-          increment: 0
-        variant: standard
-        rated: true
-        spotlight:
-          headline: Titled only, $1,000 prize pool
-        berserkable: true
-        verdicts:
-          list:
-          - condition: Only titled players
-            verdict: ok
-          accepted: true
-        schedule:
-          freq: unique
-          speed: bullet
-        description: 'Prizes: $500/$250/$125/$75/$50
-
-
-          [Warm-up event](https://lichess.org/tournament/may24wua)'
-        onlyTitled: true
-    arenas-createArena.json:
-      value:
-        nbPlayers: 0
-        duels: []
-        secondsToStart: 300
-        standing:
-          page: 1
-          players: []
-        id: M0uoSoAf
-        createdBy: bobby
-        startsAt: '2026-05-15T02:41:38.914694155Z'
-        system: arena
-        fullName: Pogonina Arena
-        minutes: 60
-        perf:
-          key: blitz
-          name: Blitz
-          icon: )
-        clock:
-          limit: 300
-          increment: 0
-        variant: standard
-        rated: true
-        berserkable: true
-        verdicts:
-          list:
-          - condition: Bot players are not allowed
-            verdict: ok
-          accepted: true
-        quote:
-          text: You know you're going to lose. Even when I was ahead I knew I was going to lose --on playing against Fischer.
-          author: Andrew Soltis
-        greatPlayer:
-          name: Pogonina
-          url: https://wikipedia.org/wiki/Natalia_Pogonina
-        myUsername: Bobby
     arenas-getCurrentTournaments.json:
       value:
         created:
@@ -6354,6 +5267,52 @@ components:
           winner:
             name: GrbecToGrbec
             id: grbectogrbec
+    arenas-getResultsOfArena.json:
+      value:
+        rank: 1
+        score: 124
+        rating: 2830
+        username: penguingim1
+        title: GM
+        flair: nature.penguin
+        patronColor: 10
+        performance: 2873
+        sheet:
+          scores: '2554230000452203303030523003024330543303000305533055330'
+    arenas-getTournamentsPlayedByUser.json:
+      value:
+        tournament:
+          id: CktEA0PO
+          createdBy: lichess
+          system: arena
+          minutes: 57
+          clock:
+            limit: 300
+            increment: 0
+          rated: true
+          fullName: Hourly Blitz Arena
+          nbPlayers: 407
+          variant:
+            key: standard
+            short: Std
+            name: Standard
+          startsAt: 1775124015000
+          finishesAt: 1775127435000
+          status: 30
+          perf:
+            key: blitz
+            name: Blitz
+            position: 1
+            icon: )
+          minRatedGames:
+            nb: 15
+          schedule:
+            freq: hourly
+            speed: blitz
+        player:
+          games: 1
+          score: 2
+          rank: 191
     arenas-updateArena.json:
       value:
         nbPlayers: 0
@@ -6387,6 +5346,265 @@ components:
           text: For me right now I think being the world number one is a bigger deal than being the world champion because I think it shows better who plays the best chess. That sounds self-serving but I think it's also right. (2012)
           author: Magnus Carlsen
         myUsername: Bobby
+    arenas-getArenaById.json:
+      value:
+        nbPlayers: 364
+        duels: []
+        isFinished: true
+        podium:
+        - name: RebeccaHarris
+          title: GM
+          patron: true
+          patronColor: 10
+          rank: 1
+          rating: 3257
+          score: 148
+          nb:
+            game: 69
+            berserk: 25
+            win: 46
+          performance: 3308
+        - name: Ediz_Gurel
+          title: GM
+          flair: smileys.alien
+          rank: 2
+          rating: 3230
+          score: 146
+          nb:
+            game: 64
+            berserk: 12
+            win: 44
+          performance: 3269
+        - name: msb2
+          title: GM
+          patron: true
+          patronColor: 10
+          rank: 3
+          rating: 3218
+          score: 131
+          nb:
+            game: 74
+            berserk: 9
+            win: 44
+          performance: 3215
+        pairingsClosed: true
+        stats:
+          games: 5023
+          moves: 418545
+          whiteWins: 2476
+          blackWins: 2236
+          draws: 311
+          berserks: 729
+          averageRating: 2616
+        standing:
+          page: 1
+          players:
+          - name: RebeccaHarris
+            title: GM
+            patron: true
+            patronColor: 10
+            rank: 1
+            rating: 3257
+            score: 148
+            sheet:
+              scores: '030432005442204423030220045423044442201300204220300021033044444423033'
+          - name: Ediz_Gurel
+            title: GM
+            flair: smileys.alien
+            rank: 2
+            rating: 3230
+            score: 146
+            sheet:
+              scores: '4454220224230200000044544432020002242204444220020320204445444422'
+              fire: true
+          - name: msb2
+            title: GM
+            patron: true
+            patronColor: 10
+            rank: 3
+            rating: 3218
+            score: 131
+            sheet:
+              scores: '04221204220204220022244220200222423000022020044422044422124422010023303020'
+          - name: nihalsarin2004
+            title: GM
+            patron: true
+            patronColor: 10
+            rank: 4
+            rating: 3236
+            score: 124
+            sheet:
+              scores: '30302220030302044220220442204220210022244220202204444422223053200'
+          - name: Arka50
+            title: GM
+            rank: 5
+            rating: 3215
+            score: 122
+            sheet:
+              scores: '303303002000200220444423002020210422110444444442200202002204444220'
+          - name: chessbrahs
+            title: GM
+            rank: 6
+            rating: 3115
+            score: 122
+            sheet:
+              scores: '220002002020442304542200020000204444422020445220200204220230545220'
+              fire: true
+          - name: neslraCsungaM77
+            title: GM
+            rank: 7
+            rating: 3122
+            score: 121
+            sheet:
+              scores: '130030000042202422012442202044220204422020022221042213000201022020202044432'
+          - name: ARM-777777
+            title: GM
+            rank: 8
+            rating: 3154
+            score: 119
+            sheet:
+              scores: '044423030042301021044220220020000000100010200004220444422244444230220320'
+          - name: Night-King96
+            title: GM
+            patron: true
+            patronColor: 10
+            rank: 9
+            rating: 3131
+            score: 119
+            sheet:
+              scores: '0000300230302302044220030422044444220200000300003304230533023000305433'
+          - name: tacticthunder
+            title: GM
+            rank: 10
+            rating: 3051
+            score: 115
+            sheet:
+              scores: '20442202044444422100201200020200220044220044220222422022020220422010'
+        id: may24lta
+        createdBy: cormacobear
+        startsAt: '2024-05-25T18:00:00Z'
+        system: arena
+        fullName: Titled Arena May 2024
+        minutes: 120
+        perf:
+          key: bullet
+          name: Bullet
+          icon: T
+        clock:
+          limit: 60
+          increment: 0
+        variant: standard
+        rated: true
+        spotlight:
+          headline: Titled only, $1,000 prize pool
+        berserkable: true
+        verdicts:
+          list:
+          - condition: Only titled players
+            verdict: ok
+          accepted: true
+        schedule:
+          freq: unique
+          speed: bullet
+        description: 'Prizes: $500/$250/$125/$75/$50
+
+
+          [Warm-up event](https://lichess.org/tournament/may24wua)'
+        onlyTitled: true
+    arenas-createArena.json:
+      value:
+        nbPlayers: 0
+        duels: []
+        secondsToStart: 300
+        standing:
+          page: 1
+          players: []
+        id: M0uoSoAf
+        createdBy: bobby
+        startsAt: '2026-05-15T02:41:38.914694155Z'
+        system: arena
+        fullName: Pogonina Arena
+        minutes: 60
+        perf:
+          key: blitz
+          name: Blitz
+          icon: )
+        clock:
+          limit: 300
+          increment: 0
+        variant: standard
+        rated: true
+        berserkable: true
+        verdicts:
+          list:
+          - condition: Bot players are not allowed
+            verdict: ok
+          accepted: true
+        quote:
+          text: You know you're going to lose. Even when I was ahead I knew I was going to lose --on playing against Fischer.
+          author: Andrew Soltis
+        greatPlayer:
+          name: Pogonina
+          url: https://wikipedia.org/wiki/Natalia_Pogonina
+        myUsername: Bobby
+    arenas-getTournamentsCreatedByUser.json:
+      value:
+        id: LojvlQOo
+        createdBy: natebrady23
+        system: arena
+        minutes: 60
+        clock:
+          limit: 300
+          increment: 3
+        rated: false
+        fullName: Return of the BBB No. 140 Arena
+        nbPlayers: 12
+        variant:
+          key: standard
+          short: Std
+          name: Standard
+        startsAt: 1762914600000
+        finishesAt: 1762918200000
+        status: 30
+        perf:
+          key: blitz
+          name: Blitz
+          position: 1
+          icon: )
+        teamMember: bradys-blunder-buddies
+        winner:
+          name: Mennonite
+          flair: objects.guitar
+          id: mennonite
+    arenas-getTeamArenaTournaments.json:
+      value:
+        id: LojvlQOo
+        createdBy: natebrady23
+        system: arena
+        minutes: 60
+        clock:
+          limit: 300
+          increment: 3
+        rated: false
+        fullName: Return of the BBB No. 140 Arena
+        nbPlayers: 12
+        variant:
+          key: standard
+          short: Std
+          name: Standard
+        startsAt: 1762914600000
+        finishesAt: 1762918200000
+        status: 30
+        perf:
+          key: blitz
+          name: Blitz
+          position: 1
+          icon: )
+        teamMember: bradys-blunder-buddies
+        winner:
+          name: Mennonite
+          flair: objects.guitar
+          id: mennonite
     arenas-getTeamStandingOfTeamBattle.json:
       value:
         id: qVDS48xp
@@ -12769,110 +11987,892 @@ components:
           id: kumudan-123
           score: 0
           players: []
-    arenas-getTeamArenaTournaments.json:
-      value:
-        id: LojvlQOo
-        createdBy: natebrady23
-        system: arena
-        minutes: 60
-        clock:
-          limit: 300
-          increment: 3
-        rated: false
-        fullName: Return of the BBB No. 140 Arena
-        nbPlayers: 12
-        variant:
-          key: standard
-          short: Std
-          name: Standard
-        startsAt: 1762914600000
-        finishesAt: 1762918200000
-        status: 30
+  schemas:
+    ArenaRatingObj:
+      type: object
+      properties:
         perf:
-          key: blitz
-          name: Blitz
-          position: 1
-          icon: )
-        teamMember: bradys-blunder-buddies
+          $ref: '#/components/schemas/PerfType'
+        rating:
+          type: integer
+          example: 1700
+      required:
+      - rating
+    GamePgn:
+      type: string
+      example: '[Event "Rated Blitz game"]
+
+        [Site "https://lichess.org/fY44h4OY"]
+
+        [Date "2018.03.29"]
+
+        [Round "-"]
+
+        [White "pveldman"]
+
+        [Black "thibault"]
+
+        [Result "1-0"]
+
+        [UTCDate "2018.03.29"]
+
+        [UTCTime "01:38:15"]
+
+        [WhiteElo "1610"]
+
+        [BlackElo "1601"]
+
+        [WhiteRatingDiff "+10"]
+
+        [BlackRatingDiff "-10"]
+
+        [Variant "Standard"]
+
+        [TimeControl "180+0"]
+
+        [ECO "C62"]
+
+        [Opening "Ruy Lopez: Steinitz Defense"]
+
+        [Termination "Normal"]
+
+
+        1. e4 { [%clk 0:03:00] } e5 { [%clk 0:03:00] } 2. Nf3 { [%clk 0:02:59] } Nc6 { [%clk 0:02:58] } 3. Bb5 { [%clk 0:02:57] } d6 { [%clk 0:02:55] } 4. h3 { [%clk 0:02:54] } Nf6 { [%clk 0:02:52] } 5. Bxc6+ { [%clk 0:02:52] } bxc6 { [%clk 0:02:49] } 6. d3 { [%clk 0:02:51] } Be7 { [%clk 0:02:46] } 7. O-O { [%clk 0:02:47] } O-O { [%clk 0:02:45] } 8. b3 { [%clk 0:02:45] } d5 { [%clk 0:02:45] } 9. exd5 { [%clk 0:02:33] } cxd5 { [%clk 0:02:40] } 10. Nxe5 { [%clk 0:02:31] } Qd6 { [%clk 0:02:38] } 1-0
+
+        '
+    FromPositionFEN:
+      type: string
+      description: Custom initial position (in X-FEN). Variant must be standard, fromPosition, or chess960 (if a valid 960 starting position), and the game cannot be rated.
+      default: rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
+    Clock:
+      type: object
+      properties:
+        limit:
+          type: integer
+        increment:
+          type: integer
+      required:
+      - limit
+      - increment
+    ArenaTournament:
+      type: object
+      properties:
+        id:
+          type: string
+        createdBy:
+          type: string
+        system:
+          type: string
+          const: arena
+        minutes:
+          type: integer
+        clock:
+          $ref: '#/components/schemas/Clock'
+        rated:
+          type: boolean
+        fullName:
+          type: string
+        nbPlayers:
+          type: integer
+        variant:
+          $ref: '#/components/schemas/Variant'
+        startsAt:
+          type: integer
+          format: int64
+        finishesAt:
+          type: integer
+          format: int64
+        status:
+          $ref: '#/components/schemas/ArenaStatus'
+        perf:
+          $ref: '#/components/schemas/ArenaPerf'
+        secondsToStart:
+          type: integer
+        hasMaxRating:
+          type: boolean
+        maxRating:
+          $ref: '#/components/schemas/ArenaRatingObj'
+        minRating:
+          $ref: '#/components/schemas/ArenaRatingObj'
+        minRatedGames:
+          type: object
+          properties:
+            nb:
+              type: integer
+        botsAllowed:
+          type: boolean
+        minAccountAgeInDays:
+          type: integer
+        onlyTitled:
+          type: boolean
+        teamMember:
+          type: string
+        private:
+          type: boolean
+        position:
+          $ref: '#/components/schemas/ArenaPosition'
+        schedule:
+          type: object
+          properties:
+            freq:
+              type: string
+            speed:
+              type: string
+        teamBattle:
+          type: object
+          properties:
+            teams:
+              type: array
+              items:
+                type: string
+            nbLeaders:
+              type: integer
         winner:
-          name: Mennonite
-          flair: objects.guitar
-          id: mennonite
-    arenas-getTournamentsPlayedByUser.json:
-      value:
+          $ref: '#/components/schemas/LightUser'
+      required:
+      - id
+      - createdBy
+      - system
+      - minutes
+      - clock
+      - rated
+      - fullName
+      - nbPlayers
+      - variant
+      - startsAt
+      - finishesAt
+      - status
+      - perf
+    ArenaTournamentPlayed:
+      type: object
+      properties:
         tournament:
-          id: CktEA0PO
-          createdBy: lichess
-          system: arena
-          minutes: 57
-          clock:
-            limit: 300
-            increment: 0
-          rated: true
-          fullName: Hourly Blitz Arena
-          nbPlayers: 407
-          variant:
-            key: standard
-            short: Std
-            name: Standard
-          startsAt: 1775124015000
-          finishesAt: 1775127435000
-          status: 30
-          perf:
-            key: blitz
-            name: Blitz
-            position: 1
-            icon: )
-          minRatedGames:
-            nb: 15
-          schedule:
-            freq: hourly
-            speed: blitz
+          $ref: '#/components/schemas/ArenaTournament'
         player:
-          games: 1
-          score: 2
-          rank: 191
-    arenas-getResultsOfArena.json:
-      value:
-        rank: 1
-        score: 124
-        rating: 2830
-        username: penguingim1
-        title: GM
-        flair: nature.penguin
-        patronColor: 10
-        performance: 2873
-        sheet:
-          scores: '2554230000452203303030523003024330543303000305533055330'
-    arenas-getTournamentsCreatedByUser.json:
-      value:
-        id: LojvlQOo
-        createdBy: natebrady23
-        system: arena
-        minutes: 60
-        clock:
-          limit: 300
-          increment: 3
-        rated: false
-        fullName: Return of the BBB No. 140 Arena
-        nbPlayers: 12
+          $ref: '#/components/schemas/ArenaTournamentPlayer'
+      required:
+      - tournament
+      - player
+    GameJson:
+      type: object
+      properties:
+        id:
+          type: string
+        rated:
+          type: boolean
         variant:
-          key: standard
-          short: Std
-          name: Standard
-        startsAt: 1762914600000
-        finishesAt: 1762918200000
-        status: 30
+          $ref: '#/components/schemas/VariantKey'
+        speed:
+          $ref: '#/components/schemas/Speed'
         perf:
-          key: blitz
-          name: Blitz
-          position: 1
-          icon: )
-        teamMember: bradys-blunder-buddies
+          type: string
+        createdAt:
+          type: integer
+          format: int64
+        lastMoveAt:
+          type: integer
+          format: int64
+        status:
+          $ref: '#/components/schemas/GameStatusName'
+        source:
+          type: string
+        players:
+          $ref: '#/components/schemas/GamePlayers'
+        initialFen:
+          type: string
         winner:
-          name: Mennonite
-          flair: objects.guitar
-          id: mennonite
+          $ref: '#/components/schemas/GameColor'
+        opening:
+          $ref: '#/components/schemas/GameOpening'
+        moves:
+          type: string
+        pgn:
+          type: string
+        daysPerTurn:
+          type: integer
+        analysis:
+          type: array
+          items:
+            $ref: '#/components/schemas/GameMoveAnalysis'
+        tournament:
+          type: string
+        swiss:
+          type: string
+        clock:
+          type: object
+          properties:
+            initial:
+              type: integer
+            increment:
+              type: integer
+            totalTime:
+              type: integer
+          required:
+          - initial
+          - increment
+          - totalTime
+        clocks:
+          type: array
+          items:
+            type: integer
+        division:
+          type: object
+          properties:
+            middle:
+              type: integer
+              description: Ply at which the middlegame begins
+            end:
+              type: integer
+              description: Ply at which the endgame begins
+          required: []
+      required:
+      - id
+      - rated
+      - variant
+      - speed
+      - perf
+      - createdAt
+      - lastMoveAt
+      - status
+      - players
+    ArenaStatusName:
+      type: string
+      description: The current state of the arena tournament
+      enum:
+      - created
+      - started
+      - finished
+    Verdicts:
+      type: object
+      properties:
+        accepted:
+          type: boolean
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/Verdict'
+      required:
+      - accepted
+      - list
+    VariantKey:
+      type: string
+      enum:
+      - standard
+      - chess960
+      - crazyhouse
+      - antichess
+      - atomic
+      - horde
+      - kingOfTheHill
+      - racingKings
+      - threeCheck
+      - fromPosition
+      example: standard
+      default: standard
+    GameMoveAnalysis:
+      type: object
+      properties:
+        eval:
+          type: integer
+          description: Evaluation in centipawns
+        mate:
+          type: integer
+          description: Number of moves until forced mate
+        best:
+          type: string
+          example: c2c3
+          description: Best move in UCI notation (only if played move was inaccurate)
+        variation:
+          type: string
+          example: c3 Nc6 d4 Qb6 Be2 Nge7 Na3 cxd4 cxd4 Nf5
+          description: Best variation in SAN notation (only if played move was inaccurate)
+        judgment:
+          type: object
+          description: Judgment annotation (only if played move was inaccurate)
+          properties:
+            name:
+              type: string
+              enum:
+              - Inaccuracy
+              - Mistake
+              - Blunder
+            comment:
+              type: string
+              example: Blunder. Nxg6 was best.
+    ArenaPosition:
+      oneOf:
+      - type: object
+        title: Thematic
+        properties:
+          eco:
+            type: string
+            example: C41
+          name:
+            type: string
+            example: Philidor Defense
+          fen:
+            type: string
+            example: rnbqkbnr/ppp2ppp/3p4/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq -
+          url:
+            type: string
+            format: uri
+            example: https://lichess.org/opening/Philidor_Defense
+        required:
+        - eco
+        - name
+        - fen
+        - url
+      - type: object
+        title: Custom position
+        properties:
+          name:
+            type: string
+            const: Custom position
+          fen:
+            type: string
+            example: rnbq1bnr/ppppkppp/8/4p3/4P3/8/PPPPKPPP/RNBQ1BNR w - - 2 3
+        required:
+        - name
+        - fen
+    Flair:
+      type: string
+      description: See [available flair list and images](https://github.com/lichess-org/lila/tree/master/public/flair)
+    GameStatusName:
+      type: string
+      enum:
+      - created
+      - started
+      - aborted
+      - mate
+      - resign
+      - stalemate
+      - timeout
+      - draw
+      - outoftime
+      - cheat
+      - noStart
+      - unknownFinish
+      - insufficientMaterialClaim
+      - variantEnd
+    GameOpening:
+      type: object
+      properties:
+        eco:
+          type: string
+        name:
+          type: string
+        ply:
+          type: integer
+      required:
+      - eco
+      - name
+      - ply
+    Variant:
+      type: object
+      properties:
+        key:
+          $ref: '#/components/schemas/VariantKey'
+        name:
+          type: string
+        short:
+          type: string
+      required:
+      - key
+      - name
+    ArenaTournaments:
+      type: object
+      properties:
+        created:
+          type: array
+          items:
+            $ref: '#/components/schemas/ArenaTournament'
+        started:
+          type: array
+          items:
+            $ref: '#/components/schemas/ArenaTournament'
+        finished:
+          type: array
+          items:
+            $ref: '#/components/schemas/ArenaTournament'
+      required:
+      - created
+      - started
+      - finished
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: The cause of the error.
+      required:
+      - error
+      example:
+        error: This request is invalid because [...]
+    ArenaTournamentFull:
+      type: object
+      properties:
+        id:
+          type: string
+        fullName:
+          type: string
+        rated:
+          type: boolean
+        spotlight:
+          type: object
+          properties:
+            headline:
+              type: string
+        berserkable:
+          type: boolean
+        onlyTitled:
+          type: boolean
+        clock:
+          $ref: '#/components/schemas/Clock'
+        minutes:
+          type: integer
+        createdBy:
+          type: string
+        system:
+          type: string
+        secondsToStart:
+          type: integer
+        secondsToFinish:
+          type: integer
+        isFinished:
+          type: boolean
+        isRecentlyFinished:
+          type: boolean
+        pairingsClosed:
+          type: boolean
+        startsAt:
+          type: string
+          format: int64
+        nbPlayers:
+          type: integer
+        verdicts:
+          $ref: '#/components/schemas/Verdicts'
+        quote:
+          type: object
+          properties:
+            text:
+              type: string
+            author:
+              type: string
+          description: The quote displayed on the tournament page
+        greatPlayer:
+          type: object
+          properties:
+            name:
+              type: string
+            url:
+              type: string
+              format: uri
+        allowList:
+          type: array
+          items:
+            type: string
+          description: List of usernames allowed to join the tournament
+        hasMaxRating:
+          type: boolean
+        maxRating:
+          $ref: '#/components/schemas/ArenaRatingObj'
+        minRating:
+          $ref: '#/components/schemas/ArenaRatingObj'
+        minRatedGames:
+          type: object
+          properties:
+            nb:
+              type: integer
+        botsAllowed:
+          type: boolean
+        minAccountAgeInDays:
+          type: integer
+        perf:
+          type: object
+          properties:
+            icon:
+              type: string
+            key:
+              type: string
+            name:
+              type: string
+          required:
+          - icon
+          - key
+          - name
+        schedule:
+          type: object
+          properties:
+            freq:
+              type: string
+            speed:
+              type: string
+          required:
+          - freq
+          - speed
+        description:
+          type: string
+        variant:
+          type: string
+        duels:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              p:
+                type: array
+                minItems: 2
+                maxItems: 2
+                items:
+                  type: object
+                  properties:
+                    n:
+                      type: string
+                    r:
+                      type: integer
+                    k:
+                      type: integer
+        standing:
+          type: object
+          properties:
+            page:
+              type: integer
+            players:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  title:
+                    $ref: '#/components/schemas/Title'
+                  patron:
+                    $ref: '#/components/schemas/Patron'
+                  patronColor:
+                    $ref: '#/components/schemas/PatronColor'
+                  flair:
+                    $ref: '#/components/schemas/Flair'
+                  rank:
+                    type: integer
+                  rating:
+                    type: integer
+                  score:
+                    type: integer
+                  sheet:
+                    $ref: '#/components/schemas/ArenaSheet'
+        featured:
+          type: object
+          properties:
+            id:
+              type: string
+            fen:
+              type: string
+            orientation:
+              type: string
+            color:
+              type: string
+            lastMove:
+              type: string
+            white:
+              type: object
+              properties:
+                name:
+                  type: string
+                id:
+                  type: string
+                rank:
+                  type: integer
+                rating:
+                  type: integer
+            black:
+              type: object
+              properties:
+                name:
+                  type: string
+                id:
+                  type: string
+                rank:
+                  type: integer
+                rating:
+                  type: integer
+            c:
+              type: object
+              properties:
+                white:
+                  type: integer
+                  description: white's clock in seconds
+                black:
+                  type: integer
+                  description: black's clock in seconds
+        podium:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              title:
+                $ref: '#/components/schemas/Title'
+              patron:
+                $ref: '#/components/schemas/Patron'
+              patronColor:
+                $ref: '#/components/schemas/PatronColor'
+              flair:
+                $ref: '#/components/schemas/Flair'
+              rank:
+                type: integer
+              rating:
+                type: integer
+              score:
+                type: integer
+              nb:
+                type: object
+                properties:
+                  game:
+                    type: integer
+                  berserk:
+                    type: integer
+                  win:
+                    type: integer
+              performance:
+                type: integer
+        stats:
+          type: object
+          properties:
+            games:
+              type: integer
+            moves:
+              type: integer
+            whiteWins:
+              type: integer
+            blackWins:
+              type: integer
+            draws:
+              type: integer
+            berserks:
+              type: integer
+            averageRating:
+              type: integer
+          required:
+          - games
+          - moves
+          - whiteWins
+          - blackWins
+          - draws
+          - berserks
+          - averageRating
+        myUsername:
+          type: string
+      required:
+      - id
+      - fullName
+      - clock
+      - nbPlayers
+    ArenaSheet:
+      type: object
+      required:
+      - scores
+      properties:
+        scores:
+          type: string
+        fire:
+          type: boolean
+    Speed:
+      type: string
+      enum:
+      - ultraBullet
+      - bullet
+      - blitz
+      - rapid
+      - classical
+      - correspondence
+    Patron:
+      type: boolean
+      deprecated: true
+      description: 'Use patronColor value instead to determine if player is a patron.
+
+        '
+    ArenaPerf:
+      type: object
+      properties:
+        key:
+          $ref: '#/components/schemas/PerfType'
+        name:
+          type: string
+          example: Blitz
+        position:
+          type: integer
+          example: 1
+        icon:
+          type: string
+          example: )
+      required:
+      - key
+      - name
+      - position
+    PatronColor:
+      type: integer
+      description: 'Players can choose a color for their Patron wings.
+
+        See [here for the color mappings](https://github.com/lichess-org/lila/blob/master/ui/lib/css/abstract/_patron-colors.scss).
+
+
+        The presence of this field indicates the player is an active Patron.
+
+        '
+      minimum: 1
+      maximum: 10
+    ArenaTournamentPlayer:
+      type: object
+      properties:
+        games:
+          type: integer
+        score:
+          type: integer
+        rank:
+          type: integer
+        performance:
+          type: integer
+      required:
+      - games
+      - score
+      - rank
+      example:
+        games: 10
+        score: 14
+        rank: 30
+        performance: 1935
+    Title:
+      type: string
+      enum:
+      - GM
+      - WGM
+      - IM
+      - WIM
+      - FM
+      - WFM
+      - NM
+      - CM
+      - WCM
+      - WNM
+      - LM
+      - BOT
+      description: only appears if the user is a titled player or a bot user
+    Verdict:
+      type: object
+      properties:
+        condition:
+          type: string
+        verdict:
+          type: string
+      required:
+      - condition
+      - verdict
+    GameColor:
+      type: string
+      enum:
+      - white
+      - black
+    PerfType:
+      type: string
+      enum:
+      - ultraBullet
+      - bullet
+      - blitz
+      - rapid
+      - classical
+      - correspondence
+      - chess960
+      - crazyhouse
+      - antichess
+      - atomic
+      - horde
+      - kingOfTheHill
+      - racingKings
+      - threeCheck
+    ArenaStatus:
+      type: integer
+      description: '10: created, 20: started, 30: finished
+
+        '
+      enum:
+      - 10
+      - 20
+      - 30
+    LightUser:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        flair:
+          $ref: '#/components/schemas/Flair'
+        title:
+          $ref: '#/components/schemas/Title'
+        patron:
+          $ref: '#/components/schemas/Patron'
+        patronColor:
+          $ref: '#/components/schemas/PatronColor'
+      required:
+      - id
+      - name
+    GamePlayers:
+      type: object
+      properties:
+        white:
+          $ref: '#/components/schemas/GamePlayerUser'
+        black:
+          $ref: '#/components/schemas/GamePlayerUser'
+      required:
+      - white
+      - black
+    GamePlayerUser:
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/LightUser'
+        rating:
+          type: integer
+        ratingDiff:
+          type: integer
+        name:
+          type: string
+        provisional:
+          type: boolean
+        aiLevel:
+          type: integer
+        analysis:
+          type: object
+          properties:
+            inaccuracy:
+              type: integer
+            mistake:
+              type: integer
+            blunder:
+              type: integer
+            acpl:
+              type: integer
+            accuracy:
+              type: integer
+          required:
+          - inaccuracy
+          - mistake
+          - blunder
+          - acpl
+        team:
+          type: string
+      required:
+      - user
+      - rating
+    Ok:
+      properties:
+        ok:
+          type: boolean
+      required:
+      - ok
   parameters:
     AcceptPgnOrNdjson:
       in: header
