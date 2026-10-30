@@ -1,4 +1,4 @@
-# Lichess (lichess)
+# Lichess
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,109 +66,211 @@
 
 Lichess is a free, ad-free, open-source online chess server operated by a French nonprofit and powered entirely by volunteers and donations. It serves millions of games per day with live play, tournaments, puzzles, studies, broadcasts, analysis, and a public API. The server (lila), engine library (scalachess), mobile app, board UI (chessground), and distributed Stockfish analysis network (fishnet) are all open source under AGPL-3.0, MIT, and GPL-3.0 licenses. The Lichess API provides 185 documented operations across 23 functional areas including Account, Users, Games, Puzzles, Teams, Board, Bot, Challenges, Arena and Swiss Tournaments, Simuls, Studies, Broadcasts, Messaging, OAuth, FIDE, Opening Explorer, Tablebase, External Engine, and Cloud Analysis, with comprehensive ND-JSON streaming support.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/lichess/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/lichess/refs/heads/main/apis.yml)
+**Areas:** Chess · Games · Open Source · Non-Profit · Tournaments · Puzzles · Bots · Streaming · ND-JSON · Authentication
 
-## Scope
+## Lichess on APIs.io
 
-- **Position:** Consuming
-- **Access:** 3rd-Party
+Everything profiled for Lichess is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/lichess/](https://apis.io/providers/lichess/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (23)
 
-- Chess
-- Games
-- Open Source
-- Nonprofit
-- Tournaments
-- Puzzles
-- Bots
-- Streaming
-- ND-JSON
-- OAuth
+- [Lichess Account API](https://apis.io/apis/lichess/lichess-account-api/) — Read and write account information and preferences. <https://lichess.org/account/preferences/game-display>
+- [Lichess Analysis API](https://apis.io/apis/lichess/lichess-analysis-api/) — Access Lichess cloud evaluations database. <https://lichess.org/analysis>
+- [Lichess Board API](https://apis.io/apis/lichess/lichess-board-api/) — Play on Lichess with physical boards and third-party clients. Works with normal Lichess accounts. Engine play or assistance is…
+- [Lichess Bot API](https://apis.io/apis/lichess/lichess-bot-api/) — Play on Lichess as a bot. Allows engine play. Read the [blog post announcement of lichess…
+- [Lichess Broadcasts API](https://apis.io/apis/lichess/lichess-broadcasts-api/) — Relay chess events on Lichess. [Official broadcasts](https://lichess.org/broadcast) are maintained by Lichess, but you can [create your own…
+- [Lichess Bulk pairings API](https://apis.io/apis/lichess/lichess-bulk-pairings-api/) — Create many games for other players. These endpoints are intended for tournament organisers.
+- [Lichess Challenges API](https://apis.io/apis/lichess/lichess-challenges-api/) — Send and receive challenges to play. To create a lot of challenges, consider [bulk pairing](#tag/bulk-pairings/POST/api/bulk-pairing) instead.
+- [Lichess External engine API](https://apis.io/apis/lichess/lichess-external-engine-api/) — **This API is in alpha and subject to change.** Use or provide external engine analysis. External engines can provide analysis on pages like the [analysis…
+- [Lichess FIDE API](https://apis.io/apis/lichess/lichess-fide-api/) — FIDE players and federations from [their public download](https://ratings.fide.com/download_lists.phtml). <https://lichess.org/fide>
+- [Lichess Games API](https://apis.io/apis/lichess/lichess-games-api/) — Access games played on Lichess. <https://lichess.org/games>
+- [Lichess Messaging API](https://apis.io/apis/lichess/lichess-messaging-api/) — Private messages with other players. <https://lichess.org/inbox>
+- [Lichess Opening Explorer API](https://apis.io/apis/lichess/lichess-opening-explorer-api/) — Lookup positions from the [Lichess opening explorer](https://lichess.org/analysis#explorer). Runs <https://github.com/lichess-org/lila-openingexplorer>. >…
+- [Lichess Puzzles API](https://apis.io/apis/lichess/lichess-puzzles-api/) — Fetch and solve [puzzles](https://lichess.org/training), view your puzzle history and dashboard. Our collection of puzzles is in the public domain, you can…
+- [Lichess Relations API](https://apis.io/apis/lichess/lichess-relations-api/) — Access relations between users.
+- [Lichess Simuls API](https://apis.io/apis/lichess/lichess-simuls-api/) — Access simuls played on Lichess. <https://lichess.org/simul>
+- [Lichess Studies API](https://apis.io/apis/lichess/lichess-studies-api/) — Access Lichess studies. <https://lichess.org/study>
+- [Lichess Tablebase API](https://apis.io/apis/lichess/lichess-tablebase-api/) — Lookup positions from the [Lichess tablebase server](https://lichess.org/blog/W3WeMyQAACQAdfAL/7-piece-syzygy-tablebases-are-complete). > [!important] > The…
+- [Lichess Teams API](https://apis.io/apis/lichess/lichess-teams-api/) — Access and manage Lichess teams and their members. <https://lichess.org/team>
+- [Lichess Tournaments (Arena) API](https://apis.io/apis/lichess/lichess-tournaments-arena-api/) — Access Arena tournaments played on Lichess. [Official Arena tournaments](https://lichess.org/tournament) are maintained by Lichess, but you can [create your…
+- [Lichess Tournaments (Swiss) API](https://apis.io/apis/lichess/lichess-tournaments-swiss-api/) — Access Swiss tournaments played on Lichess. [Read more about Swiss tournaments.](https://lichess.org/swiss).
+- [Lichess TV API](https://apis.io/apis/lichess/lichess-tv-api/) — Access Lichess TV channels and games. <https://lichess.org/tv> & <https://lichess.org/games>
+- [Lichess Users API](https://apis.io/apis/lichess/lichess-users-api/) — Access registered users on Lichess. <https://lichess.org/player> - Each user blog exposes an atom (RSS) feed, like…
+- [Lichess O Auth API](https://apis.io/apis/lichess/lichess-oauth-api/) — Obtaining and revoking OAuth tokens. [Read about the Lichess API authentication methods and code…
 
-## Timestamps
+### Published properties
 
-- **Created:** 2026-05-25T00:00:00.000Z
-- **Modified:** 2026-05-25
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### AsyncAPI (1)
 
-### Lichess API
+Event-driven and webhook contracts.
 
-The Lichess API is a comprehensive REST and streaming API covering account, users, games, puzzles, teams, challenges, board and bot play, Arena and Swiss tournaments, simuls, studies, broadcasts, messaging, OAuth, FIDE data, opening explorer, tablebase, external engine, and cloud evaluation. The full OpenAPI 3.1 specification is published at github.com/lichess-org/api with 185 operations across 23 tags, and many endpoints stream responses as newline-delimited JSON (ND-JSON).
+- [Lichess Streaming API](https://apis.io/asyncapis/lichess/lichess-asyncapi/)
 
-- **Human URL:** [https://lichess.org/api](https://lichess.org/api)
-- **Base URL:** `https://lichess.org`
+#### Event channels (11)
 
-#### Tags
+Individual events and webhooks the provider emits.
 
-- Chess
-- Games
-- Open Source
-- REST
+- [/api/board/game/stream/{gameId}](https://apis.io/channels/lichess/api-board-game-stream-gameid/)
+- [/api/bot/game/stream/{gameId}](https://apis.io/channels/lichess/api-bot-game-stream-gameid/)
+- [/api/broadcast/my-rounds](https://apis.io/channels/lichess/api-broadcast-my-rounds/)
+- [/api/games/user/{username}](https://apis.io/channels/lichess/api-games-user-username/)
+- [/api/stream/broadcast/round/{broadcastRoundId}.pgn](https://apis.io/channels/lichess/api-stream-broadcast-round-broadcastroundid-pgn/)
+- [/api/stream/event](https://apis.io/channels/lichess/api-stream-event/)
+- [/api/stream/game/{id}](https://apis.io/channels/lichess/api-stream-game-id/)
+- [/api/stream/games-by-users](https://apis.io/channels/lichess/api-stream-games-by-users/)
+- [/api/stream/games/{streamId}](https://apis.io/channels/lichess/api-stream-games-streamid/)
+- [/api/tv/{channel}/feed](https://apis.io/channels/lichess/api-tv-channel-feed/)
+- [/api/tv/feed](https://apis.io/channels/lichess/api-tv-feed/)
 
-#### Properties
+#### Agentic access (1)
 
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Lichess Agentic Access](https://apis.io/agentic-access/lichess/lichess-agentic-access/)
+
+#### JSON Schema (2)
+
+The data models the API reads and writes.
+
+- [Lichess Game](https://apis.io/schemas/lichess/lichess-game/)
+- [Lichess User](https://apis.io/schemas/lichess/lichess-user/)
+
+#### JSON-LD (1)
+
+Linked-data contexts for the provider's vocabulary.
+
+- [Lichess Context](https://apis.io/jsonld/lichess/lichess-context/)
+
+#### Collections (47)
+
+Postman and Open Collection request collections.
+
+- [Lichess.org API reference](https://apis.io/collections/lichess/open-lichess/)
+- [Lichess.org API reference Account API](https://apis.io/collections/lichess/open-lichess-account-api/)
+- [Lichess.org API reference Account Analysis API](https://apis.io/collections/lichess/open-lichess-analysis-api/)
+- [Lichess.org API reference Account Board API](https://apis.io/collections/lichess/open-lichess-board-api/)
+- [Lichess.org API reference Account Bot API](https://apis.io/collections/lichess/open-lichess-bot-api/)
+- [Lichess.org API reference Account Broadcasts API](https://apis.io/collections/lichess/open-lichess-broadcasts-api/)
+- [Lichess.org API reference Account Bulk pairings API](https://apis.io/collections/lichess/open-lichess-bulk-pairings-api/)
+- [Lichess.org API reference Account Challenges API](https://apis.io/collections/lichess/open-lichess-challenges-api/)
+- [Lichess.org API reference Account External engine API](https://apis.io/collections/lichess/open-lichess-external-engine-api/)
+- [Lichess.org API reference Account FIDE API](https://apis.io/collections/lichess/open-lichess-fide-api/)
+- [Lichess.org API reference Account Games API](https://apis.io/collections/lichess/open-lichess-games-api/)
+- [Lichess.org API reference Account Messaging API](https://apis.io/collections/lichess/open-lichess-messaging-api/)
+- [Lichess.org API reference Account OAuth API](https://apis.io/collections/lichess/open-lichess-oauth-api/)
+- [Lichess.org API reference Account Opening Explorer API](https://apis.io/collections/lichess/open-lichess-opening-explorer-api/)
+- [Lichess.org API reference Account Puzzles API](https://apis.io/collections/lichess/open-lichess-puzzles-api/)
+- [Lichess.org API reference Account Relations API](https://apis.io/collections/lichess/open-lichess-relations-api/)
+- [Lichess.org API reference Account Simuls API](https://apis.io/collections/lichess/open-lichess-simuls-api/)
+- [Lichess.org API reference Account Studies API](https://apis.io/collections/lichess/open-lichess-studies-api/)
+- [Lichess.org API reference Account Tablebase API](https://apis.io/collections/lichess/open-lichess-tablebase-api/)
+- [Lichess.org API reference Account Teams API](https://apis.io/collections/lichess/open-lichess-teams-api/)
+- [Lichess.org API reference Account Tournaments (Arena) API](https://apis.io/collections/lichess/open-lichess-tournaments-arena-api/)
+- [Lichess.org API reference Account Tournaments (Swiss) API](https://apis.io/collections/lichess/open-lichess-tournaments-swiss-api/)
+- [Lichess.org API reference Account TV API](https://apis.io/collections/lichess/open-lichess-tv-api/)
+- [Lichess.org API reference Account Users API](https://apis.io/collections/lichess/open-lichess-users-api/)
+- [Lichess.org API reference Account API](https://apis.io/collections/lichess/postman-lichess-account-api/)
+- …and 22 more published on APIs.io
+
+#### Governance rules (3)
+
+Spectral rulesets for the provider's contracts.
+
+- [Lichess — asyncapi rules](https://apis.io/rules/lichess/lichess-asyncapi-spectral-rules/)
+- [Lichess — jsonschema rules](https://apis.io/rules/lichess/lichess-jsonschema-spectral-rules/)
+- [Lichess API Rules](https://apis.io/rules/lichess/lichess-rules/)
+
+#### Security (3)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Lichess Authentication](https://apis.io/security/lichess/lichess-authentication/)
+- [Lichess Domain Security](https://apis.io/security/lichess/lichess-domain-security/)
+- [Lichess Vulnerability Disclosure](https://apis.io/security/lichess/lichess-vulnerability-disclosure/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Lichess Scopes](https://apis.io/scopes/lichess/lichess-scopes/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Lichess Plans Pricing](https://apis.io/plans/lichess/lichess-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Lichess Rate Limits](https://apis.io/rate-limits/lichess/lichess-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.lichess.org/)
 - [Documentation](https://lichess.org/api)
-- [OpenAPI](openapi/lichess-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/lichess.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/lichess.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-- [OpenAPI](https://github.com/lichess-org/api/blob/master/doc/specs/lichess-api.yaml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [AsyncAPI](asyncapi/lichess-asyncapi.yml) — [AsyncAPI Specification](https://www.asyncapi.com/docs/reference/specification/latest)
-- [JSON Schema](json-schema/lichess-game-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/lichess-user-schema.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON-LD](json-ld/lichess-context.jsonld) — [JSON-LD](https://www.w3.org/TR/json-ld11/)
-- [Spectral Ruleset](rules/lichess-rules.yml)
-
-## Common Properties
-
-- [Portal](https://lichess.org)
-- [Documentation](https://lichess.org/api)
-- [Sandbox](https://lichess.org/api/ui)
-- [Sandbox](https://lichess-org.github.io/api-demo/)
-- [GitHub Organization](https://github.com/lichess-org)
-- [Source Code](https://github.com/lichess-org/api)
-- [Source Code](https://github.com/lichess-org/lila)
-- [Source Code](https://github.com/lichess-org/scalachess)
-- [Source Code](https://github.com/lichess-org/chessground)
-- [Source Code](https://github.com/lichess-org/pgn-viewer)
-- [Source Code](https://github.com/lichess-org/mobile)
-- [SDK](https://github.com/lichess-org/berserk)
-- [SDK](https://github.com/tors42/chariot)
-- [SDK](https://github.com/devjiwonchoi/equine)
-- [SDK](https://github.com/Rabergsel/LichessNET)
-- [SDK](https://github.com/Dblike/LichessSharp)
-- [SDK](https://github.com/mkomon/uberserk)
-- [SDK](https://pypi.org/project/async-lichess-sdk)
-- [Tool](https://github.com/lichess-bot-devs/lichess-bot)
-- [Tool](https://github.com/lichess-org/fishnet)
-- [Tool](https://github.com/lichess-org/external-engine)
-- [Tool](https://github.com/lichess-org/broadcaster)
-- [Tool](https://github.com/lichess-org/pgn-mule)
-- [Tool](https://github.com/lichess-org/api-ui)
-- [Code Examples](https://github.com/lichess-org/api/tree/master/example)
-- [Forum](https://discord.gg/lichess)
-- [Forum](https://lichess.org/forum)
-- [Bulk Data Download](https://database.lichess.org/)
-- [Authentication](https://lichess.org/account/oauth/token)
-- [Documentation](https://lichess.org/developers)
-- [Authentication](https://lichess.org/account/oauth/app)
-- [Terms of Service](https://lichess.org/page/fair-play)
-- [Terms of Service](https://lichess.org/terms-of-service)
-- [Privacy Policy](https://lichess.org/privacy)
-- [Source Code](https://lichess.org/source)
-- [Donate](https://lichess.org/patron)
-- [Status Page](https://status.lichess.org/)
 - [Blog](https://lichess.org/blog)
-- [Rate Limits](https://lichess.org/api#section/Introduction/Rate-limiting)
-- [Authentication](https://lichess.org/api#tag/OAuth)
-- [License](https://www.gnu.org/licenses/agpl-3.0.txt)
-- [Plans](plans/lichess-plans-pricing.yml)
-- [Rate Limits](rate-limits/lichess-rate-limits.yml)
-- [Features](undefined)
+- [Terms of service](https://lichess.org/page/fair-play)
+- [Privacy policy](https://lichess.org/privacy)
+- [GitHub](https://github.com/lichess-org)
+- [Status](https://status.lichess.org/)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** info@apievangelist.com
-**URL:** https://apievangelist.com
+**Kin Score 53.0** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 74.7 |
+| Contract governance | 13.6 |
+| Operational transparency | 39.5 |
+| Developer ergonomics | 63.1 |
+| Access clarity | 26.3 |
+
+**Agent readiness 38.4** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | — |
+| Auth Clarity | negotiable (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | derived (partial credit) |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | documented (partial credit) |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | — |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 40.2** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/lichess/](https://apis.io/providers/lichess/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Lichess: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/lichess/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
